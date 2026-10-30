@@ -103,6 +103,10 @@ n3 的 `nextIdx` 是 `{'n1': 1, 'n2': 3}`，`matchIdx` 是 `{'n1': 0, 'n2': 0}`�
 
 `log/t027` 是投递中途 TCP 断开，不是协议赋值差异。原文在 `potential-bugs/log-t027-tcp-drop/`。
 
+## 日志配置 2000 条（新机器重放）
+
+同一批 `MC.out`（`MC_for_sandtable_log.cfg`，30 步）在新机器上重放。2000 条变量比较全部通过，没有 `net-len` 偏差，实现侧合计 6144.7 秒。行覆盖在第 1420 条封顶，62.46%（717/1148），分支 49.76%。第 919 条执行到 `raft_server.c:495` 的日志删除；`:467` 和 `raft_begin_load_snapshot` 仍是 0。分类在 `未覆盖代码分类.md`，逐行 gcov 在 `coverage-log2000-gcov/`，曲线在 `coverage-log2000-rerun.json`。
+
 ## 文件清单
 
 ### 仍在树上的新增文件
