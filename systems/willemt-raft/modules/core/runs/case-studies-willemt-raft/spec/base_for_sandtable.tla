@@ -1186,10 +1186,12 @@ SandHandleAppendEntriesResponse(i, j, m) ==
              /\ ~m.msuccess
              /\ LET curMatchIdx == matchIndex[i][j]
                     curNextIdx == nextIndex[i][j]
-                    newNext == IF m.mcurrentIdx < curNextIdx - 1
-                               THEN IF m.mcurrentIdx + 1 < LastLogIndex(i)
-                                    THEN m.mcurrentIdx + 1 ELSE LastLogIndex(i)
-                               ELSE curNextIdx - 1
+                    newNextRaw == IF m.mcurrentIdx < curNextIdx - 1
+                                  THEN IF m.mcurrentIdx + 1 < LastLogIndex(i)
+                                       THEN m.mcurrentIdx + 1 ELSE LastLogIndex(i)
+                                  ELSE curNextIdx - 1
+                    \* raft_node_set_next_idx stores 1 when the index is below 1.
+                    newNext == IF newNextRaw < 1 THEN 1 ELSE newNextRaw
                 IN IF m.mcurrentIdx < curMatchIdx
                    THEN /\ UNCHANGED <<logVars, leaderVars, serverVars>>
                         /\ DropAndSend(m, <<>>, pc)
