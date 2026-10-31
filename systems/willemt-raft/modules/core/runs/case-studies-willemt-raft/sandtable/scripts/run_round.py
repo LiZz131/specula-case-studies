@@ -21,7 +21,7 @@ MOUNT = Path("/users/bingzhuo/sandtable/build/mount/specula-ce")
 CONTAINER_ROOT = "/root/sandtable/specula-ce"
 JAR = Path("/users/bingzhuo/sandtable/scripts/tla2tools.jar")
 SPEC = RUN / "spec"
-ROUND = "controlled-execution-1030-1"
+ROUND = "controlled-execution-1030-2"
 ROUND_DIR = RUN / "controlled-execution-runs" / ROUND
 
 CONFIGS = [
