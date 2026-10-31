@@ -1,17 +1,15 @@
-# 失败的 AppendEntries 响应没有把 nextIndex 从 1 减到 0
+# nextIndex 减到 0 时被钳成 1
 
-三条轨迹的 `MC.out`、`traces.txt`、`log.host`、`replay.status`、`tlc.err`、`tlc.status` 都在本目录的子目录里。轮次里的 `traces/` 被 gitignore，GitHub 上以这里为准。
+归类 `adapter`，不是库的 bug。三条都走失败的 AppendEntries 响应。模型把 `nextIndex` 写成 0，库的 setter 拒绝小于 1 的下标，存回 1。
 
-| 子目录 | 复现 |
-|---|---|
-| `snapshot-t0158/` | `run_one_testcase.sh snapshot-t0158/MC.out 3`。种子 158。失败步 `# [42] HandleAppendEntriesResponse s1 s2 40`。 |
-| `snapshot-t0130/` | `run_one_testcase.sh snapshot-t0130/MC.out 3`。 |
-| `log-t0169/` | `run_one_testcase.sh log-t0169/MC.out 3`。 |
+| 轨迹 | 种子 | 步 | 代码 | 模型 |
+|---|---:|---|---|---|
+| `t0158` | 158 | `# [42] HandleAppendEntriesResponse s1 s2 40` | n1 `{'n2': 1, 'n3': 2}` | n1 `{'n2': 0, 'n3': 2}` |
+| `t0130` | 130 | `# [48] HandleAppendEntriesResponse s3 s2 42` | n3 `{'n1': 1, 'n2': 1}` | n3 `{'n1': 1, 'n2': 0}` |
+| `t0169` | 169 | `# [38] HandleAppendEntriesResponse s1 s2 35` | n1 `{'n2': 1, 'n3': 2}` | n1 `{'n2': 0, 'n3': 2}` |
 
-三条都是代码的 `nextIdx` 停在 1，模型是 0。命令在本目录执行，节点数是 3。
+上一步该下标两边都是 1。模型消息是 `msuccess = FALSE`，`mcurrentIdx = 0`。`SandHandleAppendEntriesResponse` 走失败分支，`newNext = curNextIdx - 1`，写成 0。
 
-n1 的 `nextIdx`。上一步两边都是 `{'n2': 1, 'n3': 2}`。这一步代码仍是 `{'n2': 1, 'n3': 2}`，模型是 `{'n2': 0, 'n3': 2}`。模型里这条响应是 `msuccess = FALSE`，`mcurrentIdx = 0`，`mfirstIdx = 2`（prev 为 1）。n2 此时日志为空，`matchIndex` 是 0。
+库在 `artifact/raft/src/raft_server.c:322` 调用 `raft_node_set_next_idx(node, next_idx - 1)`。`raft_node.c:64-68` 里写着 log index 从 1 开始，`nextIdx < 1` 时存 1。所以失败路径确实执行了，存进去的值是 1。这不是成功响应提前返回，也不是快照元数据没参加比较。
 
-库在 `raft_recv_appendentries_response`（`artifact/raft/src/raft_server.c:310-322`）。失败且 `current_idx < next_idx - 1` 不成立时，把 `next_idx` 减 1。`next_idx` 为 1 时结果是 0。成功且 `current_idx <= match_idx` 时在 343 行直接返回，不改 `next_idx`。代码留下 1，说明节点处理的是成功响应，或者在减之前就返回了。模型按袋里的失败响应走了减 1。
-
-比较项没有快照元数据。n2 的可见日志是空的，快照基址可以不同，响应的 `success` 就会不同。规格的响应公式按模型里的 `msuccess` 更新 `nextIndex`，回放仍得到 1。规格和源码都没有为这条记录改过。
+`Sand*` 要收到库的这条分支上：失败响应算出的 `newNext` 小于 1 时写成 1。这是适配层改动，修好后新开一轮，不并旧的 gcda。规格 `base.tla` / `MC.tla` 和库都不要为这三条改。
