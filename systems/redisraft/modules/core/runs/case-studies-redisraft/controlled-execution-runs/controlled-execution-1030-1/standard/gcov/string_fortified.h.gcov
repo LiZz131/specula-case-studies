@@ -56,9 +56,9 @@ call    0 never executed
         -:   54:   case no work is done at all.  We detect these problems by referring
         -:   55:   non-existing functions.  */
         -:   56:__fortify_function void *
-       27:   57:__NTH (memset (void *__dest, int __ch, size_t __len))
+      304:   57:__NTH (memset (void *__dest, int __ch, size_t __len))
         -:   58:{
-       27:   59:  return __builtin___memset_chk (__dest, __ch, __len,
+      304:   59:  return __builtin___memset_chk (__dest, __ch, __len,
         -:   60:				 __glibc_objsize0 (__dest));
         -:   61:}
         -:   62:

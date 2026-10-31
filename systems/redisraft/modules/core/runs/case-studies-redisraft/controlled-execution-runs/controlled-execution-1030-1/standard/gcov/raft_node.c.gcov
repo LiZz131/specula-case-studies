@@ -38,24 +38,24 @@
         -:   37:    raft_size_t snapshot_offset;
         -:   38:};
         -:   39:
-function raft_node_new called 90 returned 100% blocks executed 83%
-       90:   40:raft_node_t *raft_node_new(void *udata, raft_node_id_t id, int voting)
+function raft_node_new called 900 returned 100% blocks executed 83%
+      900:   40:raft_node_t *raft_node_new(void *udata, raft_node_id_t id, int voting)
         -:   41:{
-       90:   42:    raft_node_t *me;
+      900:   42:    raft_node_t *me;
         -:   43:
-       90:   44:    me = raft_calloc(1, sizeof(*me));
+      900:   44:    me = raft_calloc(1, sizeof(*me));
 call    0 returned 100%
-       90:   45:    if (!me) {
+      900:   45:    if (!me) {
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
         -:   46:        return NULL;
         -:   47:    }
         -:   48:
-       90:   49:    me->udata = udata;
-       90:   50:    me->next_idx = 1;
-       90:   51:    me->match_idx = 0;
-       90:   52:    me->id = id;
-      180:   53:    raft_node_set_voting(me, voting);
+      900:   49:    me->udata = udata;
+      900:   50:    me->next_idx = 1;
+      900:   51:    me->match_idx = 0;
+      900:   52:    me->id = id;
+     1800:   53:    raft_node_set_voting(me, voting);
         -:   54:
         -:   55:    return me;
         -:   56:}
@@ -67,64 +67,64 @@ function raft_node_free called 0 returned 0% blocks executed 0%
 call    0 never executed
     #####:   61:}
         -:   62:
-function raft_node_get_next_idx called 568 returned 100% blocks executed 100%
-      568:   63:raft_index_t raft_node_get_next_idx(raft_node_t *node)
+function raft_node_get_next_idx called 5814 returned 100% blocks executed 100%
+     5814:   63:raft_index_t raft_node_get_next_idx(raft_node_t *node)
         -:   64:{
-      568:   65:    return node->next_idx;
+     5814:   65:    return node->next_idx;
         -:   66:}
         -:   67:
-function raft_node_set_next_idx called 116 returned 100% blocks executed 100%
-      116:   68:void raft_node_set_next_idx(raft_node_t *node, raft_index_t idx)
+function raft_node_set_next_idx called 1126 returned 100% blocks executed 100%
+     1126:   68:void raft_node_set_next_idx(raft_node_t *node, raft_index_t idx)
         -:   69:{
         -:   70:    /* log index begins at 1 */
-      116:   71:    node->next_idx = idx < 1 ? 1 : idx;
-      116:   72:}
+     1126:   71:    node->next_idx = idx < 1 ? 1 : idx;
+     1126:   72:}
         -:   73:
-function raft_node_get_match_idx called 350 returned 100% blocks executed 100%
-      350:   74:raft_index_t raft_node_get_match_idx(raft_node_t *node)
+function raft_node_get_match_idx called 3823 returned 100% blocks executed 100%
+     3823:   74:raft_index_t raft_node_get_match_idx(raft_node_t *node)
         -:   75:{
-      350:   76:    return node->match_idx;
+     3823:   76:    return node->match_idx;
         -:   77:}
         -:   78:
-function raft_node_set_match_idx called 60 returned 100% blocks executed 100%
-       60:   79:void raft_node_set_match_idx(raft_node_t *node, raft_index_t idx)
+function raft_node_set_match_idx called 614 returned 100% blocks executed 100%
+      614:   79:void raft_node_set_match_idx(raft_node_t *node, raft_index_t idx)
         -:   80:{
-       60:   81:    node->match_idx = idx;
-       60:   82:}
+      614:   81:    node->match_idx = idx;
+      614:   82:}
         -:   83:
-function raft_node_set_match_msgid called 10 returned 100% blocks executed 100%
-       10:   84:void raft_node_set_match_msgid(raft_node_t *node, raft_msg_id_t msgid)
+function raft_node_set_match_msgid called 117 returned 100% blocks executed 100%
+      117:   84:void raft_node_set_match_msgid(raft_node_t *node, raft_msg_id_t msgid)
         -:   85:{
-       10:   86:    node->match_msgid = msgid;
-       10:   87:}
+      117:   86:    node->match_msgid = msgid;
+      117:   87:}
         -:   88:
-function raft_node_get_match_msgid called 21 returned 100% blocks executed 100%
-       21:   89:raft_msg_id_t raft_node_get_match_msgid(raft_node_t *node)
+function raft_node_get_match_msgid called 238 returned 100% blocks executed 100%
+      238:   89:raft_msg_id_t raft_node_get_match_msgid(raft_node_t *node)
         -:   90:{
-       21:   91:    return node->match_msgid;
+      238:   91:    return node->match_msgid;
         -:   92:}
         -:   93:
-function raft_node_set_next_msgid called 94 returned 100% blocks executed 100%
-       94:   94:void raft_node_set_next_msgid(raft_node_t *node, raft_msg_id_t msgid)
+function raft_node_set_next_msgid called 906 returned 100% blocks executed 100%
+      906:   94:void raft_node_set_next_msgid(raft_node_t *node, raft_msg_id_t msgid)
         -:   95:{
-       94:   96:    node->next_msgid = msgid;
-       94:   97:}
+      906:   96:    node->next_msgid = msgid;
+      906:   97:}
         -:   98:
-function raft_node_get_next_msgid called 54 returned 100% blocks executed 100%
-       54:   99:raft_msg_id_t raft_node_get_next_msgid(raft_node_t *node)
+function raft_node_get_next_msgid called 608 returned 100% blocks executed 100%
+      608:   99:raft_msg_id_t raft_node_get_next_msgid(raft_node_t *node)
         -:  100:{
-       54:  101:    return node->next_msgid;
+      608:  101:    return node->next_msgid;
         -:  102:}
         -:  103:
-function raft_node_update_max_seen_msg_id called 32 returned 100% blocks executed 100%
-       32:  104:void raft_node_update_max_seen_msg_id(raft_node_t *node, raft_msg_id_t msg_id)
+function raft_node_update_max_seen_msg_id called 347 returned 100% blocks executed 100%
+      347:  104:void raft_node_update_max_seen_msg_id(raft_node_t *node, raft_msg_id_t msg_id)
         -:  105:{
-       32:  106:    if (node->max_seen_msgid < msg_id) {
+      347:  106:    if (node->max_seen_msgid < msg_id) {
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
-       32:  107:        node->max_seen_msgid = msg_id;
+      347:  107:        node->max_seen_msgid = msg_id;
         -:  108:    }
-       32:  109:}
+      347:  109:}
         -:  110:
 function raft_node_get_max_seen_msg_id called 0 returned 0% blocks executed 0%
     #####:  111:raft_msg_id_t raft_node_get_max_seen_msg_id(raft_node_t *node)
@@ -150,42 +150,42 @@ function raft_node_clear_flags called 0 returned 0% blocks executed 0%
     #####:  128:    node->flags = 0;
     #####:  129:}
         -:  130:
-function raft_node_set_voted_for_me called 158 returned 100% blocks executed 100%
-      158:  131:void raft_node_set_voted_for_me(raft_node_t *node, int vote)
+function raft_node_set_voted_for_me called 1597 returned 100% blocks executed 100%
+     1597:  131:void raft_node_set_voted_for_me(raft_node_t *node, int vote)
         -:  132:{
-      158:  133:    if (vote) {
+     1597:  133:    if (vote) {
 branch  0 taken 7% (fallthrough)
 branch  1 taken 93%
-       11:  134:        node->flags |= RAFT_NODE_VOTED_FOR_ME;
+      109:  134:        node->flags |= RAFT_NODE_VOTED_FOR_ME;
         -:  135:    } else {
-      147:  136:        node->flags &= ~RAFT_NODE_VOTED_FOR_ME;
+     1488:  136:        node->flags &= ~RAFT_NODE_VOTED_FOR_ME;
         -:  137:    }
-      158:  138:}
+     1597:  138:}
         -:  139:
-function raft_node_has_vote_for_me called 22 returned 100% blocks executed 100%
-       22:  140:int raft_node_has_vote_for_me(raft_node_t *node)
+function raft_node_has_vote_for_me called 218 returned 100% blocks executed 100%
+      218:  140:int raft_node_has_vote_for_me(raft_node_t *node)
         -:  141:{
-       22:  142:    return (node->flags & RAFT_NODE_VOTED_FOR_ME) != 0;
+      218:  142:    return (node->flags & RAFT_NODE_VOTED_FOR_ME) != 0;
         -:  143:}
         -:  144:
 function raft_node_set_voting called 0 returned 0% blocks executed 0%
-      90*:  145:void raft_node_set_voting(raft_node_t *node, int voting)
+     900*:  145:void raft_node_set_voting(raft_node_t *node, int voting)
         -:  146:{
-      90*:  147:    if (voting) {
+     900*:  147:    if (voting) {
 branch  0 never executed
 branch  1 never executed
 branch  2 taken 100% (fallthrough)
 branch  3 taken 0%
-      90*:  148:        node->flags |= RAFT_NODE_VOTING;
+     900*:  148:        node->flags |= RAFT_NODE_VOTING;
         -:  149:    } else {
     #####:  150:        node->flags &= ~RAFT_NODE_VOTING;
         -:  151:    }
     #####:  152:}
         -:  153:
-function raft_node_is_voting called 484 returned 100% blocks executed 100%
-      484:  154:int raft_node_is_voting(raft_node_t *node)
+function raft_node_is_voting called 4866 returned 100% blocks executed 100%
+     4866:  154:int raft_node_is_voting(raft_node_t *node)
         -:  155:{
-      484:  156:    return (node->flags & RAFT_NODE_VOTING &&
+     4866:  156:    return (node->flags & RAFT_NODE_VOTING &&
         -:  157:           !(node->flags & RAFT_NODE_INACTIVE));
         -:  158:}
         -:  159:
@@ -219,10 +219,10 @@ branch  1 never executed
         -:  180:    }
     #####:  181:}
         -:  182:
-function raft_node_is_active called 94 returned 100% blocks executed 100%
-       94:  183:int raft_node_is_active(raft_node_t *node)
+function raft_node_is_active called 906 returned 100% blocks executed 100%
+      906:  183:int raft_node_is_active(raft_node_t *node)
         -:  184:{
-       94:  185:    return (node->flags & RAFT_NODE_INACTIVE) == 0;
+      906:  185:    return (node->flags & RAFT_NODE_INACTIVE) == 0;
         -:  186:}
         -:  187:
 function raft_node_set_voting_committed called 0 returned 0% blocks executed 0%
@@ -243,10 +243,10 @@ function raft_node_is_voting_committed called 0 returned 0% blocks executed 0%
     #####:  199:    return (node->flags & RAFT_NODE_VOTING_COMMITTED) != 0;
         -:  200:}
         -:  201:
-function raft_node_get_id called 3448 returned 100% blocks executed 100%
-     3448:  202:raft_node_id_t raft_node_get_id(raft_node_t *node)
+function raft_node_get_id called 35823 returned 100% blocks executed 100%
+    35823:  202:raft_node_id_t raft_node_get_id(raft_node_t *node)
         -:  203:{
-     3448:  204:    return node != NULL ? node->id : RAFT_NODE_ID_NONE;
+    35823:  204:    return node != NULL ? node->id : RAFT_NODE_ID_NONE;
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
         -:  205:}
@@ -275,8 +275,8 @@ function raft_node_get_snapshot_offset called 0 returned 0% blocks executed 0%
     #####:  223:    return node->snapshot_offset;
         -:  224:}
         -:  225:
-function raft_node_set_snapshot_offset called 22 returned 100% blocks executed 100%
-       22:  226:void raft_node_set_snapshot_offset(raft_node_t *node, raft_size_t offset)
+function raft_node_set_snapshot_offset called 218 returned 100% blocks executed 100%
+      218:  226:void raft_node_set_snapshot_offset(raft_node_t *node, raft_size_t offset)
         -:  227:{
-       22:  228:    node->snapshot_offset = offset;
-       22:  229:}
+      218:  228:    node->snapshot_offset = offset;
+      218:  229:}
