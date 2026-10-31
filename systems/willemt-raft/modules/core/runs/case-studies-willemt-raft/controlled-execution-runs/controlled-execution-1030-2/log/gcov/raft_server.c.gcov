@@ -46,83 +46,83 @@ function raft_set_heap_functions called 0 returned 0% blocks executed 0%
     #####:   44:    __raft_free = _free;
     #####:   45:}
         -:   46:
-function __log called 527 returned 100% blocks executed 100%
-      527:   47:static void __log(raft_server_t *me_, raft_node_t* node, const char *fmt, ...)
+function __log called 1060 returned 100% blocks executed 100%
+     1060:   47:static void __log(raft_server_t *me_, raft_node_t* node, const char *fmt, ...)
         -:   48:{
-      527:   49:    raft_server_private_t* me = (raft_server_private_t*)me_;
-      527:   50:    if (me->cb.log == NULL) return;
+     1060:   49:    raft_server_private_t* me = (raft_server_private_t*)me_;
+     1060:   50:    if (me->cb.log == NULL) return;
 branch  0 taken 5% (fallthrough)
 branch  1 taken 95%
         -:   51:    char buf[1024];
         -:   52:    va_list args;
         -:   53:
-      500:   54:    va_start(args, fmt);
-      500:   55:    vsprintf(buf, fmt, args);
+     1006:   54:    va_start(args, fmt);
+     1006:   55:    vsprintf(buf, fmt, args);
         -:   56:
-      500:   57:    me->cb.log(me_, node, me->udata, buf);
+     1006:   57:    me->cb.log(me_, node, me->udata, buf);
 call    0 returned 100%
         -:   58:}
         -:   59:
-function raft_randomize_election_timeout called 96 returned 100% blocks executed 100%
-       96:   60:void raft_randomize_election_timeout(raft_server_t* me_)
+function raft_randomize_election_timeout called 182 returned 100% blocks executed 100%
+      182:   60:void raft_randomize_election_timeout(raft_server_t* me_)
         -:   61:{
-       96:   62:    raft_server_private_t* me = (raft_server_private_t*)me_;
+      182:   62:    raft_server_private_t* me = (raft_server_private_t*)me_;
         -:   63:
         -:   64:    /* [election_timeout, 2 * election_timeout) */
-       96:   65:    me->election_timeout_rand = me->election_timeout + rand() % me->election_timeout;
+      182:   65:    me->election_timeout_rand = me->election_timeout + rand() % me->election_timeout;
 call    0 returned 100%
-       96:   66:    __log(me_, NULL, "randomize election timeout to %d", me->election_timeout_rand);
+      182:   66:    __log(me_, NULL, "randomize election timeout to %d", me->election_timeout_rand);
 call    0 returned 100%
-       96:   67:}
+      182:   67:}
         -:   68:
-function raft_new called 27 returned 100% blocks executed 75%
-       27:   69:raft_server_t* raft_new(void)
+function raft_new called 54 returned 100% blocks executed 75%
+       54:   69:raft_server_t* raft_new(void)
         -:   70:{
         -:   71:    raft_server_private_t* me =
-       27:   72:        (raft_server_private_t*)__raft_calloc(1, sizeof(raft_server_private_t));
+       54:   72:        (raft_server_private_t*)__raft_calloc(1, sizeof(raft_server_private_t));
 call    0 returned 100%
-       27:   73:    if (!me)
+       54:   73:    if (!me)
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####:   74:        return NULL;
-       27:   75:    me->current_term = 0;
-       27:   76:    me->voted_for = -1;
-       27:   77:    me->timeout_elapsed = 0;
-       27:   78:    me->request_timeout = 200;
-       27:   79:    me->election_timeout = 1000;
-       27:   80:    raft_randomize_election_timeout((raft_server_t*)me);
+       54:   75:    me->current_term = 0;
+       54:   76:    me->voted_for = -1;
+       54:   77:    me->timeout_elapsed = 0;
+       54:   78:    me->request_timeout = 200;
+       54:   79:    me->election_timeout = 1000;
+       54:   80:    raft_randomize_election_timeout((raft_server_t*)me);
 call    0 returned 100%
-       27:   81:    me->log = log_new();
+       54:   81:    me->log = log_new();
 call    0 returned 100%
-       27:   82:    if (!me->log) {
+       54:   82:    if (!me->log) {
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####:   83:        __raft_free(me);
 call    0 never executed
     #####:   84:        return NULL;
         -:   85:    }
-       27:   86:    me->voting_cfg_change_log_idx = -1;
-       27:   87:    raft_set_state((raft_server_t*)me, RAFT_STATE_FOLLOWER);
+       54:   86:    me->voting_cfg_change_log_idx = -1;
+       54:   87:    raft_set_state((raft_server_t*)me, RAFT_STATE_FOLLOWER);
 call    0 returned 100%
-       27:   88:    me->current_leader = NULL;
+       54:   88:    me->current_leader = NULL;
         -:   89:
-       27:   90:    me->snapshot_in_progress = 0;
-       27:   91:    raft_set_snapshot_metadata((raft_server_t*)me, 0, 0);
+       54:   90:    me->snapshot_in_progress = 0;
+       54:   91:    raft_set_snapshot_metadata((raft_server_t*)me, 0, 0);
 call    0 returned 100%
         -:   92:
-       27:   93:    return (raft_server_t*)me;
+       54:   93:    return (raft_server_t*)me;
         -:   94:}
         -:   95:
-function raft_set_callbacks called 27 returned 100% blocks executed 100%
-       27:   96:void raft_set_callbacks(raft_server_t* me_, raft_cbs_t* funcs, void* udata)
+function raft_set_callbacks called 54 returned 100% blocks executed 100%
+       54:   96:void raft_set_callbacks(raft_server_t* me_, raft_cbs_t* funcs, void* udata)
         -:   97:{
-       27:   98:    raft_server_private_t* me = (raft_server_private_t*)me_;
+       54:   98:    raft_server_private_t* me = (raft_server_private_t*)me_;
         -:   99:
-       27:  100:    memcpy(&me->cb, funcs, sizeof(raft_cbs_t));
-       27:  101:    me->udata = udata;
-       27:  102:    log_set_callbacks(me->log, &me->cb, me_);
+       54:  100:    memcpy(&me->cb, funcs, sizeof(raft_cbs_t));
+       54:  101:    me->udata = udata;
+       54:  102:    log_set_callbacks(me->log, &me->cb, me_);
 call    0 returned 100%
-       27:  103:}
+       54:  103:}
         -:  104:
 function raft_free called 0 returned 0% blocks executed 0%
     #####:  105:void raft_free(raft_server_t* me_)
@@ -184,137 +184,137 @@ branch  1 never executed
 call    0 never executed
         -:  144:}
         -:  145:
-function raft_election_start called 36 returned 100% blocks executed 100%
-       36:  146:int raft_election_start(raft_server_t* me_)
+function raft_election_start called 71 returned 100% blocks executed 100%
+       71:  146:int raft_election_start(raft_server_t* me_)
         -:  147:{
-       36:  148:    raft_server_private_t* me = (raft_server_private_t*)me_;
+       71:  148:    raft_server_private_t* me = (raft_server_private_t*)me_;
         -:  149:
-       36:  150:    __log(me_, NULL, "election starting: %d %d, term: %d ci: %d",
+       71:  150:    __log(me_, NULL, "election starting: %d %d, term: %d ci: %d",
 call    0 returned 100%
 call    1 returned 100%
         -:  151:          me->election_timeout_rand, me->timeout_elapsed, me->current_term,
         -:  152:          raft_get_current_idx(me_));
         -:  153:
-       36:  154:    return raft_become_candidate(me_);
+       71:  154:    return raft_become_candidate(me_);
 call    0 returned 100%
         -:  155:}
         -:  156:
-function raft_become_leader called 8 returned 100% blocks executed 100%
-        8:  157:void raft_become_leader(raft_server_t* me_)
+function raft_become_leader called 17 returned 100% blocks executed 100%
+       17:  157:void raft_become_leader(raft_server_t* me_)
         -:  158:{
-        8:  159:    raft_server_private_t* me = (raft_server_private_t*)me_;
+       17:  159:    raft_server_private_t* me = (raft_server_private_t*)me_;
         -:  160:    int i;
         -:  161:
-        8:  162:    __log(me_, NULL, "becoming leader term:%d", raft_get_current_term(me_));
+       17:  162:    __log(me_, NULL, "becoming leader term:%d", raft_get_current_term(me_));
 call    0 returned 100%
 call    1 returned 100%
         -:  163:
-        8:  164:    raft_set_state(me_, RAFT_STATE_LEADER);
+       17:  164:    raft_set_state(me_, RAFT_STATE_LEADER);
 call    0 returned 100%
-        8:  165:    me->timeout_elapsed = 0;
-       32:  166:    for (i = 0; i < me->num_nodes; i++)
+       17:  165:    me->timeout_elapsed = 0;
+       68:  166:    for (i = 0; i < me->num_nodes; i++)
 branch  0 taken 75%
 branch  1 taken 25% (fallthrough)
         -:  167:    {
-       24:  168:        raft_node_t* node = me->nodes[i];
+       51:  168:        raft_node_t* node = me->nodes[i];
         -:  169:
-       24:  170:        if (me->node == node || !raft_node_is_active(node))
+       51:  170:        if (me->node == node || !raft_node_is_active(node))
 branch  0 taken 67% (fallthrough)
 branch  1 taken 33%
 call    2 returned 100%
 branch  3 taken 0% (fallthrough)
 branch  4 taken 100%
-        8:  171:            continue;
+       17:  171:            continue;
         -:  172:
-       16:  173:        raft_node_set_next_idx(node, raft_get_current_idx(me_) + 1);
+       34:  173:        raft_node_set_next_idx(node, raft_get_current_idx(me_) + 1);
 call    0 returned 100%
 call    1 returned 100%
-       16:  174:        raft_node_set_match_idx(node, 0);
+       34:  174:        raft_node_set_match_idx(node, 0);
 call    0 returned 100%
-       16:  175:        raft_send_appendentries(me_, node);
+       34:  175:        raft_send_appendentries(me_, node);
 call    0 returned 100%
         -:  176:    }
-        8:  177:}
+       17:  177:}
         -:  178:
-function raft_become_candidate called 36 returned 100% blocks executed 96%
-       36:  179:int raft_become_candidate(raft_server_t* me_)
+function raft_become_candidate called 71 returned 100% blocks executed 96%
+       71:  179:int raft_become_candidate(raft_server_t* me_)
         -:  180:{
-       36:  181:    raft_server_private_t* me = (raft_server_private_t*)me_;
+       71:  181:    raft_server_private_t* me = (raft_server_private_t*)me_;
         -:  182:    int i;
         -:  183:
-       36:  184:    __log(me_, NULL, "becoming candidate");
+       71:  184:    __log(me_, NULL, "becoming candidate");
 call    0 returned 100%
         -:  185:
-       36:  186:    int e = raft_set_current_term(me_, raft_get_current_term(me_) + 1);
+       71:  186:    int e = raft_set_current_term(me_, raft_get_current_term(me_) + 1);
 call    0 returned 100%
 call    1 returned 100%
-       36:  187:    if (0 != e)
+       71:  187:    if (0 != e)
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####:  188:        return e;
-      144:  189:    for (i = 0; i < me->num_nodes; i++)
+      284:  189:    for (i = 0; i < me->num_nodes; i++)
 branch  0 taken 75%
 branch  1 taken 25% (fallthrough)
-      108:  190:        raft_node_vote_for_me(me->nodes[i], 0);
+      213:  190:        raft_node_vote_for_me(me->nodes[i], 0);
 call    0 returned 100%
-       36:  191:    raft_vote(me_, me->node);
+       71:  191:    raft_vote(me_, me->node);
 call    0 returned 100%
-       36:  192:    me->current_leader = NULL;
-       36:  193:    raft_set_state(me_, RAFT_STATE_CANDIDATE);
+       71:  192:    me->current_leader = NULL;
+       71:  193:    raft_set_state(me_, RAFT_STATE_CANDIDATE);
 call    0 returned 100%
         -:  194:
-       36:  195:    raft_randomize_election_timeout(me_);
+       71:  195:    raft_randomize_election_timeout(me_);
 call    0 returned 100%
-       36:  196:    me->timeout_elapsed = 0;
+       71:  196:    me->timeout_elapsed = 0;
         -:  197:
-      144:  198:    for (i = 0; i < me->num_nodes; i++)
+      284:  198:    for (i = 0; i < me->num_nodes; i++)
 branch  0 taken 75%
 branch  1 taken 25% (fallthrough)
         -:  199:    {
-      108:  200:        raft_node_t* node = me->nodes[i];
+      213:  200:        raft_node_t* node = me->nodes[i];
         -:  201:
-      180:  202:        if (me->node != node &&
+      355:  202:        if (me->node != node &&
 branch  0 taken 67% (fallthrough)
 branch  1 taken 33%
 branch  2 taken 100% (fallthrough)
 branch  3 taken 0%
-      144:  203:            raft_node_is_active(node) &&
+      284:  203:            raft_node_is_active(node) &&
 call    0 returned 100%
 branch  1 taken 100% (fallthrough)
 branch  2 taken 0%
-       72:  204:            raft_node_is_voting(node))
+      142:  204:            raft_node_is_voting(node))
 call    0 returned 100%
         -:  205:        {
-       72:  206:            raft_send_requestvote(me_, node);
+      142:  206:            raft_send_requestvote(me_, node);
 call    0 returned 100%
         -:  207:        }
         -:  208:    }
-       36:  209:    return 0;
+       71:  209:    return 0;
         -:  210:}
         -:  211:
-function raft_become_follower called 33 returned 100% blocks executed 100%
-       33:  212:void raft_become_follower(raft_server_t* me_)
+function raft_become_follower called 57 returned 100% blocks executed 100%
+       57:  212:void raft_become_follower(raft_server_t* me_)
         -:  213:{
-       33:  214:    raft_server_private_t* me = (raft_server_private_t*)me_;
+       57:  214:    raft_server_private_t* me = (raft_server_private_t*)me_;
         -:  215:
-       33:  216:    __log(me_, NULL, "becoming follower");
+       57:  216:    __log(me_, NULL, "becoming follower");
 call    0 returned 100%
-       33:  217:    raft_set_state(me_, RAFT_STATE_FOLLOWER);
+       57:  217:    raft_set_state(me_, RAFT_STATE_FOLLOWER);
 call    0 returned 100%
-       33:  218:    raft_randomize_election_timeout(me_);
+       57:  218:    raft_randomize_election_timeout(me_);
 call    0 returned 100%
-       33:  219:    me->timeout_elapsed = 0;
-       33:  220:}
+       57:  219:    me->timeout_elapsed = 0;
+       57:  220:}
         -:  221:
-function raft_periodic called 124 returned 100% blocks executed 61%
-      124:  222:int raft_periodic(raft_server_t* me_, int msec_since_last_period)
+function raft_periodic called 252 returned 100% blocks executed 74%
+      252:  222:int raft_periodic(raft_server_t* me_, int msec_since_last_period)
         -:  223:{
-      124:  224:    raft_server_private_t* me = (raft_server_private_t*)me_;
+      252:  224:    raft_server_private_t* me = (raft_server_private_t*)me_;
         -:  225:
-      124:  226:    me->timeout_elapsed += msec_since_last_period;
+      252:  226:    me->timeout_elapsed += msec_since_last_period;
         -:  227:
         -:  228:    /* Only one voting node means it's safe for us to become the leader */
-     124*:  229:    if (1 == raft_get_num_voting_nodes(me_) &&
+     252*:  229:    if (1 == raft_get_num_voting_nodes(me_) &&
 call    0 returned 100%
 branch  1 taken 0% (fallthrough)
 branch  2 taken 100%
@@ -330,70 +330,70 @@ call    0 never executed
     #####:  232:        raft_become_leader(me_);
 call    0 never executed
         -:  233:
-      124:  234:    if (me->state == RAFT_STATE_LEADER)
-branch  0 taken 15% (fallthrough)
-branch  1 taken 85%
+      252:  234:    if (me->state == RAFT_STATE_LEADER)
+branch  0 taken 19% (fallthrough)
+branch  1 taken 81%
         -:  235:    {
-       19:  236:        if (me->request_timeout <= me->timeout_elapsed)
+       48:  236:        if (me->request_timeout <= me->timeout_elapsed)
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
-       19:  237:            raft_send_appendentries_all(me_);
+       48:  237:            raft_send_appendentries_all(me_);
 call    0 returned 100%
         -:  238:    }
-      141:  239:    else if (me->election_timeout_rand <= me->timeout_elapsed &&
-branch  0 taken 34% (fallthrough)
-branch  1 taken 66%
+      275:  239:    else if (me->election_timeout_rand <= me->timeout_elapsed &&
+branch  0 taken 35% (fallthrough)
+branch  1 taken 65%
 branch  2 taken 100% (fallthrough)
 branch  3 taken 0%
         -:  240:        /* Don't become the leader when building snapshots or bad things will
         -:  241:         * happen when we get a client request */
-       36:  242:        !raft_snapshot_is_in_progress(me_))
+       71:  242:        !raft_snapshot_is_in_progress(me_))
 call    0 returned 100%
         -:  243:    {
-       72:  244:        if (1 < raft_get_num_voting_nodes(me_) &&
+      142:  244:        if (1 < raft_get_num_voting_nodes(me_) &&
 call    0 returned 100%
 branch  1 taken 100% (fallthrough)
 branch  2 taken 0%
 branch  3 taken 100% (fallthrough)
 branch  4 taken 0%
-       36:  245:            raft_node_is_voting(raft_get_my_node(me_)))
+       71:  245:            raft_node_is_voting(raft_get_my_node(me_)))
 call    0 returned 100%
 call    1 returned 100%
         -:  246:        {
-       36:  247:            int e = raft_election_start(me_);
+       71:  247:            int e = raft_election_start(me_);
 call    0 returned 100%
-       36:  248:            if (0 != e)
+       71:  248:            if (0 != e)
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####:  249:                return e;
         -:  250:        }
         -:  251:    }
         -:  252:
-     124*:  253:    if (me->last_applied_idx < raft_get_commit_idx(me_) &&
+      255:  253:    if (me->last_applied_idx < raft_get_commit_idx(me_) &&
 call    0 returned 100%
-branch  1 taken 0% (fallthrough)
-branch  2 taken 100%
-branch  3 never executed
-branch  4 never executed
-    #####:  254:            raft_is_apply_allowed(me_))
-call    0 never executed
+branch  1 taken 1% (fallthrough)
+branch  2 taken 99%
+branch  3 taken 100% (fallthrough)
+branch  4 taken 0%
+        3:  254:            raft_is_apply_allowed(me_))
+call    0 returned 100%
         -:  255:    {
-    #####:  256:        int e = raft_apply_all(me_);
-call    0 never executed
-    #####:  257:        if (0 != e)
-branch  0 never executed
-branch  1 never executed
+        3:  256:        int e = raft_apply_all(me_);
+call    0 returned 100%
+        3:  257:        if (0 != e)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
     #####:  258:            return e;
         -:  259:    }
         -:  260:
-      124:  261:    return 0;
+      252:  261:    return 0;
         -:  262:}
         -:  263:
-function raft_get_entry_from_idx called 17 returned 100% blocks executed 100%
-       17:  264:raft_entry_t* raft_get_entry_from_idx(raft_server_t* me_, raft_index_t etyidx)
+function raft_get_entry_from_idx called 89 returned 100% blocks executed 100%
+       89:  264:raft_entry_t* raft_get_entry_from_idx(raft_server_t* me_, raft_index_t etyidx)
         -:  265:{
-       17:  266:    raft_server_private_t* me = (raft_server_private_t*)me_;
-       17:  267:    return log_get_at_idx(me->log, etyidx);
+       89:  266:    raft_server_private_t* me = (raft_server_private_t*)me_;
+       89:  267:    return log_get_at_idx(me->log, etyidx);
 call    0 returned 100%
         -:  268:}
         -:  269:
@@ -403,40 +403,40 @@ function raft_voting_change_is_in_progress called 0 returned 0% blocks executed 
     #####:  272:    return ((raft_server_private_t*)me_)->voting_cfg_change_log_idx != -1;
         -:  273:}
         -:  274:
-function raft_recv_appendentries_response called 13 returned 100% blocks executed 62%
-       13:  275:int raft_recv_appendentries_response(raft_server_t* me_,
+function raft_recv_appendentries_response called 31 returned 100% blocks executed 62%
+       31:  275:int raft_recv_appendentries_response(raft_server_t* me_,
         -:  276:                                     raft_node_t* node,
         -:  277:                                     msg_appendentries_response_t* r)
         -:  278:{
-       13:  279:    raft_server_private_t* me = (raft_server_private_t*)me_;
+       31:  279:    raft_server_private_t* me = (raft_server_private_t*)me_;
         -:  280:
-       26:  281:    __log(me_, node,
+       62:  281:    __log(me_, node,
 call    0 returned 100%
 call    1 returned 100%
         -:  282:          "received appendentries response %s ci:%d rci:%d 1stidx:%d",
-       13:  283:          r->success == 1 ? "SUCCESS" : "fail",
-branch  0 taken 38% (fallthrough)
-branch  1 taken 62%
+       31:  283:          r->success == 1 ? "SUCCESS" : "fail",
+branch  0 taken 74% (fallthrough)
+branch  1 taken 26%
         -:  284:          raft_get_current_idx(me_),
         -:  285:          r->current_idx,
         -:  286:          r->first_idx);
         -:  287:
-       13:  288:    if (!node)
+       31:  288:    if (!node)
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####:  289:        return -1;
         -:  290:
-       13:  291:    if (!raft_is_leader(me_))
+       31:  291:    if (!raft_is_leader(me_))
 call    0 returned 100%
-branch  1 taken 38% (fallthrough)
-branch  2 taken 62%
+branch  1 taken 16% (fallthrough)
+branch  2 taken 84%
         5:  292:        return RAFT_ERR_NOT_LEADER;
         -:  293:
         -:  294:    /* If response contains term T > currentTerm: set currentTerm = T
         -:  295:       and convert to follower (§5.3) */
-        8:  296:    if (me->current_term < r->term)
-branch  0 taken 38% (fallthrough)
-branch  1 taken 62%
+       26:  296:    if (me->current_term < r->term)
+branch  0 taken 12% (fallthrough)
+branch  1 taken 88%
         -:  297:    {
         3:  298:        int e = raft_set_current_term(me_, r->term);
 call    0 returned 100%
@@ -449,15 +449,15 @@ call    0 returned 100%
         3:  302:        me->current_leader = NULL;
         3:  303:        return 0;
         -:  304:    }
-        5:  305:    else if (me->current_term != r->term)
+       23:  305:    else if (me->current_term != r->term)
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####:  306:        return 0;
         -:  307:
-        5:  308:    raft_index_t match_idx = raft_node_get_match_idx(node);
+       23:  308:    raft_index_t match_idx = raft_node_get_match_idx(node);
 call    0 returned 100%
         -:  309:
-        5:  310:    if (0 == r->success)
+       23:  310:    if (0 == r->success)
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
         -:  311:    {
@@ -494,7 +494,7 @@ call    0 never executed
         -:  327:    }
         -:  328:
         -:  329:
-       5*:  330:    if (!raft_node_is_voting(node) &&
+      23*:  330:    if (!raft_node_is_voting(node) &&
 call    0 returned 100%
 branch  1 taken 0% (fallthrough)
 branch  2 taken 100%
@@ -528,101 +528,101 @@ branch  1 never executed
 call    0 never executed
         -:  341:    }
         -:  342:
-        5:  343:    if (r->current_idx <= match_idx)
-branch  0 taken 80% (fallthrough)
-branch  1 taken 20%
-        4:  344:        return 0;
+       23:  343:    if (r->current_idx <= match_idx)
+branch  0 taken 65% (fallthrough)
+branch  1 taken 35%
+       15:  344:        return 0;
         -:  345:
-       1*:  346:    assert(r->current_idx <= raft_get_current_idx(me_));
+       8*:  346:    assert(r->current_idx <= raft_get_current_idx(me_));
 call    0 returned 100%
 branch  1 taken 0% (fallthrough)
 branch  2 taken 100%
 call    3 never executed
         -:  347:
-        1:  348:    raft_node_set_next_idx(node, r->current_idx + 1);
+        8:  348:    raft_node_set_next_idx(node, r->current_idx + 1);
 call    0 returned 100%
-        1:  349:    raft_node_set_match_idx(node, r->current_idx);
+        8:  349:    raft_node_set_match_idx(node, r->current_idx);
 call    0 returned 100%
         -:  350:
         -:  351:    /* Update commit idx */
-        1:  352:    raft_index_t point = r->current_idx;
-        1:  353:    if (point)
+        8:  352:    raft_index_t point = r->current_idx;
+        8:  353:    if (point)
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
         -:  354:    {
-        1:  355:        raft_entry_t* ety = raft_get_entry_from_idx(me_, point);
+        8:  355:        raft_entry_t* ety = raft_get_entry_from_idx(me_, point);
 call    0 returned 100%
-        1:  356:        if (raft_get_commit_idx(me_) < point && ety->term == me->current_term)
+        8:  356:        if (raft_get_commit_idx(me_) < point && ety->term == me->current_term)
 call    0 returned 100%
 branch  1 taken 100% (fallthrough)
 branch  2 taken 0%
 branch  3 taken 100% (fallthrough)
 branch  4 taken 0%
         -:  357:        {
-        1:  358:            int i, votes = 1;
-        4:  359:            for (i = 0; i < me->num_nodes; i++)
+        8:  358:            int i, votes = 1;
+       32:  359:            for (i = 0; i < me->num_nodes; i++)
 branch  0 taken 75%
 branch  1 taken 25% (fallthrough)
         -:  360:            {
-        3:  361:                raft_node_t* node = me->nodes[i];
-        5:  362:                if (me->node != node &&
+       24:  361:                raft_node_t* node = me->nodes[i];
+       40:  362:                if (me->node != node &&
 branch  0 taken 67% (fallthrough)
 branch  1 taken 33%
 branch  2 taken 100% (fallthrough)
 branch  3 taken 0%
-        4:  363:                    raft_node_is_active(node) &&
+       32:  363:                    raft_node_is_active(node) &&
 call    0 returned 100%
 branch  1 taken 100% (fallthrough)
 branch  2 taken 0%
-        4:  364:                    raft_node_is_voting(node) &&
+       32:  364:                    raft_node_is_voting(node) &&
 call    0 returned 100%
 branch  1 taken 50% (fallthrough)
 branch  2 taken 50%
-        2:  365:                    point <= raft_node_get_match_idx(node))
+       16:  365:                    point <= raft_node_get_match_idx(node))
 call    0 returned 100%
         -:  366:                {
-        1:  367:                    votes++;
+        8:  367:                    votes++;
         -:  368:                }
         -:  369:            }
         -:  370:
-        1:  371:            if (raft_get_num_voting_nodes(me_) / 2 < votes)
+        8:  371:            if (raft_get_num_voting_nodes(me_) / 2 < votes)
 call    0 returned 100%
 branch  1 taken 100% (fallthrough)
 branch  2 taken 0%
-        1:  372:                raft_set_commit_idx(me_, point);
+        8:  372:                raft_set_commit_idx(me_, point);
 call    0 returned 100%
         -:  373:        }
         -:  374:    }
         -:  375:
         -:  376:    /* Aggressively send remaining entries */
-        1:  377:    if (raft_get_entry_from_idx(me_, raft_node_get_next_idx(node)))
+        8:  377:    if (raft_get_entry_from_idx(me_, raft_node_get_next_idx(node)))
 call    0 returned 100%
 call    1 returned 100%
-branch  2 taken 100% (fallthrough)
-branch  3 taken 0%
-        1:  378:        raft_send_appendentries(me_, node);
+branch  2 taken 75% (fallthrough)
+branch  3 taken 25%
+        6:  378:        raft_send_appendentries(me_, node);
 call    0 returned 100%
         -:  379:
         -:  380:    /* periodic applies committed entries lazily */
         -:  381:
-        1:  382:    return 0;
+        8:  382:    return 0;
         -:  383:}
         -:  384:
-function raft_recv_appendentries called 34 returned 100% blocks executed 49%
-       34:  385:int raft_recv_appendentries(
+function raft_recv_appendentries called 77 returned 100% blocks executed 62%
+       77:  385:int raft_recv_appendentries(
         -:  386:    raft_server_t* me_,
         -:  387:    raft_node_t* node,
         -:  388:    msg_appendentries_t* ae,
         -:  389:    msg_appendentries_response_t *r
         -:  390:    )
         -:  391:{
-       34:  392:    raft_server_private_t* me = (raft_server_private_t*)me_;
-       34:  393:    int e = 0;
+       77:  392:    raft_server_private_t* me = (raft_server_private_t*)me_;
+       77:  393:    int e = 0;
         -:  394:
-       34:  395:    if (0 < ae->n_entries)
-branch  0 taken 41% (fallthrough)
-branch  1 taken 59%
-       14:  396:        __log(me_, node, "recvd appendentries t:%d ci:%d lc:%d pli:%d plt:%d #%d",
+       77:  395:    if (0 < ae->n_entries)
+branch  0 taken 48% (fallthrough)
+branch  1 taken 52%
+       37:  396:        __log(me_, node, "recvd appendentries t:%d ci:%d lc:%d pli:%d plt:%d #%d",
 call    0 returned 100%
 call    1 returned 100%
         -:  397:              ae->term,
@@ -632,21 +632,21 @@ call    1 returned 100%
         -:  401:              ae->prev_log_term,
         -:  402:              ae->n_entries);
         -:  403:
-       34:  404:    r->success = 0;
+       77:  404:    r->success = 0;
         -:  405:
-       34:  406:    if (raft_is_candidate(me_) && me->current_term == ae->term)
+       77:  406:    if (raft_is_candidate(me_) && me->current_term == ae->term)
 call    0 returned 100%
-branch  1 taken 44% (fallthrough)
-branch  2 taken 56%
-branch  3 taken 0% (fallthrough)
-branch  4 taken 100%
+branch  1 taken 23% (fallthrough)
+branch  2 taken 77%
+branch  3 taken 17% (fallthrough)
+branch  4 taken 83%
         -:  407:    {
-    #####:  408:        raft_become_follower(me_);
-call    0 never executed
+        3:  408:        raft_become_follower(me_);
+call    0 returned 100%
         -:  409:    }
-       34:  410:    else if (me->current_term < ae->term)
-branch  0 taken 3% (fallthrough)
-branch  1 taken 97%
+       74:  410:    else if (me->current_term < ae->term)
+branch  0 taken 1% (fallthrough)
+branch  1 taken 99%
         -:  411:    {
         1:  412:        e = raft_set_current_term(me_, ae->term);
 call    0 returned 100%
@@ -657,35 +657,35 @@ branch  1 taken 100%
         1:  415:        raft_become_follower(me_);
 call    0 returned 100%
         -:  416:    }
-       33:  417:    else if (ae->term < me->current_term)
-branch  0 taken 52% (fallthrough)
-branch  1 taken 48%
+       73:  417:    else if (ae->term < me->current_term)
+branch  0 taken 27% (fallthrough)
+branch  1 taken 73%
         -:  418:    {
         -:  419:        /* 1. Reply false if term < currentTerm (§5.1) */
-       17:  420:        __log(me_, node, "AE term %d is less than current term %d",
+       20:  420:        __log(me_, node, "AE term %d is less than current term %d",
 call    0 returned 100%
         -:  421:              ae->term, me->current_term);
-       17:  422:        goto out;
+       20:  422:        goto out;
         -:  423:    }
         -:  424:
         -:  425:    /* update current leader because ae->term is up to date */
-       17:  426:    me->current_leader = node;
+       57:  426:    me->current_leader = node;
         -:  427:
-       17:  428:    me->timeout_elapsed = 0;
+       57:  428:    me->timeout_elapsed = 0;
         -:  429:
         -:  430:    /* Not the first appendentries we've received */
         -:  431:    /* NOTE: the log starts at 1 */
-       17:  432:    if (0 < ae->prev_log_idx)
-branch  0 taken 0% (fallthrough)
-branch  1 taken 100%
+       57:  432:    if (0 < ae->prev_log_idx)
+branch  0 taken 9% (fallthrough)
+branch  1 taken 91%
         -:  433:    {
-    #####:  434:        raft_entry_t* ety = raft_get_entry_from_idx(me_, ae->prev_log_idx);
-call    0 never executed
+        5:  434:        raft_entry_t* ety = raft_get_entry_from_idx(me_, ae->prev_log_idx);
+call    0 returned 100%
         -:  435:
         -:  436:        /* Is a snapshot */
-    #####:  437:        if (ae->prev_log_idx == me->snapshot_last_idx)
-branch  0 never executed
-branch  1 never executed
+        5:  437:        if (ae->prev_log_idx == me->snapshot_last_idx)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
         -:  438:        {
     #####:  439:            if (me->snapshot_last_term != ae->prev_log_term)
 branch  0 never executed
@@ -700,17 +700,17 @@ call    0 never executed
         -:  446:        }
         -:  447:        /* 2. Reply false if log doesn't contain an entry at prevLogIndex
         -:  448:           whose term matches prevLogTerm (§5.3) */
-    #####:  449:        else if (!ety)
-branch  0 never executed
-branch  1 never executed
+        5:  449:        else if (!ety)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
         -:  450:        {
     #####:  451:            __log(me_, node, "AE no log at prev_idx %d", ae->prev_log_idx);
 call    0 never executed
     #####:  452:            goto out;
         -:  453:        }
-    #####:  454:        else if (ety->term != ae->prev_log_term)
-branch  0 never executed
-branch  1 never executed
+        5:  454:        else if (ety->term != ae->prev_log_term)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
         -:  455:        {
     #####:  456:            __log(me_, node, "AE term doesn't match prev_term (ie. %d vs %d) ci:%d comi:%d lcomi:%d pli:%d",
 call    0 never executed
@@ -736,24 +736,24 @@ call    0 never executed
         -:  469:        }
         -:  470:    }
         -:  471:
-       17:  472:    r->success = 1;
-       17:  473:    r->current_idx = ae->prev_log_idx;
+       57:  472:    r->success = 1;
+       57:  473:    r->current_idx = ae->prev_log_idx;
         -:  474:
         -:  475:    /* 3. If an existing entry conflicts with a new one (same index
         -:  476:       but different terms), delete the existing entry and all that
         -:  477:       follow it (§5.3) */
         -:  478:    int i;
-       19:  479:    for (i = 0; i < ae->n_entries; i++)
-branch  0 taken 53%
-branch  1 taken 47% (fallthrough)
+       71:  479:    for (i = 0; i < ae->n_entries; i++)
+branch  0 taken 54%
+branch  1 taken 46% (fallthrough)
         -:  480:    {
-       10:  481:        raft_entry_t* ety = &ae->entries[i];
-       10:  482:        raft_index_t ety_index = ae->prev_log_idx + 1 + i;
-       10:  483:        raft_entry_t* existing_ety = raft_get_entry_from_idx(me_, ety_index);
+       38:  481:        raft_entry_t* ety = &ae->entries[i];
+       38:  482:        raft_index_t ety_index = ae->prev_log_idx + 1 + i;
+       38:  483:        raft_entry_t* existing_ety = raft_get_entry_from_idx(me_, ety_index);
 call    0 returned 100%
-       10:  484:        if (existing_ety && existing_ety->term != ety->term)
-branch  0 taken 20% (fallthrough)
-branch  1 taken 80%
+       38:  484:        if (existing_ety && existing_ety->term != ety->term)
+branch  0 taken 37% (fallthrough)
+branch  1 taken 63%
 branch  2 taken 0% (fallthrough)
 branch  3 taken 100%
         -:  485:        {
@@ -780,103 +780,103 @@ branch  1 never executed
     #####:  497:                goto out;
     #####:  498:            break;
         -:  499:        }
-       10:  500:        else if (!existing_ety)
-branch  0 taken 80% (fallthrough)
-branch  1 taken 20%
-        8:  501:            break;
-        2:  502:        r->current_idx = ety_index;
+       38:  500:        else if (!existing_ety)
+branch  0 taken 63% (fallthrough)
+branch  1 taken 37%
+       24:  501:            break;
+       14:  502:        r->current_idx = ety_index;
         -:  503:    }
         -:  504:
         -:  505:    /* Pick up remainder in case of mismatch or missing entry */
-       26:  506:    for (; i < ae->n_entries; i++)
-branch  0 taken 35%
-branch  1 taken 65% (fallthrough)
+       86:  506:    for (; i < ae->n_entries; i++)
+branch  0 taken 34%
+branch  1 taken 66% (fallthrough)
         -:  507:    {
-        9:  508:        e = raft_append_entry(me_, &ae->entries[i]);
+       29:  508:        e = raft_append_entry(me_, &ae->entries[i]);
 call    0 returned 100%
-        9:  509:        if (0 != e)
+       29:  509:        if (0 != e)
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####:  510:            goto out;
-        9:  511:        r->current_idx = ae->prev_log_idx + 1 + i;
+       29:  511:        r->current_idx = ae->prev_log_idx + 1 + i;
         -:  512:    }
         -:  513:
         -:  514:    /* 4. If leaderCommit > commitIndex, set commitIndex =
         -:  515:        min(leaderCommit, index of most recent entry) */
-       17:  516:    if (raft_get_commit_idx(me_) < ae->leader_commit)
+       57:  516:    if (raft_get_commit_idx(me_) < ae->leader_commit)
+call    0 returned 100%
+branch  1 taken 95% (fallthrough)
+branch  2 taken 5%
+        -:  517:    {
+       3*:  518:        raft_index_t last_log_idx = max(raft_get_current_idx(me_), 1);
 call    0 returned 100%
 branch  1 taken 100% (fallthrough)
 branch  2 taken 0%
-        -:  517:    {
-    #####:  518:        raft_index_t last_log_idx = max(raft_get_current_idx(me_), 1);
-call    0 never executed
-branch  1 never executed
-branch  2 never executed
-call    3 never executed
-    #####:  519:        raft_set_commit_idx(me_, min(last_log_idx, ae->leader_commit));
-call    0 never executed
+call    3 returned 100%
+        3:  519:        raft_set_commit_idx(me_, min(last_log_idx, ae->leader_commit));
+call    0 returned 100%
         -:  520:    }
         -:  521:
-       17:  522:out:
-       34:  523:    r->term = me->current_term;
-       34:  524:    if (0 == r->success)
-branch  0 taken 50% (fallthrough)
-branch  1 taken 50%
-       17:  525:        r->current_idx = raft_get_current_idx(me_);
+       54:  522:out:
+       77:  523:    r->term = me->current_term;
+       77:  524:    if (0 == r->success)
+branch  0 taken 26% (fallthrough)
+branch  1 taken 74%
+       20:  525:        r->current_idx = raft_get_current_idx(me_);
 call    0 returned 100%
-       34:  526:    r->first_idx = ae->prev_log_idx + 1;
-       34:  527:    return e;
+       77:  526:    r->first_idx = ae->prev_log_idx + 1;
+       77:  527:    return e;
         -:  528:}
         -:  529:
-function raft_already_voted called 42 returned 100% blocks executed 100%
-       42:  530:int raft_already_voted(raft_server_t* me_)
+function raft_already_voted called 81 returned 100% blocks executed 100%
+       81:  530:int raft_already_voted(raft_server_t* me_)
         -:  531:{
-       42:  532:    return ((raft_server_private_t*)me_)->voted_for != -1;
+       81:  532:    return ((raft_server_private_t*)me_)->voted_for != -1;
         -:  533:}
         -:  534:
-function __should_grant_vote called 53 returned 100% blocks executed 70%
-       53:  535:static int __should_grant_vote(raft_server_private_t* me, msg_requestvote_t* vr)
+function __should_grant_vote called 105 returned 100% blocks executed 78%
+      105:  535:static int __should_grant_vote(raft_server_private_t* me, msg_requestvote_t* vr)
         -:  536:{
-       53:  537:    if (!raft_node_is_voting(raft_get_my_node((void*)me)))
+      105:  537:    if (!raft_node_is_voting(raft_get_my_node((void*)me)))
 call    0 returned 100%
 call    1 returned 100%
 branch  2 taken 0% (fallthrough)
 branch  3 taken 100%
     #####:  538:        return 0;
         -:  539:
-       53:  540:    if (vr->term < raft_get_current_term((void*)me))
+      105:  540:    if (vr->term < raft_get_current_term((void*)me))
 call    0 returned 100%
-branch  1 taken 21% (fallthrough)
-branch  2 taken 79%
-       11:  541:        return 0;
+branch  1 taken 23% (fallthrough)
+branch  2 taken 77%
+       24:  541:        return 0;
         -:  542:
         -:  543:    /* TODO: if voted for is candidate return 1 (if below checks pass) */
-       42:  544:    if (raft_already_voted((void*)me))
+       81:  544:    if (raft_already_voted((void*)me))
 call    0 returned 100%
-branch  1 taken 29% (fallthrough)
-branch  2 taken 71%
-       12:  545:        return 0;
+branch  1 taken 40% (fallthrough)
+branch  2 taken 60%
+       32:  545:        return 0;
         -:  546:
         -:  547:    /* Below we check if log is more up-to-date... */
         -:  548:
-       30:  549:    raft_index_t current_idx = raft_get_current_idx((void*)me);
+       49:  549:    raft_index_t current_idx = raft_get_current_idx((void*)me);
 call    0 returned 100%
         -:  550:
         -:  551:    /* Our log is definitely not more up-to-date if it's empty! */
-       30:  552:    if (0 == current_idx)
-branch  0 taken 97% (fallthrough)
-branch  1 taken 3%
-       29:  553:        return 1;
+       49:  552:    if (0 == current_idx)
+branch  0 taken 96% (fallthrough)
+branch  1 taken 4%
+       47:  553:        return 1;
         -:  554:
-        1:  555:    raft_entry_t* ety = raft_get_entry_from_idx((void*)me, current_idx);
+        2:  555:    raft_entry_t* ety = raft_get_entry_from_idx((void*)me, current_idx);
 call    0 returned 100%
         -:  556:    int ety_term;
         -:  557:
         -:  558:    // TODO: add test
-        1:  559:    if (ety)
+        2:  559:    if (ety)
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
-        1:  560:        ety_term = ety->term;
+        2:  560:        ety_term = ety->term;
     #####:  561:    else if (!ety && me->snapshot_last_idx == current_idx)
 branch  0 never executed
 branch  1 never executed
@@ -886,75 +886,75 @@ branch  3 never executed
         -:  563:    else
     #####:  564:        return 0;
         -:  565:
-        1:  566:    if (ety_term < vr->last_log_term)
+        2:  566:    if (ety_term < vr->last_log_term)
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####:  567:        return 1;
         -:  568:
-       1*:  569:    if (vr->last_log_term == ety_term && current_idx <= vr->last_log_idx)
-branch  0 taken 0% (fallthrough)
-branch  1 taken 100%
-branch  2 never executed
-branch  3 never executed
-    #####:  570:        return 1;
+        2:  569:    if (vr->last_log_term == ety_term && current_idx <= vr->last_log_idx)
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0%
+        1:  570:        return 1;
         -:  571:
         1:  572:    return 0;
         -:  573:}
         -:  574:
-function raft_recv_requestvote called 58 returned 100% blocks executed 84%
-       58:  575:int raft_recv_requestvote(raft_server_t* me_,
+function raft_recv_requestvote called 111 returned 100% blocks executed 84%
+      111:  575:int raft_recv_requestvote(raft_server_t* me_,
         -:  576:                          raft_node_t* node,
         -:  577:                          msg_requestvote_t* vr,
         -:  578:                          msg_requestvote_response_t *r)
         -:  579:{
-       58:  580:    raft_server_private_t* me = (raft_server_private_t*)me_;
-       58:  581:    int e = 0;
+      111:  580:    raft_server_private_t* me = (raft_server_private_t*)me_;
+      111:  581:    int e = 0;
         -:  582:
-       58:  583:    if (!node)
+      111:  583:    if (!node)
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####:  584:        node = raft_get_node(me_, vr->candidate_id);
 call    0 never executed
         -:  585:
         -:  586:    /* Reject request if we have a leader */
-       58:  587:    if (me->current_leader && me->current_leader != node &&
-branch  0 taken 9% (fallthrough)
-branch  1 taken 91%
+      111:  587:    if (me->current_leader && me->current_leader != node &&
+branch  0 taken 7% (fallthrough)
+branch  1 taken 93%
 branch  2 taken 100% (fallthrough)
 branch  3 taken 0%
-        5:  588:            (me->timeout_elapsed < me->election_timeout)) {
-branch  0 taken 100% (fallthrough)
-branch  1 taken 0%
-        5:  589:        r->vote_granted = 0;
-        5:  590:        goto done;
+        8:  588:            (me->timeout_elapsed < me->election_timeout)) {
+branch  0 taken 75% (fallthrough)
+branch  1 taken 25%
+        6:  589:        r->vote_granted = 0;
+        6:  590:        goto done;
         -:  591:    }
         -:  592:
-       53:  593:    if (raft_get_current_term(me_) < vr->term)
+      105:  593:    if (raft_get_current_term(me_) < vr->term)
 call    0 returned 100%
-branch  1 taken 55% (fallthrough)
-branch  2 taken 45%
+branch  1 taken 46% (fallthrough)
+branch  2 taken 54%
         -:  594:    {
-       29:  595:        e = raft_set_current_term(me_, vr->term);
+       48:  595:        e = raft_set_current_term(me_, vr->term);
 call    0 returned 100%
-       29:  596:        if (0 != e) {
+       48:  596:        if (0 != e) {
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####:  597:            r->vote_granted = 0;
     #####:  598:            goto done;
         -:  599:        }
-       29:  600:        raft_become_follower(me_);
+       48:  600:        raft_become_follower(me_);
 call    0 returned 100%
-       29:  601:        me->current_leader = NULL;
+       48:  601:        me->current_leader = NULL;
         -:  602:    }
         -:  603:
-       53:  604:    if (__should_grant_vote(me, vr))
+      105:  604:    if (__should_grant_vote(me, vr))
 call    0 returned 100%
-branch  1 taken 55% (fallthrough)
-branch  2 taken 45%
+branch  1 taken 46% (fallthrough)
+branch  2 taken 54%
         -:  605:    {
         -:  606:        /* It shouldn't be possible for a leader or candidate to grant a vote
         -:  607:         * Both states would have voted for themselves */
-      29*:  608:        assert(!(raft_is_leader(me_) || raft_is_candidate(me_)));
+      48*:  608:        assert(!(raft_is_leader(me_) || raft_is_candidate(me_)));
 call    0 returned 100%
 branch  1 taken 100% (fallthrough)
 branch  2 taken 0%
@@ -963,19 +963,19 @@ branch  4 taken 0% (fallthrough)
 branch  5 taken 100%
 call    6 never executed
         -:  609:
-       29:  610:        e = raft_vote_for_nodeid(me_, vr->candidate_id);
+       48:  610:        e = raft_vote_for_nodeid(me_, vr->candidate_id);
 call    0 returned 100%
-       29:  611:        if (0 == e)
+       48:  611:        if (0 == e)
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
-       29:  612:            r->vote_granted = 1;
+       48:  612:            r->vote_granted = 1;
         -:  613:        else
     #####:  614:            r->vote_granted = 0;
         -:  615:
         -:  616:        /* must be in an election. */
-       29:  617:        me->current_leader = NULL;
+       48:  617:        me->current_leader = NULL;
         -:  618:
-       29:  619:        me->timeout_elapsed = 0;
+       48:  619:        me->timeout_elapsed = 0;
         -:  620:    }
         -:  621:    else
         -:  622:    {
@@ -984,7 +984,7 @@ branch  1 taken 0%
         -:  625:         * the node is partitioned and still thinks its part of the cluster. It
         -:  626:         * will eventually send a requestvote. This is error response tells the
         -:  627:         * node that it might be removed. */
-       24:  628:        if (!node)
+       57:  628:        if (!node)
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
         -:  629:        {
@@ -992,122 +992,122 @@ branch  1 taken 100%
     #####:  631:            goto done;
         -:  632:        }
         -:  633:        else
-       24:  634:            r->vote_granted = 0;
+       57:  634:            r->vote_granted = 0;
         -:  635:    }
         -:  636:
-       58:  637:done:
-       58:  638:    __log(me_, node, "node requested vote: %d replying: %s",
+      111:  637:done:
+      111:  638:    __log(me_, node, "node requested vote: %d replying: %s",
 call    0 returned 100%
         -:  639:          node,
-       58:  640:          r->vote_granted == 1 ? "granted" :
-branch  0 taken 50% (fallthrough)
-branch  1 taken 50%
-      29*:  641:          r->vote_granted == 0 ? "not granted" : "unknown");
+      111:  640:          r->vote_granted == 1 ? "granted" :
+branch  0 taken 57% (fallthrough)
+branch  1 taken 43%
+      63*:  641:          r->vote_granted == 0 ? "not granted" : "unknown");
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
         -:  642:
-       58:  643:    r->term = raft_get_current_term(me_);
+      111:  643:    r->term = raft_get_current_term(me_);
 call    0 returned 100%
-       58:  644:    return e;
+      111:  644:    return e;
         -:  645:}
         -:  646:
-function raft_votes_is_majority called 8 returned 100% blocks executed 75%
-        8:  647:int raft_votes_is_majority(const int num_nodes, const int nvotes)
+function raft_votes_is_majority called 17 returned 100% blocks executed 75%
+       17:  647:int raft_votes_is_majority(const int num_nodes, const int nvotes)
         -:  648:{
-        8:  649:    if (num_nodes < nvotes)
+       17:  649:    if (num_nodes < nvotes)
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####:  650:        return 0;
-        8:  651:    int half = num_nodes / 2;
-        8:  652:    return half + 1 <= nvotes;
+       17:  651:    int half = num_nodes / 2;
+       17:  652:    return half + 1 <= nvotes;
         -:  653:}
         -:  654:
-function raft_recv_requestvote_response called 34 returned 100% blocks executed 67%
-       34:  655:int raft_recv_requestvote_response(raft_server_t* me_,
+function raft_recv_requestvote_response called 62 returned 100% blocks executed 76%
+       62:  655:int raft_recv_requestvote_response(raft_server_t* me_,
         -:  656:                                   raft_node_t* node,
         -:  657:                                   msg_requestvote_response_t* r)
         -:  658:{
-       34:  659:    raft_server_private_t* me = (raft_server_private_t*)me_;
+       62:  659:    raft_server_private_t* me = (raft_server_private_t*)me_;
         -:  660:
-       34:  661:    __log(me_, node, "node responded to requestvote status: %s",
+       62:  661:    __log(me_, node, "node responded to requestvote status: %s",
 call    0 returned 100%
-       34:  662:          r->vote_granted == 1 ? "granted" :
-branch  0 taken 50% (fallthrough)
-branch  1 taken 50%
-      17*:  663:          r->vote_granted == 0 ? "not granted" : "unknown");
+       62:  662:          r->vote_granted == 1 ? "granted" :
+branch  0 taken 55% (fallthrough)
+branch  1 taken 45%
+      34*:  663:          r->vote_granted == 0 ? "not granted" : "unknown");
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
         -:  664:
-       34:  665:    if (!raft_is_candidate(me_))
+       62:  665:    if (!raft_is_candidate(me_))
 call    0 returned 100%
 branch  1 taken 0% (fallthrough)
 branch  2 taken 100%
         -:  666:    {
     #####:  667:        return 0;
         -:  668:    }
-       34:  669:    else if (raft_get_current_term(me_) < r->term)
+       62:  669:    else if (raft_get_current_term(me_) < r->term)
 call    0 returned 100%
-branch  1 taken 0% (fallthrough)
-branch  2 taken 100%
+branch  1 taken 3% (fallthrough)
+branch  2 taken 97%
         -:  670:    {
-    #####:  671:        int e = raft_set_current_term(me_, r->term);
-call    0 never executed
-    #####:  672:        if (0 != e)
-branch  0 never executed
-branch  1 never executed
-    #####:  673:            return e;
-    #####:  674:        raft_become_follower(me_);
-call    0 never executed
-    #####:  675:        me->current_leader = NULL;
-    #####:  676:        return 0;
-        -:  677:    }
-       34:  678:    else if (raft_get_current_term(me_) != r->term)
+        2:  671:        int e = raft_set_current_term(me_, r->term);
 call    0 returned 100%
-branch  1 taken 47% (fallthrough)
-branch  2 taken 53%
+        2:  672:        if (0 != e)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  673:            return e;
+        2:  674:        raft_become_follower(me_);
+call    0 returned 100%
+        2:  675:        me->current_leader = NULL;
+        2:  676:        return 0;
+        -:  677:    }
+       60:  678:    else if (raft_get_current_term(me_) != r->term)
+call    0 returned 100%
+branch  1 taken 48% (fallthrough)
+branch  2 taken 52%
         -:  679:    {
         -:  680:        /* The node who voted for us would have obtained our term.
         -:  681:         * Therefore this is an old message we should ignore.
         -:  682:         * This happens if the network is pretty choppy. */
-       16:  683:        return 0;
+       29:  683:        return 0;
         -:  684:    }
         -:  685:
-       18:  686:    __log(me_, node, "node responded to requestvote status:%s ct:%d rt:%d",
+       31:  686:    __log(me_, node, "node responded to requestvote status:%s ct:%d rt:%d",
 call    0 returned 100%
-       18:  687:          r->vote_granted == 1 ? "granted" :
-branch  0 taken 56% (fallthrough)
-branch  1 taken 44%
-      10*:  688:          r->vote_granted == 0 ? "not granted" : "unknown",
+       31:  687:          r->vote_granted == 1 ? "granted" :
+branch  0 taken 45% (fallthrough)
+branch  1 taken 55%
+      14*:  688:          r->vote_granted == 0 ? "not granted" : "unknown",
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
         -:  689:          me->current_term,
         -:  690:          r->term);
         -:  691:
-       18:  692:    switch (r->vote_granted)
-branch  0 taken 44%
-branch  1 taken 56%
+       31:  692:    switch (r->vote_granted)
+branch  0 taken 55%
+branch  1 taken 45%
 branch  2 taken 0%
 branch  3 taken 0%
         -:  693:    {
-        8:  694:        case RAFT_REQUESTVOTE_ERR_GRANTED:
-        8:  695:            if (node)
+       17:  694:        case RAFT_REQUESTVOTE_ERR_GRANTED:
+       17:  695:            if (node)
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
-        8:  696:                raft_node_vote_for_me(node, 1);
+       17:  696:                raft_node_vote_for_me(node, 1);
 call    0 returned 100%
-        8:  697:            int votes = raft_get_nvotes_for_me(me_);
+       17:  697:            int votes = raft_get_nvotes_for_me(me_);
 call    0 returned 100%
-        8:  698:            if (raft_votes_is_majority(raft_get_num_voting_nodes(me_), votes))
+       17:  698:            if (raft_votes_is_majority(raft_get_num_voting_nodes(me_), votes))
 call    0 returned 100%
 call    1 returned 100%
 branch  2 taken 100% (fallthrough)
 branch  3 taken 0%
-        8:  699:                raft_become_leader(me_);
+       17:  699:                raft_become_leader(me_);
 call    0 returned 100%
-        8:  700:            break;
+       17:  700:            break;
         -:  701:
-       10:  702:        case RAFT_REQUESTVOTE_ERR_NOT_GRANTED:
-       10:  703:            break;
+       14:  702:        case RAFT_REQUESTVOTE_ERR_NOT_GRANTED:
+       14:  703:            break;
         -:  704:
     #####:  705:        case RAFT_REQUESTVOTE_ERR_UNKNOWN_NODE:
     #####:  706:            if (raft_node_is_voting(raft_get_my_node(me_)) &&
@@ -1126,18 +1126,18 @@ branch  1 never executed
 call    0 never executed
         -:  713:    }
         -:  714:
-       18:  715:    return 0;
+       31:  715:    return 0;
         -:  716:}
         -:  717:
-function raft_recv_entry called 20 returned 100% blocks executed 71%
-       20:  718:int raft_recv_entry(raft_server_t* me_,
+function raft_recv_entry called 45 returned 100% blocks executed 71%
+       45:  718:int raft_recv_entry(raft_server_t* me_,
         -:  719:                    msg_entry_t* ety,
         -:  720:                    msg_entry_response_t *r)
         -:  721:{
-       20:  722:    raft_server_private_t* me = (raft_server_private_t*)me_;
+       45:  722:    raft_server_private_t* me = (raft_server_private_t*)me_;
         -:  723:    int i;
         -:  724:
-       20:  725:    if (raft_entry_is_voting_cfg_change(ety))
+       45:  725:    if (raft_entry_is_voting_cfg_change(ety))
 call    0 returned 100%
 branch  1 taken 0% (fallthrough)
 branch  2 taken 100%
@@ -1158,62 +1158,62 @@ branch  2 never executed
     #####:  734:            return RAFT_ERR_SNAPSHOT_IN_PROGRESS;
         -:  735:    }
         -:  736:
-       20:  737:    if (!raft_is_leader(me_))
+       45:  737:    if (!raft_is_leader(me_))
 call    0 returned 100%
 branch  1 taken 0% (fallthrough)
 branch  2 taken 100%
     #####:  738:        return RAFT_ERR_NOT_LEADER;
         -:  739:
-       20:  740:    __log(me_, NULL, "received entry t:%d id: %d idx: %d",
+       45:  740:    __log(me_, NULL, "received entry t:%d id: %d idx: %d",
 call    0 returned 100%
-       20:  741:          me->current_term, ety->id, raft_get_current_idx(me_) + 1);
+       45:  741:          me->current_term, ety->id, raft_get_current_idx(me_) + 1);
 call    0 returned 100%
         -:  742:
-       20:  743:    ety->term = me->current_term;
-       20:  744:    int e = raft_append_entry(me_, ety);
+       45:  743:    ety->term = me->current_term;
+       45:  744:    int e = raft_append_entry(me_, ety);
 call    0 returned 100%
-       20:  745:    if (0 != e)
+       45:  745:    if (0 != e)
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####:  746:        return e;
         -:  747:
-       80:  748:    for (i = 0; i < me->num_nodes; i++)
+      180:  748:    for (i = 0; i < me->num_nodes; i++)
 branch  0 taken 75%
 branch  1 taken 25% (fallthrough)
         -:  749:    {
-       60:  750:        raft_node_t* node = me->nodes[i];
+      135:  750:        raft_node_t* node = me->nodes[i];
         -:  751:
-       60:  752:        if (me->node == node ||
+      135:  752:        if (me->node == node ||
 branch  0 taken 67% (fallthrough)
 branch  1 taken 33%
 branch  2 taken 100% (fallthrough)
 branch  3 taken 0%
-       40:  753:            !node ||
+       90:  753:            !node ||
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
-       80:  754:            !raft_node_is_active(node) ||
+      180:  754:            !raft_node_is_active(node) ||
 call    0 returned 100%
 branch  1 taken 0% (fallthrough)
 branch  2 taken 100%
-       40:  755:            !raft_node_is_voting(node))
+       90:  755:            !raft_node_is_voting(node))
 call    0 returned 100%
-       20:  756:            continue;
+       45:  756:            continue;
         -:  757:
         -:  758:        /* Only send new entries.
         -:  759:         * Don't send the entry to peers who are behind, to prevent them from
         -:  760:         * becoming congested. */
-       40:  761:        raft_index_t next_idx = raft_node_get_next_idx(node);
+       90:  761:        raft_index_t next_idx = raft_node_get_next_idx(node);
 call    0 returned 100%
-       40:  762:        if (next_idx == raft_get_current_idx(me_))
+       90:  762:        if (next_idx == raft_get_current_idx(me_))
 call    0 returned 100%
-branch  1 taken 35% (fallthrough)
-branch  2 taken 65%
-       14:  763:            raft_send_appendentries(me_, node);
+branch  1 taken 36% (fallthrough)
+branch  2 taken 64%
+       32:  763:            raft_send_appendentries(me_, node);
 call    0 returned 100%
         -:  764:    }
         -:  765:
         -:  766:    /* if we're the only node, we can consider the entry committed */
-       20:  767:    if (1 == raft_get_num_voting_nodes(me_))
+       45:  767:    if (1 == raft_get_num_voting_nodes(me_))
 call    0 returned 100%
 branch  1 taken 0% (fallthrough)
 branch  2 taken 100%
@@ -1221,127 +1221,127 @@ branch  2 taken 100%
 call    0 never executed
 call    1 never executed
         -:  769:
-       20:  770:    r->id = ety->id;
-       20:  771:    r->idx = raft_get_current_idx(me_);
+       45:  770:    r->id = ety->id;
+       45:  771:    r->idx = raft_get_current_idx(me_);
 call    0 returned 100%
-       20:  772:    r->term = me->current_term;
+       45:  772:    r->term = me->current_term;
         -:  773:
         -:  774:    /* FIXME: is this required if raft_append_entry does this too? */
-       20:  775:    if (raft_entry_is_voting_cfg_change(ety))
+       45:  775:    if (raft_entry_is_voting_cfg_change(ety))
 call    0 returned 100%
 branch  1 taken 0% (fallthrough)
 branch  2 taken 100%
     #####:  776:        me->voting_cfg_change_log_idx = raft_get_current_idx(me_);
 call    0 never executed
         -:  777:
-       20:  778:    return 0;
+       45:  778:    return 0;
         -:  779:}
         -:  780:
-function raft_send_requestvote called 72 returned 100% blocks executed 83%
-       72:  781:int raft_send_requestvote(raft_server_t* me_, raft_node_t* node)
+function raft_send_requestvote called 142 returned 100% blocks executed 83%
+      142:  781:int raft_send_requestvote(raft_server_t* me_, raft_node_t* node)
         -:  782:{
-       72:  783:    raft_server_private_t* me = (raft_server_private_t*)me_;
+      142:  783:    raft_server_private_t* me = (raft_server_private_t*)me_;
         -:  784:    msg_requestvote_t rv;
-       72:  785:    int e = 0;
+      142:  785:    int e = 0;
         -:  786:
-      72*:  787:    assert(node);
+     142*:  787:    assert(node);
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
 call    2 never executed
-      72*:  788:    assert(node != me->node);
+     142*:  788:    assert(node != me->node);
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
 call    2 never executed
         -:  789:
-       72:  790:    __log(me_, node, "sending requestvote to: %d", node);
+      142:  790:    __log(me_, node, "sending requestvote to: %d", node);
 call    0 returned 100%
         -:  791:
-       72:  792:    rv.term = me->current_term;
-       72:  793:    rv.last_log_idx = raft_get_current_idx(me_);
+      142:  792:    rv.term = me->current_term;
+      142:  793:    rv.last_log_idx = raft_get_current_idx(me_);
 call    0 returned 100%
-       72:  794:    rv.last_log_term = raft_get_last_log_term(me_);
+      142:  794:    rv.last_log_term = raft_get_last_log_term(me_);
 call    0 returned 100%
-       72:  795:    rv.candidate_id = raft_get_nodeid(me_);
+      142:  795:    rv.candidate_id = raft_get_nodeid(me_);
 call    0 returned 100%
-       72:  796:    if (me->cb.send_requestvote)
+      142:  796:    if (me->cb.send_requestvote)
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
-       72:  797:        e = me->cb.send_requestvote(me_, me->udata, node, &rv);
+      142:  797:        e = me->cb.send_requestvote(me_, me->udata, node, &rv);
 call    0 returned 100%
-       72:  798:    return e;
+      142:  798:    return e;
         -:  799:}
         -:  800:
-function raft_append_entry called 29 returned 100% blocks executed 67%
-       29:  801:int raft_append_entry(raft_server_t* me_, raft_entry_t* ety)
+function raft_append_entry called 74 returned 100% blocks executed 67%
+       74:  801:int raft_append_entry(raft_server_t* me_, raft_entry_t* ety)
         -:  802:{
-       29:  803:    raft_server_private_t* me = (raft_server_private_t*)me_;
+       74:  803:    raft_server_private_t* me = (raft_server_private_t*)me_;
         -:  804:
-       29:  805:    if (raft_entry_is_voting_cfg_change(ety))
+       74:  805:    if (raft_entry_is_voting_cfg_change(ety))
 call    0 returned 100%
 branch  1 taken 0% (fallthrough)
 branch  2 taken 100%
     #####:  806:        me->voting_cfg_change_log_idx = raft_get_current_idx(me_);
 call    0 never executed
         -:  807:
-       29:  808:    return log_append_entry(me->log, ety);
+       74:  808:    return log_append_entry(me->log, ety);
 call    0 returned 100%
         -:  809:}
         -:  810:
-function raft_apply_entry called 1 returned 100% blocks executed 37%
-        1:  811:int raft_apply_entry(raft_server_t* me_)
+function raft_apply_entry called 7 returned 100% blocks executed 37%
+        7:  811:int raft_apply_entry(raft_server_t* me_)
         -:  812:{
-        1:  813:    raft_server_private_t* me = (raft_server_private_t*)me_;
+        7:  813:    raft_server_private_t* me = (raft_server_private_t*)me_;
         -:  814:
-        1:  815:    if (!raft_is_apply_allowed(me_)) 
+        7:  815:    if (!raft_is_apply_allowed(me_)) 
 call    0 returned 100%
 branch  1 taken 0% (fallthrough)
 branch  2 taken 100%
     #####:  816:        return -1;
         -:  817:
         -:  818:    /* Don't apply after the commit_idx */
-        1:  819:    if (me->last_applied_idx == raft_get_commit_idx(me_))
+        7:  819:    if (me->last_applied_idx == raft_get_commit_idx(me_))
 call    0 returned 100%
 branch  1 taken 0% (fallthrough)
 branch  2 taken 100%
     #####:  820:        return -1;
         -:  821:
-        1:  822:    raft_index_t log_idx = me->last_applied_idx + 1;
+        7:  822:    raft_index_t log_idx = me->last_applied_idx + 1;
         -:  823:
-        1:  824:    raft_entry_t* ety = raft_get_entry_from_idx(me_, log_idx);
+        7:  824:    raft_entry_t* ety = raft_get_entry_from_idx(me_, log_idx);
 call    0 returned 100%
-        1:  825:    if (!ety)
+        7:  825:    if (!ety)
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####:  826:        return -1;
         -:  827:
-        1:  828:    __log(me_, NULL, "applying log: %d, id: %d size: %d",
+        7:  828:    __log(me_, NULL, "applying log: %d, id: %d size: %d",
 call    0 returned 100%
         -:  829:          log_idx, ety->id, ety->data.len);
         -:  830:
-        1:  831:    me->last_applied_idx++;
-        1:  832:    if (me->cb.applylog)
+        7:  831:    me->last_applied_idx++;
+        7:  832:    if (me->cb.applylog)
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
         -:  833:    {
-        1:  834:        int e = me->cb.applylog(me_, me->udata, ety, me->last_applied_idx);
+        7:  834:        int e = me->cb.applylog(me_, me->udata, ety, me->last_applied_idx);
 call    0 returned 100%
-        1:  835:        if (RAFT_ERR_SHUTDOWN == e)
+        7:  835:        if (RAFT_ERR_SHUTDOWN == e)
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####:  836:            return RAFT_ERR_SHUTDOWN;
         -:  837:    }
         -:  838:
         -:  839:    /* voting cfg change is now complete */
-        1:  840:    if (log_idx == me->voting_cfg_change_log_idx)
+        7:  840:    if (log_idx == me->voting_cfg_change_log_idx)
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####:  841:        me->voting_cfg_change_log_idx = -1;
         -:  842:
-        1:  843:    if (!raft_entry_is_cfg_change(ety))
+        7:  843:    if (!raft_entry_is_cfg_change(ety))
 call    0 returned 100%
 branch  1 taken 100% (fallthrough)
 branch  2 taken 0%
-        1:  844:        return 0;
+        7:  844:        return 0;
         -:  845:
     #####:  846:    raft_node_id_t node_id = me->cb.log_get_node_id(me_, raft_get_udata(me_), ety, log_idx);
 call    0 never executed
@@ -1394,47 +1394,47 @@ call    0 never executed
     #####:  873:    return 0;
         -:  874:}
         -:  875:
-function raft_get_entries_from_idx called 69 returned 100% blocks executed 100%
-       69:  876:raft_entry_t* raft_get_entries_from_idx(raft_server_t* me_, raft_index_t idx, int* n_etys)
+function raft_get_entries_from_idx called 168 returned 100% blocks executed 100%
+      168:  876:raft_entry_t* raft_get_entries_from_idx(raft_server_t* me_, raft_index_t idx, int* n_etys)
         -:  877:{
-       69:  878:    raft_server_private_t* me = (raft_server_private_t*)me_;
-       69:  879:    return log_get_from_idx(me->log, idx, n_etys);
+      168:  878:    raft_server_private_t* me = (raft_server_private_t*)me_;
+      168:  879:    return log_get_from_idx(me->log, idx, n_etys);
 call    0 returned 100%
         -:  880:}
         -:  881:
-function raft_send_appendentries called 69 returned 100% blocks executed 77%
-       69:  882:int raft_send_appendentries(raft_server_t* me_, raft_node_t* node)
+function raft_send_appendentries called 168 returned 100% blocks executed 77%
+      168:  882:int raft_send_appendentries(raft_server_t* me_, raft_node_t* node)
         -:  883:{
-       69:  884:    raft_server_private_t* me = (raft_server_private_t*)me_;
+      168:  884:    raft_server_private_t* me = (raft_server_private_t*)me_;
         -:  885:
-      69*:  886:    assert(node);
+     168*:  886:    assert(node);
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
 call    2 never executed
-      69*:  887:    assert(node != me->node);
+     168*:  887:    assert(node != me->node);
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
 call    2 never executed
         -:  888:
-       69:  889:    if (!(me->cb.send_appendentries))
+      168:  889:    if (!(me->cb.send_appendentries))
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####:  890:        return -1;
         -:  891:
-       69:  892:    msg_appendentries_t ae = {};
-       69:  893:    ae.term = me->current_term;
-       69:  894:    ae.leader_commit = raft_get_commit_idx(me_);
+      168:  892:    msg_appendentries_t ae = {};
+      168:  893:    ae.term = me->current_term;
+      168:  894:    ae.leader_commit = raft_get_commit_idx(me_);
 call    0 returned 100%
-       69:  895:    ae.prev_log_idx = 0;
-       69:  896:    ae.prev_log_term = 0;
+      168:  895:    ae.prev_log_idx = 0;
+      168:  896:    ae.prev_log_term = 0;
         -:  897:
-       69:  898:    raft_index_t next_idx = raft_node_get_next_idx(node);
+      168:  898:    raft_index_t next_idx = raft_node_get_next_idx(node);
 call    0 returned 100%
         -:  899:
         -:  900:    /* figure out if the client needs a snapshot sent */
-       69:  901:    if (0 < me->snapshot_last_idx && next_idx < me->snapshot_last_idx)
-branch  0 taken 3% (fallthrough)
-branch  1 taken 97%
+      168:  901:    if (0 < me->snapshot_last_idx && next_idx < me->snapshot_last_idx)
+branch  0 taken 9% (fallthrough)
+branch  1 taken 91%
 branch  2 taken 0% (fallthrough)
 branch  3 taken 100%
         -:  902:    {
@@ -1446,11 +1446,11 @@ call    0 never executed
     #####:  905:        return RAFT_ERR_NEEDS_SNAPSHOT;
         -:  906:    }
         -:  907:
-       69:  908:    ae.entries = raft_get_entries_from_idx(me_, next_idx, &ae.n_entries);
+      168:  908:    ae.entries = raft_get_entries_from_idx(me_, next_idx, &ae.n_entries);
 call    0 returned 100%
-      69*:  909:    assert((!ae.entries && 0 == ae.n_entries) ||
-branch  0 taken 42% (fallthrough)
-branch  1 taken 58%
+     168*:  909:    assert((!ae.entries && 0 == ae.n_entries) ||
+branch  0 taken 41% (fallthrough)
+branch  1 taken 59%
 branch  2 taken 0% (fallthrough)
 branch  3 taken 100%
 branch  4 taken 100% (fallthrough)
@@ -1461,27 +1461,27 @@ call    8 never executed
         -:  910:            (ae.entries && 0 < ae.n_entries));
         -:  911:
         -:  912:    /* previous log is the log just before the new logs */
-       69:  913:    if (1 < next_idx)
-branch  0 taken 3% (fallthrough)
-branch  1 taken 97%
+      168:  913:    if (1 < next_idx)
+branch  0 taken 9% (fallthrough)
+branch  1 taken 91%
         -:  914:    {
-        2:  915:        raft_entry_t* prev_ety = raft_get_entry_from_idx(me_, next_idx - 1);
+       15:  915:        raft_entry_t* prev_ety = raft_get_entry_from_idx(me_, next_idx - 1);
 call    0 returned 100%
-        2:  916:        if (!prev_ety)
-branch  0 taken 50% (fallthrough)
-branch  1 taken 50%
+       15:  916:        if (!prev_ety)
+branch  0 taken 27% (fallthrough)
+branch  1 taken 73%
         -:  917:        {
-        1:  918:            ae.prev_log_idx = me->snapshot_last_idx;
-        1:  919:            ae.prev_log_term = me->snapshot_last_term;
+        4:  918:            ae.prev_log_idx = me->snapshot_last_idx;
+        4:  919:            ae.prev_log_term = me->snapshot_last_term;
         -:  920:        }
         -:  921:        else
         -:  922:        {
-        1:  923:            ae.prev_log_idx = next_idx - 1;
-        1:  924:            ae.prev_log_term = prev_ety->term;
+       11:  923:            ae.prev_log_idx = next_idx - 1;
+       11:  924:            ae.prev_log_term = prev_ety->term;
         -:  925:        }
         -:  926:    }
         -:  927:
-       69:  928:    __log(me_, node, "sending appendentries node: ci:%d comi:%d t:%d lc:%d pli:%d plt:%d",
+      168:  928:    __log(me_, node, "sending appendentries node: ci:%d comi:%d t:%d lc:%d pli:%d plt:%d",
 call    0 returned 100%
 call    1 returned 100%
 call    2 returned 100%
@@ -1492,49 +1492,49 @@ call    2 returned 100%
         -:  933:          ae.prev_log_idx,
         -:  934:          ae.prev_log_term);
         -:  935:
-       69:  936:    return me->cb.send_appendentries(me_, me->udata, node, &ae);
+      168:  936:    return me->cb.send_appendentries(me_, me->udata, node, &ae);
 call    0 returned 100%
         -:  937:}
         -:  938:
-function raft_send_appendentries_all called 19 returned 100% blocks executed 92%
-       19:  939:int raft_send_appendentries_all(raft_server_t* me_)
+function raft_send_appendentries_all called 48 returned 100% blocks executed 92%
+       48:  939:int raft_send_appendentries_all(raft_server_t* me_)
         -:  940:{
-       19:  941:    raft_server_private_t* me = (raft_server_private_t*)me_;
+       48:  941:    raft_server_private_t* me = (raft_server_private_t*)me_;
         -:  942:    int i, e;
         -:  943:
-       19:  944:    me->timeout_elapsed = 0;
-       76:  945:    for (i = 0; i < me->num_nodes; i++)
+       48:  944:    me->timeout_elapsed = 0;
+      192:  945:    for (i = 0; i < me->num_nodes; i++)
 branch  0 taken 75%
 branch  1 taken 25% (fallthrough)
         -:  946:    {
-       57:  947:        if (me->node == me->nodes[i] || !raft_node_is_active(me->nodes[i]))
+      144:  947:        if (me->node == me->nodes[i] || !raft_node_is_active(me->nodes[i]))
 branch  0 taken 67% (fallthrough)
 branch  1 taken 33%
 call    2 returned 100%
 branch  3 taken 0% (fallthrough)
 branch  4 taken 100%
-       19:  948:            continue;
+       48:  948:            continue;
         -:  949:
-       38:  950:        e = raft_send_appendentries(me_, me->nodes[i]);
+       96:  950:        e = raft_send_appendentries(me_, me->nodes[i]);
 call    0 returned 100%
-       38:  951:        if (0 != e)
+       96:  951:        if (0 != e)
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####:  952:            return e;
         -:  953:    }
         -:  954:
-       19:  955:    return 0;
+       48:  955:    return 0;
         -:  956:}
         -:  957:
-function raft_add_node_internal called 81 returned 100% blocks executed 62%
-       81:  958:raft_node_t* raft_add_node_internal(raft_server_t* me_, raft_entry_t *ety, void* udata, raft_node_id_t id, int is_self)
+function raft_add_node_internal called 162 returned 100% blocks executed 62%
+      162:  958:raft_node_t* raft_add_node_internal(raft_server_t* me_, raft_entry_t *ety, void* udata, raft_node_id_t id, int is_self)
         -:  959:{
-       81:  960:    raft_server_private_t* me = (raft_server_private_t*)me_;
+      162:  960:    raft_server_private_t* me = (raft_server_private_t*)me_;
         -:  961:
         -:  962:    /* set to voting if node already exists */
-       81:  963:    raft_node_t* node = raft_get_node(me_, id);
+      162:  963:    raft_node_t* node = raft_get_node(me_, id);
 call    0 returned 100%
-       81:  964:    if (node)
+      162:  964:    if (node)
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
         -:  965:    {
@@ -1552,45 +1552,45 @@ call    0 never executed
     #####:  973:            return NULL;
         -:  974:    }
         -:  975:
-       81:  976:    node = raft_node_new(udata, id);
+      162:  976:    node = raft_node_new(udata, id);
 call    0 returned 100%
-       81:  977:    if (!node)
+      162:  977:    if (!node)
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####:  978:        return NULL;
-       81:  979:    void* p = __raft_realloc(me->nodes, sizeof(void*) * (me->num_nodes + 1));
+      162:  979:    void* p = __raft_realloc(me->nodes, sizeof(void*) * (me->num_nodes + 1));
 call    0 returned 100%
-       81:  980:    if (!p) {
+      162:  980:    if (!p) {
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####:  981:        raft_node_free(node);
 call    0 never executed
     #####:  982:        return NULL;
         -:  983:    }
-       81:  984:    me->num_nodes++;
-       81:  985:    me->nodes = p;
-       81:  986:    me->nodes[me->num_nodes - 1] = node;
-       81:  987:    if (is_self)
+      162:  984:    me->num_nodes++;
+      162:  985:    me->nodes = p;
+      162:  986:    me->nodes[me->num_nodes - 1] = node;
+      162:  987:    if (is_self)
 branch  0 taken 33% (fallthrough)
 branch  1 taken 67%
-       27:  988:        me->node = me->nodes[me->num_nodes - 1];
+       54:  988:        me->node = me->nodes[me->num_nodes - 1];
         -:  989:
-       81:  990:    node = me->nodes[me->num_nodes - 1];
+      162:  990:    node = me->nodes[me->num_nodes - 1];
         -:  991:
-       81:  992:    if (me->cb.notify_membership_event)
+      162:  992:    if (me->cb.notify_membership_event)
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
-       81:  993:        me->cb.notify_membership_event(me_, raft_get_udata(me_), node, ety, RAFT_MEMBERSHIP_ADD);
+      162:  993:        me->cb.notify_membership_event(me_, raft_get_udata(me_), node, ety, RAFT_MEMBERSHIP_ADD);
 call    0 returned 100%
 call    1 returned 100%
         -:  994:
-       81:  995:    return node;
+      162:  995:    return node;
         -:  996:}
         -:  997:
-function raft_add_node called 81 returned 100% blocks executed 100%
-       81:  998:raft_node_t* raft_add_node(raft_server_t* me_, void* udata, raft_node_id_t id, int is_self)
+function raft_add_node called 162 returned 100% blocks executed 100%
+      162:  998:raft_node_t* raft_add_node(raft_server_t* me_, void* udata, raft_node_id_t id, int is_self)
         -:  999:{
-       81: 1000:    return raft_add_node_internal(me_, NULL, udata, id, is_self);
+      162: 1000:    return raft_add_node_internal(me_, NULL, udata, id, is_self);
 call    0 returned 100%
         -: 1001:}
         -: 1002:
@@ -1663,72 +1663,72 @@ call    2 never executed
 call    0 never executed
     #####: 1044:}
         -: 1045:
-function raft_get_nvotes_for_me called 8 returned 100% blocks executed 100%
-        8: 1046:int raft_get_nvotes_for_me(raft_server_t* me_)
+function raft_get_nvotes_for_me called 17 returned 100% blocks executed 100%
+       17: 1046:int raft_get_nvotes_for_me(raft_server_t* me_)
         -: 1047:{
-        8: 1048:    raft_server_private_t* me = (raft_server_private_t*)me_;
+       17: 1048:    raft_server_private_t* me = (raft_server_private_t*)me_;
         -: 1049:    int i, votes;
         -: 1050:
-       32: 1051:    for (i = 0, votes = 0; i < me->num_nodes; i++)
+       68: 1051:    for (i = 0, votes = 0; i < me->num_nodes; i++)
 branch  0 taken 75%
 branch  1 taken 25% (fallthrough)
         -: 1052:    {
-       40: 1053:        if (me->node != me->nodes[i] &&
+       85: 1053:        if (me->node != me->nodes[i] &&
 branch  0 taken 67% (fallthrough)
 branch  1 taken 33%
 branch  2 taken 100% (fallthrough)
 branch  3 taken 0%
-       32: 1054:            raft_node_is_active(me->nodes[i]) &&
+       68: 1054:            raft_node_is_active(me->nodes[i]) &&
 call    0 returned 100%
 branch  1 taken 100% (fallthrough)
 branch  2 taken 0%
-       32: 1055:            raft_node_is_voting(me->nodes[i]) &&
+       68: 1055:            raft_node_is_voting(me->nodes[i]) &&
 call    0 returned 100%
 branch  1 taken 50% (fallthrough)
 branch  2 taken 50%
-       16: 1056:            raft_node_has_vote_for_me(me->nodes[i]))
+       34: 1056:            raft_node_has_vote_for_me(me->nodes[i]))
 call    0 returned 100%
         -: 1057:        {
-        8: 1058:            votes += 1;
+       17: 1058:            votes += 1;
         -: 1059:        }
         -: 1060:    }
         -: 1061:
-        8: 1062:    if (me->voted_for == raft_get_nodeid(me_))
+       17: 1062:    if (me->voted_for == raft_get_nodeid(me_))
 call    0 returned 100%
 branch  1 taken 100% (fallthrough)
 branch  2 taken 0%
-        8: 1063:        votes += 1;
+       17: 1063:        votes += 1;
         -: 1064:
-        8: 1065:    return votes;
+       17: 1065:    return votes;
         -: 1066:}
         -: 1067:
-function raft_vote called 36 returned 100% blocks executed 80%
-       36: 1068:int raft_vote(raft_server_t* me_, raft_node_t* node)
+function raft_vote called 71 returned 100% blocks executed 80%
+       71: 1068:int raft_vote(raft_server_t* me_, raft_node_t* node)
         -: 1069:{
-      36*: 1070:    return raft_vote_for_nodeid(me_, node ? raft_node_get_id(node) : -1);
+      71*: 1070:    return raft_vote_for_nodeid(me_, node ? raft_node_get_id(node) : -1);
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
 call    2 returned 100%
 call    3 returned 100%
         -: 1071:}
         -: 1072:
-function raft_vote_for_nodeid called 65 returned 100% blocks executed 83%
-       65: 1073:int raft_vote_for_nodeid(raft_server_t* me_, const raft_node_id_t nodeid)
+function raft_vote_for_nodeid called 119 returned 100% blocks executed 83%
+      119: 1073:int raft_vote_for_nodeid(raft_server_t* me_, const raft_node_id_t nodeid)
         -: 1074:{
-       65: 1075:    raft_server_private_t* me = (raft_server_private_t*)me_;
+      119: 1075:    raft_server_private_t* me = (raft_server_private_t*)me_;
         -: 1076:
-       65: 1077:    if (me->cb.persist_vote) {
+      119: 1077:    if (me->cb.persist_vote) {
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
-       65: 1078:        int e = me->cb.persist_vote(me_, me->udata, nodeid);
+      119: 1078:        int e = me->cb.persist_vote(me_, me->udata, nodeid);
 call    0 returned 100%
-       65: 1079:        if (0 != e)
+      119: 1079:        if (0 != e)
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####: 1080:            return e;
         -: 1081:    }
-       65: 1082:    me->voted_for = nodeid;
-       65: 1083:    return 0;
+      119: 1082:    me->voted_for = nodeid;
+      119: 1083:    return 0;
         -: 1084:}
         -: 1085:
 function raft_msg_entry_response_committed called 0 returned 0% blocks executed 0%
@@ -1751,71 +1751,71 @@ branch  1 never executed
 call    0 never executed
         -: 1097:}
         -: 1098:
-function raft_apply_all called 1 returned 100% blocks executed 83%
-        1: 1099:int raft_apply_all(raft_server_t* me_)
+function raft_apply_all called 7 returned 100% blocks executed 83%
+        7: 1099:int raft_apply_all(raft_server_t* me_)
         -: 1100:{
-        1: 1101:    if (!raft_is_apply_allowed(me_))
+        7: 1101:    if (!raft_is_apply_allowed(me_))
 call    0 returned 100%
 branch  1 taken 0% (fallthrough)
 branch  2 taken 100%
     #####: 1102:        return 0;
         -: 1103:
-        2: 1104:    while (raft_get_last_applied_idx(me_) < raft_get_commit_idx(me_))
+       14: 1104:    while (raft_get_last_applied_idx(me_) < raft_get_commit_idx(me_))
 call    0 returned 100%
 call    1 returned 100%
 branch  2 taken 50%
 branch  3 taken 50% (fallthrough)
         -: 1105:    {
-        1: 1106:        int e = raft_apply_entry(me_);
+        7: 1106:        int e = raft_apply_entry(me_);
 call    0 returned 100%
-        1: 1107:        if (0 != e)
+        7: 1107:        if (0 != e)
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####: 1108:            return e;
         -: 1109:    }
         -: 1110:
-        1: 1111:    return 0;
+        7: 1111:    return 0;
         -: 1112:}
         -: 1113:
-function raft_entry_is_voting_cfg_change called 69 returned 100% blocks executed 83%
-       69: 1114:int raft_entry_is_voting_cfg_change(raft_entry_t* ety)
+function raft_entry_is_voting_cfg_change called 164 returned 100% blocks executed 83%
+      164: 1114:int raft_entry_is_voting_cfg_change(raft_entry_t* ety)
         -: 1115:{
-     138*: 1116:    return RAFT_LOGTYPE_ADD_NODE == ety->type ||
+     328*: 1116:    return RAFT_LOGTYPE_ADD_NODE == ety->type ||
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
-       69: 1117:           RAFT_LOGTYPE_DEMOTE_NODE == ety->type;
+      164: 1117:           RAFT_LOGTYPE_DEMOTE_NODE == ety->type;
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
         -: 1118:}
         -: 1119:
-function raft_entry_is_cfg_change called 30 returned 100% blocks executed 88%
-       30: 1120:int raft_entry_is_cfg_change(raft_entry_t* ety)
+function raft_entry_is_cfg_change called 81 returned 100% blocks executed 88%
+       81: 1120:int raft_entry_is_cfg_change(raft_entry_t* ety)
         -: 1121:{
         -: 1122:    return (
-       60: 1123:        RAFT_LOGTYPE_ADD_NODE == ety->type ||
-       30: 1124:        RAFT_LOGTYPE_ADD_NONVOTING_NODE == ety->type ||
+      162: 1123:        RAFT_LOGTYPE_ADD_NODE == ety->type ||
+       81: 1124:        RAFT_LOGTYPE_ADD_NONVOTING_NODE == ety->type ||
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
-      90*: 1125:        RAFT_LOGTYPE_DEMOTE_NODE == ety->type ||
+     243*: 1125:        RAFT_LOGTYPE_DEMOTE_NODE == ety->type ||
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
 branch  2 taken 100% (fallthrough)
 branch  3 taken 0%
-       30: 1126:        RAFT_LOGTYPE_REMOVE_NODE == ety->type);
+       81: 1126:        RAFT_LOGTYPE_REMOVE_NODE == ety->type);
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
         -: 1127:}
         -: 1128:
-function raft_offer_log called 29 returned 100% blocks executed 12%
-       29: 1129:void raft_offer_log(raft_server_t* me_, raft_entry_t* ety, const raft_index_t idx)
+function raft_offer_log called 74 returned 100% blocks executed 12%
+       74: 1129:void raft_offer_log(raft_server_t* me_, raft_entry_t* ety, const raft_index_t idx)
         -: 1130:{
-       29: 1131:    raft_server_private_t* me = (raft_server_private_t*)me_;
+       74: 1131:    raft_server_private_t* me = (raft_server_private_t*)me_;
         -: 1132:
-       29: 1133:    if (!raft_entry_is_cfg_change(ety))
+       74: 1133:    if (!raft_entry_is_cfg_change(ety))
 call    0 returned 100%
 branch  1 taken 100% (fallthrough)
 branch  2 taken 0%
-       29: 1134:        return;
+       74: 1134:        return;
         -: 1135:
     #####: 1136:    raft_node_id_t node_id = me->cb.log_get_node_id(me_, raft_get_udata(me_), ety, idx);
 call    0 never executed
@@ -1969,23 +1969,23 @@ call    0 never executed
         -: 1223:    }
         -: 1224:}
         -: 1225:
-function raft_poll_entry called 1 returned 100% blocks executed 71%
-        1: 1226:int raft_poll_entry(raft_server_t* me_, raft_entry_t **ety)
+function raft_poll_entry called 4 returned 100% blocks executed 71%
+        4: 1226:int raft_poll_entry(raft_server_t* me_, raft_entry_t **ety)
         -: 1227:{
-        1: 1228:    raft_server_private_t* me = (raft_server_private_t*)me_;
+        4: 1228:    raft_server_private_t* me = (raft_server_private_t*)me_;
         -: 1229:
-        1: 1230:    int e = log_poll(me->log, (void*)ety);
+        4: 1230:    int e = log_poll(me->log, (void*)ety);
 call    0 returned 100%
-        1: 1231:    if (e != 0)
+        4: 1231:    if (e != 0)
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####: 1232:        return e;
-       1*: 1233:    assert(*ety != NULL);
+       4*: 1233:    assert(*ety != NULL);
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
 call    2 never executed
         -: 1234:
-        1: 1235:    return 0;
+        4: 1235:    return 0;
         -: 1236:}
         -: 1237:
 function raft_get_first_entry_idx called 0 returned 0% blocks executed 0%
@@ -2007,68 +2007,68 @@ branch  1 never executed
     #####: 1247:    return me->snapshot_last_idx;
         -: 1248:}
         -: 1249:
-function raft_get_num_snapshottable_logs called 4 returned 100% blocks executed 86%
-        4: 1250:raft_index_t raft_get_num_snapshottable_logs(raft_server_t *me_)
+function raft_get_num_snapshottable_logs called 16 returned 100% blocks executed 86%
+       16: 1250:raft_index_t raft_get_num_snapshottable_logs(raft_server_t *me_)
         -: 1251:{
-        4: 1252:    raft_server_private_t* me = (raft_server_private_t*)me_;
-        4: 1253:    if (raft_get_log_count(me_) <= 1)
+       16: 1252:    raft_server_private_t* me = (raft_server_private_t*)me_;
+       16: 1253:    if (raft_get_log_count(me_) <= 1)
 call    0 returned 100%
 branch  1 taken 0% (fallthrough)
 branch  2 taken 100%
     #####: 1254:        return 0;
-        4: 1255:    return raft_get_commit_idx(me_) - log_get_base(me->log);
+       16: 1255:    return raft_get_commit_idx(me_) - log_get_base(me->log);
 call    0 returned 100%
 call    1 returned 100%
         -: 1256:}
         -: 1257:
-function raft_begin_snapshot called 1 returned 100% blocks executed 77%
-        1: 1258:int raft_begin_snapshot(raft_server_t *me_, int flags)
+function raft_begin_snapshot called 4 returned 100% blocks executed 77%
+        4: 1258:int raft_begin_snapshot(raft_server_t *me_, int flags)
         -: 1259:{
-        1: 1260:    raft_server_private_t* me = (raft_server_private_t*)me_;
+        4: 1260:    raft_server_private_t* me = (raft_server_private_t*)me_;
         -: 1261:
-        1: 1262:    if (raft_get_num_snapshottable_logs(me_) == 0)
+        4: 1262:    if (raft_get_num_snapshottable_logs(me_) == 0)
 call    0 returned 100%
 branch  1 taken 0% (fallthrough)
 branch  2 taken 100%
     #####: 1263:        return -1;
         -: 1264:
-        1: 1265:    raft_index_t snapshot_target = raft_get_commit_idx(me_);
+        4: 1265:    raft_index_t snapshot_target = raft_get_commit_idx(me_);
 call    0 returned 100%
-        1: 1266:    if (!snapshot_target || snapshot_target == 0)
+        4: 1266:    if (!snapshot_target || snapshot_target == 0)
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
 branch  2 taken 0% (fallthrough)
 branch  3 taken 100%
     #####: 1267:        return -1;
         -: 1268:
-        1: 1269:    raft_entry_t* ety = raft_get_entry_from_idx(me_, snapshot_target);
+        4: 1269:    raft_entry_t* ety = raft_get_entry_from_idx(me_, snapshot_target);
 call    0 returned 100%
-        1: 1270:    if (!ety)
+        4: 1270:    if (!ety)
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####: 1271:        return -1;
         -: 1272:
         -: 1273:    /* we need to get all the way to the commit idx */
-        1: 1274:    int e = raft_apply_all(me_);
+        4: 1274:    int e = raft_apply_all(me_);
 call    0 returned 100%
-        1: 1275:    if (e != 0)
+        4: 1275:    if (e != 0)
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####: 1276:        return e;
         -: 1277:
-       1*: 1278:    assert(raft_get_commit_idx(me_) == raft_get_last_applied_idx(me_));
+       4*: 1278:    assert(raft_get_commit_idx(me_) == raft_get_last_applied_idx(me_));
 call    0 returned 100%
 call    1 returned 100%
 branch  2 taken 0% (fallthrough)
 branch  3 taken 100%
 call    4 never executed
         -: 1279:
-        1: 1280:    raft_set_snapshot_metadata(me_, ety->term, snapshot_target);
+        4: 1280:    raft_set_snapshot_metadata(me_, ety->term, snapshot_target);
 call    0 returned 100%
-        1: 1281:    me->snapshot_in_progress = 1;
-        1: 1282:    me->snapshot_flags = flags;
+        4: 1281:    me->snapshot_in_progress = 1;
+        4: 1282:    me->snapshot_flags = flags;
         -: 1283:
-        1: 1284:    __log(me_, NULL,
+        4: 1284:    __log(me_, NULL,
 call    0 returned 100%
 call    1 returned 100%
         -: 1285:        "begin snapshot sli:%d slt:%d slogs:%d\n",
@@ -2076,7 +2076,7 @@ call    1 returned 100%
         -: 1287:        me->snapshot_last_term,
         -: 1288:        raft_get_num_snapshottable_logs(me_));
         -: 1289:
-        1: 1290:    return 0;
+        4: 1290:    return 0;
         -: 1291:}
         -: 1292:
 function raft_cancel_snapshot called 0 returned 0% blocks executed 0%
@@ -2097,82 +2097,82 @@ branch  1 never executed
     #####: 1305:    return 0;
         -: 1306:}
         -: 1307:
-function raft_end_snapshot called 1 returned 100% blocks executed 81%
-        1: 1308:int raft_end_snapshot(raft_server_t *me_)
+function raft_end_snapshot called 4 returned 100% blocks executed 81%
+        4: 1308:int raft_end_snapshot(raft_server_t *me_)
         -: 1309:{
-        1: 1310:    raft_server_private_t* me = (raft_server_private_t*)me_;
+        4: 1310:    raft_server_private_t* me = (raft_server_private_t*)me_;
         -: 1311:
-        1: 1312:    if (!me->snapshot_in_progress || me->snapshot_last_idx == 0)
+        4: 1312:    if (!me->snapshot_in_progress || me->snapshot_last_idx == 0)
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
 branch  2 taken 0% (fallthrough)
 branch  3 taken 100%
     #####: 1313:        return -1;
         -: 1314:
-       1*: 1315:    assert(raft_get_num_snapshottable_logs(me_) != 0);
+       4*: 1315:    assert(raft_get_num_snapshottable_logs(me_) != 0);
 call    0 returned 100%
 branch  1 taken 0% (fallthrough)
 branch  2 taken 100%
 call    3 never executed
-       1*: 1316:    assert(me->snapshot_last_idx == raft_get_commit_idx(me_));
+       4*: 1316:    assert(me->snapshot_last_idx == raft_get_commit_idx(me_));
 call    0 returned 100%
 branch  1 taken 0% (fallthrough)
 branch  2 taken 100%
 call    3 never executed
         -: 1317:
         -: 1318:    /* If needed, remove compacted logs */
-        1: 1319:    raft_index_t i = 0, end = raft_get_num_snapshottable_logs(me_);
+        4: 1319:    raft_index_t i = 0, end = raft_get_num_snapshottable_logs(me_);
 call    0 returned 100%
-        2: 1320:    for (; i < end; i++)
+        8: 1320:    for (; i < end; i++)
 branch  0 taken 50%
 branch  1 taken 50% (fallthrough)
         -: 1321:    {
         -: 1322:        raft_entry_t* _ety;
-        1: 1323:        int e = raft_poll_entry(me_, &_ety);
+        4: 1323:        int e = raft_poll_entry(me_, &_ety);
 call    0 returned 100%
-        1: 1324:        if (e != 0)
+        4: 1324:        if (e != 0)
 branch  0 taken 0% (fallthrough)
 branch  1 taken 100%
     #####: 1325:            return -1;
         -: 1326:    }
         -: 1327:
-        1: 1328:    me->snapshot_in_progress = 0;
+        4: 1328:    me->snapshot_in_progress = 0;
         -: 1329:
-        2: 1330:    __log(me_, NULL,
+        8: 1330:    __log(me_, NULL,
 call    0 returned 100%
 call    1 returned 100%
 call    2 returned 100%
         -: 1331:        "end snapshot base:%d commit-index:%d current-index:%d\n",
-        1: 1332:        log_get_base(me->log),
+        4: 1332:        log_get_base(me->log),
 call    0 returned 100%
         -: 1333:        raft_get_commit_idx(me_),
         -: 1334:        raft_get_current_idx(me_));
         -: 1335:
-        1: 1336:    if (!raft_is_leader(me_))
+        4: 1336:    if (!raft_is_leader(me_))
 call    0 returned 100%
 branch  1 taken 0% (fallthrough)
 branch  2 taken 100%
     #####: 1337:        return 0;
         -: 1338:
-        4: 1339:    for (i = 0; i < me->num_nodes; i++)
+       16: 1339:    for (i = 0; i < me->num_nodes; i++)
 branch  0 taken 75%
 branch  1 taken 25% (fallthrough)
         -: 1340:    {
-        3: 1341:        raft_node_t* node = me->nodes[i];
+       12: 1341:        raft_node_t* node = me->nodes[i];
         -: 1342:
-        3: 1343:        if (me->node == node || !raft_node_is_active(node))
+       12: 1343:        if (me->node == node || !raft_node_is_active(node))
 branch  0 taken 67% (fallthrough)
 branch  1 taken 33%
 call    2 returned 100%
 branch  3 taken 0% (fallthrough)
 branch  4 taken 100%
-        1: 1344:            continue;
+        4: 1344:            continue;
         -: 1345:
-        2: 1346:        raft_index_t next_idx = raft_node_get_next_idx(node);
+        8: 1346:        raft_index_t next_idx = raft_node_get_next_idx(node);
 call    0 returned 100%
         -: 1347:
         -: 1348:        /* figure out if the client needs a snapshot sent */
-        2: 1349:        if (0 < me->snapshot_last_idx && next_idx < me->snapshot_last_idx)
+        8: 1349:        if (0 < me->snapshot_last_idx && next_idx < me->snapshot_last_idx)
 branch  0 taken 100% (fallthrough)
 branch  1 taken 0%
 branch  2 taken 0% (fallthrough)
@@ -2186,7 +2186,7 @@ call    0 never executed
         -: 1353:        }
         -: 1354:    }
         -: 1355:
-        1: 1356:    return 0;
+        4: 1356:    return 0;
         -: 1357:}
         -: 1358:
 function raft_begin_load_snapshot called 0 returned 0% blocks executed 0%
