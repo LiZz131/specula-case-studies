@@ -458,9 +458,13 @@ string RaftGet(const string &variable) {
 
 // Called once from the interceptor, on the controller-socket close path,
 // before _exit. A second dump would replace the gcda with empty counters.
+// Weak so the sanitizer binary (no --coverage) still links; the call is a
+// no-op when libgcov is absent.
+extern "C" void __gcov_dump(void) __attribute__((weak));
 extern "C" void wraft_gcov_dump(void) {
-    extern void __gcov_dump(void);
-    __gcov_dump();
+    if (__gcov_dump) {
+        __gcov_dump();
+    }
 }
 
 // not implemented!
