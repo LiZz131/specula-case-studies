@@ -1,6 +1,14 @@
 # 失败的 AppendEntries 响应没有把 nextIndex 从 1 减到 0
 
-配置 `snapshot`，种子 158，深轨迹 `t0158`。失败步是 `# [42] HandleAppendEntriesResponse s1 s2 40`。同一类还有 `snapshot/t0130` 和 `log/t0169`：代码的 `nextIdx` 停在 1，模型是 0。
+三条轨迹的 `MC.out`、`traces.txt`、`log.host`、`replay.status`、`tlc.err`、`tlc.status` 都在本目录的子目录里。轮次里的 `traces/` 被 gitignore，GitHub 上以这里为准。
+
+| 子目录 | 复现 |
+|---|---|
+| `snapshot-t0158/` | `run_one_testcase.sh snapshot-t0158/MC.out 3`。种子 158。失败步 `# [42] HandleAppendEntriesResponse s1 s2 40`。 |
+| `snapshot-t0130/` | `run_one_testcase.sh snapshot-t0130/MC.out 3`。 |
+| `log-t0169/` | `run_one_testcase.sh log-t0169/MC.out 3`。 |
+
+三条都是代码的 `nextIdx` 停在 1，模型是 0。命令在本目录执行，节点数是 3。
 
 n1 的 `nextIdx`。上一步两边都是 `{'n2': 1, 'n3': 2}`。这一步代码仍是 `{'n2': 1, 'n3': 2}`，模型是 `{'n2': 0, 'n3': 2}`。模型里这条响应是 `msuccess = FALSE`，`mcurrentIdx = 0`，`mfirstIdx = 2`（prev 为 1）。n2 此时日志为空，`matchIndex` 是 0。
 

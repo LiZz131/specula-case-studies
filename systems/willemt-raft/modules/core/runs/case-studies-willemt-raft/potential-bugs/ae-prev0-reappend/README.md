@@ -1,6 +1,13 @@
 # prev_log_idx 为 0 时把已压缩的条目再追加进日志
 
-配置 `snapshot`，种子 104，深轨迹 `t0104`。失败步是日志里的 `# [44] HandleAppendEntriesRequest s3 s1 36`。同一类还有 `snapshot/t0187`（n2 的日志，代码 5 条、模型 2 条）。
+两条轨迹的 `MC.out`、`traces.txt`、`log.host`、`replay.status`、`tlc.err`、`tlc.status` 都在本目录的子目录里。轮次里的 `traces/` 被 gitignore，GitHub 上以这里为准。
+
+| 子目录 | 复现 |
+|---|---|
+| `snapshot-t0104/` | `run_one_testcase.sh snapshot-t0104/MC.out 3`。失败步 `# [44] HandleAppendEntriesRequest s3 s1 36`。n3 的 `log`：代码 5 条，模型 2 条。 |
+| `snapshot-t0187/` | `run_one_testcase.sh snapshot-t0187/MC.out 3`。n2 的 `log`：代码 5 条，模型 2 条。 |
+
+命令在本目录执行，节点数是 3。`snapshot-t0104` 的种子是 104。
 
 不一致的变量是 n3 的 `log`。投递前两边都是 `[(2, 'v1'), (2, 'v1')]`。投递后代码是 5 条 `(2, 'v1')`，模型仍是 2 条。这条 AppendEntries 的 `mprevLogIdx` 是 0，`mentries` 是 3 条。n3 的 `snapshotLastIdx` 是 1，`snapshotLastTerm` 是 2。
 
