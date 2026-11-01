@@ -1,0 +1,746 @@
+文件	行号	集合	依据	下一步
+raft_log.c	44	B	负数取模补偿。日志下标在规格里是 Nat，谓词 index < 0 为假。第一次不写成死代码。	不在本轮加 trace。Nat 下标使守卫为假。
+raft_log.c	55	B	日志环形缓冲扩容。count < size 在本轮一直为真。	守卫是同一节点日志条数达到 INITIAL_CAPACITY（10）。500 条 30 步轨迹没把一条日志撑到 10。另开一份连续 ClientRequest 的配置，不改这五份 cfg，也不把这段写成死代码。
+raft_log.c	56	C	分配失败返回 NULL 或 RAFT_ERR_NOMEM。规格里没有分配失败。	白名单，不采样。
+raft_log.c	60	B	日志环形缓冲扩容。count < size 在本轮一直为真。	守卫是同一节点日志条数达到 INITIAL_CAPACITY（10）。500 条 30 步轨迹没把一条日志撑到 10。另开一份连续 ClientRequest 的配置，不改这五份 cfg，也不把这段写成死代码。
+raft_log.c	61	B	日志环形缓冲扩容。count < size 在本轮一直为真。	守卫是同一节点日志条数达到 INITIAL_CAPACITY（10）。500 条 30 步轨迹没把一条日志撑到 10。另开一份连续 ClientRequest 的配置，不改这五份 cfg，也不把这段写成死代码。
+raft_log.c	62	B	日志环形缓冲扩容。count < size 在本轮一直为真。	守卫是同一节点日志条数达到 INITIAL_CAPACITY（10）。500 条 30 步轨迹没把一条日志撑到 10。另开一份连续 ClientRequest 的配置，不改这五份 cfg，也不把这段写成死代码。
+raft_log.c	64	B	日志环形缓冲扩容。count < size 在本轮一直为真。	守卫是同一节点日志条数达到 INITIAL_CAPACITY（10）。500 条 30 步轨迹没把一条日志撑到 10。另开一份连续 ClientRequest 的配置，不改这五份 cfg，也不把这段写成死代码。
+raft_log.c	68	B	日志环形缓冲扩容。count < size 在本轮一直为真。	守卫是同一节点日志条数达到 INITIAL_CAPACITY（10）。500 条 30 步轨迹没把一条日志撑到 10。另开一份连续 ClientRequest 的配置，不改这五份 cfg，也不把这段写成死代码。
+raft_log.c	70	B	日志环形缓冲扩容。count < size 在本轮一直为真。	守卫是同一节点日志条数达到 INITIAL_CAPACITY（10）。500 条 30 步轨迹没把一条日志撑到 10。另开一份连续 ClientRequest 的配置，不改这五份 cfg，也不把这段写成死代码。
+raft_log.c	71	B	日志环形缓冲扩容。count < size 在本轮一直为真。	守卫是同一节点日志条数达到 INITIAL_CAPACITY（10）。500 条 30 步轨迹没把一条日志撑到 10。另开一份连续 ClientRequest 的配置，不改这五份 cfg，也不把这段写成死代码。
+raft_log.c	72	B	日志环形缓冲扩容。count < size 在本轮一直为真。	守卫是同一节点日志条数达到 INITIAL_CAPACITY（10）。500 条 30 步轨迹没把一条日志撑到 10。另开一份连续 ClientRequest 的配置，不改这五份 cfg，也不把这段写成死代码。
+raft_log.c	73	B	日志环形缓冲扩容。count < size 在本轮一直为真。	守卫是同一节点日志条数达到 INITIAL_CAPACITY（10）。500 条 30 步轨迹没把一条日志撑到 10。另开一份连续 ClientRequest 的配置，不改这五份 cfg，也不把这段写成死代码。
+raft_log.c	75	B	日志环形缓冲扩容。count < size 在本轮一直为真。	守卫是同一节点日志条数达到 INITIAL_CAPACITY（10）。500 条 30 步轨迹没把一条日志撑到 10。另开一份连续 ClientRequest 的配置，不改这五份 cfg，也不把这段写成死代码。
+raft_log.c	78	B	raft_log_load_from_snapshot 的入口。真正改 base 的是后面几行。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_log.c	82	B	raft_log_load_from_snapshot 的入口。真正改 base 的是后面几行。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_log.c	84	A	raft_log_load_from_snapshot 清空日志并把 base 设成快照下标。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_log.c	85	A	raft_log_load_from_snapshot 清空日志并把 base 设成快照下标。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_log.c	86	A	raft_log_load_from_snapshot 清空日志并把 base 设成快照下标。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_log.c	88	A	raft_log_load_from_snapshot 清空日志并把 base 设成快照下标。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_log.c	103	C	分配失败返回 NULL 或 RAFT_ERR_NOMEM。规格里没有分配失败。	白名单，不采样。
+raft_log.c	104	C	分配失败返回 NULL 或 RAFT_ERR_NOMEM。规格里没有分配失败。	白名单，不采样。
+raft_log.c	112	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	115	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	117	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	118	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	119	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	127	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	129	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	131	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	135	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	136	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	137	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	154	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 log_offer。	白名单，不采样。
+raft_log.c	156	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 log_offer。	白名单，不采样。
+raft_log.c	157	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 log_offer。	白名单，不采样。
+raft_log.c	178	B	下标落在日志外时返回空。合法下标的读取已经执行。	加种子可以让 prev 落在 base 之外。不换模型。本轮五个配置已经封顶，这条留在未覆盖里。
+raft_log.c	179	B	下标落在日志外时返回空。合法下标的读取已经执行。	加种子可以让 prev 落在 base 之外。不换模型。本轮五个配置已经封顶，这条留在未覆盖里。
+raft_log.c	232	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 log_pop。	白名单，不采样。
+raft_log.c	233	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 log_pop。	白名单，不采样。
+raft_log.c	234	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 log_pop。	白名单，不采样。
+raft_log.c	235	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 log_pop。	白名单，不采样。
+raft_log.c	248	B	raft_log_delete 的外联包装。删除本身在 log_delete 里已经执行过。	不采样。
+raft_log.c	250	B	raft_log_delete 的外联包装。删除本身在 log_delete 里已经执行过。	不采样。
+raft_log.c	253	B	raft_log_poll 的入口和局部变量。改 base 的是函数后半段。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_log.c	255	B	raft_log_poll 的入口和局部变量。改 base 的是函数后半段。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_log.c	257	B	日志为空时 poll 返回 -1。防御性拒绝。成功路径若尚未执行，不能把整个函数当成白名单。	守卫要快照动作。MCNext 没有 TakeSnapshot / InstallSnapshot，驱动也没有命令。见 scenarios.md。
+raft_log.c	261	B	raft_log_poll 的入口和局部变量。改 base 的是函数后半段。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_log.c	263	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 log_poll。	白名单，不采样。
+raft_log.c	264	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 log_poll。	白名单，不采样。
+raft_log.c	266	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 log_poll。	白名单，不采样。
+raft_log.c	271	A	raft_log_poll 丢掉日志前缀并增大 base。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_log.c	273	A	raft_log_poll 丢掉日志前缀并增大 base。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_log.c	274	A	raft_log_poll 丢掉日志前缀并增大 base。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_log.c	275	A	raft_log_poll 丢掉日志前缀并增大 base。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_log.c	276	A	raft_log_poll 丢掉日志前缀并增大 base。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_log.c	278	A	raft_log_poll 丢掉日志前缀并增大 base。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_log.c	280	A	raft_log_poll 丢掉日志前缀并增大 base。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_log.c	283	D	raft_log_peektail。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_log.c	285	D	raft_log_peektail。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_log.c	289	D	raft_log_peektail。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_log.c	291	D	raft_log_peektail。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_log.c	294	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	296	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	297	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	298	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	299	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	301	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	303	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	304	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	305	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	333	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	338	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	340	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	341	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	343	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	345	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	347	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	348	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	350	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	351	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	352	D	创建、安装回调、清空或释放日志。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_log.c	383	B	log_get_batch 在环的末端被截断。要先发生扩容或绕环。	守卫是同一节点日志条数达到 INITIAL_CAPACITY（10）。500 条 30 步轨迹没把一条日志撑到 10。另开一份连续 ClientRequest 的配置，不改这五份 cfg，也不把这段写成死代码。
+raft_log.c	399	A	log_poll 的入口，后面会调用 raft_log_poll。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_log.c	401	A	log_poll 反复调用 raft_log_poll，直到 base 追上快照下标。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_log.c	402	A	log_poll 反复调用 raft_log_poll，直到 base 追上快照下标。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_log.c	403	A	log_poll 反复调用 raft_log_poll，直到 base 追上快照下标。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_log.c	404	C	log_poll 包装里 raft_log_poll 返回错误。规格里没有这条失败。	白名单，不采样。
+raft_log.c	405	C	log_poll 包装里 raft_log_poll 返回错误。规格里没有这条失败。	白名单，不采样。
+raft_node.c	58	D	节点释放，或驱动不调用的 udata / msg_id / 快照偏移 getter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_node.c	60	D	节点释放，或驱动不调用的 udata / msg_id / 快照偏移 getter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_node.c	61	D	节点释放，或驱动不调用的 udata / msg_id / 快照偏移 getter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_node.c	111	D	节点释放，或驱动不调用的 udata / msg_id / 快照偏移 getter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_node.c	113	D	节点释放，或驱动不调用的 udata / msg_id / 快照偏移 getter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_node.c	116	D	节点释放，或驱动不调用的 udata / msg_id / 快照偏移 getter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_node.c	118	D	节点释放，或驱动不调用的 udata / msg_id / 快照偏移 getter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_node.c	121	D	节点释放，或驱动不调用的 udata / msg_id / 快照偏移 getter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_node.c	123	D	节点释放，或驱动不调用的 udata / msg_id / 快照偏移 getter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_node.c	124	D	节点释放，或驱动不调用的 udata / msg_id / 快照偏移 getter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_node.c	126	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	128	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	129	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	150	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	152	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	160	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	162	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	165	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	167	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	168	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	170	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	172	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	174	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	176	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	177	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	179	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	181	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	188	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	190	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	191	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	193	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	195	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	197	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	199	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	207	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	209	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	210	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	212	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	214	E	节点投票权、活跃、日志追平、加入提交这些标志。规格把成员变更留在 E，这些字段不在 A 的变量表里。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_node.c	216	D	raft_node_is_addition_committed。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_node.c	218	D	raft_node_is_addition_committed。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_node.c	221	D	节点释放，或驱动不调用的 udata / msg_id / 快照偏移 getter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_node.c	223	D	节点释放，或驱动不调用的 udata / msg_id / 快照偏移 getter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server.c	39	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	44	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	45	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	46	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	47	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	48	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	63	C	vsnprintf 失败时把缓冲清成空串。规格里没有格式化失败。	白名单，不采样。
+raft_server.c	84	B	raft_update_quorum_meta 的函数体已经执行，未覆盖的是右花括号。	不采样。
+raft_server.c	91	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	121	C	分配失败返回 NULL 或 RAFT_ERR_NOMEM。规格里没有分配失败。	白名单，不采样。
+raft_server.c	122	C	分配失败返回 NULL 或 RAFT_ERR_NOMEM。规格里没有分配失败。	白名单，不采样。
+raft_server.c	139	B	raft_restore_metadata 的入口。写入任期和投票的是函数体。	见 scenarios.md 的崩溃恢复。
+raft_server.c	143	A	raft_restore_metadata 恢复任期和投票。Crash 不在 MCNext 里。	见 scenarios.md 的崩溃恢复。不在 Sand* 里补协议。
+raft_server.c	144	A	raft_restore_metadata 恢复任期和投票。Crash 不在 MCNext 里。	见 scenarios.md 的崩溃恢复。不在 Sand* 里补协议。
+raft_server.c	146	B	raft_restore_metadata 的 return 0。	见 scenarios.md 的崩溃恢复。
+raft_server.c	155	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	157	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	158	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	159	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	161	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	163	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	164	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	165	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	166	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	167	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	168	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	169	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	170	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	171	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	172	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	173	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	174	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	175	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	176	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	188	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	190	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	191	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	204	C	节点数组扩容失败后释放节点并返回 NULL。	白名单，不采样。
+raft_server.c	205	C	节点数组扩容失败后释放节点并返回 NULL。	白名单，不采样。
+raft_server.c	214	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	226	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	228	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	231	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	233	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	234	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	238	C	assert(node)。失败臂。	白名单，不采样。
+raft_server.c	240	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	241	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	243	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	250	C	assert(found)。失败臂。	白名单，不采样。
+raft_server.c	251	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	253	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	254	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	256	A	删掉的节点是当前领导者时把 leader_id 清成空。	这行在删除当前领导者时清掉 leader。ProposeRemoveServer 不在 MCNext 里。见 scenarios.md。
+raft_server.c	257	A	删掉的节点是当前领导者时把 leader_id 清成空。	这行在删除当前领导者时清掉 leader。ProposeRemoveServer 不在 MCNext 里。见 scenarios.md。
+raft_server.c	260	D	raft_remove_node 末尾释放节点。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	261	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	263	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	265	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	268	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	271	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	272	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	273	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	275	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	277	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	278	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	279	C	assert 新节点存在且可投票。失败臂。	白名单，不采样。
+raft_server.c	280	C	assert 新节点存在且可投票。失败臂。	白名单，不采样。
+raft_server.c	283	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	284	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	286	C	assert 非投票节点。失败臂。	白名单，不采样。
+raft_server.c	287	C	assert 非投票节点。失败臂。	白名单，不采样。
+raft_server.c	289	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	291	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	293	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	294	C	assert 新非投票节点。失败臂。	白名单，不采样。
+raft_server.c	295	C	assert 新非投票节点。失败臂。	白名单，不采样。
+raft_server.c	300	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	301	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	302	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	306	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	307	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	316	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	319	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	320	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	322	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	324	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	325	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	326	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	328	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	329	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	330	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	331	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	333	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	334	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	335	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	339	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	340	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	345	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	347	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	350	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	353	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	354	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	356	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	357	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	358	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	359	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	360	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	361	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	362	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	363	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	364	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	365	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	366	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	367	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	396	C	log pop 失败后 sync 并返回。成功的删除已经发生过。	白名单，不采样。
+raft_server.c	397	C	log pop 失败后 sync 并返回。成功的删除已经发生过。	白名单，不采样。
+raft_server.c	398	C	log pop 失败后 sync 并返回。成功的删除已经发生过。	白名单，不采样。
+raft_server.c	405	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	424	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	467	A	单节点成为领导者时立刻提交空条目。	另开单节点配置。不在三节点 cfg 上加 trace，不改 Sand*。
+raft_server.c	490	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 notify_state_event。	白名单，不采样。
+raft_server.c	498	A	进入 pre-candidate：清掉已获投票并设置该状态。	这行把 state 写成 PreCandidate，或为 PreVote 清投票。规格的 state 没有这个值。见 scenarios.md。
+raft_server.c	500	A	进入 pre-candidate：清掉已获投票并设置该状态。	这行把 state 写成 PreCandidate，或为 PreVote 清投票。规格的 state 没有这个值。见 scenarios.md。
+raft_server.c	501	A	进入 pre-candidate：清掉已获投票并设置该状态。	这行把 state 写成 PreCandidate，或为 PreVote 清投票。规格的 state 没有这个值。见 scenarios.md。
+raft_server.c	504	A	进入 pre-candidate：清掉已获投票并设置该状态。	这行把 state 写成 PreCandidate，或为 PreVote 清投票。规格的 state 没有这个值。见 scenarios.md。
+raft_server.c	506	B	pre-candidate 向其他投票节点发 RequestVote，并打日志。	守卫是走 PreVote。规格的 state 没有 PreCandidate，驱动对超时传入 skip_precandidate=1。见 scenarios.md。
+raft_server.c	507	B	pre-candidate 向其他投票节点发 RequestVote，并打日志。	守卫是走 PreVote。规格的 state 没有 PreCandidate，驱动对超时传入 skip_precandidate=1。见 scenarios.md。
+raft_server.c	509	B	pre-candidate 向其他投票节点发 RequestVote，并打日志。	守卫是走 PreVote。规格的 state 没有 PreCandidate，驱动对超时传入 skip_precandidate=1。见 scenarios.md。
+raft_server.c	510	B	pre-candidate 向其他投票节点发 RequestVote，并打日志。	守卫是走 PreVote。规格的 state 没有 PreCandidate，驱动对超时传入 skip_precandidate=1。见 scenarios.md。
+raft_server.c	514	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 notify_state_event。	白名单，不采样。
+raft_server.c	515	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 notify_state_event。	白名单，不采样。
+raft_server.c	518	B	pre-candidate 向其他投票节点发 RequestVote，并打日志。	守卫是走 PreVote。规格的 state 没有 PreCandidate，驱动对超时传入 skip_precandidate=1。见 scenarios.md。
+raft_server.c	520	B	pre-candidate 向其他投票节点发 RequestVote，并打日志。	守卫是走 PreVote。规格的 state 没有 PreCandidate，驱动对超时传入 skip_precandidate=1。见 scenarios.md。
+raft_server.c	553	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 notify_state_event。	白名单，不采样。
+raft_server.c	570	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 notify_state_event。	白名单，不采样。
+raft_server.c	576	B	msgid_cmp 和 quorum_msg_id。只有读队列或 check-quorum 会调用。	见 scenarios.md 的读和 check-quorum。不在 Sand* 里补协议。
+raft_server.c	578	B	msgid_cmp 和 quorum_msg_id。只有读队列或 check-quorum 会调用。	见 scenarios.md 的读和 check-quorum。不在 Sand* 里补协议。
+raft_server.c	579	B	msgid_cmp 和 quorum_msg_id。只有读队列或 check-quorum 会调用。	见 scenarios.md 的读和 check-quorum。不在 Sand* 里补协议。
+raft_server.c	581	B	msgid_cmp 和 quorum_msg_id。只有读队列或 check-quorum 会调用。	见 scenarios.md 的读和 check-quorum。不在 Sand* 里补协议。
+raft_server.c	584	B	msgid_cmp 和 quorum_msg_id。只有读队列或 check-quorum 会调用。	见 scenarios.md 的读和 check-quorum。不在 Sand* 里补协议。
+raft_server.c	585	B	msgid_cmp 和 quorum_msg_id。只有读队列或 check-quorum 会调用。	见 scenarios.md 的读和 check-quorum。不在 Sand* 里补协议。
+raft_server.c	586	B	msgid_cmp 和 quorum_msg_id。只有读队列或 check-quorum 会调用。	见 scenarios.md 的读和 check-quorum。不在 Sand* 里补协议。
+raft_server.c	587	B	msgid_cmp 和 quorum_msg_id。只有读队列或 check-quorum 会调用。	见 scenarios.md 的读和 check-quorum。不在 Sand* 里补协议。
+raft_server.c	589	B	msgid_cmp 和 quorum_msg_id。只有读队列或 check-quorum 会调用。	见 scenarios.md 的读和 check-quorum。不在 Sand* 里补协议。
+raft_server.c	590	B	msgid_cmp 和 quorum_msg_id。只有读队列或 check-quorum 会调用。	见 scenarios.md 的读和 check-quorum。不在 Sand* 里补协议。
+raft_server.c	592	B	msgid_cmp 和 quorum_msg_id。只有读队列或 check-quorum 会调用。	见 scenarios.md 的读和 check-quorum。不在 Sand* 里补协议。
+raft_server.c	593	B	msgid_cmp 和 quorum_msg_id。只有读队列或 check-quorum 会调用。	见 scenarios.md 的读和 check-quorum。不在 Sand* 里补协议。
+raft_server.c	595	B	msgid_cmp 和 quorum_msg_id。只有读队列或 check-quorum 会调用。	见 scenarios.md 的读和 check-quorum。不在 Sand* 里补协议。
+raft_server.c	596	B	msgid_cmp 和 quorum_msg_id。只有读队列或 check-quorum 会调用。	见 scenarios.md 的读和 check-quorum。不在 Sand* 里补协议。
+raft_server.c	598	B	msgid_cmp 和 quorum_msg_id。只有读队列或 check-quorum 会调用。	见 scenarios.md 的读和 check-quorum。不在 Sand* 里补协议。
+raft_server.c	602	B	msgid_cmp 和 quorum_msg_id。只有读队列或 check-quorum 会调用。	见 scenarios.md 的读和 check-quorum。不在 Sand* 里补协议。
+raft_server.c	609	B	msgid_cmp 和 quorum_msg_id。只有读队列或 check-quorum 会调用。	见 scenarios.md 的读和 check-quorum。不在 Sand* 里补协议。
+raft_server.c	611	B	msgid_cmp 和 quorum_msg_id。只有读队列或 check-quorum 会调用。	见 scenarios.md 的读和 check-quorum。不在 Sand* 里补协议。
+raft_server.c	636	B	periodic 没带毫秒时改用墙钟。生成器每次都传入毫秒。	要覆盖须改生成器并新开一轮。不在本轮加 trace。
+raft_server.c	647	A	单节点且不是领导者时把任期加一。	另开单节点配置。不在三节点 cfg 上加 trace，不改 Sand*。
+raft_server.c	648	C	单节点分支里 raft_set_current_term 失败返回。规格里没有这个失败。	白名单，不采样。
+raft_server.c	652	A	单节点调用 raft_become_leader。	另开单节点配置。不在三节点 cfg 上加 trace，不改 Sand*。
+raft_server.c	653	C	单节点分支里 raft_become_leader 失败返回。规格里没有这个失败。	白名单，不采样。
+raft_server.c	660	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	661	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	662	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	690	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	692	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	694	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	695	A	check-quorum 失败时调用 raft_become_follower。	这行在法定人数心跳丢失时把角色改回 follower。现有卸任动作对不上这个守卫。见 scenarios.md。
+raft_server.c	698	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	703	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	704	C	raft_election_start 失败返回。规格里没有这个失败。	白名单，不采样。
+raft_server.c	720	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	722	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	774	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	776	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	777	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	779	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	784	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	785	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	786	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	787	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	788	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	790	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	791	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	792	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	793	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	843	C	raft_set_current_term 失败后 goto out。规格里没有这个失败。	白名单，不采样。
+raft_server.c	853	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	856	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	857	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	869	B	AppendEntries 发现 prev 任期不一致时的日志。删除在后面的调用。	五个配置已封顶。冲突删除要 prev 任期对不上且 prev 大于提交点。
+raft_server.c	872	B	冲突下标已经提交时返回 RAFT_ERR_SHUTDOWN。防御性拒绝。成功路径若尚未执行，不能把整个函数当成白名单。	守卫是 prev_log_idx <= commitIndex。加种子可能走到。不换模型。五个配置已封顶。
+raft_server.c	874	B	冲突下标已经提交时返回 RAFT_ERR_SHUTDOWN。防御性拒绝。成功路径若尚未执行，不能把整个函数当成白名单。	守卫是 prev_log_idx <= commitIndex。加种子可能走到。不换模型。五个配置已封顶。
+raft_server.c	877	B	冲突下标已经提交时返回 RAFT_ERR_SHUTDOWN。防御性拒绝。成功路径若尚未执行，不能把整个函数当成白名单。	守卫是 prev_log_idx <= commitIndex。加种子可能走到。不换模型。五个配置已封顶。
+raft_server.c	878	B	冲突下标已经提交时返回 RAFT_ERR_SHUTDOWN。防御性拒绝。成功路径若尚未执行，不能把整个函数当成白名单。	守卫是 prev_log_idx <= commitIndex。加种子可能走到。不换模型。五个配置已封顶。
+raft_server.c	879	B	冲突下标已经提交时返回 RAFT_ERR_SHUTDOWN。防御性拒绝。成功路径若尚未执行，不能把整个函数当成白名单。	守卫是 prev_log_idx <= commitIndex。加种子可能走到。不换模型。五个配置已封顶。
+raft_server.c	883	A	prev 任期冲突时从该下标删掉日志后缀。	规格里的 AppendEntries 冲突就是这条赋值。五个配置已封顶，加种子可能走到。不换模型，不写成死代码。
+raft_server.c	884	B	冲突删除之后释放条目并 goto。	和 raft_server.c:883 同一条冲突路径。
+raft_server.c	885	B	冲突删除之后释放条目并 goto。	和 raft_server.c:883 同一条冲突路径。
+raft_server.c	922	B	要追加的下标已经提交时返回 RAFT_ERR_SHUTDOWN。防御性拒绝。成功路径若尚未执行，不能把整个函数当成白名单。	守卫是条目下标 <= commitIndex。加种子可能走到。五个配置已封顶。
+raft_server.c	924	B	要追加的下标已经提交时返回 RAFT_ERR_SHUTDOWN。防御性拒绝。成功路径若尚未执行，不能把整个函数当成白名单。	守卫是条目下标 <= commitIndex。加种子可能走到。五个配置已封顶。
+raft_server.c	925	B	要追加的下标已经提交时返回 RAFT_ERR_SHUTDOWN。防御性拒绝。成功路径若尚未执行，不能把整个函数当成白名单。	守卫是条目下标 <= commitIndex。加种子可能走到。五个配置已封顶。
+raft_server.c	930	C	追加条目失败后 goto out。规格里没有 log_offer 失败。	白名单，不采样。
+raft_server.c	934	B	给 AppendEntries 响应填 current_idx。不改服务器上的日志或提交点。	五个配置已封顶。不换模型。
+raft_server.c	941	C	同步日志失败后 goto out。	白名单，不采样。
+raft_server.c	949	C	同步日志失败后 goto out。	白名单，不采样。
+raft_server.c	1010	C	raft_set_current_term 失败后 goto done。	白名单，不采样。
+raft_server.c	1046	C	raft_vote_for_nodeid 失败时把 vote_granted 清掉。	白名单，不采样。
+raft_server.c	1054	C	done 标签。成功路径从上方落入，失败的 goto 没走到。	白名单，不采样。
+raft_server.c	1067	B	raft_votes_is_majority 在 -O2 下被内联。调用点在收到投票响应时已经执行。	不采样。换 -O0 才会执行这个外联副本。
+raft_server.c	1070	B	raft_votes_is_majority 在 -O2 下被内联。调用点在收到投票响应时已经执行。	不采样。换 -O0 才会执行这个外联副本。
+raft_server.c	1094	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1095	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1117	C	raft_become_leader 或 become_candidate 失败返回。	白名单，不采样。
+raft_server.c	1131	B	已有投票权变更时返回 RAFT_ERR_ONE_VOTING_CHANGE_ONLY。防御性拒绝。成功路径若尚未执行，不能把整个函数当成白名单。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	1137	B	快照进行中拒绝新条目，返回 RAFT_ERR_SNAPSHOT_IN_PROGRESS。防御性拒绝。成功路径若尚未执行，不能把整个函数当成白名单。	守卫要快照动作。MCNext 没有 TakeSnapshot / InstallSnapshot，驱动也没有命令。见 scenarios.md。
+raft_server.c	1187	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1188	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1223	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	1226	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	1255	C	applylog 返回 RAFT_ERR_SHUTDOWN。驱动没让 apply 失败。	白名单，不采样。
+raft_server.c	1256	C	applylog 返回 RAFT_ERR_SHUTDOWN。驱动没让 apply 失败。	白名单，不采样。
+raft_server.c	1264	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	1267	E	成员变更：增删节点、配置条目、投票权变更进行中。客户端值只有 v，MCNext 没有 ProposeAddServer / ProposeRemoveServer。	守卫要配置条目或非投票节点。MCNext 的客户端值只有 v。见 scenarios.md。
+raft_server.c	1287	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 get_entries_to_send。发送走的是 raft_get_entries_from_idx。	白名单，不采样。
+raft_server.c	1289	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 get_entries_to_send。发送走的是 raft_get_entries_from_idx。	白名单，不采样。
+raft_server.c	1293	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 get_entries_to_send。发送走的是 raft_get_entries_from_idx。	白名单，不采样。
+raft_server.c	1294	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 get_entries_to_send。发送走的是 raft_get_entries_from_idx。	白名单，不采样。
+raft_server.c	1298	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 get_entries_to_send。发送走的是 raft_get_entries_from_idx。	白名单，不采样。
+raft_server.c	1300	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 get_entries_to_send。发送走的是 raft_get_entries_from_idx。	白名单，不采样。
+raft_server.c	1301	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 get_entries_to_send。发送走的是 raft_get_entries_from_idx。	白名单，不采样。
+raft_server.c	1305	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 get_entries_to_send。发送走的是 raft_get_entries_from_idx。	白名单，不采样。
+raft_server.c	1306	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 get_entries_to_send。发送走的是 raft_get_entries_from_idx。	白名单，不采样。
+raft_server.c	1331	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1333	C	没有 send_snapshot 回调时返回。驱动没装这个回调。	白名单，不采样。
+raft_server.c	1337	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1338	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1340	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1341	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1342	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1343	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1344	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1345	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1349	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1351	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1352	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 get_snapshot_chunk。	白名单，不采样。
+raft_server.c	1353	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 get_snapshot_chunk。	白名单，不采样。
+raft_server.c	1356	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1363	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1364	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 send_snapshot。	白名单，不采样。
+raft_server.c	1365	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 send_snapshot。	白名单，不采样。
+raft_server.c	1368	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1369	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1370	A	快照最后一块发出后把对方 next_idx 设成快照点加一。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1371	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1374	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1378	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1383	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1385	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1392	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1393	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1394	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1395	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1397	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1398	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1400	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1403	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1404	A	快照请求任期更高时更新 current_term。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1405	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1406	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1410	A	接受快照发送者为领导者。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1414	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1417	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1418	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1423	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1424	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1425	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 clear_snapshot。	白名单，不采样。
+raft_server.c	1426	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 clear_snapshot。	白名单，不采样。
+raft_server.c	1431	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1432	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1433	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1436	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1438	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 store_snapshot_chunk。	白名单，不采样。
+raft_server.c	1439	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 store_snapshot_chunk。	白名单，不采样。
+raft_server.c	1442	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1444	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1445	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1447	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 load_snapshot。	白名单，不采样。
+raft_server.c	1448	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 load_snapshot。	白名单，不采样。
+raft_server.c	1452	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1453	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1454	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1455	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1456	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1459	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1460	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1461	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1464	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1468	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1471	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1475	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1480	B	不是领导者就丢弃快照响应。	守卫要快照动作。MCNext 没有 TakeSnapshot / InstallSnapshot，驱动也没有命令。见 scenarios.md。
+raft_server.c	1481	B	不是领导者就丢弃快照响应。	守卫要快照动作。MCNext 没有 TakeSnapshot / InstallSnapshot，驱动也没有命令。见 scenarios.md。
+raft_server.c	1484	B	任期或 msg_id 过旧就丢弃快照响应。	守卫要快照动作。MCNext 没有 TakeSnapshot / InstallSnapshot，驱动也没有命令。见 scenarios.md。
+raft_server.c	1485	B	任期或 msg_id 过旧就丢弃快照响应。	守卫要快照动作。MCNext 没有 TakeSnapshot / InstallSnapshot，驱动也没有命令。见 scenarios.md。
+raft_server.c	1486	B	任期或 msg_id 过旧就丢弃快照响应。	守卫要快照动作。MCNext 没有 TakeSnapshot / InstallSnapshot，驱动也没有命令。见 scenarios.md。
+raft_server.c	1489	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1490	A	快照响应任期更高时更新 current_term。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1491	C	快照响应里 raft_set_current_term 失败。	白名单，不采样。
+raft_server.c	1495	A	快照响应任期更高时变成 follower。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1496	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1499	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1501	B	快照块失败时记下偏移。不改快照点本身。	守卫要快照动作。MCNext 没有 TakeSnapshot / InstallSnapshot，驱动也没有命令。见 scenarios.md。
+raft_server.c	1502	B	快照块失败时记下偏移。不改快照点本身。	守卫要快照动作。MCNext 没有 TakeSnapshot / InstallSnapshot，驱动也没有命令。见 scenarios.md。
+raft_server.c	1505	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1506	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1507	A	快照传完后把对方 next_idx 设成快照点加一。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1511	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1512	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1545	B	对方 next_idx 落在快照点之内时改走发送快照。这行本身不改 nextIndex。	守卫要快照动作。MCNext 没有 TakeSnapshot / InstallSnapshot，驱动也没有命令。见 scenarios.md。
+raft_server.c	1554	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 backpressure。	白名单，不采样。
+raft_server.c	1587	B	AppendEntries 发送循环的回边。本轮一次发送把剩余条目发完。	五个配置已封顶。不把这条写成死代码。另开观察「发送后 next 仍小于队尾」的配置。
+raft_server.c	1651	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1654	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1655	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1657	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1658	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1661	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1663	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1674	C	exec_deadline。驱动把截止设成极大，本轮没有提前返回。	白名单，不采样。
+raft_server.c	1675	C	exec_deadline。驱动把截止设成极大，本轮没有提前返回。	白名单，不采样。
+raft_server.c	1680	C	raft_apply_entry 返回错误。成功的 apply 已经发生。	白名单，不采样。
+raft_server.c	1701	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1703	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1705	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1708	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1710	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1712	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1715	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1719	B	恢复快照时任期或下标不合法就拒绝。防御性拒绝。成功路径若尚未执行，不能把整个函数当成白名单。	守卫要快照动作。MCNext 没有 TakeSnapshot / InstallSnapshot，驱动也没有命令。见 scenarios.md。
+raft_server.c	1720	B	恢复快照时任期或下标不合法就拒绝。防御性拒绝。成功路径若尚未执行，不能把整个函数当成白名单。	守卫要快照动作。MCNext 没有 TakeSnapshot / InstallSnapshot，驱动也没有命令。见 scenarios.md。
+raft_server.c	1721	B	恢复快照时任期或下标不合法就拒绝。防御性拒绝。成功路径若尚未执行，不能把整个函数当成白名单。	守卫要快照动作。MCNext 没有 TakeSnapshot / InstallSnapshot，驱动也没有命令。见 scenarios.md。
+raft_server.c	1722	B	恢复快照时任期或下标不合法就拒绝。防御性拒绝。成功路径若尚未执行，不能把整个函数当成白名单。	守卫要快照动作。MCNext 没有 TakeSnapshot / InstallSnapshot，驱动也没有命令。见 scenarios.md。
+raft_server.c	1726	A	raft_restore_snapshot 写入任期、提交点和快照点。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1727	A	raft_restore_snapshot 写入任期、提交点和快照点。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1728	A	raft_restore_snapshot 写入任期、提交点和快照点。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1729	A	raft_restore_snapshot 写入任期、提交点和快照点。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1730	A	raft_restore_snapshot 写入任期、提交点和快照点。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1731	A	raft_restore_snapshot 写入任期、提交点和快照点。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1734	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1735	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1737	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1738	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1739	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1742	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1745	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1748	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1750	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1751	B	没有可压缩日志时 begin_snapshot 返回。防御性拒绝。成功路径若尚未执行，不能把整个函数当成白名单。	守卫要快照动作。MCNext 没有 TakeSnapshot / InstallSnapshot，驱动也没有命令。见 scenarios.md。
+raft_server.c	1756	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1757	C	begin_snapshot 里 raft_apply_all 失败返回。	白名单，不采样。
+raft_server.c	1761	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1763	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1764	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1765	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1767	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1770	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1773	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1775	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1776	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1779	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1781	B	没有进行中的快照时 end_snapshot 返回。防御性拒绝。成功路径若尚未执行，不能把整个函数当成白名单。	守卫要快照动作。MCNext 没有 TakeSnapshot / InstallSnapshot，驱动也没有命令。见 scenarios.md。
+raft_server.c	1784	A	raft_end_snapshot 提交快照点并 poll 掉日志前缀。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1785	A	raft_end_snapshot 提交快照点并 poll 掉日志前缀。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1788	A	raft_end_snapshot 提交快照点并 poll 掉日志前缀。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1789	C	end_snapshot 里 poll 失败返回。	白名单，不采样。
+raft_server.c	1792	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1793	C	end_snapshot 里 sync 失败返回。	白名单，不采样。
+raft_server.c	1796	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1798	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1799	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1802	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1805	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1807	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1809	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1810	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1812	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1813	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1816	A	快照点超过对方 next_idx 时发送快照。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1818	A	快照点超过对方 next_idx 时发送快照。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1825	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1829	B	加载快照参数过小返回 RAFT_ERR_MISUSE。防御性拒绝。成功路径若尚未执行，不能把整个函数当成白名单。	守卫要快照动作。MCNext 没有 TakeSnapshot / InstallSnapshot，驱动也没有命令。见 scenarios.md。
+raft_server.c	1830	B	加载快照参数过小返回 RAFT_ERR_MISUSE。防御性拒绝。成功路径若尚未执行，不能把整个函数当成白名单。	守卫要快照动作。MCNext 没有 TakeSnapshot / InstallSnapshot，驱动也没有命令。见 scenarios.md。
+raft_server.c	1831	B	加载快照参数过小返回 RAFT_ERR_MISUSE。防御性拒绝。成功路径若尚未执行，不能把整个函数当成白名单。	守卫要快照动作。MCNext 没有 TakeSnapshot / InstallSnapshot，驱动也没有命令。见 scenarios.md。
+raft_server.c	1832	B	加载快照参数过小返回 RAFT_ERR_MISUSE。防御性拒绝。成功路径若尚未执行，不能把整个函数当成白名单。	守卫要快照动作。MCNext 没有 TakeSnapshot / InstallSnapshot，驱动也没有命令。见 scenarios.md。
+raft_server.c	1833	B	加载快照参数过小返回 RAFT_ERR_MISUSE。防御性拒绝。成功路径若尚未执行，不能把整个函数当成白名单。	守卫要快照动作。MCNext 没有 TakeSnapshot / InstallSnapshot，驱动也没有命令。见 scenarios.md。
+raft_server.c	1836	B	快照下标不比当前快照点新就返回。	守卫要快照动作。MCNext 没有 TakeSnapshot / InstallSnapshot，驱动也没有命令。见 scenarios.md。
+raft_server.c	1840	A	raft_begin_load_snapshot 重设日志、任期、提交点和快照点。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1841	A	raft_begin_load_snapshot 重设日志、任期、提交点和快照点。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1842	C	begin_load_snapshot 里设置任期失败返回。	白名单，不采样。
+raft_server.c	1847	A	raft_begin_load_snapshot 重设日志、任期、提交点和快照点。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1849	A	raft_begin_load_snapshot 重设日志、任期、提交点和快照点。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1850	A	raft_begin_load_snapshot 重设日志、任期、提交点和快照点。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1853	A	raft_begin_load_snapshot 重设日志、任期、提交点和快照点。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1854	A	raft_begin_load_snapshot 重设日志、任期、提交点和快照点。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1855	A	raft_begin_load_snapshot 重设日志、任期、提交点和快照点。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1856	A	raft_begin_load_snapshot 重设日志、任期、提交点和快照点。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1859	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1860	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1861	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1864	D	加载快照时释放其他节点。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	1867	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1869	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1870	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1871	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1873	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1876	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1879	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1881	A	raft_end_load_snapshot 写入快照点。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1882	A	raft_end_load_snapshot 写入快照点。	规格里有快照赋值，本轮 MCNext 没有对应动作，加长 30 步也走不到。见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1885	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1886	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1888	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1889	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1890	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1893	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1896	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1899	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	1901	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	1926	C	条目自带 free_func。本轮条目走 raft_free，这条回调不在规格里。	白名单，不采样。
+raft_server.c	1946	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1948	B	不是领导者就拒绝读请求。	守卫是领导者上的非空读队列。MCNext 没有读动作，驱动的读回调是 assert(false)。见 scenarios.md。
+raft_server.c	1952	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1954	B	接受读请求时记下 read_idx 并增加 msg_id。这两项不在 A 的变量表里。	守卫是领导者上的非空读队列。MCNext 没有读动作，驱动的读回调是 assert(false)。见 scenarios.md。
+raft_server.c	1955	B	接受读请求时记下 read_idx 并增加 msg_id。这两项不在 A 的变量表里。	守卫是领导者上的非空读队列。MCNext 没有读动作，驱动的读回调是 assert(false)。见 scenarios.md。
+raft_server.c	1956	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1957	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1958	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1960	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1961	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1962	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1963	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1964	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1966	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1967	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1972	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1974	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1976	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1979	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1980	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1981	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1982	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1984	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1985	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1988	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1989	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1998	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	1999	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2000	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2010	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2014	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2016	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2017	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2018	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2020	C	读队列处理碰到 exec_deadline。驱动把截止设成极大。	白名单，不采样。
+raft_server.c	2021	C	读队列处理碰到 exec_deadline。驱动把截止设成极大。	白名单，不采样。
+raft_server.c	2022	C	读队列处理碰到 exec_deadline。驱动把截止设成极大。	白名单，不采样。
+raft_server.c	2025	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2029	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2031	B	不是领导者就拒绝转移。	守卫是领导权转移进行中。规格没有转移目标和 TimeoutNow。见 scenarios.md。
+raft_server.c	2035	B	已经在转移就拒绝第二次。	守卫是领导权转移进行中。规格没有转移目标和 TimeoutNow。见 scenarios.md。
+raft_server.c	2039	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2041	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2042	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2048	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2049	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2050	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2052	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2053	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2054	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2059	B	没有合格的转移目标就返回。	守卫是领导权转移进行中。规格没有转移目标和 TimeoutNow。见 scenarios.md。
+raft_server.c	2063	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2064	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2065	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2067	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2071	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2072	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2074	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2079	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2081	B	领导者收到 TimeoutNow 就返回。	守卫是领导权转移进行中。规格没有转移目标和 TimeoutNow。见 scenarios.md。
+raft_server.c	2093	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2108	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2111	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2112	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2116	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 notify_transfer_event。	白名单，不采样。
+raft_server.c	2117	C	回调未安装或回调失败。规格里没有这个回调，守卫写不成协议谓词。 notify_transfer_event。	白名单，不采样。
+raft_server.c	2120	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2121	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2122	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2142	B	提交点排序时下标相等的 continue。提交点已经有前进。	加种子可能走到相等下标。五个配置已封顶，不换模型。
+raft_server.c	2159	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2161	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2163	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2167	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2168	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2174	B	raft_flush 在非领导者上出口。领导者路径已经执行。	五个配置已封顶。再加随机种子不一定走到非领导者 flush。不换模型。
+raft_server.c	2215	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2218	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2219	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2220	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2222	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2225	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2226	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2227	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2229	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2236	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2239	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2240	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2241	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2243	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2246	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2247	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2248	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2250	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2262	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2264	D	堆函数、销毁、raft_clear、不调用的 getter、手动同步或 raft_config 里驱动没读写的项。销毁或清空。MCNext 没有崩溃和恢复，这条路径没执行。这里可能藏资源泄漏，不为此往 MCNext 加崩溃。	低优先级，不采样。
+raft_server.c	2277	C	raft_apply_all 失败后的出口。	白名单，不采样。
+raft_server.c	2290	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2292	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2296	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2298	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2299	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2300	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2304	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2305	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2308	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2309	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2312	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server.c	2313	B	这行自己不改任期、投票、日志、提交点、快照点、角色、nextIndex、matchIndex。守卫属于快照、PreVote、卸任、转移或读。	见 scenarios.md。不在 Sand* 里补协议。
+raft_server_properties.c	21	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	23	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	39	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	41	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	44	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	46	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	49	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	51	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	73	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	75	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	90	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	92	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	93	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	95	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	97	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	100	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	102	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	105	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	107	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	118	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	120	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	123	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	125	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	128	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	129	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	130	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	131	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	132	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	133	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	134	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	135	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	139	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	141	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	144	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	145	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	146	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	147	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	148	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	149	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	150	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	151	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	152	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	153	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	154	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	155	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	156	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	157	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	158	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	159	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	160	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	161	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	162	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	163	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	164	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	165	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	180	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	182	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	185	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	187	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	190	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	192	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	195	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	197	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	200	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	202	D	驱动不调用的 getter，或 raft_set_last_applied_idx 这个公开 setter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	234	B	当前下标等于快照末下标时返回快照任期。快照点保持 0。	守卫要快照动作。MCNext 没有 TakeSnapshot / InstallSnapshot，驱动也没有命令。见 scenarios.md。
+raft_server_properties.c	247	D	快照进行中、快照点、msg_id、last_applied 的 getter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	249	D	快照进行中、快照点、msg_id、last_applied 的 getter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	258	D	快照进行中、快照点、msg_id、last_applied 的 getter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	260	D	快照进行中、快照点、msg_id、last_applied 的 getter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	263	D	快照进行中、快照点、msg_id、last_applied 的 getter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	266	D	快照进行中、快照点、msg_id、last_applied 的 getter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	268	D	快照进行中、快照点、msg_id、last_applied 的 getter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	271	D	快照进行中、快照点、msg_id、last_applied 的 getter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	273	D	快照进行中、快照点、msg_id、last_applied 的 getter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	281	D	快照进行中、快照点、msg_id、last_applied 的 getter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
+raft_server_properties.c	283	D	快照进行中、快照点、msg_id、last_applied 的 getter。驱动不调用的 getter 或 setter。回放比较的是 commitIdx、currentTerm、log、state、nextIdx、matchIdx。	低优先级，不采样。
