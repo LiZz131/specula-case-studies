@@ -1,0 +1,1891 @@
+[INFO] Read cmd (line 92): compare variable                                     
+[INFO] Comment (line 93): # net-len 2   
+[INFO] Read cmd (line 94): compare net-len                                      
+[INFO] Comment (line 95): # [2] LoseMessage s1 s3 2                             
+[DETL] Send cmd (print [2] LoseMessage s1 s3 2) to all                          
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 96): clear n1 n3  
+[DETL] Clear 1 msgs n1 (10.255.255.101) -> n3 (10.255.255.103)                  
+[INFO] Read cmd (line 97): execute n1 get commitIdx                             
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 98): # variable commitIdx n1 0                             
+[INFO] Read cmd (line 99): compare variable                                     
+[INFO] Read cmd (line 100): execute n1 get currentTerm                          
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 101): # variable currentTerm n1 1                          
+[INFO] Read cmd (line 102): compare variable                                    
+[INFO] Read cmd (line 103): execute n1 get log                                  
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 104): # variable log n1 []                                 
+[INFO] Read cmd (line 105): compare variable                                    
+[INFO] Read cmd (line 106): execute n1 get state                                
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 107): # variable state n1 1                                
+[INFO] Read cmd (line 108): compare variable                                    
+[INFO] Read cmd (line 109): execute n2 get commitIdx                            
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 110): # variable commitIdx n2 0                            
+[INFO] Read cmd (line 111): compare variable                                    
+[INFO] Read cmd (line 112): execute n2 get currentTerm                          
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 113): # variable currentTerm n2 0                          
+[INFO] Read cmd (line 114): compare variable                                    
+[INFO] Read cmd (line 115): execute n2 get log                                  
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 116): # variable log n2 []                                 
+[INFO] Read cmd (line 117): compare variable                                    
+[INFO] Read cmd (line 118): execute n2 get state                                
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 119): # variable state n2 0                                
+[INFO] Read cmd (line 120): compare variable                                    
+[INFO] Read cmd (line 121): execute n3 get commitIdx                            
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 122): # variable commitIdx n3 0                            
+[INFO] Read cmd (line 123): compare variable                                    
+[INFO] Read cmd (line 124): execute n3 get currentTerm                          
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 125): # variable currentTerm n3 0                          
+[INFO] Read cmd (line 126): compare variable                                    
+[INFO] Read cmd (line 127): execute n3 get log                                  
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 128): # variable log n3 []                                 
+[INFO] Read cmd (line 129): compare variable                                    
+[INFO] Read cmd (line 130): execute n3 get state                                
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 131): # variable state n3 0                                
+[INFO] Read cmd (line 132): compare variable                                    
+[INFO] Comment (line 133): # net-len 1  
+[INFO] Read cmd (line 134): compare net-len                                     
+[INFO] Comment (line 135): # [3] Timeout s3                                     
+[DETL] Send cmd (print [3] Timeout s3) to all                                   
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 136): intercept n3 inc_time_ms 2000                       
+[DETL] Send cmd to n3 (10.255.255.103): inc_time_ms 2000                        
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 137): execute n3 raft periodic 2000                       
+[DETL] Enqueue in_fd: 14, out_fd: 13, n3 (10.255.255.103) -> n1 (10.255.255.101) size: 16           
+[DETL] Enqueue in_fd: 16, out_fd: 15, n3 (10.255.255.103) -> n2 (10.255.255.102) size: 16           
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 138): execute n1 get commitIdx                            
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 139): # variable commitIdx n1 0                            
+[INFO] Read cmd (line 140): compare variable                                    
+[INFO] Read cmd (line 141): execute n1 get currentTerm                          
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 142): # variable currentTerm n1 1                          
+[INFO] Read cmd (line 143): compare variable                                    
+[INFO] Read cmd (line 144): execute n1 get log                                  
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 145): # variable log n1 []                                 
+[INFO] Read cmd (line 146): compare variable                                    
+[INFO] Read cmd (line 147): execute n1 get state                                
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 148): # variable state n1 1                                
+[INFO] Read cmd (line 149): compare variable                                    
+[INFO] Read cmd (line 150): execute n2 get commitIdx                            
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 151): # variable commitIdx n2 0                            
+[INFO] Read cmd (line 152): compare variable                                    
+[INFO] Read cmd (line 153): execute n2 get currentTerm                          
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 154): # variable currentTerm n2 0                          
+[INFO] Read cmd (line 155): compare variable                                    
+[INFO] Read cmd (line 156): execute n2 get log                                  
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 157): # variable log n2 []                                 
+[INFO] Read cmd (line 158): compare variable                                    
+[INFO] Read cmd (line 159): execute n2 get state                                
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 160): # variable state n2 0                                
+[INFO] Read cmd (line 161): compare variable                                    
+[INFO] Read cmd (line 162): execute n3 get commitIdx                            
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 163): # variable commitIdx n3 0                            
+[INFO] Read cmd (line 164): compare variable                                    
+[INFO] Read cmd (line 165): execute n3 get currentTerm                          
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 166): # variable currentTerm n3 1                          
+[INFO] Read cmd (line 167): compare variable                                    
+[INFO] Read cmd (line 168): execute n3 get log                                  
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 169): # variable log n3 []                                 
+[INFO] Read cmd (line 170): compare variable                                    
+[INFO] Read cmd (line 171): execute n3 get state                                
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 172): # variable state n3 1                                
+[INFO] Read cmd (line 173): compare variable                                    
+[INFO] Comment (line 174): # net-len 3  
+[INFO] Read cmd (line 175): compare net-len                                     
+[INFO] Comment (line 176): # [4] Timeout s3                                     
+[DETL] Send cmd (print [4] Timeout s3) to all                                   
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 177): intercept n3 inc_time_ms 2000                       
+[DETL] Send cmd to n3 (10.255.255.103): inc_time_ms 2000                        
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 178): execute n3 raft periodic 2000                       
+[DETL] Enqueue in_fd: 14, out_fd: 13, n3 (10.255.255.103) -> n1 (10.255.255.101) size: 16           
+[DETL] Enqueue in_fd: 16, out_fd: 15, n3 (10.255.255.103) -> n2 (10.255.255.102) size: 16           
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 179): execute n1 get commitIdx                            
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 180): # variable commitIdx n1 0                            
+[INFO] Read cmd (line 181): compare variable                                    
+[INFO] Read cmd (line 182): execute n1 get currentTerm                          
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 183): # variable currentTerm n1 1                          
+[INFO] Read cmd (line 184): compare variable                                    
+[INFO] Read cmd (line 185): execute n1 get log                                  
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 186): # variable log n1 []                                 
+[INFO] Read cmd (line 187): compare variable                                    
+[INFO] Read cmd (line 188): execute n1 get state                                
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 189): # variable state n1 1                                
+[INFO] Read cmd (line 190): compare variable                                    
+[INFO] Read cmd (line 191): execute n2 get commitIdx                            
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 192): # variable commitIdx n2 0                            
+[INFO] Read cmd (line 193): compare variable                                    
+[INFO] Read cmd (line 194): execute n2 get currentTerm                          
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 195): # variable currentTerm n2 0                          
+[INFO] Read cmd (line 196): compare variable                                    
+[INFO] Read cmd (line 197): execute n2 get log                                  
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 198): # variable log n2 []                                 
+[INFO] Read cmd (line 199): compare variable                                    
+[INFO] Read cmd (line 200): execute n2 get state                                
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 201): # variable state n2 0                                
+[INFO] Read cmd (line 202): compare variable                                    
+[INFO] Read cmd (line 203): execute n3 get commitIdx                            
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 204): # variable commitIdx n3 0                            
+[INFO] Read cmd (line 205): compare variable                                    
+[INFO] Read cmd (line 206): execute n3 get currentTerm                          
+[DETL] Received data from node "n3": 2  
+[INFO] Comment (line 207): # variable currentTerm n3 2                          
+[INFO] Read cmd (line 208): compare variable                                    
+[INFO] Read cmd (line 209): execute n3 get log                                  
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 210): # variable log n3 []                                 
+[INFO] Read cmd (line 211): compare variable                                    
+[INFO] Read cmd (line 212): execute n3 get state                                
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 213): # variable state n3 1                                
+[INFO] Read cmd (line 214): compare variable                                    
+[INFO] Comment (line 215): # net-len 5  
+[INFO] Read cmd (line 216): compare net-len                                     
+[INFO] Comment (line 217): # [5] Timeout s1                                     
+[DETL] Send cmd (print [5] Timeout s1) to all                                   
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 218): intercept n1 inc_time_ms 2000                       
+[DETL] Send cmd to n1 (10.255.255.101): inc_time_ms 2000                        
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 219): execute n1 raft periodic 2000                       
+[DETL] Enqueue in_fd: 11, out_fd: 12, n1 (10.255.255.101) -> n2 (10.255.255.102) size: 16           
+[DETL] Enqueue in_fd: 13, out_fd: 14, n1 (10.255.255.101) -> n3 (10.255.255.103) size: 16           
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 220): execute n1 get commitIdx                            
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 221): # variable commitIdx n1 0                            
+[INFO] Read cmd (line 222): compare variable                                    
+[INFO] Read cmd (line 223): execute n1 get currentTerm                          
+[DETL] Received data from node "n1": 2  
+[INFO] Comment (line 224): # variable currentTerm n1 2                          
+[INFO] Read cmd (line 225): compare variable                                    
+[INFO] Read cmd (line 226): execute n1 get log                                  
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 227): # variable log n1 []                                 
+[INFO] Read cmd (line 228): compare variable                                    
+[INFO] Read cmd (line 229): execute n1 get state                                
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 230): # variable state n1 1                                
+[INFO] Read cmd (line 231): compare variable                                    
+[INFO] Read cmd (line 232): execute n2 get commitIdx                            
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 233): # variable commitIdx n2 0                            
+[INFO] Read cmd (line 234): compare variable                                    
+[INFO] Read cmd (line 235): execute n2 get currentTerm                          
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 236): # variable currentTerm n2 0                          
+[INFO] Read cmd (line 237): compare variable                                    
+[INFO] Read cmd (line 238): execute n2 get log                                  
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 239): # variable log n2 []                                 
+[INFO] Read cmd (line 240): compare variable                                    
+[INFO] Read cmd (line 241): execute n2 get state                                
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 242): # variable state n2 0                                
+[INFO] Read cmd (line 243): compare variable                                    
+[INFO] Read cmd (line 244): execute n3 get commitIdx                            
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 245): # variable commitIdx n3 0                            
+[INFO] Read cmd (line 246): compare variable                                    
+[INFO] Read cmd (line 247): execute n3 get currentTerm                          
+[DETL] Received data from node "n3": 2  
+[INFO] Comment (line 248): # variable currentTerm n3 2                          
+[INFO] Read cmd (line 249): compare variable                                    
+[INFO] Read cmd (line 250): execute n3 get log                                  
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 251): # variable log n3 []                                 
+[INFO] Read cmd (line 252): compare variable                                    
+[INFO] Read cmd (line 253): execute n3 get state                                
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 254): # variable state n3 1                                
+[INFO] Read cmd (line 255): compare variable                                    
+[INFO] Comment (line 256): # net-len 7  
+[INFO] Read cmd (line 257): compare net-len                                     
+[INFO] Comment (line 258): # [6] Timeout s1                                     
+[DETL] Send cmd (print [6] Timeout s1) to all                                   
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 259): intercept n1 inc_time_ms 2000                       
+[DETL] Send cmd to n1 (10.255.255.101): inc_time_ms 2000                        
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 260): execute n1 raft periodic 2000                       
+[DETL] Enqueue in_fd: 11, out_fd: 12, n1 (10.255.255.101) -> n2 (10.255.255.102) size: 16           
+[DETL] Enqueue in_fd: 13, out_fd: 14, n1 (10.255.255.101) -> n3 (10.255.255.103) size: 16           
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 261): execute n1 get commitIdx                            
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 262): # variable commitIdx n1 0                            
+[INFO] Read cmd (line 263): compare variable                                    
+[INFO] Read cmd (line 264): execute n1 get currentTerm                          
+[DETL] Received data from node "n1": 3  
+[INFO] Comment (line 265): # variable currentTerm n1 3                          
+[INFO] Read cmd (line 266): compare variable                                    
+[INFO] Read cmd (line 267): execute n1 get log                                  
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 268): # variable log n1 []                                 
+[INFO] Read cmd (line 269): compare variable                                    
+[INFO] Read cmd (line 270): execute n1 get state                                
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 271): # variable state n1 1                                
+[INFO] Read cmd (line 272): compare variable                                    
+[INFO] Read cmd (line 273): execute n2 get commitIdx                            
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 274): # variable commitIdx n2 0                            
+[INFO] Read cmd (line 275): compare variable                                    
+[INFO] Read cmd (line 276): execute n2 get currentTerm                          
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 277): # variable currentTerm n2 0                          
+[INFO] Read cmd (line 278): compare variable                                    
+[INFO] Read cmd (line 279): execute n2 get log                                  
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 280): # variable log n2 []                                 
+[INFO] Read cmd (line 281): compare variable                                    
+[INFO] Read cmd (line 282): execute n2 get state                                
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 283): # variable state n2 0                                
+[INFO] Read cmd (line 284): compare variable                                    
+[INFO] Read cmd (line 285): execute n3 get commitIdx                            
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 286): # variable commitIdx n3 0                            
+[INFO] Read cmd (line 287): compare variable                                    
+[INFO] Read cmd (line 288): execute n3 get currentTerm                          
+[DETL] Received data from node "n3": 2  
+[INFO] Comment (line 289): # variable currentTerm n3 2                          
+[INFO] Read cmd (line 290): compare variable                                    
+[INFO] Read cmd (line 291): execute n3 get log                                  
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 292): # variable log n3 []                                 
+[INFO] Read cmd (line 293): compare variable                                    
+[INFO] Read cmd (line 294): execute n3 get state                                
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 295): # variable state n3 1                                
+[INFO] Read cmd (line 296): compare variable                                    
+[INFO] Comment (line 297): # net-len 9  
+[INFO] Read cmd (line 298): compare net-len                                     
+[INFO] Comment (line 299): # [7] Timeout s1                                     
+[DETL] Send cmd (print [7] Timeout s1) to all                                   
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 300): intercept n1 inc_time_ms 2000                       
+[DETL] Send cmd to n1 (10.255.255.101): inc_time_ms 2000                        
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 301): execute n1 raft periodic 2000                       
+[DETL] Enqueue in_fd: 11, out_fd: 12, n1 (10.255.255.101) -> n2 (10.255.255.102) size: 16           
+[DETL] Enqueue in_fd: 13, out_fd: 14, n1 (10.255.255.101) -> n3 (10.255.255.103) size: 16           
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 302): execute n1 get commitIdx                            
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 303): # variable commitIdx n1 0                            
+[INFO] Read cmd (line 304): compare variable                                    
+[INFO] Read cmd (line 305): execute n1 get currentTerm                          
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 306): # variable currentTerm n1 4                          
+[INFO] Read cmd (line 307): compare variable                                    
+[INFO] Read cmd (line 308): execute n1 get log                                  
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 309): # variable log n1 []                                 
+[INFO] Read cmd (line 310): compare variable                                    
+[INFO] Read cmd (line 311): execute n1 get state                                
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 312): # variable state n1 1                                
+[INFO] Read cmd (line 313): compare variable                                    
+[INFO] Read cmd (line 314): execute n2 get commitIdx                            
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 315): # variable commitIdx n2 0                            
+[INFO] Read cmd (line 316): compare variable                                    
+[INFO] Read cmd (line 317): execute n2 get currentTerm                          
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 318): # variable currentTerm n2 0                          
+[INFO] Read cmd (line 319): compare variable                                    
+[INFO] Read cmd (line 320): execute n2 get log                                  
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 321): # variable log n2 []                                 
+[INFO] Read cmd (line 322): compare variable                                    
+[INFO] Read cmd (line 323): execute n2 get state                                
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 324): # variable state n2 0                                
+[INFO] Read cmd (line 325): compare variable                                    
+[INFO] Read cmd (line 326): execute n3 get commitIdx                            
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 327): # variable commitIdx n3 0                            
+[INFO] Read cmd (line 328): compare variable                                    
+[INFO] Read cmd (line 329): execute n3 get currentTerm                          
+[DETL] Received data from node "n3": 2  
+[INFO] Comment (line 330): # variable currentTerm n3 2                          
+[INFO] Read cmd (line 331): compare variable                                    
+[INFO] Read cmd (line 332): execute n3 get log                                  
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 333): # variable log n3 []                                 
+[INFO] Read cmd (line 334): compare variable                                    
+[INFO] Read cmd (line 335): execute n3 get state                                
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 336): # variable state n3 1                                
+[INFO] Read cmd (line 337): compare variable                                    
+[INFO] Comment (line 338): # net-len 11 
+[INFO] Read cmd (line 339): compare net-len                                     
+[INFO] Comment (line 340): # [8] HandleRequestVoteRequest s2 s1 1               
+[DETL] Send cmd (print [8] HandleRequestVoteRequest s2 s1 1) to all             
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 341): deliver-unordered n1 n2 1                           
+[DETL] Deliver msg n1 (10.255.255.101) -> n2 (10.255.255.102) fd: 12 size: 16   
+[INFO] Read cmd (line 342): loop intercept n2 check_has_recv_queue n1           
+[INFO] Read cmd (line 342): intercept n2 check_has_recv_queue n1                
+[DETL] Send cmd to n2 (10.255.255.102): check_has_recv_queue n1                 
+[DETL] Received ack ok from node "n2": True                                     
+[INFO] Read cmd (line 343): execute n2 raft recvfrom n1                         
+[DETL] Enqueue in_fd: 12, out_fd: 11, n2 (10.255.255.102) -> n1 (10.255.255.101) size: 13           
+[DETL] Received ack ok from node "n2": True                                     
+[INFO] Read cmd (line 344): execute n1 get commitIdx                            
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 345): # variable commitIdx n1 0                            
+[INFO] Read cmd (line 346): compare variable                                    
+[INFO] Read cmd (line 347): execute n1 get currentTerm                          
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 348): # variable currentTerm n1 4                          
+[INFO] Read cmd (line 349): compare variable                                    
+[INFO] Read cmd (line 350): execute n1 get log                                  
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 351): # variable log n1 []                                 
+[INFO] Read cmd (line 352): compare variable                                    
+[INFO] Read cmd (line 353): execute n1 get state                                
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 354): # variable state n1 1                                
+[INFO] Read cmd (line 355): compare variable                                    
+[INFO] Read cmd (line 356): execute n2 get commitIdx                            
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 357): # variable commitIdx n2 0                            
+[INFO] Read cmd (line 358): compare variable                                    
+[INFO] Read cmd (line 359): execute n2 get currentTerm                          
+[DETL] Received data from node "n2": 1  
+[INFO] Comment (line 360): # variable currentTerm n2 1                          
+[INFO] Read cmd (line 361): compare variable                                    
+[INFO] Read cmd (line 362): execute n2 get log                                  
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 363): # variable log n2 []                                 
+[INFO] Read cmd (line 364): compare variable                                    
+[INFO] Read cmd (line 365): execute n2 get state                                
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 366): # variable state n2 0                                
+[INFO] Read cmd (line 367): compare variable                                    
+[INFO] Read cmd (line 368): execute n3 get commitIdx                            
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 369): # variable commitIdx n3 0                            
+[INFO] Read cmd (line 370): compare variable                                    
+[INFO] Read cmd (line 371): execute n3 get currentTerm                          
+[DETL] Received data from node "n3": 2  
+[INFO] Comment (line 372): # variable currentTerm n3 2                          
+[INFO] Read cmd (line 373): compare variable                                    
+[INFO] Read cmd (line 374): execute n3 get log                                  
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 375): # variable log n3 []                                 
+[INFO] Read cmd (line 376): compare variable                                    
+[INFO] Read cmd (line 377): execute n3 get state                                
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 378): # variable state n3 1                                
+[INFO] Read cmd (line 379): compare variable                                    
+[INFO] Comment (line 380): # net-len 11 
+[INFO] Read cmd (line 381): compare net-len                                     
+[INFO] Comment (line 382): # [9] LoseMessage s2 s1 13                           
+[DETL] Send cmd (print [9] LoseMessage s2 s1 13) to all                         
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 383): clear n2 n1 
+[DETL] Clear 1 msgs n2 (10.255.255.102) -> n1 (10.255.255.101)                  
+[INFO] Read cmd (line 384): execute n1 get commitIdx                            
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 385): # variable commitIdx n1 0                            
+[INFO] Read cmd (line 386): compare variable                                    
+[INFO] Read cmd (line 387): execute n1 get currentTerm                          
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 388): # variable currentTerm n1 4                          
+[INFO] Read cmd (line 389): compare variable                                    
+[INFO] Read cmd (line 390): execute n1 get log                                  
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 391): # variable log n1 []                                 
+[INFO] Read cmd (line 392): compare variable                                    
+[INFO] Read cmd (line 393): execute n1 get state                                
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 394): # variable state n1 1                                
+[INFO] Read cmd (line 395): compare variable                                    
+[INFO] Read cmd (line 396): execute n2 get commitIdx                            
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 397): # variable commitIdx n2 0                            
+[INFO] Read cmd (line 398): compare variable                                    
+[INFO] Read cmd (line 399): execute n2 get currentTerm                          
+[DETL] Received data from node "n2": 1  
+[INFO] Comment (line 400): # variable currentTerm n2 1                          
+[INFO] Read cmd (line 401): compare variable                                    
+[INFO] Read cmd (line 402): execute n2 get log                                  
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 403): # variable log n2 []                                 
+[INFO] Read cmd (line 404): compare variable                                    
+[INFO] Read cmd (line 405): execute n2 get state                                
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 406): # variable state n2 0                                
+[INFO] Read cmd (line 407): compare variable                                    
+[INFO] Read cmd (line 408): execute n3 get commitIdx                            
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 409): # variable commitIdx n3 0                            
+[INFO] Read cmd (line 410): compare variable                                    
+[INFO] Read cmd (line 411): execute n3 get currentTerm                          
+[DETL] Received data from node "n3": 2  
+[INFO] Comment (line 412): # variable currentTerm n3 2                          
+[INFO] Read cmd (line 413): compare variable                                    
+[INFO] Read cmd (line 414): execute n3 get log                                  
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 415): # variable log n3 []                                 
+[INFO] Read cmd (line 416): compare variable                                    
+[INFO] Read cmd (line 417): execute n3 get state                                
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 418): # variable state n3 1                                
+[INFO] Read cmd (line 419): compare variable                                    
+[INFO] Comment (line 420): # net-len 10 
+[INFO] Read cmd (line 421): compare net-len                                     
+[INFO] Comment (line 422): # [10] HandleRequestVoteRequest s2 s3 4              
+[DETL] Send cmd (print [10] HandleRequestVoteRequest s2 s3 4) to all            
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 423): deliver-unordered n3 n2 4                           
+[DETL] Deliver msg n3 (10.255.255.103) -> n2 (10.255.255.102) fd: 15 size: 16   
+[INFO] Read cmd (line 424): loop intercept n2 check_has_recv_queue n3           
+[INFO] Read cmd (line 424): intercept n2 check_has_recv_queue n3                
+[DETL] Send cmd to n2 (10.255.255.102): check_has_recv_queue n3                 
+[DETL] Received ack ok from node "n2": True                                     
+[INFO] Read cmd (line 425): execute n2 raft recvfrom n3                         
+[DETL] Enqueue in_fd: 15, out_fd: 16, n2 (10.255.255.102) -> n3 (10.255.255.103) size: 13           
+[DETL] Received ack ok from node "n2": True                                     
+[INFO] Read cmd (line 426): execute n1 get commitIdx                            
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 427): # variable commitIdx n1 0                            
+[INFO] Read cmd (line 428): compare variable                                    
+[INFO] Read cmd (line 429): execute n1 get currentTerm                          
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 430): # variable currentTerm n1 4                          
+[INFO] Read cmd (line 431): compare variable                                    
+[INFO] Read cmd (line 432): execute n1 get log                                  
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 433): # variable log n1 []                                 
+[INFO] Read cmd (line 434): compare variable                                    
+[INFO] Read cmd (line 435): execute n1 get state                                
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 436): # variable state n1 1                                
+[INFO] Read cmd (line 437): compare variable                                    
+[INFO] Read cmd (line 438): execute n2 get commitIdx                            
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 439): # variable commitIdx n2 0                            
+[INFO] Read cmd (line 440): compare variable                                    
+[INFO] Read cmd (line 441): execute n2 get currentTerm                          
+[DETL] Received data from node "n2": 1  
+[INFO] Comment (line 442): # variable currentTerm n2 1                          
+[INFO] Read cmd (line 443): compare variable                                    
+[INFO] Read cmd (line 444): execute n2 get log                                  
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 445): # variable log n2 []                                 
+[INFO] Read cmd (line 446): compare variable                                    
+[INFO] Read cmd (line 447): execute n2 get state                                
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 448): # variable state n2 0                                
+[INFO] Read cmd (line 449): compare variable                                    
+[INFO] Read cmd (line 450): execute n3 get commitIdx                            
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 451): # variable commitIdx n3 0                            
+[INFO] Read cmd (line 452): compare variable                                    
+[INFO] Read cmd (line 453): execute n3 get currentTerm                          
+[DETL] Received data from node "n3": 2  
+[INFO] Comment (line 454): # variable currentTerm n3 2                          
+[INFO] Read cmd (line 455): compare variable                                    
+[INFO] Read cmd (line 456): execute n3 get log                                  
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 457): # variable log n3 []                                 
+[INFO] Read cmd (line 458): compare variable                                    
+[INFO] Read cmd (line 459): execute n3 get state                                
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 460): # variable state n3 1                                
+[INFO] Read cmd (line 461): compare variable                                    
+[INFO] Comment (line 462): # net-len 10 
+[INFO] Read cmd (line 463): compare net-len                                     
+[INFO] Comment (line 464): # [11] HandleRequestVoteResponse s3 s2 14            
+[DETL] Send cmd (print [11] HandleRequestVoteResponse s3 s2 14) to all          
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 465): deliver-unordered n2 n3 14                          
+[DETL] Deliver msg n2 (10.255.255.102) -> n3 (10.255.255.103) fd: 16 size: 13   
+[INFO] Read cmd (line 466): loop intercept n3 check_has_recv_queue n2           
+[INFO] Read cmd (line 466): intercept n3 check_has_recv_queue n2                
+[DETL] Send cmd to n3 (10.255.255.103): check_has_recv_queue n2                 
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 467): execute n3 raft recvfrom n2                         
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 468): execute n1 get commitIdx                            
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 469): # variable commitIdx n1 0                            
+[INFO] Read cmd (line 470): compare variable                                    
+[INFO] Read cmd (line 471): execute n1 get currentTerm                          
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 472): # variable currentTerm n1 4                          
+[INFO] Read cmd (line 473): compare variable                                    
+[INFO] Read cmd (line 474): execute n1 get log                                  
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 475): # variable log n1 []                                 
+[INFO] Read cmd (line 476): compare variable                                    
+[INFO] Read cmd (line 477): execute n1 get state                                
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 478): # variable state n1 1                                
+[INFO] Read cmd (line 479): compare variable                                    
+[INFO] Read cmd (line 480): execute n2 get commitIdx                            
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 481): # variable commitIdx n2 0                            
+[INFO] Read cmd (line 482): compare variable                                    
+[INFO] Read cmd (line 483): execute n2 get currentTerm                          
+[DETL] Received data from node "n2": 1  
+[INFO] Comment (line 484): # variable currentTerm n2 1                          
+[INFO] Read cmd (line 485): compare variable                                    
+[INFO] Read cmd (line 486): execute n2 get log                                  
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 487): # variable log n2 []                                 
+[INFO] Read cmd (line 488): compare variable                                    
+[INFO] Read cmd (line 489): execute n2 get state                                
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 490): # variable state n2 0                                
+[INFO] Read cmd (line 491): compare variable                                    
+[INFO] Read cmd (line 492): execute n3 get commitIdx                            
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 493): # variable commitIdx n3 0                            
+[INFO] Read cmd (line 494): compare variable                                    
+[INFO] Read cmd (line 495): execute n3 get currentTerm                          
+[DETL] Received data from node "n3": 2  
+[INFO] Comment (line 496): # variable currentTerm n3 2                          
+[INFO] Read cmd (line 497): compare variable                                    
+[INFO] Read cmd (line 498): execute n3 get log                                  
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 499): # variable log n3 []                                 
+[INFO] Read cmd (line 500): compare variable                                    
+[INFO] Read cmd (line 501): execute n3 get state                                
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 502): # variable state n3 1                                
+[INFO] Read cmd (line 503): compare variable                                    
+[INFO] Comment (line 504): # net-len 9  
+[INFO] Read cmd (line 505): compare net-len                                     
+[INFO] Comment (line 506): # [12] HandleRequestVoteRequest s2 s1 7              
+[DETL] Send cmd (print [12] HandleRequestVoteRequest s2 s1 7) to all            
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 507): deliver-unordered n1 n2 7                           
+[DETL] Deliver msg n1 (10.255.255.101) -> n2 (10.255.255.102) fd: 12 size: 16   
+[INFO] Read cmd (line 508): loop intercept n2 check_has_recv_queue n1           
+[INFO] Read cmd (line 508): intercept n2 check_has_recv_queue n1                
+[DETL] Send cmd to n2 (10.255.255.102): check_has_recv_queue n1                 
+[DETL] Received ack ok from node "n2": True                                     
+[INFO] Read cmd (line 509): execute n2 raft recvfrom n1                         
+[DETL] Enqueue in_fd: 12, out_fd: 11, n2 (10.255.255.102) -> n1 (10.255.255.101) size: 13           
+[DETL] Received ack ok from node "n2": True                                     
+[INFO] Read cmd (line 510): execute n1 get commitIdx                            
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 511): # variable commitIdx n1 0                            
+[INFO] Read cmd (line 512): compare variable                                    
+[INFO] Read cmd (line 513): execute n1 get currentTerm                          
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 514): # variable currentTerm n1 4                          
+[INFO] Read cmd (line 515): compare variable                                    
+[INFO] Read cmd (line 516): execute n1 get log                                  
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 517): # variable log n1 []                                 
+[INFO] Read cmd (line 518): compare variable                                    
+[INFO] Read cmd (line 519): execute n1 get state                                
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 520): # variable state n1 1                                
+[INFO] Read cmd (line 521): compare variable                                    
+[INFO] Read cmd (line 522): execute n2 get commitIdx                            
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 523): # variable commitIdx n2 0                            
+[INFO] Read cmd (line 524): compare variable                                    
+[INFO] Read cmd (line 525): execute n2 get currentTerm                          
+[DETL] Received data from node "n2": 2  
+[INFO] Comment (line 526): # variable currentTerm n2 2                          
+[INFO] Read cmd (line 527): compare variable                                    
+[INFO] Read cmd (line 528): execute n2 get log                                  
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 529): # variable log n2 []                                 
+[INFO] Read cmd (line 530): compare variable                                    
+[INFO] Read cmd (line 531): execute n2 get state                                
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 532): # variable state n2 0                                
+[INFO] Read cmd (line 533): compare variable                                    
+[INFO] Read cmd (line 534): execute n3 get commitIdx                            
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 535): # variable commitIdx n3 0                            
+[INFO] Read cmd (line 536): compare variable                                    
+[INFO] Read cmd (line 537): execute n3 get currentTerm                          
+[DETL] Received data from node "n3": 2  
+[INFO] Comment (line 538): # variable currentTerm n3 2                          
+[INFO] Read cmd (line 539): compare variable                                    
+[INFO] Read cmd (line 540): execute n3 get log                                  
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 541): # variable log n3 []                                 
+[INFO] Read cmd (line 542): compare variable                                    
+[INFO] Read cmd (line 543): execute n3 get state                                
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 544): # variable state n3 1                                
+[INFO] Read cmd (line 545): compare variable                                    
+[INFO] Comment (line 546): # net-len 9  
+[INFO] Read cmd (line 547): compare net-len                                     
+[INFO] Comment (line 548): # [13] LoseMessage s2 s1 15                          
+[DETL] Send cmd (print [13] LoseMessage s2 s1 15) to all                        
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 549): clear n2 n1 
+[DETL] Clear 1 msgs n2 (10.255.255.102) -> n1 (10.255.255.101)                  
+[INFO] Read cmd (line 550): execute n1 get commitIdx                            
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 551): # variable commitIdx n1 0                            
+[INFO] Read cmd (line 552): compare variable                                    
+[INFO] Read cmd (line 553): execute n1 get currentTerm                          
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 554): # variable currentTerm n1 4                          
+[INFO] Read cmd (line 555): compare variable                                    
+[INFO] Read cmd (line 556): execute n1 get log                                  
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 557): # variable log n1 []                                 
+[INFO] Read cmd (line 558): compare variable                                    
+[INFO] Read cmd (line 559): execute n1 get state                                
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 560): # variable state n1 1                                
+[INFO] Read cmd (line 561): compare variable                                    
+[INFO] Read cmd (line 562): execute n2 get commitIdx                            
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 563): # variable commitIdx n2 0                            
+[INFO] Read cmd (line 564): compare variable                                    
+[INFO] Read cmd (line 565): execute n2 get currentTerm                          
+[DETL] Received data from node "n2": 2  
+[INFO] Comment (line 566): # variable currentTerm n2 2                          
+[INFO] Read cmd (line 567): compare variable                                    
+[INFO] Read cmd (line 568): execute n2 get log                                  
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 569): # variable log n2 []                                 
+[INFO] Read cmd (line 570): compare variable                                    
+[INFO] Read cmd (line 571): execute n2 get state                                
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 572): # variable state n2 0                                
+[INFO] Read cmd (line 573): compare variable                                    
+[INFO] Read cmd (line 574): execute n3 get commitIdx                            
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 575): # variable commitIdx n3 0                            
+[INFO] Read cmd (line 576): compare variable                                    
+[INFO] Read cmd (line 577): execute n3 get currentTerm                          
+[DETL] Received data from node "n3": 2  
+[INFO] Comment (line 578): # variable currentTerm n3 2                          
+[INFO] Read cmd (line 579): compare variable                                    
+[INFO] Read cmd (line 580): execute n3 get log                                  
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 581): # variable log n3 []                                 
+[INFO] Read cmd (line 582): compare variable                                    
+[INFO] Read cmd (line 583): execute n3 get state                                
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 584): # variable state n3 1                                
+[INFO] Read cmd (line 585): compare variable                                    
+[INFO] Comment (line 586): # net-len 8  
+[INFO] Read cmd (line 587): compare net-len                                     
+[INFO] Comment (line 588): # [14] HandleRequestVoteRequest s1 s3 3              
+[DETL] Send cmd (print [14] HandleRequestVoteRequest s1 s3 3) to all            
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 589): deliver-unordered n3 n1 3                           
+[DETL] Deliver msg n3 (10.255.255.103) -> n1 (10.255.255.101) fd: 13 size: 16   
+[INFO] Read cmd (line 590): loop intercept n1 check_has_recv_queue n3           
+[INFO] Read cmd (line 590): intercept n1 check_has_recv_queue n3                
+[DETL] Send cmd to n1 (10.255.255.101): check_has_recv_queue n3                 
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 591): execute n1 raft recvfrom n3                         
+[DETL] Enqueue in_fd: 13, out_fd: 14, n1 (10.255.255.101) -> n3 (10.255.255.103) size: 13           
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 592): execute n1 get commitIdx                            
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 593): # variable commitIdx n1 0                            
+[INFO] Read cmd (line 594): compare variable                                    
+[INFO] Read cmd (line 595): execute n1 get currentTerm                          
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 596): # variable currentTerm n1 4                          
+[INFO] Read cmd (line 597): compare variable                                    
+[INFO] Read cmd (line 598): execute n1 get log                                  
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 599): # variable log n1 []                                 
+[INFO] Read cmd (line 600): compare variable                                    
+[INFO] Read cmd (line 601): execute n1 get state                                
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 602): # variable state n1 1                                
+[INFO] Read cmd (line 603): compare variable                                    
+[INFO] Read cmd (line 604): execute n2 get commitIdx                            
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 605): # variable commitIdx n2 0                            
+[INFO] Read cmd (line 606): compare variable                                    
+[INFO] Read cmd (line 607): execute n2 get currentTerm                          
+[DETL] Received data from node "n2": 2  
+[INFO] Comment (line 608): # variable currentTerm n2 2                          
+[INFO] Read cmd (line 609): compare variable                                    
+[INFO] Read cmd (line 610): execute n2 get log                                  
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 611): # variable log n2 []                                 
+[INFO] Read cmd (line 612): compare variable                                    
+[INFO] Read cmd (line 613): execute n2 get state                                
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 614): # variable state n2 0                                
+[INFO] Read cmd (line 615): compare variable                                    
+[INFO] Read cmd (line 616): execute n3 get commitIdx                            
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 617): # variable commitIdx n3 0                            
+[INFO] Read cmd (line 618): compare variable                                    
+[INFO] Read cmd (line 619): execute n3 get currentTerm                          
+[DETL] Received data from node "n3": 2  
+[INFO] Comment (line 620): # variable currentTerm n3 2                          
+[INFO] Read cmd (line 621): compare variable                                    
+[INFO] Read cmd (line 622): execute n3 get log                                  
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 623): # variable log n3 []                                 
+[INFO] Read cmd (line 624): compare variable                                    
+[INFO] Read cmd (line 625): execute n3 get state                                
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 626): # variable state n3 1                                
+[INFO] Read cmd (line 627): compare variable                                    
+[INFO] Comment (line 628): # net-len 8  
+[INFO] Read cmd (line 629): compare net-len                                     
+[INFO] Comment (line 630): # [15] HandleRequestVoteRequest s3 s1 8              
+[DETL] Send cmd (print [15] HandleRequestVoteRequest s3 s1 8) to all            
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 631): deliver-unordered n1 n3 8                           
+[DETL] Deliver msg n1 (10.255.255.101) -> n3 (10.255.255.103) fd: 14 size: 16   
+[INFO] Read cmd (line 632): loop intercept n3 check_has_recv_queue n1           
+[INFO] Read cmd (line 632): intercept n3 check_has_recv_queue n1                
+[DETL] Send cmd to n3 (10.255.255.103): check_has_recv_queue n1                 
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 633): execute n3 raft recvfrom n1                         
+[DETL] Enqueue in_fd: 14, out_fd: 13, n3 (10.255.255.103) -> n1 (10.255.255.101) size: 13           
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 634): execute n1 get commitIdx                            
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 635): # variable commitIdx n1 0                            
+[INFO] Read cmd (line 636): compare variable                                    
+[INFO] Read cmd (line 637): execute n1 get currentTerm                          
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 638): # variable currentTerm n1 4                          
+[INFO] Read cmd (line 639): compare variable                                    
+[INFO] Read cmd (line 640): execute n1 get log                                  
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 641): # variable log n1 []                                 
+[INFO] Read cmd (line 642): compare variable                                    
+[INFO] Read cmd (line 643): execute n1 get state                                
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 644): # variable state n1 1                                
+[INFO] Read cmd (line 645): compare variable                                    
+[INFO] Read cmd (line 646): execute n2 get commitIdx                            
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 647): # variable commitIdx n2 0                            
+[INFO] Read cmd (line 648): compare variable                                    
+[INFO] Read cmd (line 649): execute n2 get currentTerm                          
+[DETL] Received data from node "n2": 2  
+[INFO] Comment (line 650): # variable currentTerm n2 2                          
+[INFO] Read cmd (line 651): compare variable                                    
+[INFO] Read cmd (line 652): execute n2 get log                                  
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 653): # variable log n2 []                                 
+[INFO] Read cmd (line 654): compare variable                                    
+[INFO] Read cmd (line 655): execute n2 get state                                
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 656): # variable state n2 0                                
+[INFO] Read cmd (line 657): compare variable                                    
+[INFO] Read cmd (line 658): execute n3 get commitIdx                            
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 659): # variable commitIdx n3 0                            
+[INFO] Read cmd (line 660): compare variable                                    
+[INFO] Read cmd (line 661): execute n3 get currentTerm                          
+[DETL] Received data from node "n3": 2  
+[INFO] Comment (line 662): # variable currentTerm n3 2                          
+[INFO] Read cmd (line 663): compare variable                                    
+[INFO] Read cmd (line 664): execute n3 get log                                  
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 665): # variable log n3 []                                 
+[INFO] Read cmd (line 666): compare variable                                    
+[INFO] Read cmd (line 667): execute n3 get state                                
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 668): # variable state n3 1                                
+[INFO] Read cmd (line 669): compare variable                                    
+[INFO] Comment (line 670): # net-len 8  
+[INFO] Read cmd (line 671): compare net-len                                     
+[INFO] Comment (line 672): # [16] HandleRequestVoteRequest s2 s3 6              
+[DETL] Send cmd (print [16] HandleRequestVoteRequest s2 s3 6) to all            
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 673): deliver-unordered n3 n2 6                           
+[DETL] Deliver msg n3 (10.255.255.103) -> n2 (10.255.255.102) fd: 15 size: 16   
+[INFO] Read cmd (line 674): loop intercept n2 check_has_recv_queue n3           
+[INFO] Read cmd (line 674): intercept n2 check_has_recv_queue n3                
+[DETL] Send cmd to n2 (10.255.255.102): check_has_recv_queue n3                 
+[DETL] Received ack ok from node "n2": True                                     
+[INFO] Read cmd (line 675): execute n2 raft recvfrom n3                         
+[DETL] Enqueue in_fd: 15, out_fd: 16, n2 (10.255.255.102) -> n3 (10.255.255.103) size: 13           
+[DETL] Received ack ok from node "n2": True                                     
+[INFO] Read cmd (line 676): execute n1 get commitIdx                            
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 677): # variable commitIdx n1 0                            
+[INFO] Read cmd (line 678): compare variable                                    
+[INFO] Read cmd (line 679): execute n1 get currentTerm                          
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 680): # variable currentTerm n1 4                          
+[INFO] Read cmd (line 681): compare variable                                    
+[INFO] Read cmd (line 682): execute n1 get log                                  
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 683): # variable log n1 []                                 
+[INFO] Read cmd (line 684): compare variable                                    
+[INFO] Read cmd (line 685): execute n1 get state                                
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 686): # variable state n1 1                                
+[INFO] Read cmd (line 687): compare variable                                    
+[INFO] Read cmd (line 688): execute n2 get commitIdx                            
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 689): # variable commitIdx n2 0                            
+[INFO] Read cmd (line 690): compare variable                                    
+[INFO] Read cmd (line 691): execute n2 get currentTerm                          
+[DETL] Received data from node "n2": 2  
+[INFO] Comment (line 692): # variable currentTerm n2 2                          
+[INFO] Read cmd (line 693): compare variable                                    
+[INFO] Read cmd (line 694): execute n2 get log                                  
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 695): # variable log n2 []                                 
+[INFO] Read cmd (line 696): compare variable                                    
+[INFO] Read cmd (line 697): execute n2 get state                                
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 698): # variable state n2 0                                
+[INFO] Read cmd (line 699): compare variable                                    
+[INFO] Read cmd (line 700): execute n3 get commitIdx                            
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 701): # variable commitIdx n3 0                            
+[INFO] Read cmd (line 702): compare variable                                    
+[INFO] Read cmd (line 703): execute n3 get currentTerm                          
+[DETL] Received data from node "n3": 2  
+[INFO] Comment (line 704): # variable currentTerm n3 2                          
+[INFO] Read cmd (line 705): compare variable                                    
+[INFO] Read cmd (line 706): execute n3 get log                                  
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 707): # variable log n3 []                                 
+[INFO] Read cmd (line 708): compare variable                                    
+[INFO] Read cmd (line 709): execute n3 get state                                
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 710): # variable state n3 1                                
+[INFO] Read cmd (line 711): compare variable                                    
+[INFO] Comment (line 712): # net-len 8  
+[INFO] Read cmd (line 713): compare net-len                                     
+[INFO] Comment (line 714): # [17] HandleRequestVoteResponse s3 s2 18            
+[DETL] Send cmd (print [17] HandleRequestVoteResponse s3 s2 18) to all          
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 715): deliver-unordered n2 n3 18                          
+[DETL] Deliver msg n2 (10.255.255.102) -> n3 (10.255.255.103) fd: 16 size: 13   
+[INFO] Read cmd (line 716): loop intercept n3 check_has_recv_queue n2           
+[INFO] Read cmd (line 716): intercept n3 check_has_recv_queue n2                
+[DETL] Send cmd to n3 (10.255.255.103): check_has_recv_queue n2                 
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 717): execute n3 raft recvfrom n2                         
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 718): execute n1 get commitIdx                            
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 719): # variable commitIdx n1 0                            
+[INFO] Read cmd (line 720): compare variable                                    
+[INFO] Read cmd (line 721): execute n1 get currentTerm                          
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 722): # variable currentTerm n1 4                          
+[INFO] Read cmd (line 723): compare variable                                    
+[INFO] Read cmd (line 724): execute n1 get log                                  
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 725): # variable log n1 []                                 
+[INFO] Read cmd (line 726): compare variable                                    
+[INFO] Read cmd (line 727): execute n1 get state                                
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 728): # variable state n1 1                                
+[INFO] Read cmd (line 729): compare variable                                    
+[INFO] Read cmd (line 730): execute n2 get commitIdx                            
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 731): # variable commitIdx n2 0                            
+[INFO] Read cmd (line 732): compare variable                                    
+[INFO] Read cmd (line 733): execute n2 get currentTerm                          
+[DETL] Received data from node "n2": 2  
+[INFO] Comment (line 734): # variable currentTerm n2 2                          
+[INFO] Read cmd (line 735): compare variable                                    
+[INFO] Read cmd (line 736): execute n2 get log                                  
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 737): # variable log n2 []                                 
+[INFO] Read cmd (line 738): compare variable                                    
+[INFO] Read cmd (line 739): execute n2 get state                                
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 740): # variable state n2 0                                
+[INFO] Read cmd (line 741): compare variable                                    
+[INFO] Read cmd (line 742): execute n3 get commitIdx                            
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 743): # variable commitIdx n3 0                            
+[INFO] Read cmd (line 744): compare variable                                    
+[INFO] Read cmd (line 745): execute n3 get currentTerm                          
+[DETL] Received data from node "n3": 2  
+[INFO] Comment (line 746): # variable currentTerm n3 2                          
+[INFO] Read cmd (line 747): compare variable                                    
+[INFO] Read cmd (line 748): execute n3 get log                                  
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 749): # variable log n3 []                                 
+[INFO] Read cmd (line 750): compare variable                                    
+[INFO] Read cmd (line 751): execute n3 get state                                
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 752): # variable state n3 1                                
+[INFO] Read cmd (line 753): compare variable                                    
+[INFO] Comment (line 754): # net-len 7  
+[INFO] Read cmd (line 755): compare net-len                                     
+[INFO] Comment (line 756): # [18] HandleRequestVoteRequest s1 s3 5              
+[DETL] Send cmd (print [18] HandleRequestVoteRequest s1 s3 5) to all            
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 757): deliver-unordered n3 n1 5                           
+[DETL] Deliver msg n3 (10.255.255.103) -> n1 (10.255.255.101) fd: 13 size: 16   
+[INFO] Read cmd (line 758): loop intercept n1 check_has_recv_queue n3           
+[INFO] Read cmd (line 758): intercept n1 check_has_recv_queue n3                
+[DETL] Send cmd to n1 (10.255.255.101): check_has_recv_queue n3                 
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 759): execute n1 raft recvfrom n3                         
+[DETL] Enqueue in_fd: 13, out_fd: 14, n1 (10.255.255.101) -> n3 (10.255.255.103) size: 13           
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 760): execute n1 get commitIdx                            
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 761): # variable commitIdx n1 0                            
+[INFO] Read cmd (line 762): compare variable                                    
+[INFO] Read cmd (line 763): execute n1 get currentTerm                          
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 764): # variable currentTerm n1 4                          
+[INFO] Read cmd (line 765): compare variable                                    
+[INFO] Read cmd (line 766): execute n1 get log                                  
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 767): # variable log n1 []                                 
+[INFO] Read cmd (line 768): compare variable                                    
+[INFO] Read cmd (line 769): execute n1 get state                                
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 770): # variable state n1 1                                
+[INFO] Read cmd (line 771): compare variable                                    
+[INFO] Read cmd (line 772): execute n2 get commitIdx                            
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 773): # variable commitIdx n2 0                            
+[INFO] Read cmd (line 774): compare variable                                    
+[INFO] Read cmd (line 775): execute n2 get currentTerm                          
+[DETL] Received data from node "n2": 2  
+[INFO] Comment (line 776): # variable currentTerm n2 2                          
+[INFO] Read cmd (line 777): compare variable                                    
+[INFO] Read cmd (line 778): execute n2 get log                                  
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 779): # variable log n2 []                                 
+[INFO] Read cmd (line 780): compare variable                                    
+[INFO] Read cmd (line 781): execute n2 get state                                
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 782): # variable state n2 0                                
+[INFO] Read cmd (line 783): compare variable                                    
+[INFO] Read cmd (line 784): execute n3 get commitIdx                            
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 785): # variable commitIdx n3 0                            
+[INFO] Read cmd (line 786): compare variable                                    
+[INFO] Read cmd (line 787): execute n3 get currentTerm                          
+[DETL] Received data from node "n3": 2  
+[INFO] Comment (line 788): # variable currentTerm n3 2                          
+[INFO] Read cmd (line 789): compare variable                                    
+[INFO] Read cmd (line 790): execute n3 get log                                  
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 791): # variable log n3 []                                 
+[INFO] Read cmd (line 792): compare variable                                    
+[INFO] Read cmd (line 793): execute n3 get state                                
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 794): # variable state n3 1                                
+[INFO] Read cmd (line 795): compare variable                                    
+[INFO] Comment (line 796): # net-len 7  
+[INFO] Read cmd (line 797): compare net-len                                     
+[INFO] Comment (line 798): # [19] HandleRequestVoteResponse s1 s3 17            
+[DETL] Send cmd (print [19] HandleRequestVoteResponse s1 s3 17) to all          
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 799): deliver-unordered n3 n1 17                          
+[DETL] Deliver msg n3 (10.255.255.103) -> n1 (10.255.255.101) fd: 13 size: 13   
+[INFO] Read cmd (line 800): loop intercept n1 check_has_recv_queue n3           
+[INFO] Read cmd (line 800): intercept n1 check_has_recv_queue n3                
+[DETL] Send cmd to n1 (10.255.255.101): check_has_recv_queue n3                 
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 801): execute n1 raft recvfrom n3                         
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 802): execute n1 get commitIdx                            
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 803): # variable commitIdx n1 0                            
+[INFO] Read cmd (line 804): compare variable                                    
+[INFO] Read cmd (line 805): execute n1 get currentTerm                          
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 806): # variable currentTerm n1 4                          
+[INFO] Read cmd (line 807): compare variable                                    
+[INFO] Read cmd (line 808): execute n1 get log                                  
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 809): # variable log n1 []                                 
+[INFO] Read cmd (line 810): compare variable                                    
+[INFO] Read cmd (line 811): execute n1 get state                                
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 812): # variable state n1 1                                
+[INFO] Read cmd (line 813): compare variable                                    
+[INFO] Read cmd (line 814): execute n2 get commitIdx                            
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 815): # variable commitIdx n2 0                            
+[INFO] Read cmd (line 816): compare variable                                    
+[INFO] Read cmd (line 817): execute n2 get currentTerm                          
+[DETL] Received data from node "n2": 2  
+[INFO] Comment (line 818): # variable currentTerm n2 2                          
+[INFO] Read cmd (line 819): compare variable                                    
+[INFO] Read cmd (line 820): execute n2 get log                                  
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 821): # variable log n2 []                                 
+[INFO] Read cmd (line 822): compare variable                                    
+[INFO] Read cmd (line 823): execute n2 get state                                
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 824): # variable state n2 0                                
+[INFO] Read cmd (line 825): compare variable                                    
+[INFO] Read cmd (line 826): execute n3 get commitIdx                            
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 827): # variable commitIdx n3 0                            
+[INFO] Read cmd (line 828): compare variable                                    
+[INFO] Read cmd (line 829): execute n3 get currentTerm                          
+[DETL] Received data from node "n3": 2  
+[INFO] Comment (line 830): # variable currentTerm n3 2                          
+[INFO] Read cmd (line 831): compare variable                                    
+[INFO] Read cmd (line 832): execute n3 get log                                  
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 833): # variable log n3 []                                 
+[INFO] Read cmd (line 834): compare variable                                    
+[INFO] Read cmd (line 835): execute n3 get state                                
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 836): # variable state n3 1                                
+[INFO] Read cmd (line 837): compare variable                                    
+[INFO] Comment (line 838): # net-len 6  
+[INFO] Read cmd (line 839): compare net-len                                     
+[INFO] Comment (line 840): # [20] HandleRequestVoteRequest s3 s1 10             
+[DETL] Send cmd (print [20] HandleRequestVoteRequest s3 s1 10) to all           
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 841): deliver-unordered n1 n3 10                          
+[DETL] Deliver msg n1 (10.255.255.101) -> n3 (10.255.255.103) fd: 14 size: 16   
+[INFO] Read cmd (line 842): loop intercept n3 check_has_recv_queue n1           
+[INFO] Read cmd (line 842): intercept n3 check_has_recv_queue n1                
+[DETL] Send cmd to n3 (10.255.255.103): check_has_recv_queue n1                 
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 843): execute n3 raft recvfrom n1                         
+[DETL] Enqueue in_fd: 14, out_fd: 13, n3 (10.255.255.103) -> n1 (10.255.255.101) size: 13           
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 844): execute n1 get commitIdx                            
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 845): # variable commitIdx n1 0                            
+[INFO] Read cmd (line 846): compare variable                                    
+[INFO] Read cmd (line 847): execute n1 get currentTerm                          
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 848): # variable currentTerm n1 4                          
+[INFO] Read cmd (line 849): compare variable                                    
+[INFO] Read cmd (line 850): execute n1 get log                                  
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 851): # variable log n1 []                                 
+[INFO] Read cmd (line 852): compare variable                                    
+[INFO] Read cmd (line 853): execute n1 get state                                
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 854): # variable state n1 1                                
+[INFO] Read cmd (line 855): compare variable                                    
+[INFO] Read cmd (line 856): execute n2 get commitIdx                            
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 857): # variable commitIdx n2 0                            
+[INFO] Read cmd (line 858): compare variable                                    
+[INFO] Read cmd (line 859): execute n2 get currentTerm                          
+[DETL] Received data from node "n2": 2  
+[INFO] Comment (line 860): # variable currentTerm n2 2                          
+[INFO] Read cmd (line 861): compare variable                                    
+[INFO] Read cmd (line 862): execute n2 get log                                  
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 863): # variable log n2 []                                 
+[INFO] Read cmd (line 864): compare variable                                    
+[INFO] Read cmd (line 865): execute n2 get state                                
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 866): # variable state n2 0                                
+[INFO] Read cmd (line 867): compare variable                                    
+[INFO] Read cmd (line 868): execute n3 get commitIdx                            
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 869): # variable commitIdx n3 0                            
+[INFO] Read cmd (line 870): compare variable                                    
+[INFO] Read cmd (line 871): execute n3 get currentTerm                          
+[DETL] Received data from node "n3": 3  
+[INFO] Comment (line 872): # variable currentTerm n3 3                          
+[INFO] Read cmd (line 873): compare variable                                    
+[INFO] Read cmd (line 874): execute n3 get log                                  
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 875): # variable log n3 []                                 
+[INFO] Read cmd (line 876): compare variable                                    
+[INFO] Read cmd (line 877): execute n3 get state                                
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 878): # variable state n3 0                                
+[INFO] Read cmd (line 879): compare variable                                    
+[INFO] Comment (line 880): # net-len 6  
+[INFO] Read cmd (line 881): compare net-len                                     
+[INFO] Comment (line 882): # [21] HandleRequestVoteRequest s3 s1 12             
+[DETL] Send cmd (print [21] HandleRequestVoteRequest s3 s1 12) to all           
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 883): deliver-unordered n1 n3 12                          
+[DETL] Deliver msg n1 (10.255.255.101) -> n3 (10.255.255.103) fd: 14 size: 16   
+[INFO] Read cmd (line 884): loop intercept n3 check_has_recv_queue n1           
+[INFO] Read cmd (line 884): intercept n3 check_has_recv_queue n1                
+[DETL] Send cmd to n3 (10.255.255.103): check_has_recv_queue n1                 
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 885): execute n3 raft recvfrom n1                         
+[DETL] Enqueue in_fd: 14, out_fd: 13, n3 (10.255.255.103) -> n1 (10.255.255.101) size: 13           
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 886): execute n1 get commitIdx                            
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 887): # variable commitIdx n1 0                            
+[INFO] Read cmd (line 888): compare variable                                    
+[INFO] Read cmd (line 889): execute n1 get currentTerm                          
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 890): # variable currentTerm n1 4                          
+[INFO] Read cmd (line 891): compare variable                                    
+[INFO] Read cmd (line 892): execute n1 get log                                  
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 893): # variable log n1 []                                 
+[INFO] Read cmd (line 894): compare variable                                    
+[INFO] Read cmd (line 895): execute n1 get state                                
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 896): # variable state n1 1                                
+[INFO] Read cmd (line 897): compare variable                                    
+[INFO] Read cmd (line 898): execute n2 get commitIdx                            
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 899): # variable commitIdx n2 0                            
+[INFO] Read cmd (line 900): compare variable                                    
+[INFO] Read cmd (line 901): execute n2 get currentTerm                          
+[DETL] Received data from node "n2": 2  
+[INFO] Comment (line 902): # variable currentTerm n2 2                          
+[INFO] Read cmd (line 903): compare variable                                    
+[INFO] Read cmd (line 904): execute n2 get log                                  
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 905): # variable log n2 []                                 
+[INFO] Read cmd (line 906): compare variable                                    
+[INFO] Read cmd (line 907): execute n2 get state                                
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 908): # variable state n2 0                                
+[INFO] Read cmd (line 909): compare variable                                    
+[INFO] Read cmd (line 910): execute n3 get commitIdx                            
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 911): # variable commitIdx n3 0                            
+[INFO] Read cmd (line 912): compare variable                                    
+[INFO] Read cmd (line 913): execute n3 get currentTerm                          
+[DETL] Received data from node "n3": 4  
+[INFO] Comment (line 914): # variable currentTerm n3 4                          
+[INFO] Read cmd (line 915): compare variable                                    
+[INFO] Read cmd (line 916): execute n3 get log                                  
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 917): # variable log n3 []                                 
+[INFO] Read cmd (line 918): compare variable                                    
+[INFO] Read cmd (line 919): execute n3 get state                                
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 920): # variable state n3 0                                
+[INFO] Read cmd (line 921): compare variable                                    
+[INFO] Comment (line 922): # net-len 6  
+[INFO] Read cmd (line 923): compare net-len                                     
+[INFO] Comment (line 924): # [22] HandleRequestVoteResponse s1 s3 20            
+[DETL] Send cmd (print [22] HandleRequestVoteResponse s1 s3 20) to all          
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 925): deliver-unordered n3 n1 20                          
+[DETL] Deliver msg n3 (10.255.255.103) -> n1 (10.255.255.101) fd: 13 size: 13   
+[INFO] Read cmd (line 926): loop intercept n1 check_has_recv_queue n3           
+[INFO] Read cmd (line 926): intercept n1 check_has_recv_queue n3                
+[DETL] Send cmd to n1 (10.255.255.101): check_has_recv_queue n3                 
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 927): execute n1 raft recvfrom n3                         
+[DETL] Enqueue in_fd: 11, out_fd: 12, n1 (10.255.255.101) -> n2 (10.255.255.102) size: 21           
+[DETL] Enqueue in_fd: 13, out_fd: 14, n1 (10.255.255.101) -> n3 (10.255.255.103) size: 21           
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 928): execute n1 get commitIdx                            
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 929): # variable commitIdx n1 0                            
+[INFO] Read cmd (line 930): compare variable                                    
+[INFO] Read cmd (line 931): execute n1 get currentTerm                          
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 932): # variable currentTerm n1 4                          
+[INFO] Read cmd (line 933): compare variable                                    
+[INFO] Read cmd (line 934): execute n1 get log                                  
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 935): # variable log n1 []                                 
+[INFO] Read cmd (line 936): compare variable                                    
+[INFO] Read cmd (line 937): execute n1 get state                                
+[DETL] Received data from node "n1": 2  
+[INFO] Comment (line 938): # variable state n1 2                                
+[INFO] Read cmd (line 939): compare variable                                    
+[INFO] Read cmd (line 940): execute n1 get nextIdx                              
+[DETL] Received data from node "n1": {'n2': 1, 'n3': 1}                         
+[INFO] Comment (line 941): # variable nextIdx n1 {'n2': 1, 'n3': 1}             
+[INFO] Read cmd (line 942): compare variable                                    
+[INFO] Read cmd (line 943): execute n1 get matchIdx                             
+[DETL] Received data from node "n1": {'n2': 0, 'n3': 0}                         
+[INFO] Comment (line 944): # variable matchIdx n1 {'n2': 0, 'n3': 0}            
+[INFO] Read cmd (line 945): compare variable                                    
+[INFO] Read cmd (line 946): execute n2 get commitIdx                            
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 947): # variable commitIdx n2 0                            
+[INFO] Read cmd (line 948): compare variable                                    
+[INFO] Read cmd (line 949): execute n2 get currentTerm                          
+[DETL] Received data from node "n2": 2  
+[INFO] Comment (line 950): # variable currentTerm n2 2                          
+[INFO] Read cmd (line 951): compare variable                                    
+[INFO] Read cmd (line 952): execute n2 get log                                  
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 953): # variable log n2 []                                 
+[INFO] Read cmd (line 954): compare variable                                    
+[INFO] Read cmd (line 955): execute n2 get state                                
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 956): # variable state n2 0                                
+[INFO] Read cmd (line 957): compare variable                                    
+[INFO] Read cmd (line 958): execute n3 get commitIdx                            
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 959): # variable commitIdx n3 0                            
+[INFO] Read cmd (line 960): compare variable                                    
+[INFO] Read cmd (line 961): execute n3 get currentTerm                          
+[DETL] Received data from node "n3": 4  
+[INFO] Comment (line 962): # variable currentTerm n3 4                          
+[INFO] Read cmd (line 963): compare variable                                    
+[INFO] Read cmd (line 964): execute n3 get log                                  
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 965): # variable log n3 []                                 
+[INFO] Read cmd (line 966): compare variable                                    
+[INFO] Read cmd (line 967): execute n3 get state                                
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 968): # variable state n3 0                                
+[INFO] Read cmd (line 969): compare variable                                    
+[INFO] Comment (line 970): # net-len 7  
+[INFO] Read cmd (line 971): compare net-len                                     
+[INFO] Comment (line 972): # [23] AppendEntriesAll s1                           
+[DETL] Send cmd (print [23] AppendEntriesAll s1) to all                         
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 973): execute n1 raft periodic 200                        
+[DETL] Enqueue in_fd: 11, out_fd: 12, n1 (10.255.255.101) -> n2 (10.255.255.102) size: 21           
+[DETL] Enqueue in_fd: 13, out_fd: 14, n1 (10.255.255.101) -> n3 (10.255.255.103) size: 21           
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 974): execute n1 get commitIdx                            
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 975): # variable commitIdx n1 0                            
+[INFO] Read cmd (line 976): compare variable                                    
+[INFO] Read cmd (line 977): execute n1 get currentTerm                          
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 978): # variable currentTerm n1 4                          
+[INFO] Read cmd (line 979): compare variable                                    
+[INFO] Read cmd (line 980): execute n1 get log                                  
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 981): # variable log n1 []                                 
+[INFO] Read cmd (line 982): compare variable                                    
+[INFO] Read cmd (line 983): execute n1 get state                                
+[DETL] Received data from node "n1": 2  
+[INFO] Comment (line 984): # variable state n1 2                                
+[INFO] Read cmd (line 985): compare variable                                    
+[INFO] Read cmd (line 986): execute n1 get nextIdx                              
+[DETL] Received data from node "n1": {'n2': 1, 'n3': 1}                         
+[INFO] Comment (line 987): # variable nextIdx n1 {'n2': 1, 'n3': 1}             
+[INFO] Read cmd (line 988): compare variable                                    
+[INFO] Read cmd (line 989): execute n1 get matchIdx                             
+[DETL] Received data from node "n1": {'n2': 0, 'n3': 0}                         
+[INFO] Comment (line 990): # variable matchIdx n1 {'n2': 0, 'n3': 0}            
+[INFO] Read cmd (line 991): compare variable                                    
+[INFO] Read cmd (line 992): execute n2 get commitIdx                            
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 993): # variable commitIdx n2 0                            
+[INFO] Read cmd (line 994): compare variable                                    
+[INFO] Read cmd (line 995): execute n2 get currentTerm                          
+[DETL] Received data from node "n2": 2  
+[INFO] Comment (line 996): # variable currentTerm n2 2                          
+[INFO] Read cmd (line 997): compare variable                                    
+[INFO] Read cmd (line 998): execute n2 get log                                  
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 999): # variable log n2 []                                 
+[INFO] Read cmd (line 1000): compare variable                                   
+[INFO] Read cmd (line 1001): execute n2 get state                               
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1002): # variable state n2 0                               
+[INFO] Read cmd (line 1003): compare variable                                   
+[INFO] Read cmd (line 1004): execute n3 get commitIdx                           
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1005): # variable commitIdx n3 0                           
+[INFO] Read cmd (line 1006): compare variable                                   
+[INFO] Read cmd (line 1007): execute n3 get currentTerm                         
+[DETL] Received data from node "n3": 4  
+[INFO] Comment (line 1008): # variable currentTerm n3 4                         
+[INFO] Read cmd (line 1009): compare variable                                   
+[INFO] Read cmd (line 1010): execute n3 get log                                 
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 1011): # variable log n3 []                                
+[INFO] Read cmd (line 1012): compare variable                                   
+[INFO] Read cmd (line 1013): execute n3 get state                               
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1014): # variable state n3 0                               
+[INFO] Read cmd (line 1015): compare variable                                   
+[INFO] Comment (line 1016): # net-len 9 
+[INFO] Read cmd (line 1017): compare net-len                                    
+[INFO] Comment (line 1018): # [24] AppendEntriesAll s1                          
+[DETL] Send cmd (print [24] AppendEntriesAll s1) to all                         
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 1019): execute n1 raft periodic 200                       
+[DETL] Enqueue in_fd: 11, out_fd: 12, n1 (10.255.255.101) -> n2 (10.255.255.102) size: 21           
+[DETL] Enqueue in_fd: 13, out_fd: 14, n1 (10.255.255.101) -> n3 (10.255.255.103) size: 21           
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 1020): execute n1 get commitIdx                           
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1021): # variable commitIdx n1 0                           
+[INFO] Read cmd (line 1022): compare variable                                   
+[INFO] Read cmd (line 1023): execute n1 get currentTerm                         
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 1024): # variable currentTerm n1 4                         
+[INFO] Read cmd (line 1025): compare variable                                   
+[INFO] Read cmd (line 1026): execute n1 get log                                 
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 1027): # variable log n1 []                                
+[INFO] Read cmd (line 1028): compare variable                                   
+[INFO] Read cmd (line 1029): execute n1 get state                               
+[DETL] Received data from node "n1": 2  
+[INFO] Comment (line 1030): # variable state n1 2                               
+[INFO] Read cmd (line 1031): compare variable                                   
+[INFO] Read cmd (line 1032): execute n1 get nextIdx                             
+[DETL] Received data from node "n1": {'n2': 1, 'n3': 1}                         
+[INFO] Comment (line 1033): # variable nextIdx n1 {'n2': 1, 'n3': 1}            
+[INFO] Read cmd (line 1034): compare variable                                   
+[INFO] Read cmd (line 1035): execute n1 get matchIdx                            
+[DETL] Received data from node "n1": {'n2': 0, 'n3': 0}                         
+[INFO] Comment (line 1036): # variable matchIdx n1 {'n2': 0, 'n3': 0}           
+[INFO] Read cmd (line 1037): compare variable                                   
+[INFO] Read cmd (line 1038): execute n2 get commitIdx                           
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1039): # variable commitIdx n2 0                           
+[INFO] Read cmd (line 1040): compare variable                                   
+[INFO] Read cmd (line 1041): execute n2 get currentTerm                         
+[DETL] Received data from node "n2": 2  
+[INFO] Comment (line 1042): # variable currentTerm n2 2                         
+[INFO] Read cmd (line 1043): compare variable                                   
+[INFO] Read cmd (line 1044): execute n2 get log                                 
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 1045): # variable log n2 []                                
+[INFO] Read cmd (line 1046): compare variable                                   
+[INFO] Read cmd (line 1047): execute n2 get state                               
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1048): # variable state n2 0                               
+[INFO] Read cmd (line 1049): compare variable                                   
+[INFO] Read cmd (line 1050): execute n3 get commitIdx                           
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1051): # variable commitIdx n3 0                           
+[INFO] Read cmd (line 1052): compare variable                                   
+[INFO] Read cmd (line 1053): execute n3 get currentTerm                         
+[DETL] Received data from node "n3": 4  
+[INFO] Comment (line 1054): # variable currentTerm n3 4                         
+[INFO] Read cmd (line 1055): compare variable                                   
+[INFO] Read cmd (line 1056): execute n3 get log                                 
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 1057): # variable log n3 []                                
+[INFO] Read cmd (line 1058): compare variable                                   
+[INFO] Read cmd (line 1059): execute n3 get state                               
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1060): # variable state n3 0                               
+[INFO] Read cmd (line 1061): compare variable                                   
+[INFO] Comment (line 1062): # net-len 11
+[INFO] Read cmd (line 1063): compare net-len                                    
+[INFO] Comment (line 1064): # [25] HandleRequestVoteRequest s2 s1 9             
+[DETL] Send cmd (print [25] HandleRequestVoteRequest s2 s1 9) to all            
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 1065): deliver-unordered n1 n2 9                          
+[DETL] Deliver msg n1 (10.255.255.101) -> n2 (10.255.255.102) fd: 12 size: 16   
+[INFO] Read cmd (line 1066): loop intercept n2 check_has_recv_queue n1          
+[INFO] Read cmd (line 1066): intercept n2 check_has_recv_queue n1               
+[DETL] Send cmd to n2 (10.255.255.102): check_has_recv_queue n1                 
+[DETL] Received ack ok from node "n2": True                                     
+[INFO] Read cmd (line 1067): execute n2 raft recvfrom n1                        
+[DETL] Enqueue in_fd: 12, out_fd: 11, n2 (10.255.255.102) -> n1 (10.255.255.101) size: 13           
+[DETL] Received ack ok from node "n2": True                                     
+[INFO] Read cmd (line 1068): execute n1 get commitIdx                           
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1069): # variable commitIdx n1 0                           
+[INFO] Read cmd (line 1070): compare variable                                   
+[INFO] Read cmd (line 1071): execute n1 get currentTerm                         
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 1072): # variable currentTerm n1 4                         
+[INFO] Read cmd (line 1073): compare variable                                   
+[INFO] Read cmd (line 1074): execute n1 get log                                 
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 1075): # variable log n1 []                                
+[INFO] Read cmd (line 1076): compare variable                                   
+[INFO] Read cmd (line 1077): execute n1 get state                               
+[DETL] Received data from node "n1": 2  
+[INFO] Comment (line 1078): # variable state n1 2                               
+[INFO] Read cmd (line 1079): compare variable                                   
+[INFO] Read cmd (line 1080): execute n1 get nextIdx                             
+[DETL] Received data from node "n1": {'n2': 1, 'n3': 1}                         
+[INFO] Comment (line 1081): # variable nextIdx n1 {'n2': 1, 'n3': 1}            
+[INFO] Read cmd (line 1082): compare variable                                   
+[INFO] Read cmd (line 1083): execute n1 get matchIdx                            
+[DETL] Received data from node "n1": {'n2': 0, 'n3': 0}                         
+[INFO] Comment (line 1084): # variable matchIdx n1 {'n2': 0, 'n3': 0}           
+[INFO] Read cmd (line 1085): compare variable                                   
+[INFO] Read cmd (line 1086): execute n2 get commitIdx                           
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1087): # variable commitIdx n2 0                           
+[INFO] Read cmd (line 1088): compare variable                                   
+[INFO] Read cmd (line 1089): execute n2 get currentTerm                         
+[DETL] Received data from node "n2": 3  
+[INFO] Comment (line 1090): # variable currentTerm n2 3                         
+[INFO] Read cmd (line 1091): compare variable                                   
+[INFO] Read cmd (line 1092): execute n2 get log                                 
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 1093): # variable log n2 []                                
+[INFO] Read cmd (line 1094): compare variable                                   
+[INFO] Read cmd (line 1095): execute n2 get state                               
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1096): # variable state n2 0                               
+[INFO] Read cmd (line 1097): compare variable                                   
+[INFO] Read cmd (line 1098): execute n3 get commitIdx                           
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1099): # variable commitIdx n3 0                           
+[INFO] Read cmd (line 1100): compare variable                                   
+[INFO] Read cmd (line 1101): execute n3 get currentTerm                         
+[DETL] Received data from node "n3": 4  
+[INFO] Comment (line 1102): # variable currentTerm n3 4                         
+[INFO] Read cmd (line 1103): compare variable                                   
+[INFO] Read cmd (line 1104): execute n3 get log                                 
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 1105): # variable log n3 []                                
+[INFO] Read cmd (line 1106): compare variable                                   
+[INFO] Read cmd (line 1107): execute n3 get state                               
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1108): # variable state n3 0                               
+[INFO] Read cmd (line 1109): compare variable                                   
+[INFO] Comment (line 1110): # net-len 11
+[INFO] Read cmd (line 1111): compare net-len                                    
+[INFO] Comment (line 1112): # [26] HandleRequestVoteRequest s2 s1 11            
+[DETL] Send cmd (print [26] HandleRequestVoteRequest s2 s1 11) to all           
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 1113): deliver-unordered n1 n2 11                         
+[DETL] Deliver msg n1 (10.255.255.101) -> n2 (10.255.255.102) fd: 12 size: 16   
+[INFO] Read cmd (line 1114): loop intercept n2 check_has_recv_queue n1          
+[INFO] Read cmd (line 1114): intercept n2 check_has_recv_queue n1               
+[DETL] Send cmd to n2 (10.255.255.102): check_has_recv_queue n1                 
+[DETL] Received ack ok from node "n2": True                                     
+[INFO] Read cmd (line 1115): execute n2 raft recvfrom n1                        
+[DETL] Enqueue in_fd: 12, out_fd: 11, n2 (10.255.255.102) -> n1 (10.255.255.101) size: 13           
+[DETL] Received ack ok from node "n2": True                                     
+[INFO] Read cmd (line 1116): execute n1 get commitIdx                           
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1117): # variable commitIdx n1 0                           
+[INFO] Read cmd (line 1118): compare variable                                   
+[INFO] Read cmd (line 1119): execute n1 get currentTerm                         
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 1120): # variable currentTerm n1 4                         
+[INFO] Read cmd (line 1121): compare variable                                   
+[INFO] Read cmd (line 1122): execute n1 get log                                 
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 1123): # variable log n1 []                                
+[INFO] Read cmd (line 1124): compare variable                                   
+[INFO] Read cmd (line 1125): execute n1 get state                               
+[DETL] Received data from node "n1": 2  
+[INFO] Comment (line 1126): # variable state n1 2                               
+[INFO] Read cmd (line 1127): compare variable                                   
+[INFO] Read cmd (line 1128): execute n1 get nextIdx                             
+[DETL] Received data from node "n1": {'n2': 1, 'n3': 1}                         
+[INFO] Comment (line 1129): # variable nextIdx n1 {'n2': 1, 'n3': 1}            
+[INFO] Read cmd (line 1130): compare variable                                   
+[INFO] Read cmd (line 1131): execute n1 get matchIdx                            
+[DETL] Received data from node "n1": {'n2': 0, 'n3': 0}                         
+[INFO] Comment (line 1132): # variable matchIdx n1 {'n2': 0, 'n3': 0}           
+[INFO] Read cmd (line 1133): compare variable                                   
+[INFO] Read cmd (line 1134): execute n2 get commitIdx                           
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1135): # variable commitIdx n2 0                           
+[INFO] Read cmd (line 1136): compare variable                                   
+[INFO] Read cmd (line 1137): execute n2 get currentTerm                         
+[DETL] Received data from node "n2": 4  
+[INFO] Comment (line 1138): # variable currentTerm n2 4                         
+[INFO] Read cmd (line 1139): compare variable                                   
+[INFO] Read cmd (line 1140): execute n2 get log                                 
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 1141): # variable log n2 []                                
+[INFO] Read cmd (line 1142): compare variable                                   
+[INFO] Read cmd (line 1143): execute n2 get state                               
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1144): # variable state n2 0                               
+[INFO] Read cmd (line 1145): compare variable                                   
+[INFO] Read cmd (line 1146): execute n3 get commitIdx                           
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1147): # variable commitIdx n3 0                           
+[INFO] Read cmd (line 1148): compare variable                                   
+[INFO] Read cmd (line 1149): execute n3 get currentTerm                         
+[DETL] Received data from node "n3": 4  
+[INFO] Comment (line 1150): # variable currentTerm n3 4                         
+[INFO] Read cmd (line 1151): compare variable                                   
+[INFO] Read cmd (line 1152): execute n3 get log                                 
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 1153): # variable log n3 []                                
+[INFO] Read cmd (line 1154): compare variable                                   
+[INFO] Read cmd (line 1155): execute n3 get state                               
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1156): # variable state n3 0                               
+[INFO] Read cmd (line 1157): compare variable                                   
+[INFO] Comment (line 1158): # net-len 11
+[INFO] Read cmd (line 1159): compare net-len                                    
+[INFO] Comment (line 1160): # [27] HandleAppendEntriesRequest s2 s1 22          
+[DETL] Send cmd (print [27] HandleAppendEntriesRequest s2 s1 22) to all         
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 1161): deliver-unordered n1 n2 22                         
+[DETL] Deliver msg n1 (10.255.255.101) -> n2 (10.255.255.102) fd: 12 size: 21   
+[INFO] Read cmd (line 1162): loop intercept n2 check_has_recv_queue n1          
+[INFO] Read cmd (line 1162): intercept n2 check_has_recv_queue n1               
+[DETL] Send cmd to n2 (10.255.255.102): check_has_recv_queue n1                 
+[DETL] Received ack ok from node "n2": True                                     
+[INFO] Read cmd (line 1163): execute n2 raft recvfrom n1                        
+[DETL] Enqueue in_fd: 12, out_fd: 11, n2 (10.255.255.102) -> n1 (10.255.255.101) size: 22           
+[DETL] Received ack ok from node "n2": True                                     
+[INFO] Read cmd (line 1164): execute n1 get commitIdx                           
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1165): # variable commitIdx n1 0                           
+[INFO] Read cmd (line 1166): compare variable                                   
+[INFO] Read cmd (line 1167): execute n1 get currentTerm                         
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 1168): # variable currentTerm n1 4                         
+[INFO] Read cmd (line 1169): compare variable                                   
+[INFO] Read cmd (line 1170): execute n1 get log                                 
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 1171): # variable log n1 []                                
+[INFO] Read cmd (line 1172): compare variable                                   
+[INFO] Read cmd (line 1173): execute n1 get state                               
+[DETL] Received data from node "n1": 2  
+[INFO] Comment (line 1174): # variable state n1 2                               
+[INFO] Read cmd (line 1175): compare variable                                   
+[INFO] Read cmd (line 1176): execute n1 get nextIdx                             
+[DETL] Received data from node "n1": {'n2': 1, 'n3': 1}                         
+[INFO] Comment (line 1177): # variable nextIdx n1 {'n2': 1, 'n3': 1}            
+[INFO] Read cmd (line 1178): compare variable                                   
+[INFO] Read cmd (line 1179): execute n1 get matchIdx                            
+[DETL] Received data from node "n1": {'n2': 0, 'n3': 0}                         
+[INFO] Comment (line 1180): # variable matchIdx n1 {'n2': 0, 'n3': 0}           
+[INFO] Read cmd (line 1181): compare variable                                   
+[INFO] Read cmd (line 1182): execute n2 get commitIdx                           
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1183): # variable commitIdx n2 0                           
+[INFO] Read cmd (line 1184): compare variable                                   
+[INFO] Read cmd (line 1185): execute n2 get currentTerm                         
+[DETL] Received data from node "n2": 4  
+[INFO] Comment (line 1186): # variable currentTerm n2 4                         
+[INFO] Read cmd (line 1187): compare variable                                   
+[INFO] Read cmd (line 1188): execute n2 get log                                 
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 1189): # variable log n2 []                                
+[INFO] Read cmd (line 1190): compare variable                                   
+[INFO] Read cmd (line 1191): execute n2 get state                               
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1192): # variable state n2 0                               
+[INFO] Read cmd (line 1193): compare variable                                   
+[INFO] Read cmd (line 1194): execute n3 get commitIdx                           
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1195): # variable commitIdx n3 0                           
+[INFO] Read cmd (line 1196): compare variable                                   
+[INFO] Read cmd (line 1197): execute n3 get currentTerm                         
+[DETL] Received data from node "n3": 4  
+[INFO] Comment (line 1198): # variable currentTerm n3 4                         
+[INFO] Read cmd (line 1199): compare variable                                   
+[INFO] Read cmd (line 1200): execute n3 get log                                 
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 1201): # variable log n3 []                                
+[INFO] Read cmd (line 1202): compare variable                                   
+[INFO] Read cmd (line 1203): execute n3 get state                               
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1204): # variable state n3 0                               
+[INFO] Read cmd (line 1205): compare variable                                   
+[INFO] Comment (line 1206): # net-len 11
+[INFO] Read cmd (line 1207): compare net-len                                    
+[INFO] Comment (line 1208): # [28] HandleAppendEntriesRequest s2 s1 24          
+[DETL] Send cmd (print [28] HandleAppendEntriesRequest s2 s1 24) to all         
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 1209): deliver-unordered n1 n2 24                         
+[DETL] Deliver msg n1 (10.255.255.101) -> n2 (10.255.255.102) fd: 12 size: 21   
+[INFO] Read cmd (line 1210): loop intercept n2 check_has_recv_queue n1          
+[INFO] Read cmd (line 1210): intercept n2 check_has_recv_queue n1               
+[DETL] Send cmd to n2 (10.255.255.102): check_has_recv_queue n1                 
+[DETL] Received ack ok from node "n2": True                                     
+[INFO] Read cmd (line 1211): execute n2 raft recvfrom n1                        
+[DETL] Enqueue in_fd: 12, out_fd: 11, n2 (10.255.255.102) -> n1 (10.255.255.101) size: 22           
+[DETL] Received ack ok from node "n2": True                                     
+[INFO] Read cmd (line 1212): execute n1 get commitIdx                           
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1213): # variable commitIdx n1 0                           
+[INFO] Read cmd (line 1214): compare variable                                   
+[INFO] Read cmd (line 1215): execute n1 get currentTerm                         
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 1216): # variable currentTerm n1 4                         
+[INFO] Read cmd (line 1217): compare variable                                   
+[INFO] Read cmd (line 1218): execute n1 get log                                 
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 1219): # variable log n1 []                                
+[INFO] Read cmd (line 1220): compare variable                                   
+[INFO] Read cmd (line 1221): execute n1 get state                               
+[DETL] Received data from node "n1": 2  
+[INFO] Comment (line 1222): # variable state n1 2                               
+[INFO] Read cmd (line 1223): compare variable                                   
+[INFO] Read cmd (line 1224): execute n1 get nextIdx                             
+[DETL] Received data from node "n1": {'n2': 1, 'n3': 1}                         
+[INFO] Comment (line 1225): # variable nextIdx n1 {'n2': 1, 'n3': 1}            
+[INFO] Read cmd (line 1226): compare variable                                   
+[INFO] Read cmd (line 1227): execute n1 get matchIdx                            
+[DETL] Received data from node "n1": {'n2': 0, 'n3': 0}                         
+[INFO] Comment (line 1228): # variable matchIdx n1 {'n2': 0, 'n3': 0}           
+[INFO] Read cmd (line 1229): compare variable                                   
+[INFO] Read cmd (line 1230): execute n2 get commitIdx                           
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1231): # variable commitIdx n2 0                           
+[INFO] Read cmd (line 1232): compare variable                                   
+[INFO] Read cmd (line 1233): execute n2 get currentTerm                         
+[DETL] Received data from node "n2": 4  
+[INFO] Comment (line 1234): # variable currentTerm n2 4                         
+[INFO] Read cmd (line 1235): compare variable                                   
+[INFO] Read cmd (line 1236): execute n2 get log                                 
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 1237): # variable log n2 []                                
+[INFO] Read cmd (line 1238): compare variable                                   
+[INFO] Read cmd (line 1239): execute n2 get state                               
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1240): # variable state n2 0                               
+[INFO] Read cmd (line 1241): compare variable                                   
+[INFO] Read cmd (line 1242): execute n3 get commitIdx                           
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1243): # variable commitIdx n3 0                           
+[INFO] Read cmd (line 1244): compare variable                                   
+[INFO] Read cmd (line 1245): execute n3 get currentTerm                         
+[DETL] Received data from node "n3": 4  
+[INFO] Comment (line 1246): # variable currentTerm n3 4                         
+[INFO] Read cmd (line 1247): compare variable                                   
+[INFO] Read cmd (line 1248): execute n3 get log                                 
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 1249): # variable log n3 []                                
+[INFO] Read cmd (line 1250): compare variable                                   
+[INFO] Read cmd (line 1251): execute n3 get state                               
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1252): # variable state n3 0                               
+[INFO] Read cmd (line 1253): compare variable                                   
+[INFO] Comment (line 1254): # net-len 11
+[INFO] Read cmd (line 1255): compare net-len                                    
+[INFO] Comment (line 1256): # [29] HandleAppendEntriesRequest s2 s1 26          
+[DETL] Send cmd (print [29] HandleAppendEntriesRequest s2 s1 26) to all         
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 1257): deliver-unordered n1 n2 26                         
+[DETL] Deliver msg n1 (10.255.255.101) -> n2 (10.255.255.102) fd: 12 size: 21   
+[INFO] Read cmd (line 1258): loop intercept n2 check_has_recv_queue n1          
+[INFO] Read cmd (line 1258): intercept n2 check_has_recv_queue n1               
+[DETL] Send cmd to n2 (10.255.255.102): check_has_recv_queue n1                 
+[DETL] Received ack ok from node "n2": True                                     
+[INFO] Read cmd (line 1259): execute n2 raft recvfrom n1                        
+[DETL] Enqueue in_fd: 12, out_fd: 11, n2 (10.255.255.102) -> n1 (10.255.255.101) size: 22           
+[DETL] Received ack ok from node "n2": True                                     
+[INFO] Read cmd (line 1260): execute n1 get commitIdx                           
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1261): # variable commitIdx n1 0                           
+[INFO] Read cmd (line 1262): compare variable                                   
+[INFO] Read cmd (line 1263): execute n1 get currentTerm                         
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 1264): # variable currentTerm n1 4                         
+[INFO] Read cmd (line 1265): compare variable                                   
+[INFO] Read cmd (line 1266): execute n1 get log                                 
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 1267): # variable log n1 []                                
+[INFO] Read cmd (line 1268): compare variable                                   
+[INFO] Read cmd (line 1269): execute n1 get state                               
+[DETL] Received data from node "n1": 2  
+[INFO] Comment (line 1270): # variable state n1 2                               
+[INFO] Read cmd (line 1271): compare variable                                   
+[INFO] Read cmd (line 1272): execute n1 get nextIdx                             
+[DETL] Received data from node "n1": {'n2': 1, 'n3': 1}                         
+[INFO] Comment (line 1273): # variable nextIdx n1 {'n2': 1, 'n3': 1}            
+[INFO] Read cmd (line 1274): compare variable                                   
+[INFO] Read cmd (line 1275): execute n1 get matchIdx                            
+[DETL] Received data from node "n1": {'n2': 0, 'n3': 0}                         
+[INFO] Comment (line 1276): # variable matchIdx n1 {'n2': 0, 'n3': 0}           
+[INFO] Read cmd (line 1277): compare variable                                   
+[INFO] Read cmd (line 1278): execute n2 get commitIdx                           
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1279): # variable commitIdx n2 0                           
+[INFO] Read cmd (line 1280): compare variable                                   
+[INFO] Read cmd (line 1281): execute n2 get currentTerm                         
+[DETL] Received data from node "n2": 4  
+[INFO] Comment (line 1282): # variable currentTerm n2 4                         
+[INFO] Read cmd (line 1283): compare variable                                   
+[INFO] Read cmd (line 1284): execute n2 get log                                 
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 1285): # variable log n2 []                                
+[INFO] Read cmd (line 1286): compare variable                                   
+[INFO] Read cmd (line 1287): execute n2 get state                               
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1288): # variable state n2 0                               
+[INFO] Read cmd (line 1289): compare variable                                   
+[INFO] Read cmd (line 1290): execute n3 get commitIdx                           
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1291): # variable commitIdx n3 0                           
+[INFO] Read cmd (line 1292): compare variable                                   
+[INFO] Read cmd (line 1293): execute n3 get currentTerm                         
+[DETL] Received data from node "n3": 4  
+[INFO] Comment (line 1294): # variable currentTerm n3 4                         
+[INFO] Read cmd (line 1295): compare variable                                   
+[INFO] Read cmd (line 1296): execute n3 get log                                 
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 1297): # variable log n3 []                                
+[INFO] Read cmd (line 1298): compare variable                                   
+[INFO] Read cmd (line 1299): execute n3 get state                               
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1300): # variable state n3 0                               
+[INFO] Read cmd (line 1301): compare variable                                   
+[INFO] Comment (line 1302): # net-len 11
+[INFO] Read cmd (line 1303): compare net-len                                    
+[INFO] Comment (line 1304): # [30] ClientRequest s1                             
+[DETL] Send cmd (print [30] ClientRequest s1) to all                            
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 1305): execute n1 raft cli v                              
+[DETL] Enqueue in_fd: 11, out_fd: 12, n1 (10.255.255.101) -> n2 (10.255.255.102) size: 23           
+[DETL] Enqueue in_fd: 13, out_fd: 14, n1 (10.255.255.101) -> n3 (10.255.255.103) size: 23           
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 1306): execute n1 get commitIdx                           
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1307): # variable commitIdx n1 0                           
+[INFO] Read cmd (line 1308): compare variable                                   
+[INFO] Read cmd (line 1309): execute n1 get currentTerm                         
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 1310): # variable currentTerm n1 4                         
+[INFO] Read cmd (line 1311): compare variable                                   
+[INFO] Read cmd (line 1312): execute n1 get log                                 
+[DETL] Received data from node "n1": [(4, 'v')]                                 
+[INFO] Comment (line 1313): # variable log n1 [(4, 'v')]                        
+[INFO] Read cmd (line 1314): compare variable                                   
+[INFO] Read cmd (line 1315): execute n1 get state                               
+[DETL] Received data from node "n1": 2  
+[INFO] Comment (line 1316): # variable state n1 2                               
+[INFO] Read cmd (line 1317): compare variable                                   
+[INFO] Read cmd (line 1318): execute n1 get nextIdx                             
+[DETL] Received data from node "n1": {'n2': 1, 'n3': 1}                         
+[INFO] Comment (line 1319): # variable nextIdx n1 {'n2': 1, 'n3': 1}            
+[INFO] Read cmd (line 1320): compare variable                                   
+[INFO] Read cmd (line 1321): execute n1 get matchIdx                            
+[DETL] Received data from node "n1": {'n2': 0, 'n3': 0}                         
+[INFO] Comment (line 1322): # variable matchIdx n1 {'n2': 0, 'n3': 0}           
+[INFO] Read cmd (line 1323): compare variable                                   
+[INFO] Read cmd (line 1324): execute n2 get commitIdx                           
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1325): # variable commitIdx n2 0                           
+[INFO] Read cmd (line 1326): compare variable                                   
+[INFO] Read cmd (line 1327): execute n2 get currentTerm                         
+[DETL] Received data from node "n2": 4  
+[INFO] Comment (line 1328): # variable currentTerm n2 4                         
+[INFO] Read cmd (line 1329): compare variable                                   
+[INFO] Read cmd (line 1330): execute n2 get log                                 
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 1331): # variable log n2 []                                
+[INFO] Read cmd (line 1332): compare variable                                   
+[INFO] Read cmd (line 1333): execute n2 get state                               
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1334): # variable state n2 0                               
+[INFO] Read cmd (line 1335): compare variable                                   
+[INFO] Read cmd (line 1336): execute n3 get commitIdx                           
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1337): # variable commitIdx n3 0                           
+[INFO] Read cmd (line 1338): compare variable                                   
+[INFO] Read cmd (line 1339): execute n3 get currentTerm                         
+[DETL] Received data from node "n3": 4  
+[INFO] Comment (line 1340): # variable currentTerm n3 4                         
+[INFO] Read cmd (line 1341): compare variable                                   
+[INFO] Read cmd (line 1342): execute n3 get log                                 
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 1343): # variable log n3 []                                
+[INFO] Read cmd (line 1344): compare variable                                   
+[INFO] Read cmd (line 1345): execute n3 get state                               
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1346): # variable state n3 0                               
+[INFO] Read cmd (line 1347): compare variable                                   
+[INFO] Comment (line 1348): # net-len 13
+[INFO] Read cmd (line 1349): compare net-len                                    
+[INFO] Read cmd (line 1350): execute n1 raft statemachine                       
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 1351): execute n2 raft statemachine                       
+[DETL] Received ack ok from node "n2": True                                     
+[INFO] Read cmd (line 1352): execute n3 raft statemachine                       
+[DETL] Received ack ok from node "n3": True                                     
+logout              
+
