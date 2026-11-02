@@ -105,16 +105,39 @@ def bag_messages(reader, state):
     return items
 
 
+def fmt_bool(value):
+    if value in (True, "TRUE", "True", 1, "1"):
+        return "1"
+    return "0"
+
+
+def fmt_servers(value):
+    if value in (None, "Nil", set(), frozenset()):
+        return "{}"
+    if isinstance(value, str):
+        return "{}" if value == "Nil" else "{%s}" % node_name(value)
+    names = sorted(node_name(item) for item in value)
+    return "{" + ",".join(names) + "}"
+
+
+def fmt_vote(value):
+    if value in (None, "Nil"):
+        return "Nil"
+    return node_name(value)
+
+
 def fmt_entry(entry):
     kind = entry.get("type")
     term = entry.get("term")
     if kind == "NoopEntry":
-        body = "Nil"
+        body = "Noop"
     elif kind == "ValueEntry":
-        body = "v"
+        body = "Value"
+    elif kind == "ConfigEntry":
+        body = "Config:" + fmt_servers(entry.get("config"))
     else:
-        body = "?UNKNOWN?"
-    return "(%s, '%s')" % (term, body)
+        body = "UNKNOWN"
+    return "(%s,%s)" % (term, body)
 
 
 def fmt_log(entries):
@@ -123,11 +146,9 @@ def fmt_log(entries):
     return "[" + ", ".join(fmt_entry(entry) for entry in entries) + "]"
 
 
-def fmt_index_map(mapping, self_name):
+def fmt_index_map(mapping):
     items = []
     for key, value in sorted(mapping.items(), key=lambda kv: node_name(kv[0])):
-        if node_name(key) == self_name:
-            continue
         items.append("'%s': %s" % (node_name(key), value))
     return "{" + ", ".join(items) + "}"
 
@@ -145,34 +166,39 @@ class Builder:
     def comment(self, text):
         self.lines.append("# " + text)
 
+    def field(self, name, node, variable, model):
+        self.emit("execute", node, "get " + variable)
+        self.comment("variable %s %s %s" % (variable, node, model))
+        self.emit("compare", "variable")
+
     def compare_node(self, state, server):
         name = node_name(server)
-        self.emit("execute", name, "get commitIdx")
-        self.comment("variable commitIdx %s %s" % (name, state["commitIndex"][server]))
-        self.emit("compare", "variable")
-        self.emit("execute", name, "get currentTerm")
-        self.comment("variable currentTerm %s %s" % (name, state["currentTerm"][server]))
-        self.emit("compare", "variable")
-        self.emit("execute", name, "get log")
-        self.comment("variable log %s %s" % (name, fmt_log(state["log"][server])))
-        self.emit("compare", "variable")
-        self.emit("execute", name, "get state")
         role = state["state"][server]
         if role not in STATE_CODE:
             raise NotControllable("unmapped state %s" % role)
-        self.comment("variable state %s %s" % (name, STATE_CODE[role]))
-        self.emit("compare", "variable")
-        if role == "Leader":
-            self.emit("execute", name, "get nextIdx")
-            self.comment("variable nextIdx %s %s" % (name, fmt_index_map(state["nextIndex"][server], name)))
-            self.emit("compare", "variable")
-            self.emit("execute", name, "get matchIdx")
-            self.comment("variable matchIdx %s %s" % (name, fmt_index_map(state["matchIndex"][server], name)))
-            self.emit("compare", "variable")
+        self.field(name, name, "currentTerm", state["currentTerm"][server])
+        self.field(name, name, "votedFor", fmt_vote(state["votedFor"][server]))
+        self.field(name, name, "state", STATE_CODE[role])
+        self.field(name, name, "log", fmt_log(state["log"][server]))
+        self.field(name, name, "commitIdx", state["commitIndex"][server])
+        self.field(name, name, "logOffset", state["logOffset"][server])
+        self.field(name, name, "nextIdx", fmt_index_map(state["nextIndex"][server]))
+        self.field(name, name, "matchIdx", fmt_index_map(state["matchIndex"][server]))
+        self.field(name, name, "votesGranted", fmt_servers(state["votesGranted"][server]))
+        self.field(name, name, "snapshotLastIdx", state["snapshotLastIdx"][server])
+        self.field(name, name, "snapshotLastTerm", state["snapshotLastTerm"][server])
+        self.field(name, name, "loadingSnapshot", fmt_bool(state["loadingSnapshot"][server]))
+        self.field(name, name, "pendingSnapshotIdx", state["pendingSnapshotIdx"][server])
+        self.field(name, name, "pendingSnapshotTerm", state["pendingSnapshotTerm"][server])
+        self.field(name, name, "clusterConfig", fmt_servers(state["clusterConfig"][server]))
+        self.field(name, name, "votingCfgChangeIdx", state["votingCfgChangeIdx"][server])
 
-    def compare_all(self, state):
+    def compare_all(self, state, label):
+        self.comment(label)
         for server in self.servers:
             self.compare_node(state, server)
+        self.field(self.servers[0], node_name(self.servers[0]), "staleRead", fmt_bool(state["staleReadDetected"]))
+        self.field(self.servers[0], node_name(self.servers[0]), "noopRead", fmt_bool(state["noopReadDetected"]))
         self.comment("net-len %d" % len(bag_messages(self.reader, state)))
         self.emit("compare", "net-len")
 
@@ -185,6 +211,8 @@ def build_from_pc(reader, states):
         if not isinstance(pc, list) or not pc:
             raise NotControllable("state %d has no scr.pc" % index)
         cmd = pc[0]
+        if index > 0:
+            builder.compare_all(states[index - 1], "before [%d]" % index)
         builder.comment("[%d] %s" % (index, " ".join(str(part) for part in pc)))
         if cmd == "Init":
             builder.emit("init", len(builder.servers))
@@ -195,26 +223,42 @@ def build_from_pc(reader, states):
             builder.emit("wait-init", len(builder.servers))
             for server in builder.servers:
                 builder.emit("loop", "execute", node_name(server), "net isallconnected")
-            for server in builder.servers:
-                builder.emit("execute", node_name(server), "raft periodic")
         elif cmd == "Timeout":
-            name = node_name(pc[1])
-            builder.emit("intercept", name, "inc_time_ms", str(ELECTION_TIMEOUT_MS))
-            builder.emit("execute", name, "raft periodic %d" % ELECTION_TIMEOUT_MS)
+            builder.emit("execute", node_name(pc[1]), "raft election")
+        elif cmd == "BecomeLeader":
+            builder.emit("execute", node_name(pc[1]), "raft become-leader")
         elif cmd == "ClientRequest":
             builder.emit("execute", node_name(pc[1]), "raft cli v")
-        elif cmd == "AppendEntriesAll":
-            builder.emit("execute", node_name(pc[1]), "raft periodic %d" % REQUEST_TIMEOUT_MS)
-        elif cmd == "LoseMessage":
-            builder.emit("clear", node_name(pc[1]), node_name(pc[2]))
+        elif cmd == "AppendEntries":
+            builder.emit("execute", node_name(pc[1]), "raft appendentries " + node_name(pc[2]))
+        elif cmd == "AdvanceCommitIndex":
+            builder.emit("execute", node_name(pc[1]), "raft advance-commit")
+        elif cmd == "TakeSnapshot":
+            builder.emit("execute", node_name(pc[1]), "raft snapshot")
+        elif cmd == "SendInstallSnapshot":
+            builder.emit("execute", node_name(pc[1]), "raft snapshot-send " + node_name(pc[2]))
+        elif cmd == "EndLoadSnapshot":
+            builder.emit("execute", node_name(pc[1]), "raft end-load")
+        elif cmd == "ClientNonQuorumRead":
+            builder.emit("execute", node_name(pc[1]), "raft read")
+        elif cmd == "ProposeAddServer":
+            builder.emit("execute", node_name(pc[1]), "raft add " + node_name(pc[2]))
+        elif cmd == "ProposeRemoveServer":
+            builder.emit("execute", node_name(pc[1]), "raft remove " + node_name(pc[2]))
+        elif cmd == "Crash":
+            name = node_name(pc[1])
+            builder.emit("execute", name, "raft crash")
+            builder.emit("execute", name, "raft recover")
+        elif cmd in ("LoseMessage", "DropStaleMessage"):
+            builder.emit("drop-unordered", node_name(pc[1]), node_name(pc[2]), pc[3])
         elif str(cmd).startswith("Handle"):
             dest, src, seq = pc[1], pc[2], pc[3]
             builder.emit("deliver-unordered", node_name(src), node_name(dest), seq)
             builder.emit("loop", "intercept", node_name(dest), "check_has_recv_queue", node_name(src))
             builder.emit("execute", node_name(dest), "raft recvfrom " + node_name(src))
         else:
-            raise NotControllable("no stock command for pc %s" % pc)
-        builder.compare_all(state)
+            raise NotControllable("no command for pc %s" % pc)
+        builder.compare_all(state, "after [%d]" % index)
     for server in builder.servers:
         builder.emit("execute", node_name(server), "raft statemachine")
     return builder

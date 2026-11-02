@@ -15,8 +15,8 @@ from pathlib import Path
 RUN = Path("/users/bingzhuo/Specula/case-studies/systems/redisraft/modules/core/runs/case-studies-redisraft")
 MOUNT = Path("/users/bingzhuo/sandtable/build/mount/specula-ce")
 CONTAINER_ROOT = "/root/sandtable/specula-ce"
-COVERAGE = RUN / "controlled-execution-runs" / "controlled-execution-1030-1"
-ROUND = "controlled-execution-1030-1-sanitizer"
+COVERAGE = RUN / "controlled-execution-runs" / "controlled-execution-1102-1"
+ROUND = "controlled-execution-1102-1-sanitizer"
 ROUND_DIR = RUN / "controlled-execution-runs" / ROUND
 CONFIGS = ["standard", "crashrecovery", "membership", "snapshot", "staleread"]
 START = CONTAINER_ROOT + "/sandtable/scripts/start_docker_sanitizer.sh"

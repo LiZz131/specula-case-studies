@@ -51,7 +51,8 @@ if(SPECULA_SANITIZE)
         -fsanitize=address,undefined -Wl,--export-dynamic)
 else()
     target_compile_options(RedisRaftDriver PRIVATE
-        -Wall -Wextra -Wno-unused-parameter -Wno-unused-function --coverage)
+        -Wall -Wextra -Wno-unused-parameter -Wno-unused-function --coverage
+        -DSPECULA_COVERAGE)
     target_link_options(RedisRaftDriver PRIVATE --coverage -Wl,--export-dynamic)
 endif()
 target_link_libraries(RedisRaftDriver PRIVATE RedisRaft readline gflags ${TLPI_LIB} pthread)

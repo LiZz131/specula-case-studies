@@ -1,10 +1,6 @@
 ---- MODULE MC_for_sandtable ----
-\* Bounded random walk over the controllable subset of base_for_sandtable.
-\* MCNext only contains actions the stock RedisRaft driver can execute:
-\* timeout, client append, send-all, message handlers, and losing the
-\* single message on a TCP channel.
-\* Crash, snapshot, membership, and non-quorum read stay out. Their limits
-\* are still conjuncts of MCInit so each hunt cfg keeps its original numbers.
+\* Every Sand* action is in MCNext. Limits match the Specula cfg.
+\* MonotonicCommitIndexProp is not used: Crash sets commitIndex back to 0.
 EXTENDS base_for_sandtable
 
 CONSTANTS
@@ -25,23 +21,40 @@ MCClientRequest(i) ==
     /\ SandClientRequest(i)
     /\ counters' = [counters EXCEPT !.request = @ + 1]
 
-MCAppendEntriesAll(i) ==
-    /\ SandAppendEntriesAll(i)
-    /\ UNCHANGED counters
-
-MCHandleRequestVoteRequest(i, j, m) ==
-    /\ SandHandleRequestVoteRequest(i, j, m) /\ UNCHANGED counters
-MCHandleRequestVoteResponse(i, j, m) ==
-    /\ SandHandleRequestVoteResponse(i, j, m) /\ UNCHANGED counters
-MCHandleAppendEntriesRequest(i, j, m) ==
-    /\ SandHandleAppendEntriesRequest(i, j, m) /\ UNCHANGED counters
-MCHandleAppendEntriesResponse(i, j, m) ==
-    /\ SandHandleAppendEntriesResponse(i, j, m) /\ UNCHANGED counters
+MCCrash(i) ==
+    /\ counters.crash < CrashLimit
+    /\ SandCrash(i)
+    /\ counters' = [counters EXCEPT !.crash = @ + 1]
 
 MCLoseMessage(m) ==
     /\ counters.lose < LoseLimit
     /\ SandLoseMessage(m)
     /\ counters' = [counters EXCEPT !.lose = @ + 1]
+
+MCTakeSnapshot(i) ==
+    /\ counters.snapshot < SnapshotLimit
+    /\ SandTakeSnapshot(i)
+    /\ counters' = [counters EXCEPT !.snapshot = @ + 1]
+
+MCSendInstallSnapshot(i, j) ==
+    /\ counters.snapshot < SnapshotLimit
+    /\ SandSendInstallSnapshot(i, j)
+    /\ counters' = [counters EXCEPT !.snapshot = @ + 1]
+
+MCProposeAddServer(i, target) ==
+    /\ counters.configChange < ConfigChangeLimit
+    /\ SandProposeAddServer(i, target)
+    /\ counters' = [counters EXCEPT !.configChange = @ + 1]
+
+MCProposeRemoveServer(i, target) ==
+    /\ counters.configChange < ConfigChangeLimit
+    /\ SandProposeRemoveServer(i, target)
+    /\ counters' = [counters EXCEPT !.configChange = @ + 1]
+
+MCClientNonQuorumRead(i) ==
+    /\ counters.read < ReadLimit
+    /\ SandClientNonQuorumRead(i)
+    /\ counters' = [counters EXCEPT !.read = @ + 1]
 
 MsgBufferConstraint ==
     \/ MaxMsgBufferLimit = 0
@@ -51,26 +64,33 @@ MCInit ==
     /\ SandInit
     /\ counters = [timeout |-> 0, request |-> 0, crash |-> 0,
                    lose |-> 0, snapshot |-> 0, configChange |-> 0, read |-> 0]
-    \* Record the hunt limits MCNext does not read.
-    /\ CrashLimit \in Nat /\ SnapshotLimit \in Nat
-    /\ ConfigChangeLimit \in Nat /\ ReadLimit \in Nat
 
 MCNext ==
-    \/ \E i \in Server : MCTimeout(i)
-    \/ \E i \in Server : MCClientRequest(i)
-    \/ \E i \in Server : MCAppendEntriesAll(i)
-    \/ \E m \in BagToSet(messages) : MCHandleRequestVoteRequest(m.mdest, m.msource, m)
-    \/ \E m \in BagToSet(messages) : MCHandleRequestVoteResponse(m.mdest, m.msource, m)
-    \/ \E m \in BagToSet(messages) : MCHandleAppendEntriesRequest(m.mdest, m.msource, m)
-    \/ \E m \in BagToSet(messages) : MCHandleAppendEntriesResponse(m.mdest, m.msource, m)
+    \/ \E i \in Server :
+        \/ MCTimeout(i)
+        \/ /\ SandBecomeLeader(i) /\ UNCHANGED counters
+        \/ MCClientRequest(i)
+        \/ MCClientNonQuorumRead(i)
+        \/ /\ SandAdvanceCommitIndex(i) /\ UNCHANGED counters
+        \/ MCTakeSnapshot(i)
+        \/ /\ SandEndLoadSnapshot(i) /\ UNCHANGED counters
+        \/ \E j \in Server : /\ SandAppendEntries(i, j) /\ UNCHANGED counters
+        \/ \E j \in Server : MCSendInstallSnapshot(i, j)
+        \/ \E target \in Server : MCProposeAddServer(i, target)
+        \/ \E target \in Server : MCProposeRemoveServer(i, target)
+        \/ MCCrash(i)
+    \/ \E m \in BagToSet(messages) :
+        \/ /\ SandHandleRequestVoteRequest(m) /\ UNCHANGED counters
+        \/ /\ SandHandleRequestVoteResponse(m) /\ UNCHANGED counters
+        \/ /\ SandHandleAppendEntriesRequest(m) /\ UNCHANGED counters
+        \/ /\ SandHandleAppendEntriesResponse(m) /\ UNCHANGED counters
+        \/ /\ SandHandleInstallSnapshotRequest(m) /\ UNCHANGED counters
+        \/ /\ SandDropStaleMessage(m) /\ UNCHANGED counters
     \/ \E m \in BagToSet(messages) : MCLoseMessage(m)
 
 MCSpec == MCInit /\ [][MCNext]_<<allVars, scr, mcVars>>
 
 DepthBound == TLCGet("level") < 31
-
-MonotonicCommitIndexProp ==
-    [][\A i \in Server : commitIndex'[i] >= commitIndex[i]]_allVars
 
 MonotonicTermProp ==
     [][\A i \in Server : currentTerm'[i] >= currentTerm[i]]_allVars

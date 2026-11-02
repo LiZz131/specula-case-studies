@@ -895,100 +895,45 @@ ConfigChangeSafety ==
                                 /\ logOffset[i] + k > commitIndex[i]}
             IN Cardinality(cfgIdxSet) <= 1
 
+
 ----
 \* SandTable executable layer.
-\* Protocol updates inside each Sand* action are the formulas above.
-\* The library control flow that a single driver command actually takes is
-\* folded into that step: become-leader sends, the caught-up client append,
-\* the append-entries response retry, and the commit update that precedes
-\* the retry. seq is stamped in peer-name order. A handler runs only when
-\* its message is the oldest on that TCP channel.
-\*
-\* Not in MCNext, because the stock driver has no command:
-\* Crash, ProposeAddServer, ProposeRemoveServer, ClientNonQuorumRead,
-\* SendInstallSnapshot, TakeSnapshot, EndLoadSnapshot. Snapshot callbacks
-\* in the stock driver abort. PreVote is not a modeled action; the run
-\* driver starts the election with raft_election_start(me, 1).
+\* Every action of base.tla has a Sand* form. Actions that do not send are
+\* the base formula plus scr.pc. Actions that send use the same protocol
+\* assignments and stamp seq in node-name order, with ("seq" :> n) @@ m so
+\* a later copy replaces seq. Handlers run only on the oldest message of
+\* that TCP channel. SandAdvanceCommitIndex picks the largest legal index,
+\* which is the index the driver writes.
 ----
 
-Peers(i) ==
-    IF i = s1 THEN <<s2, s3>>
-    ELSE IF i = s2 THEN <<s1, s3>>
-    ELSE <<s1, s2>>
+OrderedServers(S) ==
+    (IF s1 \in S THEN <<s1>> ELSE <<>>) \o
+    (IF s2 \in S THEN <<s2>> ELSE <<>>) \o
+    (IF s3 \in S THEN <<s3>> ELSE <<>>)
 
 IsOldest(m) ==
     \A other \in BagToSet(messages) :
         (other.msource = m.msource /\ other.mdest = m.mdest) => other.seq >= m.seq
 
-RECURSIVE MergeLog(_, _, _, _)
-MergeLog(lg, off, prev, entries) ==
-    IF entries = <<>> THEN lg
-    ELSE LET idx == prev + 1
-             pos == idx - off
-         IN IF pos > Len(lg) THEN lg \o entries
-            ELSE IF lg[pos].term = Head(entries).term
-                 THEN MergeLog(lg, off, idx, Tail(entries))
-                 ELSE IF pos <= 1 THEN entries
-                      ELSE SubSeq(lg, 1, pos - 1) \o entries
+SendSeq(m, pc) ==
+    /\ messages' = messages (+) SetToBag({("seq" :> (scr.nSent + 1)) @@ m})
+    /\ scr' = [scr EXCEPT !.nSent = @ + 1, !.pc = pc]
 
-EntriesFrom(lg, off, nxt) ==
-    LET last == off + Len(lg)
-    IN IF nxt > last THEN <<>>
-       ELSE IF nxt <= off THEN lg
-       ELSE SubSeq(lg, nxt - off, Len(lg))
+ReplySeq(resp, req, pc) ==
+    /\ messages' = (messages (-) SetToBag({req})) (+)
+         SetToBag({("seq" :> (scr.nSent + 1)) @@ resp})
+    /\ scr' = [scr EXCEPT !.nSent = @ + 1, !.pc = pc]
 
-TermAt(lg, off, snapIdx, snapTerm, idx) ==
-    IF idx <= 0 THEN 0
-    ELSE IF idx = snapIdx THEN snapTerm
-    ELSE IF idx > off /\ idx <= off + Len(lg) THEN lg[idx - off].term
-    ELSE 0
-
-AERequest(i, j, lg, off, snapIdx, snapTerm, nxt, cmt) ==
-    LET prev == nxt - 1
-        prevTerm == TermAt(lg, off, snapIdx, snapTerm, prev)
-    IN [mtype         |-> AppendEntriesRequest,
-        mterm         |-> currentTerm[i],
-        mprevLogIndex |-> prev,
-        mprevLogTerm  |-> prevTerm,
-        mentries      |-> EntriesFrom(lg, off, nxt),
-        mleaderCommit |-> cmt,
-        msource       |-> i,
-        mdest         |-> j]
-
-\* One send advances next by the number of entries in that batch.
-\* An empty heartbeat leaves next where it is.
-NextAfterSend(off, lg, nxt) == nxt + Len(EntriesFrom(lg, off, nxt))
-
-Median3(a, b, c) ==
-    IF a >= b /\ a >= c THEN Max(b, c)
-    ELSE IF b >= a /\ b >= c THEN Max(a, c)
-    ELSE Max(a, b)
-
-NewCommitFrom(lg, off, snapIdx, snapTerm, oldCommit, term, mSelf, mA, mB) ==
-    LET med == Median3(mSelf, mA, mB)
-    IN IF med > oldCommit /\ TermAt(lg, off, snapIdx, snapTerm, med) = term
-       THEN med ELSE oldCommit
-
-DropAndSend(req, ms, pc) ==
+SendAllSeq(dests, mk(_), pc) ==
     LET n0 == scr.nSent
-        base == messages (-) SetToBag({req})
-        extra == IF Len(ms) = 0 THEN EmptyBag
-                 ELSE IF Len(ms) = 1 THEN SetToBag({ms[1] @@ ("seq" :> n0 + 1)})
-                 ELSE SetToBag({ms[1] @@ ("seq" :> n0 + 1),
-                                ms[2] @@ ("seq" :> n0 + 2)})
-    IN /\ messages' = base (+) extra
-       /\ scr' = [scr EXCEPT !.nSent = n0 + Len(ms), !.pc = pc]
-
-SendOnly(ms, pc) ==
-    LET n0 == scr.nSent
-        extra == IF Len(ms) = 0 THEN EmptyBag
-                 ELSE IF Len(ms) = 1 THEN SetToBag({ms[1] @@ ("seq" :> n0 + 1)})
-                 ELSE SetToBag({ms[1] @@ ("seq" :> n0 + 1),
-                                ms[2] @@ ("seq" :> n0 + 2)})
-    IN /\ messages' = messages (+) extra
-       /\ scr' = [scr EXCEPT !.nSent = n0 + Len(ms), !.pc = pc]
-
-ReplySeq(resp, req, pc) == DropAndSend(req, <<resp>>, pc)
+        n == Len(dests)
+        one(k) == ("seq" :> (n0 + k)) @@ mk(dests[k])
+        bag == IF n = 0 THEN EmptyBag
+               ELSE IF n = 1 THEN SetToBag({one(1)})
+               ELSE IF n = 2 THEN SetToBag({one(1), one(2)})
+               ELSE SetToBag({one(1), one(2), one(3)})
+    IN /\ messages' = messages (+) bag
+       /\ scr' = [scr EXCEPT !.nSent = n0 + n, !.pc = pc]
 
 SandInit ==
     /\ Init
@@ -1002,23 +947,23 @@ SandTimeout(i) ==
     /\ votedFor' = [votedFor EXCEPT ![i] = i]
     /\ state' = [state EXCEPT ![i] = Candidate]
     /\ votesGranted' = [votesGranted EXCEPT ![i] = {i}]
-    /\ LET ps == Peers(i)
-           rv(d) == [mtype         |-> RequestVoteRequest,
+    /\ LET dests == OrderedServers(EffectiveConfig(i) \ {i})
+           mk(d) == [mtype         |-> RequestVoteRequest,
                      mterm         |-> currentTerm[i] + 1,
                      mlastLogTerm  |-> LastLogTerm(i),
                      mlastLogIndex |-> LastLogIndex(i),
                      msource       |-> i,
                      mdest         |-> d]
-       IN SendOnly(<<rv(ps[1]), rv(ps[2])>>, <<"Timeout", i>>)
+       IN SendAllSeq(dests, mk, <<"Timeout", i>>)
     /\ UNCHANGED <<log, commitIndex, logOffset, leaderVars,
                    snapshotVars, readVars, configVars>>
 
-SandHandleRequestVoteRequest(i, j, m) ==
+SandHandleRequestVoteRequest(m) ==
     /\ IsOldest(m)
     /\ m.mtype = RequestVoteRequest
-    /\ m.mdest = i
-    /\ m.msource = j
-    /\ LET logOk == LogUpToDate(m.mlastLogTerm, m.mlastLogIndex,
+    /\ LET i == m.mdest
+           j == m.msource
+           logOk == LogUpToDate(m.mlastLogTerm, m.mlastLogIndex,
                                 LastLogTerm(i), LastLogIndex(i))
            pc == <<"HandleRequestVoteRequest", i, j, m.seq>>
        IN \/ /\ m.mterm < currentTerm[i]
@@ -1056,249 +1001,207 @@ SandHandleRequestVoteRequest(i, j, m) ==
                                   leaderVars, candidateVars,
                                   snapshotVars, readVars, configVars>>
 
-SandHandleRequestVoteResponse(i, j, m) ==
+\* base.tla's HandleRequestVoteResponse is a \/, so "not a candidate, ignore"
+\* stays enabled when the response term is higher. The library checks the
+\* higher term first and steps down. TLC was picking the ignore disjunct.
+SandHandleRequestVoteResponse(m) ==
     /\ IsOldest(m)
     /\ m.mtype = RequestVoteResponse
-    /\ m.mdest = i
-    /\ m.msource = j
-    /\ LET pc == <<"HandleRequestVoteResponse", i, j, m.seq>>
+    /\ LET i == m.mdest
+           pc == <<"HandleRequestVoteResponse", i, m.msource, m.seq>>
        IN \/ /\ m.mterm > currentTerm[i]
              /\ currentTerm' = [currentTerm EXCEPT ![i] = m.mterm]
              /\ votedFor' = [votedFor EXCEPT ![i] = Nil]
              /\ state' = [state EXCEPT ![i] = Follower]
-             /\ DropAndSend(m, <<>>, pc)
+             /\ Discard(m)
+             /\ scr' = [scr EXCEPT !.pc = pc]
              /\ UNCHANGED <<log, commitIndex, logOffset, leaderVars, candidateVars,
                             snapshotVars, readVars, configVars>>
           \/ /\ m.mterm <= currentTerm[i]
-             /\ state[i] /= Candidate
-             /\ DropAndSend(m, <<>>, pc)
-             /\ UNCHANGED <<serverVars, logVars, leaderVars, candidateVars,
-                            snapshotVars, readVars, configVars>>
-          \/ /\ state[i] = Candidate
-             /\ m.mterm = currentTerm[i]
-             /\ m.mvoteGranted
-             /\ LET votes == votesGranted[i] \cup {j}
-                    won == IsQuorum(votes, EffectiveConfig(i))
-                    noop == [term |-> currentTerm[i], type |-> NoopEntry, config |-> {}]
-                    newLog == Append(log[i], noop)
-                    newLast == logOffset[i] + Len(newLog)
-                    ps == Peers(i)
-                    ae(d) == AERequest(i, d, newLog, logOffset[i],
-                                       snapshotLastIdx[i], snapshotLastTerm[i],
-                                       newLast, commitIndex[i])
-                IN /\ votesGranted' = [votesGranted EXCEPT ![i] = votes]
-                   /\ IF won
-                      THEN /\ log' = [log EXCEPT ![i] = newLog]
-                           /\ state' = [state EXCEPT ![i] = Leader]
-                           /\ nextIndex' = [nextIndex EXCEPT ![i] =
-                                  [k \in Server |-> newLast + 1]]
-                           /\ matchIndex' = [matchIndex EXCEPT ![i] =
-                                  [k \in Server |-> IF k = i THEN newLast ELSE 0]]
-                           /\ DropAndSend(m, <<ae(ps[1]), ae(ps[2])>>, pc)
-                      ELSE /\ UNCHANGED <<log, state, leaderVars>>
-                           /\ DropAndSend(m, <<>>, pc)
-                   /\ UNCHANGED <<currentTerm, votedFor, commitIndex, logOffset,
-                                  snapshotVars, readVars, configVars>>
-          \/ /\ state[i] = Candidate
-             /\ m.mterm <= currentTerm[i]
-             /\ ~m.mvoteGranted
-             /\ DropAndSend(m, <<>>, pc)
-             /\ UNCHANGED <<serverVars, logVars, leaderVars, candidateVars,
-                            snapshotVars, readVars, configVars>>
+             /\ HandleRequestVoteResponse(i, m)
+             /\ scr' = [scr EXCEPT !.pc = pc]
+
+SandBecomeLeader(i) ==
+    /\ BecomeLeader(i)
+    /\ scr' = [scr EXCEPT !.pc = <<"BecomeLeader", i>>]
 
 SandClientRequest(i) ==
+    /\ ClientRequest(i)
+    /\ scr' = [scr EXCEPT !.pc = <<"ClientRequest", i>>]
+
+SandAppendEntries(i, j) ==
     /\ state[i] = Leader
-    /\ ~loadingSnapshot[i]
-    /\ LET entry == [term |-> currentTerm[i], type |-> ValueEntry, config |-> {}]
-           lg == Append(log[i], entry)
-           newLast == logOffset[i] + Len(lg)
-           ps == Peers(i)
-           selfMatch == newLast
-           mA == IF ps[1] = i THEN selfMatch ELSE matchIndex[i][ps[1]]
-           mB == IF ps[2] = i THEN selfMatch ELSE matchIndex[i][ps[2]]
-           \* Peers are never i. Match of self is selfMatch; the other two stay.
-           cmt == NewCommitFrom(lg, logOffset[i], snapshotLastIdx[i], snapshotLastTerm[i],
-                                commitIndex[i], currentTerm[i],
-                                selfMatch, matchIndex[i][ps[1]], matchIndex[i][ps[2]])
-           want(p) == nextIndex[i][p] <= newLast
-           msg(p) == AERequest(i, p, lg, logOffset[i],
-                               snapshotLastIdx[i], snapshotLastTerm[i],
-                               nextIndex[i][p], cmt)
-           ms == IF want(ps[1]) /\ want(ps[2]) THEN <<msg(ps[1]), msg(ps[2])>>
-                 ELSE IF want(ps[1]) THEN <<msg(ps[1])>>
-                 ELSE IF want(ps[2]) THEN <<msg(ps[2])>>
-                 ELSE <<>>
-           nxt(p) == IF want(p)
-                     THEN NextAfterSend(logOffset[i], lg, nextIndex[i][p])
-                     ELSE nextIndex[i][p]
-       IN /\ log' = [log EXCEPT ![i] = lg]
-          /\ matchIndex' = [matchIndex EXCEPT ![i][i] = selfMatch]
-          /\ nextIndex' = [nextIndex EXCEPT ![i] =
-                 [k \in Server |-> IF k = i THEN nextIndex[i][i] ELSE nxt(k)]]
-          /\ commitIndex' = [commitIndex EXCEPT ![i] = cmt]
-          /\ SendOnly(ms, <<"ClientRequest", i>>)
-    /\ UNCHANGED <<currentTerm, votedFor, state, logOffset, candidateVars,
-                   snapshotVars, readVars, configVars>>
-
-SandAppendEntriesAll(i) ==
-    /\ state[i] = Leader
-    /\ LET ps == Peers(i)
-           lg == log[i]
-           off == logOffset[i]
-           cmt == commitIndex[i]
-           nAfter(p) == NextAfterSend(off, lg, nextIndex[i][p])
-       IN /\ nextIndex' = [nextIndex EXCEPT ![i] =
-                 [k \in Server |-> IF k = i THEN nextIndex[i][i]
-                                   ELSE nAfter(k)]]
-          /\ SendOnly(<<AERequest(i, ps[1], lg, off, snapshotLastIdx[i], snapshotLastTerm[i],
-                                  nextIndex[i][ps[1]], cmt),
-                        AERequest(i, ps[2], lg, off, snapshotLastIdx[i], snapshotLastTerm[i],
-                                  nextIndex[i][ps[2]], cmt)>>,
-                      <<"AppendEntriesAll", i>>)
-    /\ UNCHANGED <<serverVars, log, commitIndex, logOffset, matchIndex, candidateVars,
-                   snapshotVars, readVars, configVars>>
-
-SandHandleAppendEntriesRequest(i, j, m) ==
-    /\ IsOldest(m)
-    /\ m.mtype = AppendEntriesRequest
-    /\ m.mdest = i
-    /\ m.msource = j
-    /\ LET prev == m.mprevLogIndex
-           entries == m.mentries
-           pc == <<"HandleAppendEntriesRequest", i, j, m.seq>>
-           stale == m.mterm < currentTerm[i]
-           newTerm == Max(currentTerm[i], m.mterm)
-           prevIsSnap == prev = snapshotLastIdx[i]
-           snapTermOk == snapshotLastTerm[i] = m.mprevLogTerm
-           hasPrev == prev > logOffset[i] /\ prev <= LastLogIndex(i)
-           prevTermOk == hasPrev /\ LogTerm(i, prev) = m.mprevLogTerm
-           prevOk == \/ /\ prevIsSnap /\ snapTermOk
-                     \/ prevTermOk
-                     \/ prev = 0 /\ snapshotLastIdx[i] = 0
-           conflict == hasPrev /\ LogTerm(i, prev) /= m.mprevLogTerm /\ prev > commitIndex[i]
-           truncated == IF prev - logOffset[i] <= 1 THEN <<>>
-                        ELSE SubSeq(log[i], 1, prev - logOffset[i] - 1)
-           newLog == IF stale THEN log[i]
-                     ELSE IF conflict THEN truncated
-                     ELSE IF prevOk THEN MergeLog(log[i], logOffset[i], prev, entries)
-                     ELSE log[i]
-           newLast == logOffset[i] + Len(newLog)
-           success == ~stale /\ prevOk
-           newCommit == IF success
-                        THEN Max(commitIndex[i], Min(m.mleaderCommit, newLast))
-                        ELSE commitIndex[i]
-           respIdx == IF success THEN prev + Len(entries) ELSE newLast
-           resp == [mtype       |-> AppendEntriesResponse,
-                    mterm       |-> newTerm,
-                    msuccess    |-> success,
-                    mmatchIndex |-> respIdx,
-                    msource     |-> i,
-                    mdest       |-> j]
-       IN /\ currentTerm' = [currentTerm EXCEPT ![i] = newTerm]
-          /\ votedFor' = [votedFor EXCEPT ![i] =
-                 IF m.mterm > currentTerm[i] THEN Nil ELSE votedFor[i]]
-          /\ state' = [state EXCEPT ![i] = IF stale THEN state[i] ELSE Follower]
-          /\ log' = [log EXCEPT ![i] = newLog]
-          /\ commitIndex' = [commitIndex EXCEPT ![i] = newCommit]
-          /\ ReplySeq(resp, m, pc)
-          /\ UNCHANGED <<logOffset, leaderVars, candidateVars,
-                         snapshotVars, readVars, configVars>>
-
-SandHandleAppendEntriesResponse(i, j, m) ==
-    /\ IsOldest(m)
-    /\ m.mtype = AppendEntriesResponse
-    /\ m.mdest = i
-    /\ m.msource = j
-    /\ LET pc == <<"HandleAppendEntriesResponse", i, j, m.seq>>
-       IN \/ /\ state[i] /= Leader
-             /\ DropAndSend(m, <<>>, pc)
-             /\ UNCHANGED <<serverVars, logVars, leaderVars, candidateVars,
-                            snapshotVars, readVars, configVars>>
-          \/ /\ state[i] = Leader
-             /\ m.mterm > currentTerm[i]
-             /\ currentTerm' = [currentTerm EXCEPT ![i] = m.mterm]
-             /\ votedFor' = [votedFor EXCEPT ![i] = Nil]
-             /\ state' = [state EXCEPT ![i] = Follower]
-             /\ DropAndSend(m, <<>>, pc)
-             /\ UNCHANGED <<log, commitIndex, logOffset, leaderVars, candidateVars,
-                            snapshotVars, readVars, configVars>>
-          \/ /\ state[i] = Leader
-             /\ m.mterm < currentTerm[i]
-             /\ DropAndSend(m, <<>>, pc)
-             /\ UNCHANGED <<serverVars, logVars, leaderVars, candidateVars,
-                            snapshotVars, readVars, configVars>>
-          \/ /\ state[i] = Leader
-             /\ m.mterm = currentTerm[i]
-             /\ ~m.msuccess
-             /\ m.mmatchIndex < matchIndex[i][j]
-             /\ DropAndSend(m, <<>>, pc)
-             /\ UNCHANGED <<serverVars, logVars, leaderVars, candidateVars,
-                            snapshotVars, readVars, configVars>>
-          \/ /\ state[i] = Leader
-             /\ m.mterm = currentTerm[i]
-             /\ ~m.msuccess
-             /\ m.mmatchIndex >= matchIndex[i][j]
-             /\ LET raw == Min(m.mmatchIndex + 1, LastLogIndex(i))
-                    backed == IF raw < 1 THEN 1 ELSE raw
-                    cmt == commitIndex[i]
-                    msg == AERequest(i, j, log[i], logOffset[i],
-                                     snapshotLastIdx[i], snapshotLastTerm[i],
-                                     backed, cmt)
-                    nxt == NextAfterSend(logOffset[i], log[i], backed)
-                IN /\ nextIndex' = [nextIndex EXCEPT ![i][j] = nxt]
-                   /\ DropAndSend(m, <<msg>>, pc)
-                   /\ UNCHANGED <<serverVars, log, commitIndex, logOffset, matchIndex,
-                                  candidateVars, snapshotVars, readVars, configVars>>
-          \/ /\ state[i] = Leader
-             /\ m.mterm = currentTerm[i]
-             /\ m.msuccess
-             /\ LET newMatch == Max(matchIndex[i][j], m.mmatchIndex)
-                    ps == Peers(i)
-                    other == IF ps[1] = j THEN ps[2] ELSE ps[1]
-                    cmt == NewCommitFrom(log[i], logOffset[i], snapshotLastIdx[i],
-                                         snapshotLastTerm[i], commitIndex[i], currentTerm[i],
-                                         matchIndex[i][i],
-                                         IF ps[1] = j THEN newMatch ELSE matchIndex[i][ps[1]],
-                                         IF ps[2] = j THEN newMatch ELSE matchIndex[i][ps[2]])
-                    \* raft_flush sends only while next <= current index.
-                    send(p, nxt0) == nxt0 <= LastLogIndex(i)
-                    msg(p, nxt0) == AERequest(i, p, log[i], logOffset[i],
-                                              snapshotLastIdx[i], snapshotLastTerm[i],
-                                              nxt0, cmt)
-                    nxtOf(p) == IF p = j THEN nextIndex[i][j]
-                                ELSE nextIndex[i][p]
-                    \* The peer that just replied keeps the next set at send time.
-                    \* Other peers are flushed too.
-                    ms == IF send(j, nextIndex[i][j]) /\ send(other, nextIndex[i][other])
-                          THEN <<msg(ps[1], nextIndex[i][ps[1]]),
-                                 msg(ps[2], nextIndex[i][ps[2]])>>
-                          ELSE IF send(ps[1], nextIndex[i][ps[1]])
-                               THEN <<msg(ps[1], nextIndex[i][ps[1]])>>
-                          ELSE IF send(ps[2], nextIndex[i][ps[2]])
-                               THEN <<msg(ps[2], nextIndex[i][ps[2]])>>
-                          ELSE <<>>
-                    advanced(p) == IF send(p, nextIndex[i][p])
-                                   THEN NextAfterSend(logOffset[i], log[i], nextIndex[i][p])
-                                   ELSE nextIndex[i][p]
-                IN /\ matchIndex' = [matchIndex EXCEPT ![i][j] = newMatch]
-                   /\ commitIndex' = [commitIndex EXCEPT ![i] = cmt]
-                   /\ nextIndex' = [nextIndex EXCEPT ![i] =
-                          [k \in Server |-> IF k = i THEN nextIndex[i][i] ELSE advanced(k)]]
-                   /\ DropAndSend(m, ms, pc)
-                   /\ UNCHANGED <<serverVars, log, logOffset, candidateVars,
-                                  snapshotVars, readVars, configVars>>
-
-SoleOnChannel(m) ==
-    /\ BagIn(m, messages)
-    /\ messages[m] = 1
-    /\ \A other \in BagToSet(messages) :
-         (other.msource = m.msource /\ other.mdest = m.mdest) => other = m
-
-SandLoseMessage(m) ==
-    /\ SoleOnChannel(m)
-    /\ Discard(m)
-    /\ scr' = [scr EXCEPT !.pc = <<"LoseMessage", m.msource, m.mdest, m.seq>>]
+    /\ j /= i
+    /\ j \in EffectiveConfig(i)
+    /\ nextIndex[i][j] > logOffset[i]
+    /\ LET nextIdx  == nextIndex[i][j]
+           prevIdx  == nextIdx - 1
+           prevTerm == LogTerm(i, prevIdx)
+           lastIdx  == LastLogIndex(i)
+           entries  == IF nextIdx > logOffset[i] /\ nextIdx <= lastIdx
+                       THEN SubSeq(log[i], nextIdx - logOffset[i], Len(log[i]))
+                       ELSE <<>>
+           msg == [mtype         |-> AppendEntriesRequest,
+                   mterm         |-> currentTerm[i],
+                   mprevLogIndex |-> prevIdx,
+                   mprevLogTerm  |-> prevTerm,
+                   mentries      |-> entries,
+                   mleaderCommit |-> commitIndex[i],
+                   msource       |-> i,
+                   mdest         |-> j]
+       IN SendSeq(msg, <<"AppendEntries", i, j>>)
     /\ UNCHANGED <<serverVars, logVars, leaderVars, candidateVars,
                    snapshotVars, readVars, configVars>>
+
+SandHandleAppendEntriesRequest(m) ==
+    /\ IsOldest(m)
+    /\ m.mtype = AppendEntriesRequest
+    /\ LET i == m.mdest
+           prevIdx == m.mprevLogIndex
+           prevTerm == m.mprevLogTerm
+           entries == m.mentries
+           leaderCommit == m.mleaderCommit
+           pc == <<"HandleAppendEntriesRequest", i, m.msource, m.seq>>
+       IN \/ /\ m.mterm < currentTerm[i]
+             /\ ReplySeq([mtype       |-> AppendEntriesResponse,
+                          mterm       |-> currentTerm[i],
+                          msuccess    |-> FALSE,
+                          mmatchIndex |-> 0,
+                          msource     |-> i,
+                          mdest       |-> m.msource], m, pc)
+             /\ UNCHANGED <<serverVars, logVars, leaderVars, candidateVars,
+                            snapshotVars, readVars, configVars>>
+          \/ /\ m.mterm >= currentTerm[i]
+             /\ currentTerm' = [currentTerm EXCEPT ![i] = Max(@, m.mterm)]
+             /\ votedFor' = IF m.mterm > currentTerm[i]
+                            THEN [votedFor EXCEPT ![i] = Nil]
+                            ELSE votedFor
+             /\ state' = [state EXCEPT ![i] = Follower]
+             /\ \/ /\ \/ /\ prevIdx > 0
+                         /\ prevIdx > LastLogIndex(i)
+                      \/ /\ prevIdx > 0
+                         /\ prevIdx > logOffset[i]
+                         /\ prevIdx <= LastLogIndex(i)
+                         /\ LogTerm(i, prevIdx) /= prevTerm
+                   /\ ReplySeq([mtype       |-> AppendEntriesResponse,
+                                mterm       |-> Max(currentTerm[i], m.mterm),
+                                msuccess    |-> FALSE,
+                                mmatchIndex |-> LastLogIndex(i),
+                                msource     |-> i,
+                                mdest       |-> m.msource], m, pc)
+                   /\ UNCHANGED <<log, commitIndex, logOffset,
+                                  snapshotVars, readVars, configVars>>
+                \/ /\ \/ prevIdx = 0
+                      \/ /\ prevIdx > 0
+                         /\ prevIdx <= logOffset[i]
+                      \/ /\ prevIdx > logOffset[i]
+                         /\ prevIdx <= LastLogIndex(i)
+                         /\ LogTerm(i, prevIdx) = prevTerm
+                   /\ LET baseLen == Max(0, prevIdx - logOffset[i])
+                          newLog == SubSeq(log[i], 1, baseLen) \o entries
+                          newLast == logOffset[i] + Len(newLog)
+                          newCommit == Max(commitIndex[i], Min(leaderCommit, newLast))
+                          cfgResult == CommittedConfigFromLog(newLog, logOffset[i], newCommit)
+                          newConfig == IF cfgResult = Nil THEN clusterConfig[i] ELSE cfgResult
+                          cfgIdxSet == {k \in 1..Len(newLog) :
+                                          /\ newLog[k].type = ConfigEntry
+                                          /\ logOffset[i] + k > newCommit}
+                          newCfgIdx == IF cfgIdxSet = {} THEN 0
+                                       ELSE logOffset[i] + SetMax(cfgIdxSet)
+                      IN /\ log' = [log EXCEPT ![i] = newLog]
+                         /\ commitIndex' = [commitIndex EXCEPT ![i] = newCommit]
+                         /\ clusterConfig' = [clusterConfig EXCEPT ![i] = newConfig]
+                         /\ votingCfgChangeIdx' = [votingCfgChangeIdx EXCEPT ![i] = newCfgIdx]
+                         /\ ReplySeq([mtype       |-> AppendEntriesResponse,
+                                      mterm       |-> Max(currentTerm[i], m.mterm),
+                                      msuccess    |-> TRUE,
+                                      mmatchIndex |-> newLast,
+                                      msource     |-> i,
+                                      mdest       |-> m.msource], m, pc)
+                         /\ UNCHANGED <<logOffset, snapshotVars, readVars>>
+             /\ UNCHANGED <<leaderVars, candidateVars>>
+
+SandHandleAppendEntriesResponse(m) ==
+    /\ IsOldest(m)
+    /\ HandleAppendEntriesResponse(m.mdest, m)
+    /\ scr' = [scr EXCEPT !.pc = <<"HandleAppendEntriesResponse", m.mdest, m.msource, m.seq>>]
+
+SandAdvanceCommitIndex(i) ==
+    /\ state[i] = Leader
+    /\ LET ns == {n \in (commitIndex[i] + 1)..LastLogIndex(i) :
+                    /\ LogTerm(i, n) = currentTerm[i]
+                    /\ LET agree == {j \in EffectiveConfig(i) : matchIndex[i][j] >= n}
+                       IN IsQuorum(agree, EffectiveConfig(i))}
+       IN /\ ns /= {}
+          /\ LET n == SetMax(ns)
+                 cfgResult == CommittedConfigFromLog(log[i], logOffset[i], n)
+                 newConfig == IF cfgResult = Nil THEN clusterConfig[i] ELSE cfgResult
+             IN /\ commitIndex' = [commitIndex EXCEPT ![i] = n]
+                /\ clusterConfig' = [clusterConfig EXCEPT ![i] = newConfig]
+                /\ votingCfgChangeIdx' = [votingCfgChangeIdx EXCEPT ![i] =
+                      IF @ > 0 /\ @ <= n THEN 0 ELSE @]
+    /\ scr' = [scr EXCEPT !.pc = <<"AdvanceCommitIndex", i>>]
+    /\ UNCHANGED <<currentTerm, votedFor, state, log, logOffset,
+                   leaderVars, candidateVars, messages, snapshotVars, readVars>>
+
+SandTakeSnapshot(i) ==
+    /\ TakeSnapshot(i)
+    /\ scr' = [scr EXCEPT !.pc = <<"TakeSnapshot", i>>]
+
+SandSendInstallSnapshot(i, j) ==
+    /\ state[i] = Leader
+    /\ j /= i
+    /\ j \in EffectiveConfig(i)
+    /\ nextIndex[i][j] <= logOffset[i]
+    /\ snapshotLastIdx[i] > 0
+    /\ SendSeq([mtype       |-> InstallSnapshotRequest,
+                mterm       |-> currentTerm[i],
+                msnapIdx    |-> snapshotLastIdx[i],
+                msnapTerm   |-> snapshotLastTerm[i],
+                msnapConfig |-> clusterConfig[i],
+                msource     |-> i,
+                mdest       |-> j],
+               <<"SendInstallSnapshot", i, j>>)
+    /\ UNCHANGED <<serverVars, logVars, leaderVars, candidateVars,
+                   snapshotVars, readVars, configVars>>
+
+SandHandleInstallSnapshotRequest(m) ==
+    /\ IsOldest(m)
+    /\ HandleInstallSnapshotRequest(m.mdest, m)
+    /\ scr' = [scr EXCEPT !.pc = <<"HandleInstallSnapshotRequest", m.mdest, m.msource, m.seq>>]
+
+SandEndLoadSnapshot(i) ==
+    /\ EndLoadSnapshot(i)
+    /\ scr' = [scr EXCEPT !.pc = <<"EndLoadSnapshot", i>>]
+
+SandClientNonQuorumRead(i) ==
+    /\ ClientNonQuorumRead(i)
+    /\ scr' = [scr EXCEPT !.pc = <<"ClientNonQuorumRead", i>>]
+
+SandProposeAddServer(i, target) ==
+    /\ ProposeAddServer(i, target)
+    /\ scr' = [scr EXCEPT !.pc = <<"ProposeAddServer", i, target>>]
+
+SandProposeRemoveServer(i, target) ==
+    /\ ProposeRemoveServer(i, target)
+    /\ scr' = [scr EXCEPT !.pc = <<"ProposeRemoveServer", i, target>>]
+
+SandCrash(i) ==
+    /\ Crash(i)
+    /\ scr' = [scr EXCEPT !.pc = <<"Crash", i>>]
+
+SandLoseMessage(m) ==
+    /\ LoseMessage(m)
+    /\ scr' = [scr EXCEPT !.pc = <<"LoseMessage", m.msource, m.mdest, m.seq>>]
+
+SandDropStaleMessage(m) ==
+    /\ DropStaleMessage(m)
+    /\ scr' = [scr EXCEPT !.pc = <<"DropStaleMessage", m.msource, m.mdest, m.seq>>]
+
+TermAt(lg, off, snapIdx, snapTerm, idx) ==
+    IF idx <= 0 THEN 0
+    ELSE IF idx = snapIdx THEN snapTerm
+    ELSE IF idx > off /\ idx <= off + Len(lg) THEN lg[idx - off].term
+    ELSE 0
 
 =============================================================================

@@ -18,6 +18,10 @@
 
 #include "raft.h"
 #include "raft_private.h"
+#include "raft_log.h"
+#include "specula_step.h"
+
+int specula_step = 0;
 
 #ifndef min
     #define min(a, b) ((a) < (b) ? (a) : (b))
@@ -275,6 +279,12 @@ void raft_handle_append_cfg_change(raft_server_t* me, raft_entry_t* ety, raft_in
     switch (ety->type)
     {
         case RAFT_LOGTYPE_ADD_NODE:
+            /* A server that left EffectiveConfig is still in the spec's
+             * Server set. Re-adding it must clear INACTIVE, or is_voting
+             * stays false and the library asserts. */
+            if (specula_step && node && !raft_node_is_active(node)) {
+                raft_node_set_active(node, 1);
+            }
             node = raft_add_node_internal(me, ety, NULL, node_id, is_self, 1);
             assert(node);
             assert(raft_node_is_voting(node));
@@ -300,6 +310,10 @@ void raft_handle_append_cfg_change(raft_server_t* me, raft_entry_t* ety, raft_in
         case RAFT_LOGTYPE_REMOVE_NODE:
             if (node) {
                 raft_node_set_active(node, 0);
+                /* Spec EffectiveConfig drops the server as soon as the entry is appended. */
+                if (specula_step) {
+                    raft_node_set_voting(node, 0);
+                }
             }
             break;
 
@@ -333,6 +347,9 @@ void raft_handle_remove_cfg_change(raft_server_t* me, raft_entry_t* ety, const r
         case RAFT_LOGTYPE_REMOVE_NODE:
             if (node) {
                 raft_node_set_active(node, 1);
+                if (specula_step) {
+                    raft_node_set_voting(node, 1);
+                }
             }
             break;
 
@@ -363,7 +380,10 @@ void raft_handle_apply_cfg_change(raft_server_t* me, raft_entry_t* ety, raft_ind
             raft_node_set_addition_committed(node, 1);
             break;
         case RAFT_LOGTYPE_REMOVE_NODE:
-            if (node) {
+            /* The spec's nextIndex and matchIndex stay defined for every
+             * server after it leaves the config. Freeing the node would drop
+             * that state. Production still deletes it on commit. */
+            if (node && !specula_step) {
                 raft_remove_node(me, node);
             }
             break;
@@ -462,8 +482,9 @@ int raft_become_leader(raft_server_t *me)
     raft_node_set_match_idx(me->node, current_idx);
     me->next_sync_index = current_idx + 1;
 
-    /* Commit noop immediately if this is a single node cluster. */
-    if (raft_is_single_node_voting_cluster(me)) {
+    /* Commit noop immediately if this is a single node cluster.
+     * Under specula_step, AdvanceCommitIndex is the action that commits. */
+    if (!specula_step && raft_is_single_node_voting_cluster(me)) {
         raft_set_commit_idx(me, current_idx);
     }
 
@@ -483,7 +504,10 @@ int raft_become_leader(raft_server_t *me)
         raft_node_set_snapshot_offset(node, 0);
         raft_node_set_next_idx(node, current_idx);
         raft_node_set_match_idx(node, 0);
-        raft_send_appendentries(me, node);
+        /* Spec BecomeLeader does not send. The following AppendEntries is its own action. */
+        if (!specula_step) {
+            raft_send_appendentries(me, node);
+        }
     }
 
     if (me->cb.notify_state_event) {
@@ -722,10 +746,56 @@ int raft_voting_change_is_in_progress(raft_server_t* me)
     return me->voting_cfg_change_log_idx != -1;
 }
 
+/* Spec HandleAppendEntriesResponse: higher term first, then no resend and no commit.
+ * AdvanceCommitIndex and AppendEntries are later actions. */
+static int specula_recv_appendentries_response(raft_server_t *me,
+                                               raft_node_t *node,
+                                               raft_appendentries_resp_t *resp)
+{
+    if (resp->term > me->current_term) {
+        int e = raft_set_current_term(me, resp->term);
+        if (e != 0) {
+            return e;
+        }
+        raft_become_follower(me);
+        return 0;
+    }
+
+    if (!node || !raft_is_leader(me) || resp->term < me->current_term) {
+        return 0;
+    }
+
+    if (resp->success == 0) {
+        raft_index_t base = raft_log_get_base((raft_log_t *) raft_get_log(me));
+        raft_index_t old = raft_node_get_next_idx(node);
+        raft_index_t proposed = resp->current_idx + 1;
+        if (proposed > old) {
+            proposed = old;
+        }
+        if (proposed < base + 1) {
+            proposed = base + 1;
+        }
+        raft_node_set_next_idx(node, proposed);
+        return 0;
+    }
+
+    if (resp->current_idx > raft_node_get_match_idx(node)) {
+        raft_node_set_match_idx(node, resp->current_idx);
+    }
+    if (resp->current_idx + 1 > raft_node_get_next_idx(node)) {
+        raft_node_set_next_idx(node, resp->current_idx + 1);
+    }
+    return 0;
+}
+
 int raft_recv_appendentries_response(raft_server_t *me,
                                      raft_node_t *node,
                                      raft_appendentries_resp_t *resp)
 {
+    if (specula_step) {
+        return specula_recv_appendentries_response(me, node, resp);
+    }
+
     raft_log(me, "%d <-- %d, recv appendentries_resp "
                  "id:%lu, t:%ld, s:%d, ci:%ld",
                  raft_get_nodeid(me), raft_node_get_id(node),
@@ -1111,6 +1181,10 @@ int raft_recv_requestvote_response(raft_server_t *me,
         int nodes = raft_get_num_voting_nodes(me);
 
         if (raft_votes_is_majority(nodes, votes)) {
+            /* BecomeLeader is its own spec action. Record the vote and stop. */
+            if (specula_step && !raft_is_precandidate(me)) {
+                return 0;
+            }
             int e = raft_is_precandidate(me) ? raft_become_candidate(me) :
                                                raft_become_leader(me);
             if (e != 0) {
@@ -1367,7 +1441,10 @@ int raft_send_snapshot(raft_server_t *me, raft_node_t *node)
 
         if (chunk->last_chunk) {
             raft_node_set_snapshot_offset(node, 0);
-            raft_node_set_next_idx(node, me->snapshot_last_idx + 1);
+            /* Spec SendInstallSnapshot does not change nextIndex. */
+            if (!specula_step) {
+                raft_node_set_next_idx(node, me->snapshot_last_idx + 1);
+            }
             return 0;
         }
 
@@ -1410,8 +1487,9 @@ int raft_recv_snapshot(raft_server_t *me,
     raft_accept_leader(me, req->leader_id);
 
     /** If we already have the snapshot or the log entries in this snapshot,
-     * inform the leader. */
-    if (req->snapshot_index <= raft_get_current_idx(me)) {
+     * inform the leader. specula_step follows the spec guard, which is
+     * snapshot index against snapshot_last_idx, not against the log tail. */
+    if (!specula_step && req->snapshot_index <= raft_get_current_idx(me)) {
         /** Set response as if it is the last chunk to tell leader that we have
          * the snapshot */
         resp->last_chunk = 1;
@@ -1576,12 +1654,19 @@ int raft_send_appendentries(raft_server_t *me, raft_node_t *node)
 
         e = me->cb.send_appendentries(me, me->udata, node, &req);
 
-        raft_node_set_next_idx(node, next_idx + req.n_entries);
+        /* Spec AppendEntries leaves nextIndex unchanged. One batch per action. */
+        if (!specula_step) {
+            raft_node_set_next_idx(node, next_idx + req.n_entries);
+        }
         raft_node_set_next_msgid(node, req.msg_id + 1);
         raft_entry_release_list(req.entries, req.n_entries);
 
         if (e != 0) {
             return e;
+        }
+
+        if (specula_step) {
+            break;
         }
 
     } while (raft_node_get_next_idx(node) <= raft_get_current_idx(me));
@@ -1748,7 +1833,8 @@ int raft_restore_snapshot(raft_server_t *me,
 int raft_begin_snapshot(raft_server_t *me)
 {
     raft_index_t entry_count = raft_get_num_snapshottable_logs(me);
-    if (entry_count == 0) {
+    if (entry_count == 0 &&
+        !(specula_step && me->commit_idx > me->snapshot_last_idx)) {
         return -1;
     }
 
@@ -1799,7 +1885,8 @@ int raft_end_snapshot(raft_server_t *me)
              me->log_impl->first_idx(me->log) - 1, me->commit_idx,
              raft_get_current_idx(me));
 
-    if (!raft_is_leader(me))
+    /* Spec TakeSnapshot does not send. SendInstallSnapshot is its own action. */
+    if (specula_step || !raft_is_leader(me))
         return 0;
 
     for (int i = 0; i < me->num_nodes; i++)
@@ -1826,10 +1913,15 @@ int raft_begin_load_snapshot(raft_server_t *me,
                              raft_term_t last_included_term,
                              raft_index_t last_included_index)
 {
-    if (last_included_term <= 0 ||
-        last_included_index <= 0 ||
-        last_included_index < me->last_applied_idx ||
-        last_included_index < raft_get_current_idx(me)) {
+    if (last_included_term <= 0 || last_included_index <= 0) {
+        return RAFT_ERR_MISUSE;
+    }
+
+    /* The spec resets the log whenever the snapshot is newer than snapshot_last_idx,
+     * including when the follower's log is already longer. */
+    if (!specula_step &&
+        (last_included_index < me->last_applied_idx ||
+         last_included_index < raft_get_current_idx(me))) {
         return RAFT_ERR_MISUSE;
     }
 
@@ -1855,20 +1947,23 @@ int raft_begin_load_snapshot(raft_server_t *me,
     me->next_snapshot_last_term = last_included_term;
     me->next_snapshot_last_idx = last_included_index;
 
-    /* remove all nodes but self */
-    for (int i = 0; i < me->num_nodes; i++) {
-        if (me->nodes[i] == me->node) {
-            continue;
+    /* Spec HandleInstallSnapshot keeps nextIndex, matchIndex and votesGranted.
+     * Membership stays; the driver records the snapshot config separately. */
+    if (!specula_step) {
+        for (int i = 0; i < me->num_nodes; i++) {
+            if (me->nodes[i] == me->node) {
+                continue;
+            }
+
+            raft_node_free(me->nodes[i]);
         }
 
-        raft_node_free(me->nodes[i]);
+        raft_node_clear_flags(me->node);
+
+        me->num_nodes = 1;
+        me->nodes = raft_realloc(me->nodes, sizeof(*me->nodes) * me->num_nodes);
+        me->nodes[0] = me->node;
     }
-
-    raft_node_clear_flags(me->node);
-
-    me->num_nodes = 1;
-    me->nodes = raft_realloc(me->nodes, sizeof(*me->nodes) * me->num_nodes);
-    me->nodes[0] = me->node;
 
     raft_log(me, "begin loading snapshot lii:%ld lit:%ld",
              last_included_index, last_included_term);

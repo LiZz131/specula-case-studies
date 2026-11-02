@@ -20,7 +20,7 @@ MOUNT = Path("/users/bingzhuo/sandtable/build/mount/specula-ce")
 CONTAINER_ROOT = "/root/sandtable/specula-ce"
 JAR = Path("/users/bingzhuo/sandtable/scripts/tla2tools.jar")
 SPEC = RUN / "spec"
-ROUND = "controlled-execution-1030-1"
+ROUND = "controlled-execution-1102-1"
 ROUND_DIR = RUN / "controlled-execution-runs" / ROUND
 ARTIFACT_SRC = (RUN / "artifact" / "redisraft" / "src").resolve()
 
