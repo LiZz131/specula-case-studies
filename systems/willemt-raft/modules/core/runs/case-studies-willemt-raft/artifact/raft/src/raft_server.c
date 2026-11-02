@@ -288,11 +288,8 @@ int raft_recv_appendentries_response(raft_server_t* me_,
     if (!node)
         return -1;
 
-    if (!raft_is_leader(me_))
-        return RAFT_ERR_NOT_LEADER;
-
-    /* If response contains term T > currentTerm: set currentTerm = T
-       and convert to follower (§5.3) */
+    /* base.tla steps down on a higher term before the leader check.
+       Production returns RAFT_ERR_NOT_LEADER first and drops the term. */
     if (me->current_term < r->term)
     {
         int e = raft_set_current_term(me_, r->term);
@@ -302,7 +299,11 @@ int raft_recv_appendentries_response(raft_server_t* me_,
         me->current_leader = NULL;
         return 0;
     }
-    else if (me->current_term != r->term)
+
+    if (!raft_is_leader(me_))
+        return RAFT_ERR_NOT_LEADER;
+
+    if (me->current_term != r->term)
         return 0;
 
     raft_index_t match_idx = raft_node_get_match_idx(node);
@@ -1080,6 +1081,11 @@ int raft_vote_for_nodeid(raft_server_t* me_, const raft_node_id_t nodeid)
             return e;
     }
     me->voted_for = nodeid;
+    /* base.tla keeps votesGranted[i] after this server votes for someone
+       else. The self-vote bit is that set's {i}. Production clears the
+       bit only at the next election (raft_become_candidate). */
+    if (nodeid == raft_get_nodeid(me_))
+        raft_node_vote_for_me(raft_get_my_node(me_), 1);
     return 0;
 }
 
@@ -1270,13 +1276,8 @@ int raft_begin_snapshot(raft_server_t *me_, int flags)
     if (!ety)
         return -1;
 
-    /* we need to get all the way to the commit idx */
-    int e = raft_apply_all(me_);
-    if (e != 0)
-        return e;
-
-    assert(raft_get_commit_idx(me_) == raft_get_last_applied_idx(me_));
-
+    /* base.tla TakeSnapshot does not apply and leaves lastApplied unchanged.
+       Production applies every committed entry here. */
     raft_set_snapshot_metadata(me_, ety->term, snapshot_target);
     me->snapshot_in_progress = 1;
     me->snapshot_flags = flags;

@@ -152,6 +152,14 @@ def fmt_log(entries):
     return "[" + ", ".join(parts) + "]"
 
 
+def fmt_name_set(values):
+    if isinstance(values, str):
+        text = values.strip("{}")
+        values = [part.strip() for part in text.split(",") if part.strip()]
+    names = sorted(node_name(value) for value in values)
+    return "{" + ", ".join(names) + "}"
+
+
 def fmt_index_map(mapping, self_name):
     items = []
     for key, value in sorted(mapping.items(), key=lambda kv: node_name(kv[0])):
@@ -284,25 +292,28 @@ class Builder:
 
     def compare_node(self, state, server):
         name = node_name(server)
-        self.emit("execute", name, "get commitIdx")
-        self.comment("variable commitIdx %s %s" % (name, state["commitIndex"][server]))
-        self.emit("compare", "variable")
-        self.emit("execute", name, "get currentTerm")
-        self.comment("variable currentTerm %s %s" % (name, state["currentTerm"][server]))
-        self.emit("compare", "variable")
-        self.emit("execute", name, "get log")
-        self.comment("variable log %s %s" % (name, fmt_log(state["log"][server])))
-        self.emit("compare", "variable")
-        self.emit("execute", name, "get state")
-        self.comment("variable state %s %s" % (name, STATE_CODE[state["state"][server]]))
-        self.emit("compare", "variable")
-        if state["state"][server] == "Leader":
-            self.emit("execute", name, "get nextIdx")
-            self.comment("variable nextIdx %s %s" % (name, fmt_index_map(state["nextIndex"][server], name)))
+        fields = [
+            ("commitIdx", state["commitIndex"][server]),
+            ("currentTerm", state["currentTerm"][server]),
+            ("log", fmt_log(state["log"][server])),
+            ("state", STATE_CODE[state["state"][server]]),
+            ("lastApplied", state["lastApplied"][server]),
+            ("votedFor", "Nil" if state["votedFor"][server] in ("Nil", None) else node_name(state["votedFor"][server])),
+            ("votesGranted", fmt_name_set(state["votesGranted"][server])),
+            ("snapshotLastIdx", state["snapshotLastIdx"][server]),
+            ("snapshotLastTerm", state["snapshotLastTerm"][server]),
+            ("crashed", "TRUE" if state["crashed"][server] in (True, "TRUE", "True") else "FALSE"),
+            ("nextIdx", fmt_index_map(state["nextIndex"][server], name)),
+            ("matchIdx", fmt_index_map(state["matchIndex"][server], name)),
+        ]
+        for key, expected in fields:
+            self.emit("execute", name, "get " + key)
+            self.comment("variable %s %s %s" % (key, name, expected))
             self.emit("compare", "variable")
-            self.emit("execute", name, "get matchIdx")
-            self.comment("variable matchIdx %s %s" % (name, fmt_index_map(state["matchIndex"][server], name)))
-            self.emit("compare", "variable")
+        for key in ("persistedTerm", "persistedVote", "logOfferCount"):
+            self.emit("execute", name, "get " + key)
+            self.comment("none")
+            self.emit("compare", "none")
 
     def compare_all(self, state):
         for server in self.servers:
@@ -503,14 +514,30 @@ class Builder:
         return "\n".join(self.lines) + "\n"
 
 
+def peer_order(leader):
+    name = node_name(leader)
+    others = [node for node in ("n1", "n2", "n3") if node != name]
+    return others
+
+
+def as_peers(value):
+    if isinstance(value, str):
+        text = value.strip("{}")
+        return [node_name(part.strip()) for part in text.split(",") if part.strip()]
+    return [node_name(part) for part in value]
+
+
 def build_from_pc(reader, states):
-    """SandTable-style replay: scr.pc names the syscall, scr seq is the capture index."""
+    """Replay label, which names a base.tla action and its witness."""
     b = Builder(reader, states)
     b.actions = []
     for index, state in enumerate(states):
-        pc = state["scr"]["pc"]
+        if index:
+            b.comment("[%d] before" % index)
+            b.compare_all(states[index - 1])
+        pc = state.get("label") or state["scr"]["pc"]
         if not isinstance(pc, list) or not pc:
-            raise NotControllable("state %d has no scr.pc" % index)
+            raise NotControllable("state %d has no label" % index)
         cmd = pc[0]
         b.actions.append(cmd)
         b.comment("[%d] %s" % (index, " ".join(str(part) for part in pc)))
@@ -532,23 +559,37 @@ def build_from_pc(reader, states):
                 b.emit("execute", name, "raft periodic %d" % ELECTION_TIMEOUT_MS)
             elif cmd == "ClientRequest":
                 b.emit("execute", node_name(pc[1]), "raft cli %s" % pc[2])
-            elif cmd == "AppendEntriesAll":
-                b.emit("execute", node_name(pc[1]), "raft periodic %d" % REQUEST_TIMEOUT_MS)
+            elif cmd in ("SendAppendEntries", "SendInstallSnapshot"):
+                b.emit("execute", node_name(pc[1]), "raft send-peer %s" % node_name(pc[2]))
+            elif cmd == "BroadcastAppendEntries":
+                chosen = set(as_peers(pc[2]))
+                for peer in peer_order(pc[1]):
+                    if peer in chosen:
+                        b.emit("execute", node_name(pc[1]), "raft send-peer " + peer)
             elif cmd == "TakeSnapshot":
                 b.emit("execute", node_name(pc[1]), "raft snapshot")
+            elif cmd == "Crash":
+                b.emit("execute", node_name(pc[1]), "raft crash")
+            elif cmd == "Recover":
+                b.emit("execute", node_name(pc[1]), "raft recover")
             elif cmd == "LoseMessage":
-                b.emit("clear", node_name(pc[1]), node_name(pc[2]))
+                b.emit("drop-unordered", node_name(pc[1]), node_name(pc[2]), pc[3])
+            elif cmd == "DuplicateMessage":
+                b.emit("duplicate-unordered", node_name(pc[1]), node_name(pc[2]), pc[3])
             elif cmd.startswith("Handle"):
                 dest, src, seq = pc[1], pc[2], pc[3]
+                if cmd == "HandleRequestVoteRequest":
+                    b.emit("execute", node_name(dest), "raft vote-mode " + str(pc[4]))
                 b.emit("deliver-unordered", node_name(src), node_name(dest), seq)
                 b.emit("loop", "intercept", node_name(dest), "check_has_recv_queue", node_name(src))
                 b.emit("execute", node_name(dest), "raft recvfrom " + node_name(src))
             else:
-                raise NotControllable("no stock command for pc %s" % pc)
+                raise NotControllable("no command for label %s" % pc)
         except NotControllable:
             raise
         except Exception as exc:
-            raise NotControllable("step %d pc %s: %s" % (index, pc, exc)) from exc
+            raise NotControllable("step %d label %s: %s" % (index, pc, exc)) from exc
+        b.comment("[%d] after" % index)
         b.compare_all(state)
     for server in b.servers:
         b.emit("execute", node_name(server), "raft statemachine")
@@ -567,7 +608,7 @@ def main():
     if len(states) < 1:
         raise SystemExit("no states in " + args.trace_file)
     try:
-        if "scr" in states[0]:
+        if "label" in states[0] or "scr" in states[0]:
             builder = build_from_pc(reader, states)
             text = "\n".join(builder.lines) + "\n"
         else:

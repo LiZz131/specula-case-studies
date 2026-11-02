@@ -4,8 +4,10 @@
 // WARN: we do not consider endian problem while serialization.
 // WARN: we do not consider 32-bit or 64-bit memory.
 
+#include <algorithm>
 #include <cassert>
 #include <sys/time.h>
+#include <vector>
 #include "Raft.h"
 #include "Network.h"
 
@@ -60,6 +62,15 @@ string unpack_msg(const string &msg, int &type) {
     return msg.substr(sizeof(int));
 }
 
+/* When set, library sends that are not part of the current base.tla action
+   return success without a syscall. The driver still emits Reply sends. */
+static int g_quiesce_net = 0;
+static bool g_crashed = false;
+static string g_vote_mode = "open";
+static int g_persist_term = 0;
+static int g_persist_vote = -1;
+static int g_log_offer_count = 0;
+
 static int raft_send_requestvote (
         raft_server_t* raft,
         void *user_data,
@@ -67,6 +78,8 @@ static int raft_send_requestvote (
         raft_requestvote_req_t* msg
 )
 {
+    if (g_quiesce_net)
+        return 0;
     string data;
     data.resize(sizeof(*msg));
     *(raft_requestvote_req_t*)&data.front() = *msg;
@@ -110,6 +123,8 @@ static int raft_send_appendentries (
         raft_appendentries_req_t* msg
 )
 {
+    if (g_quiesce_net)
+        return 0;
     string data = pack_msg(serialization_ae(msg), MSG_AE);
     return net->send_to(raft_node_get_id(node), data) > 0 ? 0 : -1;
 }
@@ -119,6 +134,8 @@ static int raft_send_installsnapshot(
         void *user_data,
         raft_node_t* node)
 {
+    if (g_quiesce_net)
+        return 0;
     msg_snapshot_t msg;
     msg.term = raft_get_current_term(raft);
     msg.last_included_idx = raft_get_snapshot_last_idx(raft);
@@ -243,6 +260,7 @@ static int raft_persist_vote (
         raft_node_id_t vote
 )
 {
+    g_persist_vote = vote;
     return 0;
 }
 
@@ -253,6 +271,8 @@ static int raft_persist_term (
         raft_node_id_t vote
 )
 {
+    g_persist_term = (int)term;
+    g_persist_vote = vote;
     return 0;
 }
 
@@ -262,6 +282,7 @@ static int raft_log_offer (
         raft_entry_t *ety,
         raft_index_t ety_idx)
 {
+    g_log_offer_count += 1;
     return 0;
 }
 
@@ -422,6 +443,7 @@ bool RaftRecvMsg(Node node) {
     string msg = unpack_msg(data, type);
     auto *me = static_cast<raft_server_t *>(config.get_raft_server());
     auto *raft_node = static_cast<raft_node_t *>(node.get_data());
+    g_quiesce_net = 1;
     switch (type) {
         case MSG_AE: {
             cerr_verbose << "RaftRecvMsg MSG_AE" << endl;
@@ -439,12 +461,16 @@ bool RaftRecvMsg(Node node) {
         }
         case MSG_RV: {
             cerr_verbose << "RaftRecvMsg MSG_RV" << endl;
-            // raft servers only vote for candidate after election timeout,
-            // however TLA does not model it and servers are always votable.
-            // advance timeout_elapsed to make the server votable.
-            if (((raft_server_private_t*)me)->state != RAFT_STATE_LEADER
-                && raft_get_timeout_elapsed(me) < raft_get_election_timeout(me)) {
-                raft_periodic(me, raft_get_election_timeout(me));
+            auto *priv = (raft_server_private_t *)me;
+            /* The spec branch is only the predicate raft_recv_requestvote
+               consults (current_leader set and timeout not elapsed).
+               Calling raft_periodic here starts a second election, which
+               base.tla does not contain. */
+            if (g_vote_mode == "lease") {
+                priv->current_leader = priv->node;
+                priv->timeout_elapsed = 0;
+            } else {
+                priv->current_leader = nullptr;
             }
             auto *req = reinterpret_cast<raft_requestvote_req_t *>(&msg.front());
             raft_requestvote_resp_t resp{};
@@ -461,12 +487,13 @@ bool RaftRecvMsg(Node node) {
             cerr_verbose << "RaftRecvMsg MSG_SNAP" << endl;
             msg_appendentries_response_t resp{};
             raft_recv_installsnapshot(me, raft_node, reinterpret_cast<msg_snapshot_t *>(&msg.front()), &resp);
-            raft_send_appendentries_resp(node, resp);
+            /* base.tla HandleInstallSnapshot discards the request and does not reply. */
             break;
         }
         default:
             assert(false);
     }
+    g_quiesce_net = 0;
     return true;
 }
 
@@ -485,25 +512,29 @@ bool RaftPeriodic(int msec = -1) {
 }
 
 bool RaftClientOperation(string data) {
+    g_quiesce_net = 1;
     auto *me = static_cast<raft_server_t *>(config.get_raft_server());
     raft_entry_resp_t resp;
     raft_entry_t *ety = (raft_entry_t *)calloc(1, sizeof(raft_entry_t));
     if (data.size() >= sizeof(void *))
         data.resize(sizeof(void *) - 1);
     mempcpy(&(ety->data.buf), data.c_str(), data.size());
-    if (raft_recv_entry(me, ety, &resp) == 0) {
+    int rc = raft_recv_entry(me, ety, &resp);
+    g_quiesce_net = 0;
+    if (rc == 0) {
         cerr_verbose << "RaftClientOperation success, idx: " << resp.idx << " term: " << resp.term << endl;
         return true;
-    } else {
-        cerr_warning << "RaftClientOperation failed" << endl;
-        return false;
     }
+    cerr_warning << "RaftClientOperation failed" << endl;
+    return false;
 }
 
 // server exec snapshot
 bool RaftExecSnapshot() {
+    g_quiesce_net = 1;
     bool ok = raft_begin_snapshot(static_cast<raft_server_t *>(config.get_raft_server()), 0) != RAFT_ERR_SHUTDOWN;
     ok = raft_end_snapshot(static_cast<raft_server_t *>(config.get_raft_server())) != RAFT_ERR_SHUTDOWN && ok;
+    g_quiesce_net = 0;
     return ok;
 }
 
@@ -512,8 +543,38 @@ bool RaftRepl(const string &cmd) {
     if (tokens.empty()) {
         return false;
     }
+    if (g_crashed && tokens[0] != "recover") {
+        cerr_warning << "node is crashed, refusing " << tokens[0] << endl;
+        return false;
+    }
     if (tokens[0] == "init") {
         return RaftInit();
+    } else if (tokens[0] == "crash") {
+        g_crashed = true;
+        return true;
+    } else if (tokens[0] == "recover") {
+        if (!g_crashed)
+            return false;
+        g_crashed = false;
+        auto *me = static_cast<raft_server_private_t *>(config.get_raft_server());
+        me->state = RAFT_STATE_FOLLOWER;
+        me->commit_idx = 0;
+        me->last_applied_idx = 0;
+        return true;
+    } else if (tokens[0] == "vote-mode") {
+        if (tokens.size() < 2)
+            return false;
+        g_vote_mode = tokens[1];
+        return true;
+    } else if (tokens[0] == "send-peer") {
+        if (tokens.size() < 2)
+            return false;
+        Node node(tokens[1]);
+        if (!config.get_node(node))
+            return false;
+        auto *me = static_cast<raft_server_t *>(config.get_raft_server());
+        int e = raft_send_appendentries(me, static_cast<raft_node_t *>(node.get_data()));
+        return e == 0 || e == RAFT_ERR_NEEDS_SNAPSHOT;
     } else if (tokens[0] == "recvfrom") {
         return RaftRecvMsg(tokens[1]);
     } else if (tokens[0] == "periodic") {
@@ -540,7 +601,40 @@ bool RaftRepl(const string &cmd) {
 
 string RaftGet(const string &variable) {
     auto *me = static_cast<raft_server_private_t *>(config.get_raft_server());
-    if (variable == "commitIdx") {
+    if (variable == "crashed") {
+        return g_crashed ? "TRUE" : "FALSE";
+    } else if (variable == "lastApplied") {
+        return to_string(me->last_applied_idx);
+    } else if (variable == "snapshotLastIdx") {
+        return to_string(me->snapshot_last_idx);
+    } else if (variable == "snapshotLastTerm") {
+        return to_string(me->snapshot_last_term);
+    } else if (variable == "persistedTerm") {
+        return to_string(g_persist_term);
+    } else if (variable == "persistedVote") {
+        return to_string(g_persist_vote);
+    } else if (variable == "logOfferCount") {
+        return to_string(g_log_offer_count);
+    } else if (variable == "votedFor") {
+        if (me->voted_for < 0)
+            return "Nil";
+        Node node(me->voted_for);
+        if (!config.get_node(node))
+            return to_string(me->voted_for);
+        return node.name;
+    } else if (variable == "votesGranted") {
+        vector<string> names;
+        for (int i = 0; i < me->num_nodes; i++) {
+            auto *n = (raft_node_t *)me->nodes[i];
+            if (!raft_node_has_vote_for_me(n))
+                continue;
+            Node node(raft_node_get_id(n));
+            if (config.get_node(node))
+                names.push_back(node.name);
+        }
+        std::sort(names.begin(), names.end());
+        return "{" + stringify(names, 0, ", ") + "}";
+    } else if (variable == "commitIdx") {
         return to_string(me->commit_idx);
     } else if (variable == "currentTerm") {
         return to_string(me->current_term);

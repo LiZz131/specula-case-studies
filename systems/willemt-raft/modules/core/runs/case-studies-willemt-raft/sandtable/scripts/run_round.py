@@ -21,7 +21,7 @@ MOUNT = Path("/users/bingzhuo/sandtable/build/mount/specula-ce")
 CONTAINER_ROOT = "/root/sandtable/specula-ce"
 JAR = Path("/users/bingzhuo/sandtable/scripts/tla2tools.jar")
 SPEC = RUN / "spec"
-ROUND = "controlled-execution-1030-2"
+ROUND = "controlled-execution-1101-1"
 ROUND_DIR = RUN / "controlled-execution-runs" / ROUND
 
 CONFIGS = [
@@ -119,7 +119,7 @@ def tlc_one(config, cfg, module, depth, seed):
     (dest / "tlc.err").write_text(result.stderr)
     (dest / "tlc.status").write_text(str(result.returncode))
     shutil.rmtree(meta, ignore_errors=True)
-    if "pc |->" not in text:
+    if "label" not in text and "pc |->" not in text:
         return config, seed, "no-pc"
     if "Invariant DepthBound is violated" in text or "Invariant DepthBoundDeep is violated" in text:
         kind = "depth"

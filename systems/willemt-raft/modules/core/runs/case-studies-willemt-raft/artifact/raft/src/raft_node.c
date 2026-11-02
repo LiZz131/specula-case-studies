@@ -64,8 +64,10 @@ raft_index_t raft_node_get_next_idx(raft_node_t* me_)
 void raft_node_set_next_idx(raft_node_t* me_, raft_index_t nextIdx)
 {
     raft_node_private_t* me = (raft_node_private_t*)me_;
-    /* log index begins at 1 */
-    me->next_idx = nextIdx < 1 ? 1 : nextIdx;
+    /* base.tla stores the raw index, including 0.
+       Production willemt/raft clamps nextIdx < 1 to 1.
+       Controlled execution follows base.tla. See notes/wraft-理解/1101-受控执行改动.md. */
+    me->next_idx = nextIdx;
 }
 
 raft_index_t raft_node_get_match_idx(raft_node_t* me_)

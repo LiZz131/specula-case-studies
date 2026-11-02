@@ -76,10 +76,11 @@ VARIABLES
 VARIABLES
     crashed             \* [Server -> BOOLEAN]
 
-\* SandTable replay record. Not read by the protocol actions above.
-\* pc  : command tuple consumed by testcase_generator, same role as scr.pc
-\* nSent: number of send syscalls so far; the next message gets seq = nSent+1
+\* nSent counts send syscalls. pc is kept so old traces still parse.
+\* label is the action witness for this step, including branch and seq.
+\* Send and Reply update nSent. Each base action sets label.
 VARIABLE scr
+VARIABLE label
 
 \* --- Extension: Broadcast abort (Bug Family 6) ---
 \* raft_send_appendentries returns RAFT_ERR_NEEDS_SNAPSHOT (-6) when
@@ -151,10 +152,25 @@ SubLog(i, fromIdx) ==
 \***********************************************************************
 \* Message helpers (bag-based network)
 \***********************************************************************
-Send(m) == messages' = messages (+) SetToBag({m})
+\* Peer send order is the driver raft_add_node order, skipping self.
+PeerSeq(i) ==
+    IF i = s1 THEN <<s2, s3>>
+    ELSE IF i = s2 THEN <<s1, s3>>
+    ELSE <<s1, s2>>
+
+\* @@ keeps the left-hand field when both sides define it. The new seq has to
+\* be on the left, or DuplicateMessage restamps nothing and the copy keeps
+\* the original seq.
+Stamp(m, n) == ("seq" :> n) @@ m
+
+Send(m) ==
+    /\ messages' = messages (+) SetToBag({Stamp(m, scr.nSent + 1)})
+    /\ scr' = [scr EXCEPT !.nSent = @ + 1]
 Discard(m) == messages' = messages (-) SetToBag({m})
 Reply(response, request) ==
-    messages' = (messages (-) SetToBag({request})) (+) SetToBag({response})
+    /\ messages' = (messages (-) SetToBag({request})) (+)
+                   SetToBag({Stamp(response, scr.nSent + 1)})
+    /\ scr' = [scr EXCEPT !.nSent = @ + 1]
 
 \* Check if a message is in the bag
 HasMessage(m) == BagIn(m, messages)
@@ -204,13 +220,18 @@ Timeout(i) ==
     /\ votesGranted' = [votesGranted EXCEPT ![i] = {i}]
     /\ state' = [state EXCEPT ![i] = Candidate]
     \* 4. Send RequestVote to all voting nodes (lines 198-208)
-    /\ messages' = messages (+) SetToBag(
-         {[mtype        |-> RequestVoteRequest,
-           mterm        |-> currentTerm[i] + 1,
-           mlastLogIdx  |-> LastLogIndex(i),
-           mlastLogTerm |-> LastLogTerm(i),
-           msource      |-> i,
-           mdest        |-> j] : j \in Server \ {i}})
+    /\ LET ps == PeerSeq(i)
+           mk(d) == [mtype        |-> RequestVoteRequest,
+                     mterm        |-> currentTerm[i] + 1,
+                     mlastLogIdx  |-> LastLogIndex(i),
+                     mlastLogTerm |-> LastLogTerm(i),
+                     msource      |-> i,
+                     mdest        |-> d]
+       IN /\ messages' = messages (+) SetToBag({
+                Stamp(mk(ps[1]), scr.nSent + 1),
+                Stamp(mk(ps[2]), scr.nSent + 2)})
+          /\ scr' = [scr EXCEPT !.nSent = @ + 2]
+    /\ label' = <<"Timeout", i>>
     /\ UNCHANGED <<logVars, leaderVars, snapshotVars, crashVars>>
 
 \***********************************************************************
@@ -233,6 +254,7 @@ HandleRequestVoteRequest(i, j, m) ==
                     mvoteGranted |-> FALSE,
                     msource      |-> i,
                     mdest        |-> j], m)
+          /\ label' = <<"HandleRequestVoteRequest", i, j, m.seq, "lease">>
           /\ UNCHANGED <<serverVars, logVars, leaderVars, candidateVars,
                          snapshotVars, crashVars>>
        \/ \* Normal processing
@@ -271,13 +293,14 @@ HandleRequestVoteRequest(i, j, m) ==
           /\ LET grant == IF m.mterm > currentTerm[i]
                            THEN logUpToDate  \* after term update, voted_for is Nil
                            ELSE shouldGrant
-             IN Reply([mtype        |-> RequestVoteResponse,
-                       mterm        |-> IF m.mterm > currentTerm[i]
-                                        THEN m.mterm
-                                        ELSE currentTerm[i],
-                       mvoteGranted |-> grant,
-                       msource      |-> i,
-                       mdest        |-> j], m)
+             IN /\ Reply([mtype        |-> RequestVoteResponse,
+                          mterm        |-> IF m.mterm > currentTerm[i]
+                                           THEN m.mterm
+                                           ELSE currentTerm[i],
+                          mvoteGranted |-> grant,
+                          msource      |-> i,
+                          mdest        |-> j], m)
+                /\ label' = <<"HandleRequestVoteRequest", i, j, m.seq, "open">>
           /\ UNCHANGED <<logVars, leaderVars, candidateVars, snapshotVars, crashVars>>
 
 \***********************************************************************
@@ -320,7 +343,8 @@ HandleRequestVoteResponse(i, j, m) ==
              \/ m.mterm < currentTerm[i]
           /\ UNCHANGED <<serverVars, candidateVars, leaderVars>>
     /\ Discard(m)
-    /\ UNCHANGED <<logVars, snapshotVars, crashVars>>
+    /\ label' = <<"HandleRequestVoteResponse", i, j, m.seq>>
+    /\ UNCHANGED <<logVars, snapshotVars, crashVars, scr>>
 
 \***********************************************************************
 \* ACTION: ClientRequest — leader receives client entry
@@ -338,8 +362,9 @@ ClientRequest(i, v) ==
        /\ IF Cardinality(Server) = 1
           THEN commitIndex' = [commitIndex EXCEPT ![i] = LastLogIndex(i) + 1]
           ELSE UNCHANGED commitIndex
+    /\ label' = <<"ClientRequest", i, v>>
     /\ UNCHANGED <<serverVars, lastApplied, leaderVars, candidateVars,
-                   messages, snapshotVars, crashVars>>
+                   messages, snapshotVars, crashVars, scr>>
 
 \***********************************************************************
 \* ACTION: SendAppendEntries — leader sends AE to a single peer
@@ -375,6 +400,7 @@ SendAppendEntries(i, j) ==
                 mentries       |-> entries,
                 msource        |-> i,
                 mdest          |-> j])
+    /\ label' = <<"SendAppendEntries", i, j>>
     /\ UNCHANGED <<serverVars, logVars, leaderVars, candidateVars,
                    snapshotVars, crashVars>>
 
@@ -395,26 +421,32 @@ BroadcastAppendEntries(i) ==
          /\ peers # {}
          \* All chosen peers must NOT need snapshot
          /\ \A p \in peers : ~NeedsSnapshot(i, p)
-         /\ messages' = messages (+) SetToBag(
-              {LET nxt      == nextIndex[i][p]
-                   entries  == SubLog(i, nxt)
-                   prevIdx  == IF nxt > 1
-                               THEN IF nxt - 1 > snapshotLastIdx[i]
-                                    THEN nxt - 1
-                                    ELSE snapshotLastIdx[i]
-                               ELSE 0
-                   prevTerm == IF prevIdx = 0 THEN 0
-                               ELSE IF prevIdx = snapshotLastIdx[i]
-                                    THEN snapshotLastTerm[i]
-                                    ELSE LogTermAt(i, prevIdx)
-               IN [mtype          |-> AppendEntriesRequest,
-                   mterm          |-> currentTerm[i],
-                   mprevLogIdx    |-> prevIdx,
-                   mprevLogTerm   |-> prevTerm,
-                   mleaderCommit  |-> commitIndex[i],
-                   mentries       |-> entries,
-                   msource        |-> i,
-                   mdest          |-> p] : p \in peers})
+         /\ LET ps == PeerSeq(i)
+                rank(p) == IF p = ps[1] THEN 1
+                           ELSE IF ps[1] \in peers THEN 2 ELSE 1
+                mk(p) == LET nxt == nextIndex[i][p]
+                             entries == SubLog(i, nxt)
+                             prevIdx == IF nxt > 1
+                                        THEN IF nxt - 1 > snapshotLastIdx[i]
+                                             THEN nxt - 1
+                                             ELSE snapshotLastIdx[i]
+                                        ELSE 0
+                             prevTerm == IF prevIdx = 0 THEN 0
+                                         ELSE IF prevIdx = snapshotLastIdx[i]
+                                              THEN snapshotLastTerm[i]
+                                              ELSE LogTermAt(i, prevIdx)
+                         IN [mtype |-> AppendEntriesRequest,
+                             mterm |-> currentTerm[i],
+                             mprevLogIdx |-> prevIdx,
+                             mprevLogTerm |-> prevTerm,
+                             mleaderCommit |-> commitIndex[i],
+                             mentries |-> entries,
+                             msource |-> i,
+                             mdest |-> p]
+            IN /\ messages' = messages (+) SetToBag(
+                    {Stamp(mk(p), scr.nSent + rank(p)) : p \in peers})
+               /\ scr' = [scr EXCEPT !.nSent = @ + Cardinality(peers)]
+               /\ label' = <<"BroadcastAppendEntries", i, peers>>
     /\ UNCHANGED <<serverVars, logVars, leaderVars, candidateVars,
                    snapshotVars, crashVars>>
 
@@ -524,6 +556,7 @@ HandleAppendEntriesRequest(i, j, m) ==
                  mfirstIdx   |-> m.mprevLogIdx + 1,
                  msource     |-> i,
                  mdest       |-> j], m)
+       /\ label' = <<"HandleAppendEntriesRequest", i, j, m.seq>>
        /\ UNCHANGED <<lastApplied, leaderVars, candidateVars,
                       snapshotVars, crashVars>>
 
@@ -595,7 +628,8 @@ HandleAppendEntriesResponse(i, j, m) ==
                            ELSE UNCHANGED commitIndex
                      /\ UNCHANGED <<serverVars, log, lastApplied>>
     /\ Discard(m)
-    /\ UNCHANGED <<candidateVars, snapshotVars, crashVars>>
+    /\ label' = <<"HandleAppendEntriesResponse", i, j, m.seq>>
+    /\ UNCHANGED <<candidateVars, snapshotVars, crashVars, scr>>
 
 \***********************************************************************
 \* ACTION: AdvanceCommitIndex (paper-correct version for comparison)
@@ -629,8 +663,9 @@ TakeSnapshot(i) ==
        /\ log' = [log EXCEPT ![i] = SubSeq(@, numCompact + 1, Len(@))]
        /\ snapshotLastIdx'  = [snapshotLastIdx  EXCEPT ![i] = snapIdx]
        /\ snapshotLastTerm' = [snapshotLastTerm EXCEPT ![i] = snapTerm]
+    /\ label' = <<"TakeSnapshot", i>>
     /\ UNCHANGED <<serverVars, commitIndex, lastApplied, leaderVars,
-                   candidateVars, messages, crashVars>>
+                   candidateVars, messages, crashVars, scr>>
 
 \***********************************************************************
 \* ACTION: SendInstallSnapshot — leader sends snapshot to lagging peer
@@ -647,6 +682,7 @@ SendInstallSnapshot(i, j) ==
              msnapshotLastTerm |-> snapshotLastTerm[i],
              msource           |-> i,
              mdest             |-> j])
+    /\ label' = <<"SendInstallSnapshot", i, j>>
     /\ UNCHANGED <<serverVars, logVars, leaderVars, candidateVars,
                    snapshotVars, crashVars>>
 
@@ -689,7 +725,8 @@ HandleInstallSnapshot(i, j, m) ==
     /\ snapshotLastIdx'  = [snapshotLastIdx  EXCEPT ![i] = m.msnapshotLastIdx]
     /\ snapshotLastTerm' = [snapshotLastTerm EXCEPT ![i] = m.msnapshotLastTerm]
     /\ Discard(m)
-    /\ UNCHANGED <<leaderVars, candidateVars, crashVars>>
+    /\ label' = <<"HandleInstallSnapshot", i, j, m.seq>>
+    /\ UNCHANGED <<leaderVars, candidateVars, crashVars, scr>>
 
 \***********************************************************************
 \* ACTION: Crash — server crashes and recovers from persisted state
@@ -706,8 +743,10 @@ HandleInstallSnapshot(i, j, m) ==
 Crash(i) ==
     /\ ~crashed[i]
     /\ crashed' = [crashed EXCEPT ![i] = TRUE]
-    /\ UNCHANGED <<serverVars, logVars, leaderVars, candidateVars,
-                   messages, snapshotVars>>
+    /\ label' = <<"Crash", i>>
+    /\ UNCHANGED <<currentTerm, votedFor, state, log, commitIndex, lastApplied,
+                   nextIndex, matchIndex, votesGranted, messages,
+                   snapshotLastIdx, snapshotLastTerm, scr>>
 
 Recover(i) ==
     /\ crashed[i]
@@ -717,8 +756,9 @@ Recover(i) ==
     /\ commitIndex' = [commitIndex EXCEPT ![i] = 0]
     /\ lastApplied' = [lastApplied EXCEPT ![i] = 0]
     \* Persistent state preserved: currentTerm, votedFor, log, snapshot metadata
+    /\ label' = <<"Recover", i>>
     /\ UNCHANGED <<currentTerm, votedFor, log, leaderVars, candidateVars,
-                   messages, snapshotVars>>
+                   messages, snapshotVars, scr>>
 
 \***********************************************************************
 \* ACTION: LoseMessage — network drops a message
@@ -726,8 +766,9 @@ Recover(i) ==
 LoseMessage(m) ==
     /\ BagIn(m, messages)
     /\ Discard(m)
+    /\ label' = <<"LoseMessage", m.msource, m.mdest, m.seq>>
     /\ UNCHANGED <<serverVars, logVars, leaderVars, candidateVars,
-                   snapshotVars, crashVars>>
+                   snapshotVars, crashVars, scr>>
 
 \***********************************************************************
 \* ACTION: DuplicateMessage — network duplicates a message
@@ -736,6 +777,7 @@ LoseMessage(m) ==
 DuplicateMessage(m) ==
     /\ BagIn(m, messages)
     /\ Send(m)
+    /\ label' = <<"DuplicateMessage", m.msource, m.mdest, m.seq>>
     /\ UNCHANGED <<serverVars, logVars, leaderVars, candidateVars,
                    snapshotVars, crashVars>>
 
