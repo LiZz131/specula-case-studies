@@ -1,714 +1,1252 @@
 文件	行号	集合	依据	下一步
-raft_log.c	41	B	负数取模。规格下标是 Nat，index < 0 为假。	不另开 trace。Nat 下标使守卫为假。第一次不写成死代码。
-raft_log.c	43	B	负数取模。规格下标是 Nat，index < 0 为假。	不另开 trace。Nat 下标使守卫为假。第一次不写成死代码。
-raft_log.c	44	B	负数取模。规格下标是 Nat，index < 0 为假。	不另开 trace。Nat 下标使守卫为假。第一次不写成死代码。
-raft_log.c	55	B	日志环形缓冲扩容。守卫是 count 达到 INITIAL_CAPACITY。	另开连续 ClientRequest 把一条日志撑过 10。不改 standard 的限额。
-raft_log.c	56	C	分配失败返回 NULL 或错误码。规格里没有分配失败。	白名单，不采样。
-raft_log.c	60	B	日志环形缓冲扩容。守卫是 count 达到 INITIAL_CAPACITY。	另开连续 ClientRequest 把一条日志撑过 10。不改 standard 的限额。
-raft_log.c	61	B	日志环形缓冲扩容。守卫是 count 达到 INITIAL_CAPACITY。	另开连续 ClientRequest 把一条日志撑过 10。不改 standard 的限额。
-raft_log.c	62	B	日志环形缓冲扩容。守卫是 count 达到 INITIAL_CAPACITY。	另开连续 ClientRequest 把一条日志撑过 10。不改 standard 的限额。
-raft_log.c	64	B	日志环形缓冲扩容。守卫是 count 达到 INITIAL_CAPACITY。	另开连续 ClientRequest 把一条日志撑过 10。不改 standard 的限额。
-raft_log.c	68	B	日志环形缓冲扩容。守卫是 count 达到 INITIAL_CAPACITY。	另开连续 ClientRequest 把一条日志撑过 10。不改 standard 的限额。
-raft_log.c	70	B	日志环形缓冲扩容。守卫是 count 达到 INITIAL_CAPACITY。	另开连续 ClientRequest 把一条日志撑过 10。不改 standard 的限额。
-raft_log.c	71	B	日志环形缓冲扩容。守卫是 count 达到 INITIAL_CAPACITY。	另开连续 ClientRequest 把一条日志撑过 10。不改 standard 的限额。
-raft_log.c	72	B	日志环形缓冲扩容。守卫是 count 达到 INITIAL_CAPACITY。	另开连续 ClientRequest 把一条日志撑过 10。不改 standard 的限额。
-raft_log.c	73	B	日志环形缓冲扩容。守卫是 count 达到 INITIAL_CAPACITY。	另开连续 ClientRequest 把一条日志撑过 10。不改 standard 的限额。
-raft_log.c	75	B	日志环形缓冲扩容。守卫是 count 达到 INITIAL_CAPACITY。	另开连续 ClientRequest 把一条日志撑过 10。不改 standard 的限额。
-raft_log.c	78	A	快照装入时清日志并改 base。对得上带快照的 Crash 恢复。	加一条 TakeSnapshot 之后再 Crash 的见证。
-raft_log.c	82	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_log.c	84	A	快照装入时清日志并改 base。对得上带快照的 Crash 恢复。	加一条 TakeSnapshot 之后再 Crash 的见证。
-raft_log.c	85	A	快照装入时清日志并改 base。对得上带快照的 Crash 恢复。	加一条 TakeSnapshot 之后再 Crash 的见证。
-raft_log.c	86	A	把 log 的 base 设成快照点。对得上 Crash 之后从快照恢复。	加一条 TakeSnapshot 之后再 Crash 的见证。动作已经在 MCNext 里。
-raft_log.c	88	E	规格没有这行读写的字段。函数 raft_log_load_from_snapshot。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_log.c	103	E	规格没有这行读写的字段。函数 raft_log_load_from_snapshot。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_log.c	104	C	分配失败返回 NULL 或错误码。规格里没有分配失败。	白名单，不采样。
-raft_log.c	112	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_log.c	127	E	规格没有这行读写的字段。函数 raft_log_clear。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_log.c	135	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_log.c	136	A	快照装入时清日志并改 base。对得上带快照的 Crash 恢复。	加一条 TakeSnapshot 之后再 Crash 的见证。
-raft_log.c	137	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_log.c	178	E	规格没有这行读写的字段。函数 raft_log_append_entry。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_log.c	179	C	分配失败返回 NULL 或错误码。规格里没有分配失败。	白名单，不采样。
-raft_log.c	217	A	压缩或删除日志，改的是规格里的 log。	加冲突或快照后崩溃的见证。动作已在 MCNext。
-raft_log.c	219	A	压缩或删除日志，改的是规格里的 log。	加冲突或快照后崩溃的见证。动作已在 MCNext。
-raft_log.c	223	A	压缩或删除日志，改的是规格里的 log。	加冲突或快照后崩溃的见证。动作已在 MCNext。
-raft_log.c	227	A	压缩或删除日志，改的是规格里的 log。	加冲突或快照后崩溃的见证。动作已在 MCNext。
-raft_log.c	228	A	压缩或删除日志，改的是规格里的 log。	加冲突或快照后崩溃的见证。动作已在 MCNext。
-raft_log.c	229	A	压缩或删除日志，改的是规格里的 log。	加冲突或快照后崩溃的见证。动作已在 MCNext。
-raft_log.c	231	A	压缩或删除日志，改的是规格里的 log。	加冲突或快照后崩溃的见证。动作已在 MCNext。
-raft_log.c	232	A	压缩或删除日志，改的是规格里的 log。	加冲突或快照后崩溃的见证。动作已在 MCNext。
-raft_log.c	233	A	压缩或删除日志，改的是规格里的 log。	加冲突或快照后崩溃的见证。动作已在 MCNext。
-raft_log.c	234	A	压缩或删除日志，改的是规格里的 log。	加冲突或快照后崩溃的见证。动作已在 MCNext。
-raft_log.c	235	A	压缩或删除日志，改的是规格里的 log。	加冲突或快照后崩溃的见证。动作已在 MCNext。
-raft_log.c	239	A	压缩或删除日志，改的是规格里的 log。	加冲突或快照后崩溃的见证。动作已在 MCNext。
-raft_log.c	241	A	压缩或删除日志，改的是规格里的 log。	加冲突或快照后崩溃的见证。动作已在 MCNext。
-raft_log.c	242	A	压缩或删除日志，改的是规格里的 log。	加冲突或快照后崩溃的见证。动作已在 MCNext。
-raft_log.c	248	A	压缩或删除日志，改的是规格里的 log。	加冲突或快照后崩溃的见证。动作已在 MCNext。
-raft_log.c	250	A	压缩或删除日志，改的是规格里的 log。	加冲突或快照后崩溃的见证。动作已在 MCNext。
-raft_log.c	283	A	压缩或删除日志，改的是规格里的 log。	加冲突或快照后崩溃的见证。动作已在 MCNext。
-raft_log.c	285	A	压缩或删除日志，改的是规格里的 log。	加冲突或快照后崩溃的见证。动作已在 MCNext。
-raft_log.c	289	A	压缩或删除日志，改的是规格里的 log。	加冲突或快照后崩溃的见证。动作已在 MCNext。
-raft_log.c	291	A	压缩或删除日志，改的是规格里的 log。	加冲突或快照后崩溃的见证。动作已在 MCNext。
-raft_log.c	294	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_log.c	296	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_log.c	297	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_log.c	298	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_log.c	299	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_log.c	333	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_log.c	383	E	规格没有这行读写的字段。函数 log_get_batch。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_log.c	394	A	压缩或删除日志，改的是规格里的 log。	加冲突或快照后崩溃的见证。动作已在 MCNext。
-raft_log.c	396	A	压缩或删除日志，改的是规格里的 log。	加冲突或快照后崩溃的见证。动作已在 MCNext。
-raft_log.c	405	A	压缩或删除日志，改的是规格里的 log。	加冲突或快照后崩溃的见证。动作已在 MCNext。
-raft_node.c	58	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_node.c	60	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_node.c	61	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_node.c	84	E	规格没有这个字段。	写入 scenarios.md。
-raft_node.c	86	E	规格没有这个字段。	写入 scenarios.md。
-raft_node.c	87	E	规格没有这个字段。	写入 scenarios.md。
-raft_node.c	89	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_node.c	91	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_node.c	99	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_node.c	101	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_node.c	111	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_node.c	113	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_node.c	116	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_node.c	118	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_node.c	121	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_node.c	123	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_node.c	124	E	规格没有这行读写的字段。函数 raft_node_set_udata。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_node.c	126	D	生产的 begin_load 会清标志。specula_step 跳过整段，驱动不调用。	低优先级，不采样。
-raft_node.c	128	D	生产的 begin_load 会清标志。specula_step 跳过整段，驱动不调用。	低优先级，不采样。
-raft_node.c	129	E	规格没有这行读写的字段。函数 raft_node_clear_flags。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_node.c	160	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_node.c	162	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_node.c	170	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_node.c	193	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_node.c	197	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_node.c	199	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_node.c	212	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_node.c	216	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_node.c	218	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	43	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	48	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	49	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	50	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	51	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	52	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	67	E	规格没有这行读写的字段。函数 raft_log。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	88	E	规格没有这行读写的字段。函数 raft_update_quorum_meta。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	95	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_server.c	125	E	规格没有这行读写的字段。函数 raft_new_with_log。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	126	C	分配失败返回 NULL 或错误码。规格里没有分配失败。	白名单，不采样。
-raft_server.c	165	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	167	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	168	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	169	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	170	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	171	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	172	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	173	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	174	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	175	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	176	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	177	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	178	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	179	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	180	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	208	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	209	C	分配失败返回 NULL 或错误码。规格里没有分配失败。	白名单，不采样。
-raft_server.c	218	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_server.c	230	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	232	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	235	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	237	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	238	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	242	B	防御性返回或断言，守卫能写成规格里的谓词。	期望看到错误返回。回放里若被断言打死，记 crash，不改集合。
-raft_server.c	244	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	245	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	247	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	254	C	防御性返回，守卫写不成规格谓词。	白名单，不采样。
-raft_server.c	255	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	257	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	258	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	260	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	261	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	264	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	265	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	293	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	294	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	296	B	防御性返回或断言，守卫能写成规格里的谓词。	期望看到错误返回。回放里若被断言打死，记 crash，不改集合。
-raft_server.c	297	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	299	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	301	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	303	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	304	B	防御性返回或断言，守卫能写成规格里的谓词。	期望看到错误返回。回放里若被断言打死，记 crash，不改集合。
-raft_server.c	305	B	防御性返回或断言，守卫能写成规格里的谓词。	期望看到错误返回。回放里若被断言打死，记 crash，不改集合。
-raft_server.c	320	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	321	C	防御性返回，守卫写不成规格谓词。	白名单，不采样。
-raft_server.c	325	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	327	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	330	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	333	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	334	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	336	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	338	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	339	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	340	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	342	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	343	B	防御性返回或断言，守卫能写成规格里的谓词。	期望看到错误返回。回放里若被断言打死，记 crash，不改集合。
-raft_server.c	344	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	345	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	347	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	348	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	349	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	350	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	351	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	356	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	357	C	防御性返回，守卫写不成规格谓词。	白名单，不采样。
-raft_server.c	358	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	374	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	375	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	376	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	377	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	378	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	379	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	380	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	381	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	387	E	非投票成员，或生产代码在提交 REMOVE 时释放节点。规格保留 next/match，开关下不释放。	非投票成员写入 scenarios.md。释放节点是偏离生产的开关，不为覆盖去打开。
-raft_server.c	395	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	397	B	防御性返回或断言，守卫能写成规格里的谓词。	期望看到错误返回。回放里若被断言打死，记 crash，不改集合。
-raft_server.c	399	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	403	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	404	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	406	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	411	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	412	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	414	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	415	E	规格没有这行读写的字段。函数 raft_delete_entry_from_idx。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	416	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	417	E	规格没有这行读写的字段。函数 raft_delete_entry_from_idx。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	418	E	规格没有这行读写的字段。函数 raft_delete_entry_from_idx。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	421	E	规格没有这行读写的字段。函数 raft_delete_entry_from_idx。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	422	E	规格没有这行读写的字段。函数 raft_delete_entry_from_idx。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	424	A	改 votingCfgChangeIdx。	动作已有。这行在冲突回滚或恢复里，本轮没走到该分支。
-raft_server.c	425	A	改 votingCfgChangeIdx。	动作已有。这行在冲突回滚或恢复里，本轮没走到该分支。
-raft_server.c	428	E	规格没有这行读写的字段。函数 raft_delete_entry_from_idx。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	431	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	444	A	raft_election_start 的 PreVote 臂（skip 为 0）。驱动传入 1，规格没有 PreVote。	写入 scenarios.md。
-raft_server.c	488	A	单节点成为领导者时立刻提交。当前投票节点数是 3，守卫为假。规格的 BecomeLeader 也不提交。	另开单节点配置。集合仍是 A。
-raft_server.c	509	E	这是一次发送调用。规格把发送拆成单独的 action，开关关掉了焊在别的动作里的发送。	写入 scenarios.md。不为覆盖去打开开关。
-raft_server.c	514	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_server.c	522	A	改 votesGranted 或角色，但这是 PreVote。规格的 state 没有 pre-candidate。	写入 scenarios.md。不在 Sand* 里补 PreVote。
-raft_server.c	524	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	525	A	改 votesGranted 或角色，但这是 PreVote。规格的 state 没有 pre-candidate。	写入 scenarios.md。不在 Sand* 里补 PreVote。
-raft_server.c	528	A	改 votesGranted 或角色，但这是 PreVote。规格的 state 没有 pre-candidate。	写入 scenarios.md。不在 Sand* 里补 PreVote。
-raft_server.c	530	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	531	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	533	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	534	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	538	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	539	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	542	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	544	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	577	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_server.c	594	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_server.c	600	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	602	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	603	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	605	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	608	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	609	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	610	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	611	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	613	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	614	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	616	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	617	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	619	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	620	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	622	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	626	B	防御性返回或断言，守卫能写成规格里的谓词。	期望看到错误返回。回放里若被断言打死，记 crash，不改集合。
-raft_server.c	633	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	635	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	643	E	规格没有这行读写的字段。函数 raft_periodic。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	645	E	规格没有这行读写的字段。函数 raft_periodic。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	648	E	规格没有这行读写的字段。函数 raft_periodic_internal。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	651	E	规格没有这行读写的字段。函数 raft_periodic_internal。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	652	E	规格没有这行读写的字段。函数 raft_periodic_internal。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	653	C	防御性返回，守卫写不成规格谓词。	白名单，不采样。
-raft_server.c	657	E	规格没有这行读写的字段。函数 raft_periodic_internal。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	660	E	规格没有这行读写的字段。函数 raft_periodic_internal。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	663	E	规格没有这行读写的字段。函数 raft_periodic_internal。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	666	E	规格没有这行读写的字段。函数 raft_periodic_internal。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	669	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	671	A	raft_periodic 在投票节点数为 1 时加任期并成为领导者。本轮不调用 periodic，投票节点数是 3。	另开单节点配置。集合仍是 A。
-raft_server.c	672	E	规格没有这行读写的字段。函数 raft_periodic_internal。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	676	A	raft_periodic 在投票节点数为 1 时加任期并成为领导者。本轮不调用 periodic，投票节点数是 3。	另开单节点配置。集合仍是 A。
-raft_server.c	677	E	规格没有这行读写的字段。函数 raft_periodic_internal。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	683	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	684	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	685	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	686	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	690	A	raft_periodic 在投票节点数为 1 时加任期并成为领导者。本轮不调用 periodic，投票节点数是 3。	另开单节点配置。集合仍是 A。
-raft_server.c	692	E	规格没有这行读写的字段。函数 raft_periodic_internal。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	694	E	规格没有这行读写的字段。函数 raft_periodic_internal。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	695	E	规格没有这行读写的字段。函数 raft_periodic_internal。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	696	E	规格没有这行读写的字段。函数 raft_periodic_internal。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	699	E	规格没有这行读写的字段。函数 raft_periodic_internal。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	700	E	规格没有这行读写的字段。函数 raft_periodic_internal。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	714	E	规格没有这行读写的字段。函数 raft_periodic_internal。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	716	E	规格没有这行读写的字段。函数 raft_periodic_internal。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	718	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	719	A	raft_periodic 在投票节点数为 1 时加任期并成为领导者。本轮不调用 periodic，投票节点数是 3。	另开单节点配置。集合仍是 A。
-raft_server.c	722	E	规格没有这行读写的字段。函数 raft_periodic_internal。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	725	E	规格没有这行读写的字段。函数 raft_periodic_internal。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	727	E	规格没有这行读写的字段。函数 raft_periodic_internal。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	728	E	规格没有这行读写的字段。函数 raft_periodic_internal。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	732	E	规格没有这行读写的字段。函数 raft_periodic_internal。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	733	E	规格没有这行读写的字段。函数 raft_periodic_internal。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	756	A	specula 的 AppendEntries 响应里，更高 term 或失败回退 next 的分支没走到。	加一条失败响应或更高 term 响应的见证。动作已在 MCNext。
-raft_server.c	757	E	规格没有这行读写的字段。函数 specula_recv_appendentries_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	760	A	specula 的 AppendEntries 响应里，更高 term 或失败回退 next 的分支没走到。	加一条失败响应或更高 term 响应的见证。动作已在 MCNext。
-raft_server.c	761	E	规格没有这行读写的字段。函数 specula_recv_appendentries_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	765	E	规格没有这行读写的字段。函数 specula_recv_appendentries_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	769	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	770	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	771	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	772	E	规格没有这行读写的字段。函数 specula_recv_appendentries_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	775	E	规格没有这行读写的字段。函数 specula_recv_appendentries_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	776	E	规格没有这行读写的字段。函数 specula_recv_appendentries_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	778	A	specula 的 AppendEntries 响应里，更高 term 或失败回退 next 的分支没走到。	加一条失败响应或更高 term 响应的见证。动作已在 MCNext。
-raft_server.c	779	E	规格没有这行读写的字段。函数 specula_recv_appendentries_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	799	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	804	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	805	E	规格没有这行读写的字段。函数 raft_recv_appendentries_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	808	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_server.c	809	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	815	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	816	A	生产路径上的响应处理。specula_step 走旁边的规格路径，这些行是被跳过的生产赋值。	写入 scenarios.md。不为覆盖去关掉开关。
-raft_server.c	817	E	规格没有这行读写的字段。函数 raft_recv_appendentries_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	821	A	生产路径上的响应处理。specula_step 走旁边的规格路径，这些行是被跳过的生产赋值。	写入 scenarios.md。不为覆盖去关掉开关。
-raft_server.c	822	E	规格没有这行读写的字段。函数 raft_recv_appendentries_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	825	E	规格没有这行读写的字段。函数 raft_recv_appendentries_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	827	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	831	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	832	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	833	C	防御性返回，守卫写不成规格谓词。	白名单，不采样。
-raft_server.c	835	A	生产路径上的响应处理。specula_step 走旁边的规格路径，这些行是被跳过的生产赋值。	写入 scenarios.md。不为覆盖去关掉开关。
-raft_server.c	838	E	这是一次发送调用。规格把发送拆成单独的 action，开关关掉了焊在别的动作里的发送。	写入 scenarios.md。不为覆盖去打开开关。
-raft_server.c	839	E	规格没有这行读写的字段。函数 raft_recv_appendentries_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	842	E	规格没有这行读写的字段。函数 raft_recv_appendentries_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	843	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	844	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	846	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_server.c	847	E	规格没有这行读写的字段。函数 raft_recv_appendentries_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	849	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	853	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	854	E	规格没有这行读写的字段。函数 raft_recv_appendentries_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	855	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	856	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	857	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	858	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_server.c	860	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_server.c	861	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_server.c	862	E	规格没有这行读写的字段。函数 raft_recv_appendentries_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	863	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_server.c	868	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	869	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	870	A	生产路径上的响应处理。specula_step 走旁边的规格路径，这些行是被跳过的生产赋值。	写入 scenarios.md。不为覆盖去关掉开关。
-raft_server.c	872	B	防御性返回或断言，守卫能写成规格里的谓词。	期望看到错误返回。回放里若被断言打死，记 crash，不改集合。
-raft_server.c	874	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_server.c	875	E	规格没有这行读写的字段。函数 raft_recv_appendentries_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	876	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_server.c	878	C	防御性返回，守卫写不成规格谓词。	白名单，不采样。
-raft_server.c	880	E	规格没有这行读写的字段。函数 raft_recv_appendentries_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	881	E	规格没有这行读写的字段。函数 raft_recv_appendentries_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	913	E	规格没有这行读写的字段。函数 raft_recv_appendentries。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	923	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	926	E	规格没有这行读写的字段。函数 raft_recv_appendentries。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	927	E	规格没有这行读写的字段。函数 raft_recv_appendentries。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	934	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	935	E	规格没有这行读写的字段。函数 raft_recv_appendentries。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	939	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	942	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	944	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	947	E	规格没有这行读写的字段。函数 raft_recv_appendentries。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	948	E	规格没有这行读写的字段。函数 raft_recv_appendentries。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	949	E	规格没有这行读写的字段。函数 raft_recv_appendentries。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	953	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	954	E	规格没有这行读写的字段。函数 raft_recv_appendentries。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	955	E	规格没有这行读写的字段。函数 raft_recv_appendentries。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	990	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	992	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	994	E	规格没有这行读写的字段。函数 raft_recv_appendentries。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	995	E	规格没有这行读写的字段。函数 raft_recv_appendentries。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	998	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	999	E	规格没有这行读写的字段。函数 raft_recv_appendentries。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1000	E	规格没有这行读写的字段。函数 raft_recv_appendentries。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1011	E	规格没有这行读写的字段。函数 raft_recv_appendentries。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1019	E	规格没有这行读写的字段。函数 raft_recv_appendentries。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1026	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1027	A	AppendEntries 请求里没走到的赋值，例如 prev 落在已提交点上的拒绝。	加种子。动作已在 MCNext。第一次不写成死代码。
-raft_server.c	1080	E	规格没有这行读写的字段。函数 raft_recv_requestvote。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1116	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1124	E	规格没有这行读写的字段。函数 raft_recv_requestvote。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1137	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1140	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1164	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1165	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1188	A	生产路径上的响应处理。specula_step 走旁边的规格路径，这些行是被跳过的生产赋值。	写入 scenarios.md。不为覆盖去关掉开关。
-raft_server.c	1189	A	生产路径上的响应处理。specula_step 走旁边的规格路径，这些行是被跳过的生产赋值。	写入 scenarios.md。不为覆盖去关掉开关。
-raft_server.c	1190	E	规格没有这行读写的字段。函数 raft_recv_requestvote_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1191	E	规格没有这行读写的字段。函数 raft_recv_requestvote_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1242	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1243	E	规格没有这行读写的字段。函数 raft_recv_entry。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1246	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1261	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1262	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1329	E	规格没有这行读写的字段。函数 raft_apply_entry。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1330	C	防御性返回，守卫写不成规格谓词。	白名单，不采样。
-raft_server.c	1338	A	改 votingCfgChangeIdx。	动作已有。这行在冲突回滚或恢复里，本轮没走到该分支。
-raft_server.c	1361	E	规格没有这行读写的字段。函数 raft_apply_entry。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1363	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1367	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1368	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1372	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1374	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_server.c	1375	E	规格没有这行读写的字段。函数 raft_apply_entry。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1379	E	规格没有这行读写的字段。函数 raft_apply_entry。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1380	E	规格没有这行读写的字段。函数 raft_apply_entry。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1411	E	规格没有这行读写的字段。函数 raft_send_snapshot。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1442	E	规格没有这行读写的字段。函数 raft_send_snapshot。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1443	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_server.c	1445	E	规格没有这行读写的字段。函数 raft_send_snapshot。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1446	A	发送或快照结束时改 nextIndex。规格的 AppendEntries 和 SendInstallSnapshot 不改 next。	写入 scenarios.md。为对齐规格，specula_step 关掉了这条生产赋值。
-raft_server.c	1448	E	规格没有这行读写的字段。函数 raft_send_snapshot。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1451	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_server.c	1475	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1477	E	规格没有这行读写的字段。函数 raft_recv_snapshot。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1481	A	快照装入时改任期、提交点或日志。装入动作已执行，这些是没走到的校验或恢复分支。	加一条快照任期更高、或从快照恢复的见证。
-raft_server.c	1482	E	规格没有这行读写的字段。函数 raft_recv_snapshot。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1483	E	规格没有这行读写的字段。函数 raft_recv_snapshot。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1495	E	规格没有这行读写的字段。函数 raft_recv_snapshot。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1496	E	规格没有这行读写的字段。函数 raft_recv_snapshot。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1504	E	规格没有这行读写的字段。函数 raft_recv_snapshot。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1510	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1511	E	规格没有这行读写的字段。函数 raft_recv_snapshot。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1517	E	规格没有这行读写的字段。函数 raft_recv_snapshot。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1526	E	规格没有这行读写的字段。函数 raft_recv_snapshot。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1549	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1553	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1558	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1559	E	规格没有这行读写的字段。函数 raft_recv_snapshot_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1562	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1563	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_server.c	1564	E	规格没有这行读写的字段。函数 raft_recv_snapshot_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1567	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1568	A	快照装入时改任期、提交点或日志。装入动作已执行，这些是没走到的校验或恢复分支。	加一条快照任期更高、或从快照恢复的见证。
-raft_server.c	1569	E	规格没有这行读写的字段。函数 raft_recv_snapshot_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1573	A	快照装入时改任期、提交点或日志。装入动作已执行，这些是没走到的校验或恢复分支。	加一条快照任期更高、或从快照恢复的见证。
-raft_server.c	1574	E	规格没有这行读写的字段。函数 raft_recv_snapshot_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1577	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_server.c	1579	E	规格没有这行读写的字段。函数 raft_recv_snapshot_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1580	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_server.c	1583	E	规格没有这行读写的字段。函数 raft_recv_snapshot_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1584	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_server.c	1585	A	快照装入时改任期、提交点或日志。装入动作已执行，这些是没走到的校验或恢复分支。	加一条快照任期更高、或从快照恢复的见证。
-raft_server.c	1589	E	规格没有这行读写的字段。函数 raft_recv_snapshot_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1590	E	规格没有这行读写的字段。函数 raft_recv_snapshot_response。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1623	E	这是一次发送调用。规格把发送拆成单独的 action，开关关掉了焊在别的动作里的发送。	写入 scenarios.md。不为覆盖去打开开关。
-raft_server.c	1632	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_server.c	1659	A	发送或快照结束时改 nextIndex。规格的 AppendEntries 和 SendInstallSnapshot 不改 next。	写入 scenarios.md。为对齐规格，specula_step 关掉了这条生产赋值。
-raft_server.c	1668	E	规格没有这行读写的字段。函数 raft_send_appendentries。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1672	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1677	E	规格没有这行读写的字段。函数 raft_send_appendentries_all。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1679	E	规格没有这行读写的字段。函数 raft_send_appendentries_all。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1680	E	规格没有这行读写的字段。函数 raft_send_appendentries_all。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1682	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1684	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1685	E	规格没有这行读写的字段。函数 raft_send_appendentries_all。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1687	E	这是一次发送调用。规格把发送拆成单独的 action，开关关掉了焊在别的动作里的发送。	写入 scenarios.md。不为覆盖去打开开关。
-raft_server.c	1688	E	规格没有这行读写的字段。函数 raft_send_appendentries_all。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1689	E	规格没有这行读写的字段。函数 raft_send_appendentries_all。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1692	E	规格没有这行读写的字段。函数 raft_send_appendentries_all。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1736	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1739	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1740	E	规格没有这行读写的字段。函数 raft_msg_entry_response_committed。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1742	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1743	E	规格没有这行读写的字段。函数 raft_msg_entry_response_committed。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1746	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1748	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1759	E	规格没有这行读写的字段。函数 raft_apply_all。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1760	E	规格没有这行读写的字段。函数 raft_apply_all。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1765	E	规格没有这行读写的字段。函数 raft_apply_all。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1786	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	1788	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	1790	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	1800	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1804	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1805	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1806	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1807	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1811	A	快照装入时改任期、提交点或日志。装入动作已执行，这些是没走到的校验或恢复分支。	加一条快照任期更高、或从快照恢复的见证。
-raft_server.c	1812	A	快照装入时改任期、提交点或日志。装入动作已执行，这些是没走到的校验或恢复分支。	加一条快照任期更高、或从快照恢复的见证。
-raft_server.c	1813	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1814	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1815	A	快照装入时改任期、提交点或日志。装入动作已执行，这些是没走到的校验或恢复分支。	加一条快照任期更高、或从快照恢复的见证。
-raft_server.c	1816	A	快照装入时改任期、提交点或日志。装入动作已执行，这些是没走到的校验或恢复分支。	加一条快照任期更高、或从快照恢复的见证。
-raft_server.c	1819	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1820	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1822	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_server.c	1823	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1824	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1827	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1830	E	规格没有这行读写的字段。函数 raft_restore_snapshot。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1837	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1859	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1861	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1862	E	规格没有这行读写的字段。函数 raft_cancel_snapshot。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1892	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1894	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1896	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1897	E	规格没有这行读写的字段。函数 raft_end_snapshot。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1899	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_server.c	1900	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1903	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1905	E	这是一次发送调用。规格把发送拆成单独的 action，开关关掉了焊在别的动作里的发送。	写入 scenarios.md。不为覆盖去打开开关。
-raft_server.c	1923	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1924	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1925	C	防御性返回，守卫写不成规格谓词。	白名单，不采样。
-raft_server.c	1933	A	快照装入时改任期、提交点或日志。装入动作已执行，这些是没走到的校验或恢复分支。	加一条快照任期更高、或从快照恢复的见证。
-raft_server.c	1934	E	规格没有这行读写的字段。函数 raft_begin_load_snapshot。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1953	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1954	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1955	E	规格没有这行读写的字段。函数 raft_begin_load_snapshot。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	1958	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1961	D	生产的 begin_load 会清标志。specula_step 跳过整段，驱动不调用。	低优先级，不采样。
-raft_server.c	1963	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1964	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1965	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	1996	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	2021	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	2041	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2043	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2047	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2049	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2050	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2051	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2052	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2053	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2055	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2056	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2057	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2058	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2059	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2061	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2062	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2067	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2069	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2071	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2074	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2075	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2076	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2077	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2079	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2080	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2083	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2084	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2086	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2088	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2093	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2094	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2095	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2105	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2109	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2111	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2112	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2113	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2115	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2116	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2117	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2120	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2124	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2126	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2130	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2134	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2136	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2137	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2143	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2144	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2145	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2147	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2148	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2149	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2154	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2158	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2159	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2160	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2162	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2166	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2167	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2169	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2174	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2176	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2188	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2203	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2206	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2207	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2211	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2212	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2215	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2216	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2217	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2220	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2222	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2223	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2225	E	规格没有 PreVote、库内读队列、msgid 或领导者转移这些字段。	写入 scenarios.md。不在 Sand* 里补。
-raft_server.c	2228	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	2229	E	规格没有这行读写的字段。函数 raft_update_commit_idx。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2230	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	2231	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	2233	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	2235	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	2236	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	2237	E	规格没有这行读写的字段。函数 raft_update_commit_idx。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2239	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	2242	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	2243	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	2244	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	2246	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	2247	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	2248	A	改 commit 或 match。AdvanceCommitIndex 已由驱动按规格的最大 n 执行，auto_flush 关掉后不会进这里。	不另开 trace。同一赋值已经在 advance-commit 里执行。
-raft_server.c	2250	E	规格没有这行读写的字段。函数 raft_update_commit_idx。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2252	E	规格没有这行读写的字段。函数 raft_update_commit_idx。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2254	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	2256	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	2258	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	2262	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	2263	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	2266	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	2268	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	2269	E	规格没有这行读写的字段。函数 raft_flush。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2272	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	2273	A	改 commit 或 match。AdvanceCommitIndex 已由驱动按规格的最大 n 执行，auto_flush 关掉后不会进这里。	不另开 trace。同一赋值已经在 advance-commit 里执行。
-raft_server.c	2276	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	2278	E	规格没有这行读写的字段。函数 raft_flush。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2280	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	2282	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	2283	E	规格没有这行读写的字段。函数 raft_flush。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2285	E	规格没有 msgid、udata、snapshot offset 或 sufficient-logs 这些字段。	写入 scenarios.md。
-raft_server.c	2286	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	2287	E	规格没有这行读写的字段。函数 raft_flush。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2289	E	这是一次发送调用。规格把发送拆成单独的 action，开关关掉了焊在别的动作里的发送。	写入 scenarios.md。不为覆盖去打开开关。
-raft_server.c	2292	E	规格没有这行读写的字段。函数 raft_flush。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2293	E	规格没有这行读写的字段。函数 raft_flush。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2310	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	2313	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	2314	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	2315	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	2317	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	2324	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	2331	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	2334	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	2335	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	2336	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	2338	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	2341	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	2342	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	2343	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	2345	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server.c	2357	E	规格没有这行读写的字段。函数 raft_pending_operations。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2359	E	规格没有这行读写的字段。函数 raft_pending_operations。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2362	E	规格没有这行读写的字段。函数 raft_exec_operations。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2367	E	规格没有这行读写的字段。函数 raft_exec_operations。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2368	E	规格没有这行读写的字段。函数 raft_exec_operations。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2370	E	规格没有这行读写的字段。函数 raft_exec_operations。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2371	E	规格没有这行读写的字段。函数 raft_exec_operations。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2372	E	规格没有这行读写的字段。函数 raft_exec_operations。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2375	E	规格没有这行读写的字段。函数 raft_exec_operations。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2377	E	规格没有这行读写的字段。函数 raft_exec_operations。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2380	E	规格没有这行读写的字段。函数 raft_exec_operations。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2382	E	规格没有这行读写的字段。函数 raft_exec_operations。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2385	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	2387	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	2391	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	2393	E	规格没有这行读写的字段。函数 raft_restore_log。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2394	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server.c	2395	E	规格没有这行读写的字段。函数 raft_restore_log。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2399	E	规格没有这行读写的字段。函数 raft_restore_log。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2400	A	改 votingCfgChangeIdx。	动作已有。这行在冲突回滚或恢复里，本轮没走到该分支。
-raft_server.c	2403	E	规格没有这行读写的字段。函数 raft_restore_log。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2404	E	规格没有这行读写的字段。函数 raft_restore_log。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2407	E	规格没有这行读写的字段。函数 raft_restore_log。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server.c	2408	E	规格没有这行读写的字段。函数 raft_restore_log。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server_properties.c	21	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	23	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	39	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	41	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	73	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	75	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	90	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server_properties.c	92	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server_properties.c	93	E	规格没有这行读写的字段。函数 raft_set_last_applied_idx。	写入 scenarios.md。不在 Sand* 里补协议。
-raft_server_properties.c	95	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	97	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	100	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	102	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	105	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	107	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	118	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	120	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	123	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	125	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	128	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	129	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	130	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	131	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	132	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	133	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	134	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	135	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	139	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	141	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	144	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	145	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	146	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	147	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	148	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	149	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	150	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	151	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	152	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	153	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	154	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	155	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	156	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	157	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	158	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	159	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	160	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	161	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	162	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	163	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	164	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	165	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	185	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	187	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	190	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	192	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	195	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	197	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	234	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	247	B	这一行不改规格变量，所在分支本轮没走到。	加种子或另开配置。第一次不写成死代码。
-raft_server_properties.c	249	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	258	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	260	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	263	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	266	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	268	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	271	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	273	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	276	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	278	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	281	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
-raft_server_properties.c	283	D	初始化、销毁、配置，或驱动不调用的 getter。	低优先级，不采样。
+raft_log.c	41	B	环形缓冲下标回绕，不改写规格变量。守卫是下标越过容量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	43	B	环形缓冲下标回绕，不改写规格变量。守卫是下标越过容量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	44	B	环形缓冲下标回绕，不改写规格变量。守卫是下标越过容量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	55	B	日志环形缓冲扩容。守卫是条目数等于容量 10，不改写规格变量	交给 TLC。期望这行被执行。初始容量是 10，当前请求上限和 no-op 到不了
+raft_log.c	56	C	日志扩容时分配失败，写不出协议谓词	白名单，不采样
+raft_log.c	57	C	日志扩容时分配失败，写不出协议谓词	白名单，不采样
+raft_log.c	60	B	日志环形缓冲扩容。守卫是条目数等于容量 10，不改写规格变量	交给 TLC。期望这行被执行。初始容量是 10，当前请求上限和 no-op 到不了
+raft_log.c	61	B	日志环形缓冲扩容。守卫是条目数等于容量 10，不改写规格变量	交给 TLC。期望这行被执行。初始容量是 10，当前请求上限和 no-op 到不了
+raft_log.c	62	B	日志环形缓冲扩容。守卫是条目数等于容量 10，不改写规格变量	交给 TLC。期望这行被执行。初始容量是 10，当前请求上限和 no-op 到不了
+raft_log.c	64	B	日志环形缓冲扩容。守卫是条目数等于容量 10，不改写规格变量	交给 TLC。期望这行被执行。初始容量是 10，当前请求上限和 no-op 到不了
+raft_log.c	68	B	日志环形缓冲扩容。守卫是条目数等于容量 10，不改写规格变量	交给 TLC。期望这行被执行。初始容量是 10，当前请求上限和 no-op 到不了
+raft_log.c	70	B	日志环形缓冲扩容。守卫是条目数等于容量 10，不改写规格变量	交给 TLC。期望这行被执行。初始容量是 10，当前请求上限和 no-op 到不了
+raft_log.c	71	B	日志环形缓冲扩容。守卫是条目数等于容量 10，不改写规格变量	交给 TLC。期望这行被执行。初始容量是 10，当前请求上限和 no-op 到不了
+raft_log.c	72	B	日志环形缓冲扩容。守卫是条目数等于容量 10，不改写规格变量	交给 TLC。期望这行被执行。初始容量是 10，当前请求上限和 no-op 到不了
+raft_log.c	73	B	日志环形缓冲扩容。守卫是条目数等于容量 10，不改写规格变量	交给 TLC。期望这行被执行。初始容量是 10，当前请求上限和 no-op 到不了
+raft_log.c	75	B	日志环形缓冲扩容。守卫是条目数等于容量 10，不改写规格变量	交给 TLC。期望这行被执行。初始容量是 10，当前请求上限和 no-op 到不了
+raft_log.c	78	A	把日志基址写成快照下标，也就是 logOffset。对应装入快照	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	84	A	把日志基址写成快照下标，也就是 logOffset。对应装入快照	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	85	A	把日志基址写成快照下标，也就是 logOffset。对应装入快照	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	86	A	把日志基址写成快照下标，也就是 logOffset。对应装入快照	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	88	A	把日志基址写成快照下标，也就是 logOffset。对应装入快照	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	95	C	创建日志时分配失败，写不出协议谓词	白名单，不采样
+raft_log.c	103	C	创建日志时分配失败，写不出协议谓词	白名单，不采样
+raft_log.c	104	C	创建日志时分配失败，写不出协议谓词	白名单，不采样
+raft_log.c	115	D	只在 log_init 的 arg 非空时接线。驱动不传 log 回调	低优先级，不采样
+raft_log.c	117	D	只在 log_init 的 arg 非空时接线。驱动不传 log 回调	低优先级，不采样
+raft_log.c	118	D	只在 log_init 的 arg 非空时接线。驱动不传 log 回调	低优先级，不采样
+raft_log.c	119	D	只在 log_init 的 arg 非空时接线。驱动不传 log 回调	低优先级，不采样
+raft_log.c	129	D	只在安装了 log_clear 回调时清条目。驱动不安装这个回调	低优先级，不采样
+raft_log.c	131	D	只在安装了 log_clear 回调时清条目。驱动不安装这个回调	低优先级，不采样
+raft_log.c	132	D	只在安装了 log_clear 回调时清条目。驱动不安装这个回调	低优先级，不采样
+raft_log.c	135	D	只在安装了 log_clear 回调时清条目。驱动不安装这个回调	低优先级，不采样
+raft_log.c	136	D	只在安装了 log_clear 回调时清条目。驱动不安装这个回调	低优先级，不采样
+raft_log.c	137	D	只在安装了 log_clear 回调时清条目。驱动不安装这个回调	低优先级，不采样
+raft_log.c	148	C	扩容失败就返回，写不出协议谓词	白名单，不采样
+raft_log.c	154	D	log_offer 回调。驱动不安装	低优先级，不采样
+raft_log.c	156	D	log_offer 回调。驱动不安装	低优先级，不采样
+raft_log.c	157	D	log_offer 回调。驱动不安装	低优先级，不采样
+raft_log.c	158	D	log_offer 回调。驱动不安装	低优先级，不采样
+raft_log.c	169	B	按日志下标取条目，不改写规格变量。守卫是下标落在 logOffset 和日志末尾之间	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	175	B	按日志下标取条目，不改写规格变量。守卫是下标落在 logOffset 和日志末尾之间	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	177	B	按日志下标取条目，不改写规格变量。守卫是下标落在 logOffset 和日志末尾之间	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	178	B	按日志下标取条目，不改写规格变量。守卫是下标落在 logOffset 和日志末尾之间	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	179	B	按日志下标取条目，不改写规格变量。守卫是下标落在 logOffset 和日志末尾之间	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	183	B	按日志下标取条目，不改写规格变量。守卫是下标落在 logOffset 和日志末尾之间	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	185	B	按日志下标取条目，不改写规格变量。守卫是下标落在 logOffset 和日志末尾之间	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	188	B	按日志下标取条目，不改写规格变量。守卫是下标落在 logOffset 和日志末尾之间	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	190	B	按日志下标取条目，不改写规格变量。守卫是下标落在 logOffset 和日志末尾之间	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	198	B	下标不在日志数组里就返回空。守卫是下标小于等于 logOffset 或大于最后下标	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	202	B	下标不在日志数组里就返回空。守卫是下标小于等于 logOffset 或大于最后下标	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	217	A	从日志尾部删到给定下标，对应 AppendEntries 的冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	219	C	日志回调失败或空日志返回错误，写不出协议谓词	白名单，不采样
+raft_log.c	220	C	日志回调失败或空日志返回错误，写不出协议谓词	白名单，不采样
+raft_log.c	223	A	从日志尾部删到给定下标，对应 AppendEntries 的冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	224	A	从日志尾部删到给定下标，对应 AppendEntries 的冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	227	A	从日志尾部删到给定下标，对应 AppendEntries 的冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	228	A	从日志尾部删到给定下标，对应 AppendEntries 的冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	229	A	从日志尾部删到给定下标，对应 AppendEntries 的冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	231	A	从日志尾部删到给定下标，对应 AppendEntries 的冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	232	A	从日志尾部删到给定下标，对应 AppendEntries 的冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	233	A	从日志尾部删到给定下标，对应 AppendEntries 的冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	234	C	日志回调失败或空日志返回错误，写不出协议谓词	白名单，不采样
+raft_log.c	235	C	日志回调失败或空日志返回错误，写不出协议谓词	白名单，不采样
+raft_log.c	239	A	从日志尾部删到给定下标，对应 AppendEntries 的冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	241	A	从日志尾部删到给定下标，对应 AppendEntries 的冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	242	A	从日志尾部删到给定下标，对应 AppendEntries 的冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	245	A	从日志尾部删到给定下标，对应 AppendEntries 的冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	248	A	转调 log_delete，对应日志截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	250	A	转调 log_delete，对应日志截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	253	A	弹出日志前缀并抬高 base，对应快照后的 logOffset	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	255	A	弹出日志前缀并抬高 base，对应快照后的 logOffset	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	257	C	日志回调失败或空日志返回错误，写不出协议谓词	白名单，不采样
+raft_log.c	258	C	日志回调失败或空日志返回错误，写不出协议谓词	白名单，不采样
+raft_log.c	261	A	弹出日志前缀并抬高 base，对应快照后的 logOffset	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	263	A	弹出日志前缀并抬高 base，对应快照后的 logOffset	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	264	A	弹出日志前缀并抬高 base，对应快照后的 logOffset	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	265	A	弹出日志前缀并抬高 base，对应快照后的 logOffset	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	266	C	日志回调失败或空日志返回错误，写不出协议谓词	白名单，不采样
+raft_log.c	267	C	日志回调失败或空日志返回错误，写不出协议谓词	白名单，不采样
+raft_log.c	271	A	弹出日志前缀并抬高 base，对应快照后的 logOffset	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	273	A	弹出日志前缀并抬高 base，对应快照后的 logOffset	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	274	A	弹出日志前缀并抬高 base，对应快照后的 logOffset	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	275	A	弹出日志前缀并抬高 base，对应快照后的 logOffset	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	276	A	弹出日志前缀并抬高 base，对应快照后的 logOffset	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	278	A	弹出日志前缀并抬高 base，对应快照后的 logOffset	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	280	A	弹出日志前缀并抬高 base，对应快照后的 logOffset	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	283	B	读日志尾，不改写规格变量。守卫是日志非空	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	285	B	空日志不能看尾部。守卫是日志长度为 0，不改写规格变量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	286	B	空日志不能看尾部。守卫是日志长度为 0，不改写规格变量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	289	B	读日志尾，不改写规格变量。守卫是日志非空	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	291	B	读日志尾，不改写规格变量。守卫是日志非空	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	294	A	把日志条数清零。快照或重置会走到	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	296	A	把日志条数清零。快照或重置会走到	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	297	A	把日志条数清零。快照或重置会走到	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	298	A	把日志条数清零。快照或重置会走到	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	299	A	把日志条数清零。快照或重置会走到	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	333	D	log_init 只有 arg 非空才装回调。驱动传入空 arg	低优先级，不采样
+raft_log.c	343	A	把 base 设成 first_idx-1，对应装入快照时的 logOffset	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	347	A	把 base 设成 first_idx-1，对应装入快照时的 logOffset	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	348	A	把 base 设成 first_idx-1，对应装入快照时的 logOffset	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	350	B	断言 first_idx 至少为 1。防御性，守卫是装入的快照下标	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	351	A	把 base 设成 first_idx-1，对应装入快照时的 logOffset	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	352	A	把 base 设成 first_idx-1，对应装入快照时的 logOffset	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	360	D	日志 getter，驱动不调用，只被未执行到的发送路径使用	低优先级，不采样
+raft_log.c	362	D	日志 getter，驱动不调用，只被未执行到的发送路径使用	低优先级，不采样
+raft_log.c	363	D	日志 getter，驱动不调用，只被未执行到的发送路径使用	低优先级，不采样
+raft_log.c	364	D	日志 getter，驱动不调用，只被未执行到的发送路径使用	低优先级，不采样
+raft_log.c	367	D	日志 getter，驱动不调用，只被未执行到的发送路径使用	低优先级，不采样
+raft_log.c	370	B	按批取日志，不改写规格变量。守卫是下标处还有条目	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	376	B	按批取日志，不改写规格变量。守卫是下标处还有条目	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	378	B	按批取日志，不改写规格变量。守卫是下标处还有条目	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	379	B	按批取日志，不改写规格变量。守卫是下标处还有条目	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	382	B	按批取日志，不改写规格变量。守卫是下标处还有条目	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	383	B	按批取日志，不改写规格变量。守卫是下标处还有条目	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	386	B	按批取日志，不改写规格变量。守卫是下标处还有条目	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	387	B	按批取日志，不改写规格变量。守卫是下标处还有条目	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	388	B	按批取日志，不改写规格变量。守卫是下标处还有条目	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	391	B	按批取日志，不改写规格变量。守卫是下标处还有条目	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_log.c	394	A	转调 log_delete，对应日志截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	396	A	转调 log_delete，对应日志截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	399	A	循环弹出直到快照下标，对应 EndSnapshot 的前缀压缩	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	401	A	循环弹出直到快照下标，对应 EndSnapshot 的前缀压缩	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	403	A	循环弹出直到快照下标，对应 EndSnapshot 的前缀压缩	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	404	A	循环弹出直到快照下标，对应 EndSnapshot 的前缀压缩	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	405	A	循环弹出直到快照下标，对应 EndSnapshot 的前缀压缩	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	409	A	循环弹出直到快照下标，对应 EndSnapshot 的前缀压缩	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_log.c	412	D	返回日志基址的 getter，驱动不调用	低优先级，不采样
+raft_log.c	414	D	返回日志基址的 getter，驱动不调用	低优先级，不采样
+raft_log.c	422	D	返回日志条数的 getter，驱动不调用	低优先级，不采样
+raft_log.c	424	D	返回日志条数的 getter，驱动不调用	低优先级，不采样
+raft_server.c	43	D	替换分配器，只在进程配置时调用。驱动用默认分配器	低优先级，不采样
+raft_server.c	48	D	替换分配器，只在进程配置时调用。驱动用默认分配器	低优先级，不采样
+raft_server.c	49	D	替换分配器，只在进程配置时调用。驱动用默认分配器	低优先级，不采样
+raft_server.c	50	D	替换分配器，只在进程配置时调用。驱动用默认分配器	低优先级，不采样
+raft_server.c	51	D	替换分配器，只在进程配置时调用。驱动用默认分配器	低优先级，不采样
+raft_server.c	52	D	替换分配器，只在进程配置时调用。驱动用默认分配器	低优先级，不采样
+raft_server.c	67	C	日志缓冲格式化失败，写不出协议谓词	白名单，不采样
+raft_server.c	95	D	clear_snapshot 回调。驱动不安装	低优先级，不采样
+raft_server.c	107	C	创建服务器时分配失败，写不出协议谓词	白名单，不采样
+raft_server.c	125	C	创建服务器时分配失败，写不出协议谓词	白名单，不采样
+raft_server.c	126	C	创建服务器时分配失败，写不出协议谓词	白名单，不采样
+raft_server.c	165	D	把服务器清回初值。本轮销毁走 raft_destroy，不调用它	低优先级，不采样
+raft_server.c	167	D	把服务器清回初值。本轮销毁走 raft_destroy，不调用它	低优先级，不采样
+raft_server.c	168	D	把服务器清回初值。本轮销毁走 raft_destroy，不调用它	低优先级，不采样
+raft_server.c	169	D	把服务器清回初值。本轮销毁走 raft_destroy，不调用它	低优先级，不采样
+raft_server.c	170	D	把服务器清回初值。本轮销毁走 raft_destroy，不调用它	低优先级，不采样
+raft_server.c	171	D	把服务器清回初值。本轮销毁走 raft_destroy，不调用它	低优先级，不采样
+raft_server.c	172	D	把服务器清回初值。本轮销毁走 raft_destroy，不调用它	低优先级，不采样
+raft_server.c	173	D	把服务器清回初值。本轮销毁走 raft_destroy，不调用它	低优先级，不采样
+raft_server.c	174	D	把服务器清回初值。本轮销毁走 raft_destroy，不调用它	低优先级，不采样
+raft_server.c	175	D	把服务器清回初值。本轮销毁走 raft_destroy，不调用它	低优先级，不采样
+raft_server.c	176	D	把服务器清回初值。本轮销毁走 raft_destroy，不调用它	低优先级，不采样
+raft_server.c	177	D	把服务器清回初值。本轮销毁走 raft_destroy，不调用它	低优先级，不采样
+raft_server.c	178	D	把服务器清回初值。本轮销毁走 raft_destroy，不调用它	低优先级，不采样
+raft_server.c	179	D	把服务器清回初值。本轮销毁走 raft_destroy，不调用它	低优先级，不采样
+raft_server.c	180	D	把服务器清回初值。本轮销毁走 raft_destroy，不调用它	低优先级，不采样
+raft_server.c	185	C	加入节点时分配失败或节点为空，写不出协议谓词	白名单，不采样
+raft_server.c	192	A	已有节点被设成有投票权。对应配置条目把该节点加进 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	194	A	已有节点被设成有投票权。对应配置条目把该节点加进 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	195	A	已有节点被设成有投票权。对应配置条目把该节点加进 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	199	C	加入节点时分配失败或节点为空，写不出协议谓词	白名单，不采样
+raft_server.c	204	C	加入节点时分配失败或节点为空，写不出协议谓词	白名单，不采样
+raft_server.c	208	C	加入节点时分配失败或节点为空，写不出协议谓词	白名单，不采样
+raft_server.c	209	C	加入节点时分配失败或节点为空，写不出协议谓词	白名单，不采样
+raft_server.c	218	D	notify_membership_event 回调。驱动不安装	低优先级，不采样
+raft_server.c	230	E	加入无投票权节点。规格的 Server 和 ProposeAddServer 没有这条	已经放进 scenarios.md
+raft_server.c	232	E	加入无投票权节点。规格的 Server 和 ProposeAddServer 没有这条	已经放进 scenarios.md
+raft_server.c	235	D	specula_step 为真时不把节点从数组删掉。这是数组销毁路径	低优先级，不采样
+raft_server.c	237	D	specula_step 为真时不把节点从数组删掉。这是数组销毁路径	低优先级，不采样
+raft_server.c	238	D	specula_step 为真时不把节点从数组删掉。这是数组销毁路径	低优先级，不采样
+raft_server.c	242	D	specula_step 为真时不把节点从数组删掉。这是数组销毁路径	低优先级，不采样
+raft_server.c	244	D	specula_step 为真时不把节点从数组删掉。这是数组销毁路径	低优先级，不采样
+raft_server.c	245	D	specula_step 为真时不把节点从数组删掉。这是数组销毁路径	低优先级，不采样
+raft_server.c	247	D	specula_step 为真时不把节点从数组删掉。这是数组销毁路径	低优先级，不采样
+raft_server.c	249	D	specula_step 为真时不把节点从数组删掉。这是数组销毁路径	低优先级，不采样
+raft_server.c	250	D	specula_step 为真时不把节点从数组删掉。这是数组销毁路径	低优先级，不采样
+raft_server.c	254	D	specula_step 为真时不把节点从数组删掉。这是数组销毁路径	低优先级，不采样
+raft_server.c	257	D	specula_step 为真时不把节点从数组删掉。这是数组销毁路径	低优先级，不采样
+raft_server.c	258	D	specula_step 为真时不把节点从数组删掉。这是数组销毁路径	低优先级，不采样
+raft_server.c	260	D	specula_step 为真时不把节点从数组删掉。这是数组销毁路径	低优先级，不采样
+raft_server.c	261	D	specula_step 为真时不把节点从数组删掉。这是数组销毁路径	低优先级，不采样
+raft_server.c	264	D	specula_step 为真时不把节点从数组删掉。这是数组销毁路径	低优先级，不采样
+raft_server.c	265	D	specula_step 为真时不把节点从数组删掉。这是数组销毁路径	低优先级，不采样
+raft_server.c	267	A	按配置条目改投票权和节点存活性，对应 ProposeAddServer / ProposeRemoveServer 写入后的 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	269	B	断言或提前返回。守卫是条目类型、提交点与下标的关系	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	270	B	断言或提前返回。守卫是条目类型、提交点与下标的关系	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	272	C	缺少回调或 assert(0)。写不出会在协议状态里成立的谓词	白名单，不采样
+raft_server.c	273	C	缺少回调或 assert(0)。写不出会在协议状态里成立的谓词	白名单，不采样
+raft_server.c	275	A	按配置条目改投票权和节点存活性，对应 ProposeAddServer / ProposeRemoveServer 写入后的 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	276	A	按配置条目改投票权和节点存活性，对应 ProposeAddServer / ProposeRemoveServer 写入后的 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	277	A	按配置条目改投票权和节点存活性，对应 ProposeAddServer / ProposeRemoveServer 写入后的 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	279	A	按配置条目改投票权和节点存活性，对应 ProposeAddServer / ProposeRemoveServer 写入后的 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	281	A	按配置条目改投票权和节点存活性，对应 ProposeAddServer / ProposeRemoveServer 写入后的 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	285	A	按配置条目改投票权和节点存活性，对应 ProposeAddServer / ProposeRemoveServer 写入后的 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	286	A	按配置条目改投票权和节点存活性，对应 ProposeAddServer / ProposeRemoveServer 写入后的 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	288	A	按配置条目改投票权和节点存活性，对应 ProposeAddServer / ProposeRemoveServer 写入后的 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	289	C	缺少回调或 assert(0)。写不出会在协议状态里成立的谓词	白名单，不采样
+raft_server.c	290	C	缺少回调或 assert(0)。写不出会在协议状态里成立的谓词	白名单，不采样
+raft_server.c	291	A	按配置条目改投票权和节点存活性，对应 ProposeAddServer / ProposeRemoveServer 写入后的 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	293	A	按配置条目改投票权和节点存活性，对应 ProposeAddServer / ProposeRemoveServer 写入后的 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	294	A	按配置条目改投票权和节点存活性，对应 ProposeAddServer / ProposeRemoveServer 写入后的 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	296	C	缺少回调或 assert(0)。写不出会在协议状态里成立的谓词	白名单，不采样
+raft_server.c	297	A	按配置条目改投票权和节点存活性，对应 ProposeAddServer / ProposeRemoveServer 写入后的 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	299	A	按配置条目改投票权和节点存活性，对应 ProposeAddServer / ProposeRemoveServer 写入后的 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	301	A	按配置条目改投票权和节点存活性，对应 ProposeAddServer / ProposeRemoveServer 写入后的 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	303	A	按配置条目改投票权和节点存活性，对应 ProposeAddServer / ProposeRemoveServer 写入后的 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	304	C	缺少回调或 assert(0)。写不出会在协议状态里成立的谓词	白名单，不采样
+raft_server.c	305	C	缺少回调或 assert(0)。写不出会在协议状态里成立的谓词	白名单，不采样
+raft_server.c	308	A	按配置条目改投票权和节点存活性，对应 ProposeAddServer / ProposeRemoveServer 写入后的 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	310	A	按配置条目改投票权和节点存活性，对应 ProposeAddServer / ProposeRemoveServer 写入后的 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	311	A	按配置条目改投票权和节点存活性，对应 ProposeAddServer / ProposeRemoveServer 写入后的 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	312	A	按配置条目改投票权和节点存活性，对应 ProposeAddServer / ProposeRemoveServer 写入后的 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	314	A	按配置条目改投票权和节点存活性，对应 ProposeAddServer / ProposeRemoveServer 写入后的 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	315	A	按配置条目改投票权和节点存活性，对应 ProposeAddServer / ProposeRemoveServer 写入后的 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	318	A	按配置条目改投票权和节点存活性，对应 ProposeAddServer / ProposeRemoveServer 写入后的 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	320	C	缺少回调或 assert(0)。写不出会在协议状态里成立的谓词	白名单，不采样
+raft_server.c	321	C	缺少回调或 assert(0)。写不出会在协议状态里成立的谓词	白名单，不采样
+raft_server.c	325	A	截断配置条目时把投票权改回去，对应日志冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	327	B	断言或提前返回。守卫是条目类型、提交点与下标的关系	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	328	B	断言或提前返回。守卫是条目类型、提交点与下标的关系	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	330	C	缺少回调或 assert(0)。写不出会在协议状态里成立的谓词	白名单，不采样
+raft_server.c	331	C	缺少回调或 assert(0)。写不出会在协议状态里成立的谓词	白名单，不采样
+raft_server.c	333	A	截断配置条目时把投票权改回去，对应日志冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	334	A	截断配置条目时把投票权改回去，对应日志冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	336	A	截断配置条目时把投票权改回去，对应日志冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	338	A	截断配置条目时把投票权改回去，对应日志冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	339	A	截断配置条目时把投票权改回去，对应日志冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	340	A	截断配置条目时把投票权改回去，对应日志冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	342	A	截断配置条目时把投票权改回去，对应日志冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	343	C	缺少回调或 assert(0)。写不出会在协议状态里成立的谓词	白名单，不采样
+raft_server.c	344	A	截断配置条目时把投票权改回去，对应日志冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	345	A	截断配置条目时把投票权改回去，对应日志冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	347	A	截断配置条目时把投票权改回去，对应日志冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	348	A	截断配置条目时把投票权改回去，对应日志冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	349	A	截断配置条目时把投票权改回去，对应日志冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	350	A	截断配置条目时把投票权改回去，对应日志冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	351	A	截断配置条目时把投票权改回去，对应日志冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	354	A	截断配置条目时把投票权改回去，对应日志冲突截断	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	356	C	缺少回调或 assert(0)。写不出会在协议状态里成立的谓词	白名单，不采样
+raft_server.c	357	C	缺少回调或 assert(0)。写不出会在协议状态里成立的谓词	白名单，不采样
+raft_server.c	362	E	写 addition_committed、voting_committed、sufficient_logs。规格没有这些标志	已经放进 scenarios.md
+raft_server.c	364	B	断言或提前返回。守卫是条目类型、提交点与下标的关系	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	365	B	断言或提前返回。守卫是条目类型、提交点与下标的关系	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	367	C	缺少回调或 assert(0)。写不出会在协议状态里成立的谓词	白名单，不采样
+raft_server.c	368	C	缺少回调或 assert(0)。写不出会在协议状态里成立的谓词	白名单，不采样
+raft_server.c	370	E	写 addition_committed、voting_committed、sufficient_logs。规格没有这些标志	已经放进 scenarios.md
+raft_server.c	371	E	写 addition_committed、voting_committed、sufficient_logs。规格没有这些标志	已经放进 scenarios.md
+raft_server.c	373	E	写 addition_committed、voting_committed、sufficient_logs。规格没有这些标志	已经放进 scenarios.md
+raft_server.c	374	E	写 addition_committed、voting_committed、sufficient_logs。规格没有这些标志	已经放进 scenarios.md
+raft_server.c	375	E	写 addition_committed、voting_committed、sufficient_logs。规格没有这些标志	已经放进 scenarios.md
+raft_server.c	376	E	写 addition_committed、voting_committed、sufficient_logs。规格没有这些标志	已经放进 scenarios.md
+raft_server.c	377	E	写 addition_committed、voting_committed、sufficient_logs。规格没有这些标志	已经放进 scenarios.md
+raft_server.c	378	E	写 addition_committed、voting_committed、sufficient_logs。规格没有这些标志	已经放进 scenarios.md
+raft_server.c	379	E	写 addition_committed、voting_committed、sufficient_logs。规格没有这些标志	已经放进 scenarios.md
+raft_server.c	380	E	写 addition_committed、voting_committed、sufficient_logs。规格没有这些标志	已经放进 scenarios.md
+raft_server.c	381	E	写 addition_committed、voting_committed、sufficient_logs。规格没有这些标志	已经放进 scenarios.md
+raft_server.c	382	E	写 addition_committed、voting_committed、sufficient_logs。规格没有这些标志	已经放进 scenarios.md
+raft_server.c	386	D	specula_step 为真时提交移除条目不调用 raft_remove_node	低优先级，不采样
+raft_server.c	387	D	specula_step 为真时提交移除条目不调用 raft_remove_node	低优先级，不采样
+raft_server.c	389	E	写 addition_committed、voting_committed、sufficient_logs。规格没有这些标志	已经放进 scenarios.md
+raft_server.c	390	E	写 addition_committed、voting_committed、sufficient_logs。规格没有这些标志	已经放进 scenarios.md
+raft_server.c	391	E	写 addition_committed、voting_committed、sufficient_logs。规格没有这些标志	已经放进 scenarios.md
+raft_server.c	395	A	从给定下标删日志，并在删到 votingCfgChangeIdx 时把它清零	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	397	B	断言或提前返回。守卫是条目类型、提交点与下标的关系	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	399	A	从给定下标删日志，并在删到 votingCfgChangeIdx 时把它清零	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	400	A	从给定下标删日志，并在删到 votingCfgChangeIdx 时把它清零	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	403	A	从给定下标删日志，并在删到 votingCfgChangeIdx 时把它清零	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	404	A	从给定下标删日志，并在删到 votingCfgChangeIdx 时把它清零	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	406	A	从给定下标删日志，并在删到 votingCfgChangeIdx 时把它清零	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	407	A	从给定下标删日志，并在删到 votingCfgChangeIdx 时把它清零	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	411	A	从给定下标删日志，并在删到 votingCfgChangeIdx 时把它清零	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	412	A	从给定下标删日志，并在删到 votingCfgChangeIdx 时把它清零	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	414	A	从给定下标删日志，并在删到 votingCfgChangeIdx 时把它清零	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	415	A	从给定下标删日志，并在删到 votingCfgChangeIdx 时把它清零	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	416	A	从给定下标删日志，并在删到 votingCfgChangeIdx 时把它清零	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	417	A	从给定下标删日志，并在删到 votingCfgChangeIdx 时把它清零	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	418	A	从给定下标删日志，并在删到 votingCfgChangeIdx 时把它清零	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	421	A	从给定下标删日志，并在删到 votingCfgChangeIdx 时把它清零	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	422	A	从给定下标删日志，并在删到 votingCfgChangeIdx 时把它清零	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	424	A	从给定下标删日志，并在删到 votingCfgChangeIdx 时把它清零	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	425	A	从给定下标删日志，并在删到 votingCfgChangeIdx 时把它清零	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	428	A	从给定下标删日志，并在删到 votingCfgChangeIdx 时把它清零	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	431	A	从给定下标删日志，并在删到 votingCfgChangeIdx 时把它清零	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	444	A	skip_precandidate 为 0 时进入预候选人。驱动的 Timeout 传入 1，规格也没有 PreVote	已经放进 scenarios.md。规格没有 PreVote，这条改写 votesGranted 或角色
+raft_server.c	447	A	接受领导者：不是 Follower 就转成 Follower，并记下 leader。对应 AppendEntries 里的角色变化	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	449	A	接受领导者：不是 Follower 就转成 Follower，并记下 leader。对应 AppendEntries 里的角色变化	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	450	A	接受领导者：不是 Follower 就转成 Follower，并记下 leader。对应 AppendEntries 里的角色变化	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	453	A	接受领导者：不是 Follower 就转成 Follower，并记下 leader。对应 AppendEntries 里的角色变化	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	454	A	接受领导者：不是 Follower 就转成 Follower，并记下 leader。对应 AppendEntries 里的角色变化	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	457	A	接受领导者：不是 Follower 就转成 Follower，并记下 leader。对应 AppendEntries 里的角色变化	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	458	A	接受领导者：不是 Follower 就转成 Follower，并记下 leader。对应 AppendEntries 里的角色变化	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	460	A	接受领导者：不是 Follower 就转成 Follower，并记下 leader。对应 AppendEntries 里的角色变化	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	461	A	接受领导者：不是 Follower 就转成 Follower，并记下 leader。对应 AppendEntries 里的角色变化	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	472	C	追加 no-op 或同步日志失败，写不出协议谓词	白名单，不采样
+raft_server.c	477	C	追加 no-op 或同步日志失败，写不出协议谓词	白名单，不采样
+raft_server.c	488	A	单节点集群在成为领导者时把 commitIndex 写成 no-op 下标	守卫是投票节点数等于 1。三个节点时为假。另开只有一个投票节点的配置
+raft_server.c	509	D	specula_step 为真时不在 BecomeLeader 里发 AppendEntries	低优先级，不采样
+raft_server.c	514	D	notify_state_event 回调。驱动不安装	低优先级，不采样
+raft_server.c	522	A	清掉 votesGranted 并把角色写成预候选人。规格的角色只有 Follower、Candidate、Leader	已经放进 scenarios.md。规格没有 PreVote，这条改写 votesGranted 或角色
+raft_server.c	524	A	清掉 votesGranted 并把角色写成预候选人。规格的角色只有 Follower、Candidate、Leader	已经放进 scenarios.md。规格没有 PreVote，这条改写 votesGranted 或角色
+raft_server.c	525	A	清掉 votesGranted 并把角色写成预候选人。规格的角色只有 Follower、Candidate、Leader	已经放进 scenarios.md。规格没有 PreVote，这条改写 votesGranted 或角色
+raft_server.c	528	A	清掉 votesGranted 并把角色写成预候选人。规格的角色只有 Follower、Candidate、Leader	已经放进 scenarios.md。规格没有 PreVote，这条改写 votesGranted 或角色
+raft_server.c	530	A	清掉 votesGranted 并把角色写成预候选人。规格的角色只有 Follower、Candidate、Leader	已经放进 scenarios.md。规格没有 PreVote，这条改写 votesGranted 或角色
+raft_server.c	531	A	清掉 votesGranted 并把角色写成预候选人。规格的角色只有 Follower、Candidate、Leader	已经放进 scenarios.md。规格没有 PreVote，这条改写 votesGranted 或角色
+raft_server.c	533	A	清掉 votesGranted 并把角色写成预候选人。规格的角色只有 Follower、Candidate、Leader	已经放进 scenarios.md。规格没有 PreVote，这条改写 votesGranted 或角色
+raft_server.c	534	A	清掉 votesGranted 并把角色写成预候选人。规格的角色只有 Follower、Candidate、Leader	已经放进 scenarios.md。规格没有 PreVote，这条改写 votesGranted 或角色
+raft_server.c	538	A	清掉 votesGranted 并把角色写成预候选人。规格的角色只有 Follower、Candidate、Leader	已经放进 scenarios.md。规格没有 PreVote，这条改写 votesGranted 或角色
+raft_server.c	539	A	清掉 votesGranted 并把角色写成预候选人。规格的角色只有 Follower、Candidate、Leader	已经放进 scenarios.md。规格没有 PreVote，这条改写 votesGranted 或角色
+raft_server.c	542	A	清掉 votesGranted 并把角色写成预候选人。规格的角色只有 Follower、Candidate、Leader	已经放进 scenarios.md。规格没有 PreVote，这条改写 votesGranted 或角色
+raft_server.c	544	A	清掉 votesGranted 并把角色写成预候选人。规格的角色只有 Follower、Candidate、Leader	已经放进 scenarios.md。规格没有 PreVote，这条改写 votesGranted 或角色
+raft_server.c	551	C	抬高任期或持久化失败，写不出协议谓词	白名单，不采样
+raft_server.c	561	C	抬高任期或持久化失败，写不出协议谓词	白名单，不采样
+raft_server.c	577	D	notify_state_event 回调。驱动不安装	低优先级，不采样
+raft_server.c	594	D	notify_state_event 回调。驱动不安装	低优先级，不采样
+raft_server.c	600	E	给 msg_id 排序。规格没有 msg_id	已经放进 scenarios.md
+raft_server.c	602	E	给 msg_id 排序。规格没有 msg_id	已经放进 scenarios.md
+raft_server.c	603	E	给 msg_id 排序。规格没有 msg_id	已经放进 scenarios.md
+raft_server.c	605	E	给 msg_id 排序。规格没有 msg_id	已经放进 scenarios.md
+raft_server.c	608	E	用 msg_id 算多数派。规格没有 msg_id	已经放进 scenarios.md
+raft_server.c	609	E	用 msg_id 算多数派。规格没有 msg_id	已经放进 scenarios.md
+raft_server.c	610	E	用 msg_id 算多数派。规格没有 msg_id	已经放进 scenarios.md
+raft_server.c	611	E	用 msg_id 算多数派。规格没有 msg_id	已经放进 scenarios.md
+raft_server.c	613	E	用 msg_id 算多数派。规格没有 msg_id	已经放进 scenarios.md
+raft_server.c	614	E	用 msg_id 算多数派。规格没有 msg_id	已经放进 scenarios.md
+raft_server.c	616	E	用 msg_id 算多数派。规格没有 msg_id	已经放进 scenarios.md
+raft_server.c	617	E	用 msg_id 算多数派。规格没有 msg_id	已经放进 scenarios.md
+raft_server.c	619	E	用 msg_id 算多数派。规格没有 msg_id	已经放进 scenarios.md
+raft_server.c	620	E	用 msg_id 算多数派。规格没有 msg_id	已经放进 scenarios.md
+raft_server.c	622	E	用 msg_id 算多数派。规格没有 msg_id	已经放进 scenarios.md
+raft_server.c	626	E	用 msg_id 算多数派。规格没有 msg_id	已经放进 scenarios.md
+raft_server.c	633	E	用 msg_id 算多数派。规格没有 msg_id	已经放进 scenarios.md
+raft_server.c	635	E	用 msg_id 算多数派。规格没有 msg_id	已经放进 scenarios.md
+raft_server.c	638	E	读时间回调。规格没有墙钟	已经放进 scenarios.md
+raft_server.c	640	E	读时间回调。规格没有墙钟	已经放进 scenarios.md
+raft_server.c	643	E	转调 raft_periodic。规格的 Timeout 调用的是 raft_election_start，不走周期函数	已经放进 scenarios.md
+raft_server.c	645	E	转调 raft_periodic。规格的 Timeout 调用的是 raft_election_start，不走周期函数	已经放进 scenarios.md
+raft_server.c	648	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	651	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	652	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	653	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	657	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	658	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	660	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	663	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	666	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	669	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	671	A	单节点在 raft_periodic 里把 currentTerm 加一并 BecomeLeader。规格的 Timeout 不走这个函数	已经放进 scenarios.md
+raft_server.c	672	C	单节点周期路径上持久化或当选失败，写不出协议谓词	白名单，不采样
+raft_server.c	673	C	单节点周期路径上持久化或当选失败，写不出协议谓词	白名单，不采样
+raft_server.c	676	A	单节点在 raft_periodic 里把 currentTerm 加一并 BecomeLeader。规格的 Timeout 不走这个函数	已经放进 scenarios.md
+raft_server.c	677	C	单节点周期路径上持久化或当选失败，写不出协议谓词	白名单，不采样
+raft_server.c	678	C	单节点周期路径上持久化或当选失败，写不出协议谓词	白名单，不采样
+raft_server.c	683	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	684	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	685	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	686	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	690	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	692	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	694	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	695	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	696	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	699	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	700	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	714	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	716	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	718	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	719	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	722	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	725	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	727	A	选举超时后调用 raft_election_start(me, 0)，进入预候选人并清 votesGranted	已经放进 scenarios.md。规格没有 PreVote，这条改写 votesGranted 或角色
+raft_server.c	728	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	729	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	732	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	733	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	736	E	预投票、领导权转移和 msg_id 心跳在周期函数里。规格的 Timeout 调用 raft_election_start，不走这里	已经放进 scenarios.md
+raft_server.c	739	D	按下标取条目的 getter。驱动不调用	低优先级，不采样
+raft_server.c	741	D	按下标取条目的 getter。驱动不调用	低优先级，不采样
+raft_server.c	744	D	读 votingCfgChangeIdx 的 getter。驱动直接读字段	低优先级，不采样
+raft_server.c	746	D	读 votingCfgChangeIdx 的 getter。驱动直接读字段	低优先级，不采样
+raft_server.c	751	A	处理 AppendEntries 响应：更高任期则改 currentTerm 并转 Follower，否则改 nextIndex 或 matchIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	755	A	处理 AppendEntries 响应：更高任期则改 currentTerm 并转 Follower，否则改 nextIndex 或 matchIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	756	A	处理 AppendEntries 响应：更高任期则改 currentTerm 并转 Follower，否则改 nextIndex 或 matchIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	757	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	758	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	760	A	处理 AppendEntries 响应：更高任期则改 currentTerm 并转 Follower，否则改 nextIndex 或 matchIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	761	A	处理 AppendEntries 响应：更高任期则改 currentTerm 并转 Follower，否则改 nextIndex 或 matchIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	764	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	765	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	768	A	处理 AppendEntries 响应：更高任期则改 currentTerm 并转 Follower，否则改 nextIndex 或 matchIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	769	A	处理 AppendEntries 响应：更高任期则改 currentTerm 并转 Follower，否则改 nextIndex 或 matchIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	770	A	处理 AppendEntries 响应：更高任期则改 currentTerm 并转 Follower，否则改 nextIndex 或 matchIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	771	A	处理 AppendEntries 响应：更高任期则改 currentTerm 并转 Follower，否则改 nextIndex 或 matchIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	772	A	处理 AppendEntries 响应：更高任期则改 currentTerm 并转 Follower，否则改 nextIndex 或 matchIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	773	A	处理 AppendEntries 响应：更高任期则改 currentTerm 并转 Follower，否则改 nextIndex 或 matchIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	775	A	处理 AppendEntries 响应：更高任期则改 currentTerm 并转 Follower，否则改 nextIndex 或 matchIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	776	A	处理 AppendEntries 响应：更高任期则改 currentTerm 并转 Follower，否则改 nextIndex 或 matchIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	778	A	处理 AppendEntries 响应：更高任期则改 currentTerm 并转 Follower，否则改 nextIndex 或 matchIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	779	A	处理 AppendEntries 响应：更高任期则改 currentTerm 并转 Follower，否则改 nextIndex 或 matchIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	782	A	处理 AppendEntries 响应：更高任期则改 currentTerm 并转 Follower，否则改 nextIndex 或 matchIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	783	A	处理 AppendEntries 响应：更高任期则改 currentTerm 并转 Follower，否则改 nextIndex 或 matchIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	785	A	处理 AppendEntries 响应：更高任期则改 currentTerm 并转 Follower，否则改 nextIndex 或 matchIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	786	A	处理 AppendEntries 响应：更高任期则改 currentTerm 并转 Follower，否则改 nextIndex 或 matchIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	788	A	处理 AppendEntries 响应：更高任期则改 currentTerm 并转 Follower，否则改 nextIndex 或 matchIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	791	A	specula_step 下转到 specula_recv_appendentries_response，对应 HandleAppendEntriesResponse	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	795	A	specula_step 下转到 specula_recv_appendentries_response，对应 HandleAppendEntriesResponse	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	796	A	specula_step 下转到 specula_recv_appendentries_response，对应 HandleAppendEntriesResponse	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	799	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	804	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	805	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	808	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	809	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	810	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	815	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	816	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	817	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	818	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	821	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	822	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	825	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	827	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	828	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	831	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	832	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	833	B	断言或提前返回。守卫是条目类型、提交点与下标的关系	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	835	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	838	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	839	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	842	E	日志够了就发 TimeoutNow，或设置 sufficient_logs。规格没有这两件事	已经放进 scenarios.md
+raft_server.c	843	E	日志够了就发 TimeoutNow，或设置 sufficient_logs。规格没有这两件事	已经放进 scenarios.md
+raft_server.c	844	E	日志够了就发 TimeoutNow，或设置 sufficient_logs。规格没有这两件事	已经放进 scenarios.md
+raft_server.c	846	E	日志够了就发 TimeoutNow，或设置 sufficient_logs。规格没有这两件事	已经放进 scenarios.md
+raft_server.c	847	E	日志够了就发 TimeoutNow，或设置 sufficient_logs。规格没有这两件事	已经放进 scenarios.md
+raft_server.c	849	E	日志够了就发 TimeoutNow，或设置 sufficient_logs。规格没有这两件事	已经放进 scenarios.md
+raft_server.c	853	E	日志够了就发 TimeoutNow，或设置 sufficient_logs。规格没有这两件事	已经放进 scenarios.md
+raft_server.c	854	E	日志够了就发 TimeoutNow，或设置 sufficient_logs。规格没有这两件事	已经放进 scenarios.md
+raft_server.c	855	E	日志够了就发 TimeoutNow，或设置 sufficient_logs。规格没有这两件事	已经放进 scenarios.md
+raft_server.c	856	E	日志够了就发 TimeoutNow，或设置 sufficient_logs。规格没有这两件事	已经放进 scenarios.md
+raft_server.c	857	E	日志够了就发 TimeoutNow，或设置 sufficient_logs。规格没有这两件事	已经放进 scenarios.md
+raft_server.c	858	E	日志够了就发 TimeoutNow，或设置 sufficient_logs。规格没有这两件事	已经放进 scenarios.md
+raft_server.c	860	E	日志够了就发 TimeoutNow，或设置 sufficient_logs。规格没有这两件事	已经放进 scenarios.md
+raft_server.c	861	E	日志够了就发 TimeoutNow，或设置 sufficient_logs。规格没有这两件事	已经放进 scenarios.md
+raft_server.c	862	E	日志够了就发 TimeoutNow，或设置 sufficient_logs。规格没有这两件事	已经放进 scenarios.md
+raft_server.c	863	E	日志够了就发 TimeoutNow，或设置 sufficient_logs。规格没有这两件事	已经放进 scenarios.md
+raft_server.c	868	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	869	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	870	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	872	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	874	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	875	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	876	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	878	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	880	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	881	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	884	D	specula_step 为真时 raft_recv_appendentries_response 在进入时就转到 specula 版本	低优先级，不采样
+raft_server.c	887	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	892	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	894	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	900	E	只读写 msg_id。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	901	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	903	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	905	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	907	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	910	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	911	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	912	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	913	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	918	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	920	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	921	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	923	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	926	B	快照或已提交下标上的任期冲突就返回 RAFT_ERR_SHUTDOWN。守卫是 prev 或条目下标与 snapshotLastIdx、commitIndex 的关系	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	927	B	快照或已提交下标上的任期冲突就返回 RAFT_ERR_SHUTDOWN。守卫是 prev 或条目下标与 snapshotLastIdx、commitIndex 的关系	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	932	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	933	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	934	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	935	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	938	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	939	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	942	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	944	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	947	B	快照或已提交下标上的任期冲突就返回 RAFT_ERR_SHUTDOWN。守卫是 prev 或条目下标与 snapshotLastIdx、commitIndex 的关系	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	948	B	快照或已提交下标上的任期冲突就返回 RAFT_ERR_SHUTDOWN。守卫是 prev 或条目下标与 snapshotLastIdx、commitIndex 的关系	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	949	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	953	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	954	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	955	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	958	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	961	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	962	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	969	E	只读写 msg_id。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	970	E	只读写 msg_id。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	977	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	978	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	979	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	981	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	982	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	983	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	986	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	987	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	989	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	990	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	992	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	994	B	快照或已提交下标上的任期冲突就返回 RAFT_ERR_SHUTDOWN。守卫是 prev 或条目下标与 snapshotLastIdx、commitIndex 的关系	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	995	B	快照或已提交下标上的任期冲突就返回 RAFT_ERR_SHUTDOWN。守卫是 prev 或条目下标与 snapshotLastIdx、commitIndex 的关系	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	998	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	999	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1000	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1002	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1004	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1008	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1009	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1010	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1011	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1013	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1016	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1017	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1018	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1019	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1025	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1026	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1027	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1030	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1032	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1033	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1034	E	只读写 msg_id。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	1037	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1038	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1039	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1042	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1046	A	处理 AppendEntries：改任期、角色、日志和 commitIndex。对应 HandleAppendEntriesRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1080	C	投票请求里持久化新任期失败，写不出协议谓词	白名单，不采样
+raft_server.c	1104	B	请求的最后日志比本机旧就拒绝投票。守卫是 lastLogTerm 或 lastLogIndex，不改写规格变量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1116	C	投票回调失败就把 vote_granted 清零，写不出协议谓词	白名单，不采样
+raft_server.c	1124	B	拒绝投票的出口。守卫是任期更旧、已投给别人，或日志更旧	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1138	C	票数比节点数还多。防御性返回，写不出协议里会成立的谓词	白名单，不采样
+raft_server.c	1155	C	投票响应里持久化更高任期失败，写不出协议谓词	白名单，不采样
+raft_server.c	1164	E	校验预投票响应。规格没有 PreVote	已经放进 scenarios.md
+raft_server.c	1165	E	校验预投票响应。规格没有 PreVote	已经放进 scenarios.md
+raft_server.c	1166	E	校验预投票响应。规格没有 PreVote	已经放进 scenarios.md
+raft_server.c	1188	D	specula_step 下票数够了就返回，不在这条响应里调用 BecomeLeader	低优先级，不采样
+raft_server.c	1189	D	specula_step 下票数够了就返回，不在这条响应里调用 BecomeLeader	低优先级，不采样
+raft_server.c	1190	D	specula_step 下票数够了就返回，不在这条响应里调用 BecomeLeader	低优先级，不采样
+raft_server.c	1191	D	specula_step 下票数够了就返回，不在这条响应里调用 BecomeLeader	低优先级，不采样
+raft_server.c	1199	A	领导者追加客户或配置条目，并在配置条目上记下 votingCfgChangeIdx。对应 ClientRequest 和成员变更	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1203	A	领导者追加客户或配置条目，并在配置条目上记下 votingCfgChangeIdx。对应 ClientRequest 和成员变更	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1205	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1206	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1211	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1212	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1216	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1217	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1220	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1221	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1224	A	领导者追加客户或配置条目，并在配置条目上记下 votingCfgChangeIdx。对应 ClientRequest 和成员变更	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1226	A	领导者追加客户或配置条目，并在配置条目上记下 votingCfgChangeIdx。对应 ClientRequest 和成员变更	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1227	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1228	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1231	A	领导者追加客户或配置条目，并在配置条目上记下 votingCfgChangeIdx。对应 ClientRequest 和成员变更	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1232	A	领导者追加客户或配置条目，并在配置条目上记下 votingCfgChangeIdx。对应 ClientRequest 和成员变更	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1233	A	领导者追加客户或配置条目，并在配置条目上记下 votingCfgChangeIdx。对应 ClientRequest 和成员变更	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1234	A	领导者追加客户或配置条目，并在配置条目上记下 votingCfgChangeIdx。对应 ClientRequest 和成员变更	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1237	A	领导者追加客户或配置条目，并在配置条目上记下 votingCfgChangeIdx。对应 ClientRequest 和成员变更	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1241	A	领导者追加客户或配置条目，并在配置条目上记下 votingCfgChangeIdx。对应 ClientRequest 和成员变更	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1242	A	领导者追加客户或配置条目，并在配置条目上记下 votingCfgChangeIdx。对应 ClientRequest 和成员变更	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1243	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1244	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1246	A	领导者追加客户或配置条目，并在配置条目上记下 votingCfgChangeIdx。对应 ClientRequest 和成员变更	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1249	A	领导者追加客户或配置条目，并在配置条目上记下 votingCfgChangeIdx。对应 ClientRequest 和成员变更	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1261	E	预投票把消息任期写成 currentTerm+1。规格没有 PreVote	已经放进 scenarios.md
+raft_server.c	1262	E	预投票把消息任期写成 currentTerm+1。规格没有 PreVote	已经放进 scenarios.md
+raft_server.c	1294	C	追加条目失败，写不出协议谓词	白名单，不采样
+raft_server.c	1297	A	配置条目记下 votingCfgChangeIdx 并更新投票权。对应 ProposeAddServer / ProposeRemoveServer	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1300	A	配置条目记下 votingCfgChangeIdx 并更新投票权。对应 ProposeAddServer / ProposeRemoveServer	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1306	E	推进 last_applied_idx。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	1308	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1309	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1312	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1313	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1315	E	推进 last_applied_idx。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	1317	E	推进 last_applied_idx。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	1318	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1319	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1321	E	推进 last_applied_idx。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	1324	E	推进 last_applied_idx。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	1326	E	推进 last_applied_idx。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	1327	E	推进 last_applied_idx。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	1328	E	推进 last_applied_idx。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	1329	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1330	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1334	E	推进 last_applied_idx。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	1335	E	推进 last_applied_idx。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	1337	A	应用到 votingCfgChangeIdx 那条时把它清零。规格有这个变量	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1338	A	应用到 votingCfgChangeIdx 那条时把它清零。规格有这个变量	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1340	E	推进 last_applied_idx。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	1341	E	推进 last_applied_idx。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	1343	E	推进 last_applied_idx。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	1344	E	推进 last_applied_idx。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	1347	B	组装要发送的日志，不改写规格变量。守卫是 nextIndex 不超过最后下标	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1353	B	组装要发送的日志，不改写规格变量。守卫是 nextIndex 不超过最后下标	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1357	B	组装要发送的日志，不改写规格变量。守卫是 nextIndex 不超过最后下标	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1358	B	组装要发送的日志，不改写规格变量。守卫是 nextIndex 不超过最后下标	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1361	B	组装要发送的日志，不改写规格变量。守卫是 nextIndex 不超过最后下标	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1363	B	组装要发送的日志，不改写规格变量。守卫是 nextIndex 不超过最后下标	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1364	B	组装要发送的日志，不改写规格变量。守卫是 nextIndex 不超过最后下标	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1367	B	组装要发送的日志，不改写规格变量。守卫是 nextIndex 不超过最后下标	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1368	B	组装要发送的日志，不改写规格变量。守卫是 nextIndex 不超过最后下标	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1369	B	组装要发送的日志，不改写规格变量。守卫是 nextIndex 不超过最后下标	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1372	B	组装要发送的日志，不改写规格变量。守卫是 nextIndex 不超过最后下标	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1374	B	组装要发送的日志，不改写规格变量。守卫是 nextIndex 不超过最后下标	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1375	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1376	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1379	B	组装要发送的日志，不改写规格变量。守卫是 nextIndex 不超过最后下标	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1380	B	组装要发送的日志，不改写规格变量。守卫是 nextIndex 不超过最后下标	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1383	B	从日志按下标取一批条目，不改写规格变量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1387	B	从日志按下标取一批条目，不改写规格变量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1389	B	从日志按下标取一批条目，不改写规格变量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1390	B	从日志按下标取一批条目，不改写规格变量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1393	B	从日志按下标取一批条目，不改写规格变量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1394	B	从日志按下标取一批条目，不改写规格变量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1396	B	从日志按下标取一批条目，不改写规格变量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1397	B	从日志按下标取一批条目，不改写规格变量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1398	B	从日志按下标取一批条目，不改写规格变量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1401	B	从日志按下标取一批条目，不改写规格变量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1402	B	从日志按下标取一批条目，不改写规格变量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1405	A	发送 InstallSnapshot，带上快照下标、任期和当前任期。对应 SendInstallSnapshot	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1407	A	发送 InstallSnapshot，带上快照下标、任期和当前任期。对应 SendInstallSnapshot	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1408	A	发送 InstallSnapshot，带上快照下标、任期和当前任期。对应 SendInstallSnapshot	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1411	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1412	E	快照字节偏移或接收游标。规格的快照只有下标和任期	已经放进 scenarios.md
+raft_server.c	1414	A	发送 InstallSnapshot，带上快照下标、任期和当前任期。对应 SendInstallSnapshot	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1415	A	发送 InstallSnapshot，带上快照下标、任期和当前任期。对应 SendInstallSnapshot	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1416	A	发送 InstallSnapshot，带上快照下标、任期和当前任期。对应 SendInstallSnapshot	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1417	A	发送 InstallSnapshot，带上快照下标、任期和当前任期。对应 SendInstallSnapshot	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1418	A	发送 InstallSnapshot，带上快照下标、任期和当前任期。对应 SendInstallSnapshot	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1419	E	只读写 msg_id。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	1423	A	发送 InstallSnapshot，带上快照下标、任期和当前任期。对应 SendInstallSnapshot	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1425	A	发送 InstallSnapshot，带上快照下标、任期和当前任期。对应 SendInstallSnapshot	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1426	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1427	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1430	A	发送 InstallSnapshot，带上快照下标、任期和当前任期。对应 SendInstallSnapshot	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1437	A	发送 InstallSnapshot，带上快照下标、任期和当前任期。对应 SendInstallSnapshot	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1438	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1439	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1442	A	发送 InstallSnapshot，带上快照下标、任期和当前任期。对应 SendInstallSnapshot	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1443	E	快照字节偏移或接收游标。规格的快照只有下标和任期	已经放进 scenarios.md
+raft_server.c	1445	D	specula_step 为真时发完快照不改 nextIndex	低优先级，不采样
+raft_server.c	1446	D	specula_step 为真时发完快照不改 nextIndex	低优先级，不采样
+raft_server.c	1448	A	发送 InstallSnapshot，带上快照下标、任期和当前任期。对应 SendInstallSnapshot	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1451	E	快照字节偏移或接收游标。规格的快照只有下标和任期	已经放进 scenarios.md
+raft_server.c	1455	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1460	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1462	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1469	E	只读写 msg_id。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	1470	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1471	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1472	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1474	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1475	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1477	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1480	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1481	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1482	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1483	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1487	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1492	D	specula_step 为真时不因为本地日志已经不短就跳过快照块	低优先级，不采样
+raft_server.c	1495	D	specula_step 为真时不因为本地日志已经不短就跳过快照块	低优先级，不采样
+raft_server.c	1496	D	specula_step 为真时不因为本地日志已经不短就跳过快照块	低优先级，不采样
+raft_server.c	1501	E	快照字节偏移或接收游标。规格的快照只有下标和任期	已经放进 scenarios.md
+raft_server.c	1502	E	快照字节偏移或接收游标。规格的快照只有下标和任期	已经放进 scenarios.md
+raft_server.c	1503	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1504	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1509	E	快照字节偏移或接收游标。规格的快照只有下标和任期	已经放进 scenarios.md
+raft_server.c	1510	E	快照字节偏移或接收游标。规格的快照只有下标和任期	已经放进 scenarios.md
+raft_server.c	1511	E	快照字节偏移或接收游标。规格的快照只有下标和任期	已经放进 scenarios.md
+raft_server.c	1514	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1516	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1517	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1520	E	快照字节偏移或接收游标。规格的快照只有下标和任期	已经放进 scenarios.md
+raft_server.c	1522	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1523	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1525	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1526	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1530	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1531	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1532	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1533	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1534	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1537	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1538	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1539	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1542	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1546	A	接收快照：更高任期则改 currentTerm，最后一块装入快照。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1549	A	处理快照响应：更高任期则改 currentTerm，成功则把 nextIndex 抬到快照之后	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1553	A	处理快照响应：更高任期则改 currentTerm，成功则把 nextIndex 抬到快照之后	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1558	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1559	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1562	A	处理快照响应：更高任期则改 currentTerm，成功则把 nextIndex 抬到快照之后	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1563	A	处理快照响应：更高任期则改 currentTerm，成功则把 nextIndex 抬到快照之后	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1564	A	处理快照响应：更高任期则改 currentTerm，成功则把 nextIndex 抬到快照之后	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1567	A	处理快照响应：更高任期则改 currentTerm，成功则把 nextIndex 抬到快照之后	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1568	A	处理快照响应：更高任期则改 currentTerm，成功则把 nextIndex 抬到快照之后	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1569	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1570	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1573	A	处理快照响应：更高任期则改 currentTerm，成功则把 nextIndex 抬到快照之后	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1574	A	处理快照响应：更高任期则改 currentTerm，成功则把 nextIndex 抬到快照之后	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1577	E	只读写 msg_id。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	1579	A	处理快照响应：更高任期则改 currentTerm，成功则把 nextIndex 抬到快照之后	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1580	E	快照字节偏移或接收游标。规格的快照只有下标和任期	已经放进 scenarios.md
+raft_server.c	1583	A	处理快照响应：更高任期则改 currentTerm，成功则把 nextIndex 抬到快照之后	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1584	E	快照字节偏移或接收游标。规格的快照只有下标和任期	已经放进 scenarios.md
+raft_server.c	1585	A	处理快照响应：更高任期则改 currentTerm，成功则把 nextIndex 抬到快照之后	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1589	A	处理快照响应：更高任期则改 currentTerm，成功则把 nextIndex 抬到快照之后	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1590	A	处理快照响应：更高任期则改 currentTerm，成功则把 nextIndex 抬到快照之后	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1593	A	处理快照响应：更高任期则改 currentTerm，成功则把 nextIndex 抬到快照之后	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1596	B	读 prevLog 的任期，不改写规格变量。守卫是该下标有条目或落在快照上	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1598	B	读 prevLog 的任期，不改写规格变量。守卫是该下标有条目或落在快照上	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1600	B	读 prevLog 的任期，不改写规格变量。守卫是该下标有条目或落在快照上	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1601	B	读 prevLog 的任期，不改写规格变量。守卫是该下标有条目或落在快照上	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1602	B	读 prevLog 的任期，不改写规格变量。守卫是该下标有条目或落在快照上	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1605	B	读 prevLog 的任期，不改写规格变量。守卫是该下标有条目或落在快照上	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1606	B	读 prevLog 的任期，不改写规格变量。守卫是该下标有条目或落在快照上	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1608	B	读 prevLog 的任期，不改写规格变量。守卫是该下标有条目或落在快照上	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1611	A	发出 AppendEntries，prev 和条目来自 nextIndex 与日志。对应 AppendEntries	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1613	A	发出 AppendEntries，prev 和条目来自 nextIndex 与日志。对应 AppendEntries	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1614	A	发出 AppendEntries，prev 和条目来自 nextIndex 与日志。对应 AppendEntries	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1618	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1619	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1622	A	发出 AppendEntries，prev 和条目来自 nextIndex 与日志。对应 AppendEntries	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1623	A	发出 AppendEntries，prev 和条目来自 nextIndex 与日志。对应 AppendEntries	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1626	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1627	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1631	E	背压回调。规格没有这个流控，驱动也不安装	已经放进 scenarios.md
+raft_server.c	1632	E	背压回调。规格没有这个流控，驱动也不安装	已经放进 scenarios.md
+raft_server.c	1633	E	背压回调。规格没有这个流控，驱动也不安装	已经放进 scenarios.md
+raft_server.c	1637	A	发出 AppendEntries，prev 和条目来自 nextIndex 与日志。对应 AppendEntries	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1639	A	发出 AppendEntries，prev 和条目来自 nextIndex 与日志。对应 AppendEntries	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1640	A	发出 AppendEntries，prev 和条目来自 nextIndex 与日志。对应 AppendEntries	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1641	A	发出 AppendEntries，prev 和条目来自 nextIndex 与日志。对应 AppendEntries	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1642	A	发出 AppendEntries，prev 和条目来自 nextIndex 与日志。对应 AppendEntries	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1643	E	只读写 msg_id。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	1644	A	发出 AppendEntries，prev 和条目来自 nextIndex 与日志。对应 AppendEntries	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1645	A	发出 AppendEntries，prev 和条目来自 nextIndex 与日志。对应 AppendEntries	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1646	A	发出 AppendEntries，prev 和条目来自 nextIndex 与日志。对应 AppendEntries	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1649	A	发出 AppendEntries，prev 和条目来自 nextIndex 与日志。对应 AppendEntries	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1655	A	发出 AppendEntries，prev 和条目来自 nextIndex 与日志。对应 AppendEntries	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1658	A	发出 AppendEntries，prev 和条目来自 nextIndex 与日志。对应 AppendEntries	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1659	D	specula_step 为真时发送 AppendEntries 不顺便增加 nextIndex	低优先级，不采样
+raft_server.c	1661	E	只读写 msg_id。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	1662	A	发出 AppendEntries，prev 和条目来自 nextIndex 与日志。对应 AppendEntries	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1664	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1665	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1668	A	发出 AppendEntries，prev 和条目来自 nextIndex 与日志。对应 AppendEntries	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1669	A	发出 AppendEntries，prev 和条目来自 nextIndex 与日志。对应 AppendEntries	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1672	A	发出 AppendEntries，prev 和条目来自 nextIndex 与日志。对应 AppendEntries	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1674	A	发出 AppendEntries，prev 和条目来自 nextIndex 与日志。对应 AppendEntries	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1677	E	给所有节点发 AppendEntries。规格的 AppendEntries 是一对节点，整批只出现在周期函数里	已经放进 scenarios.md
+raft_server.c	1680	E	给所有节点发 AppendEntries。规格的 AppendEntries 是一对节点，整批只出现在周期函数里	已经放进 scenarios.md
+raft_server.c	1682	E	给所有节点发 AppendEntries。规格的 AppendEntries 是一对节点，整批只出现在周期函数里	已经放进 scenarios.md
+raft_server.c	1684	E	给所有节点发 AppendEntries。规格的 AppendEntries 是一对节点，整批只出现在周期函数里	已经放进 scenarios.md
+raft_server.c	1685	E	给所有节点发 AppendEntries。规格的 AppendEntries 是一对节点，整批只出现在周期函数里	已经放进 scenarios.md
+raft_server.c	1687	E	给所有节点发 AppendEntries。规格的 AppendEntries 是一对节点，整批只出现在周期函数里	已经放进 scenarios.md
+raft_server.c	1688	E	给所有节点发 AppendEntries。规格的 AppendEntries 是一对节点，整批只出现在周期函数里	已经放进 scenarios.md
+raft_server.c	1689	E	给所有节点发 AppendEntries。规格的 AppendEntries 是一对节点，整批只出现在周期函数里	已经放进 scenarios.md
+raft_server.c	1692	E	给所有节点发 AppendEntries。规格的 AppendEntries 是一对节点，整批只出现在周期函数里	已经放进 scenarios.md
+raft_server.c	1727	C	持久化 votedFor 失败，写不出协议谓词	白名单，不采样
+raft_server.c	1736	D	查询某条客户响应是否已提交的 getter。驱动不调用	低优先级，不采样
+raft_server.c	1739	D	查询某条客户响应是否已提交的 getter。驱动不调用	低优先级，不采样
+raft_server.c	1740	D	查询某条客户响应是否已提交的 getter。驱动不调用	低优先级，不采样
+raft_server.c	1741	D	查询某条客户响应是否已提交的 getter。驱动不调用	低优先级，不采样
+raft_server.c	1742	D	查询某条客户响应是否已提交的 getter。驱动不调用	低优先级，不采样
+raft_server.c	1743	D	查询某条客户响应是否已提交的 getter。驱动不调用	低优先级，不采样
+raft_server.c	1746	D	查询某条客户响应是否已提交的 getter。驱动不调用	低优先级，不采样
+raft_server.c	1747	D	查询某条客户响应是否已提交的 getter。驱动不调用	低优先级，不采样
+raft_server.c	1748	D	查询某条客户响应是否已提交的 getter。驱动不调用	低优先级，不采样
+raft_server.c	1751	E	循环推进 last_applied_idx，并看墙钟期限。规格没有 lastApplied	已经放进 scenarios.md
+raft_server.c	1753	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1754	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1757	E	循环推进 last_applied_idx，并看墙钟期限。规格没有 lastApplied	已经放进 scenarios.md
+raft_server.c	1758	E	循环推进 last_applied_idx，并看墙钟期限。规格没有 lastApplied	已经放进 scenarios.md
+raft_server.c	1759	E	循环推进 last_applied_idx，并看墙钟期限。规格没有 lastApplied	已经放进 scenarios.md
+raft_server.c	1760	E	循环推进 last_applied_idx，并看墙钟期限。规格没有 lastApplied	已经放进 scenarios.md
+raft_server.c	1763	E	循环推进 last_applied_idx，并看墙钟期限。规格没有 lastApplied	已经放进 scenarios.md
+raft_server.c	1764	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1765	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1769	E	循环推进 last_applied_idx，并看墙钟期限。规格没有 lastApplied	已经放进 scenarios.md
+raft_server.c	1786	D	返回日志第一条下标的 getter。驱动不调用	低优先级，不采样
+raft_server.c	1788	B	断言或提前返回。守卫是条目类型、提交点与下标的关系	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1790	D	返回日志第一条下标的 getter。驱动不调用	低优先级，不采样
+raft_server.c	1793	B	计算可以打进快照的条数，不改写规格变量。守卫是已提交条数大于 1	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1795	B	计算可以打进快照的条数，不改写规格变量。守卫是已提交条数大于 1	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1796	B	计算可以打进快照的条数，不改写规格变量。守卫是已提交条数大于 1	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1797	B	计算可以打进快照的条数，不改写规格变量。守卫是已提交条数大于 1	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1800	D	只在空状态机上一次性灌入快照。受控执行用的是运行中的装入动作，不调用它	低优先级，不采样
+raft_server.c	1804	D	只在空状态机上一次性灌入快照。受控执行用的是运行中的装入动作，不调用它	低优先级，不采样
+raft_server.c	1805	D	只在空状态机上一次性灌入快照。受控执行用的是运行中的装入动作，不调用它	低优先级，不采样
+raft_server.c	1806	D	只在空状态机上一次性灌入快照。受控执行用的是运行中的装入动作，不调用它	低优先级，不采样
+raft_server.c	1807	D	只在空状态机上一次性灌入快照。受控执行用的是运行中的装入动作，不调用它	低优先级，不采样
+raft_server.c	1808	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1811	D	只在空状态机上一次性灌入快照。受控执行用的是运行中的装入动作，不调用它	低优先级，不采样
+raft_server.c	1812	D	只在空状态机上一次性灌入快照。受控执行用的是运行中的装入动作，不调用它	低优先级，不采样
+raft_server.c	1813	D	只在空状态机上一次性灌入快照。受控执行用的是运行中的装入动作，不调用它	低优先级，不采样
+raft_server.c	1814	D	只在空状态机上一次性灌入快照。受控执行用的是运行中的装入动作，不调用它	低优先级，不采样
+raft_server.c	1815	D	只在空状态机上一次性灌入快照。受控执行用的是运行中的装入动作，不调用它	低优先级，不采样
+raft_server.c	1816	D	只在空状态机上一次性灌入快照。受控执行用的是运行中的装入动作，不调用它	低优先级，不采样
+raft_server.c	1819	D	只在空状态机上一次性灌入快照。受控执行用的是运行中的装入动作，不调用它	低优先级，不采样
+raft_server.c	1820	D	只在空状态机上一次性灌入快照。受控执行用的是运行中的装入动作，不调用它	低优先级，不采样
+raft_server.c	1822	D	只在空状态机上一次性灌入快照。受控执行用的是运行中的装入动作，不调用它	低优先级，不采样
+raft_server.c	1823	D	只在空状态机上一次性灌入快照。受控执行用的是运行中的装入动作，不调用它	低优先级，不采样
+raft_server.c	1824	D	只在空状态机上一次性灌入快照。受控执行用的是运行中的装入动作，不调用它	低优先级，不采样
+raft_server.c	1827	D	只在空状态机上一次性灌入快照。受控执行用的是运行中的装入动作，不调用它	低优先级，不采样
+raft_server.c	1830	D	只在空状态机上一次性灌入快照。受控执行用的是运行中的装入动作，不调用它	低优先级，不采样
+raft_server.c	1833	E	只置 snapshot_in_progress 和 next_snapshot_*。规格没有这两个字段，snapshotLastIdx 要到 raft_end_snapshot 才写	已经放进 scenarios.md
+raft_server.c	1835	E	只置 snapshot_in_progress 和 next_snapshot_*。规格没有这两个字段，snapshotLastIdx 要到 raft_end_snapshot 才写	已经放进 scenarios.md
+raft_server.c	1836	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1837	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1838	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1842	E	只置 snapshot_in_progress 和 next_snapshot_*。规格没有这两个字段，snapshotLastIdx 要到 raft_end_snapshot 才写	已经放进 scenarios.md
+raft_server.c	1843	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1844	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1847	B	断言或提前返回。守卫是条目类型、提交点与下标的关系	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1849	E	只置 snapshot_in_progress 和 next_snapshot_*。规格没有这两个字段，snapshotLastIdx 要到 raft_end_snapshot 才写	已经放进 scenarios.md
+raft_server.c	1850	E	只置 snapshot_in_progress 和 next_snapshot_*。规格没有这两个字段，snapshotLastIdx 要到 raft_end_snapshot 才写	已经放进 scenarios.md
+raft_server.c	1851	E	只置 snapshot_in_progress 和 next_snapshot_*。规格没有这两个字段，snapshotLastIdx 要到 raft_end_snapshot 才写	已经放进 scenarios.md
+raft_server.c	1853	E	只置 snapshot_in_progress 和 next_snapshot_*。规格没有这两个字段，snapshotLastIdx 要到 raft_end_snapshot 才写	已经放进 scenarios.md
+raft_server.c	1856	E	只置 snapshot_in_progress 和 next_snapshot_*。规格没有这两个字段，snapshotLastIdx 要到 raft_end_snapshot 才写	已经放进 scenarios.md
+raft_server.c	1859	E	取消进行中的快照。规格没有这个动作	已经放进 scenarios.md
+raft_server.c	1861	E	取消进行中的快照。规格没有这个动作	已经放进 scenarios.md
+raft_server.c	1862	E	取消进行中的快照。规格没有这个动作	已经放进 scenarios.md
+raft_server.c	1865	A	把 snapshotLastIdx 和 snapshotLastTerm 写成新快照，并压缩日志前缀。对应 TakeSnapshot 的结束	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1867	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1868	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	1870	A	把 snapshotLastIdx 和 snapshotLastTerm 写成新快照，并压缩日志前缀。对应 TakeSnapshot 的结束	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1871	A	把 snapshotLastIdx 和 snapshotLastTerm 写成新快照，并压缩日志前缀。对应 TakeSnapshot 的结束	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1874	A	把 snapshotLastIdx 和 snapshotLastTerm 写成新快照，并压缩日志前缀。对应 TakeSnapshot 的结束	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1875	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1876	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1878	A	把 snapshotLastIdx 和 snapshotLastTerm 写成新快照，并压缩日志前缀。对应 TakeSnapshot 的结束	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1879	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1880	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1882	A	把 snapshotLastIdx 和 snapshotLastTerm 写成新快照，并压缩日志前缀。对应 TakeSnapshot 的结束	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1884	A	把 snapshotLastIdx 和 snapshotLastTerm 写成新快照，并压缩日志前缀。对应 TakeSnapshot 的结束	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1885	A	把 snapshotLastIdx 和 snapshotLastTerm 写成新快照，并压缩日志前缀。对应 TakeSnapshot 的结束	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1889	A	把 snapshotLastIdx 和 snapshotLastTerm 写成新快照，并压缩日志前缀。对应 TakeSnapshot 的结束	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1890	A	把 snapshotLastIdx 和 snapshotLastTerm 写成新快照，并压缩日志前缀。对应 TakeSnapshot 的结束	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1892	D	specula_step 为真时结束快照后不立刻广播	低优先级，不采样
+raft_server.c	1894	D	specula_step 为真时结束快照后不立刻广播	低优先级，不采样
+raft_server.c	1896	D	specula_step 为真时结束快照后不立刻广播	低优先级，不采样
+raft_server.c	1897	D	specula_step 为真时结束快照后不立刻广播	低优先级，不采样
+raft_server.c	1899	D	specula_step 为真时结束快照后不立刻广播	低优先级，不采样
+raft_server.c	1900	D	specula_step 为真时结束快照后不立刻广播	低优先级，不采样
+raft_server.c	1903	D	specula_step 为真时结束快照后不立刻广播	低优先级，不采样
+raft_server.c	1905	D	specula_step 为真时结束快照后不立刻广播	低优先级，不采样
+raft_server.c	1909	A	把 snapshotLastIdx 和 snapshotLastTerm 写成新快照，并压缩日志前缀。对应 TakeSnapshot 的结束	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1912	A	按快照重置日志基址，必要时提高任期和提交点。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1916	A	按快照重置日志基址，必要时提高任期和提交点。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1917	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1922	A	按快照重置日志基址，必要时提高任期和提交点。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1923	A	按快照重置日志基址，必要时提高任期和提交点。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1924	A	按快照重置日志基址，必要时提高任期和提交点。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1925	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1928	A	按快照重置日志基址，必要时提高任期和提交点。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1929	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1932	A	按快照重置日志基址，必要时提高任期和提交点。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1933	A	按快照重置日志基址，必要时提高任期和提交点。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1934	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1935	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	1939	A	按快照重置日志基址，必要时提高任期和提交点。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1941	A	按快照重置日志基址，必要时提高任期和提交点。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1942	A	按快照重置日志基址，必要时提高任期和提交点。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1945	A	按快照重置日志基址，必要时提高任期和提交点。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1946	A	按快照重置日志基址，必要时提高任期和提交点。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1947	A	按快照重置日志基址，必要时提高任期和提交点。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1948	A	按快照重置日志基址，必要时提高任期和提交点。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1952	D	specula_step 为真时装入快照不拆掉其他节点	低优先级，不采样
+raft_server.c	1953	D	specula_step 为真时装入快照不拆掉其他节点	低优先级，不采样
+raft_server.c	1954	D	specula_step 为真时装入快照不拆掉其他节点	低优先级，不采样
+raft_server.c	1955	D	specula_step 为真时装入快照不拆掉其他节点	低优先级，不采样
+raft_server.c	1958	D	specula_step 为真时装入快照不拆掉其他节点	低优先级，不采样
+raft_server.c	1961	D	specula_step 为真时装入快照不拆掉其他节点	低优先级，不采样
+raft_server.c	1963	D	specula_step 为真时装入快照不拆掉其他节点	低优先级，不采样
+raft_server.c	1964	D	specula_step 为真时装入快照不拆掉其他节点	低优先级，不采样
+raft_server.c	1965	D	specula_step 为真时装入快照不拆掉其他节点	低优先级，不采样
+raft_server.c	1968	A	按快照重置日志基址，必要时提高任期和提交点。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1971	A	按快照重置日志基址，必要时提高任期和提交点。对应 HandleInstallSnapshotRequest	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1974	A	把 snapshotLastIdx 和 snapshotLastTerm 写成刚装入的快照。对应 EndLoadSnapshot	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1976	A	把 snapshotLastIdx 和 snapshotLastTerm 写成刚装入的快照。对应 EndLoadSnapshot	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1977	A	把 snapshotLastIdx 和 snapshotLastTerm 写成刚装入的快照。对应 EndLoadSnapshot	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1980	A	把 snapshotLastIdx 和 snapshotLastTerm 写成刚装入的快照。对应 EndLoadSnapshot	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1981	A	把 snapshotLastIdx 和 snapshotLastTerm 写成刚装入的快照。对应 EndLoadSnapshot	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1983	A	把 snapshotLastIdx 和 snapshotLastTerm 写成刚装入的快照。对应 EndLoadSnapshot	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1984	A	把 snapshotLastIdx 和 snapshotLastTerm 写成刚装入的快照。对应 EndLoadSnapshot	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1985	A	把 snapshotLastIdx 和 snapshotLastTerm 写成刚装入的快照。对应 EndLoadSnapshot	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1988	A	把 snapshotLastIdx 和 snapshotLastTerm 写成刚装入的快照。对应 EndLoadSnapshot	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	1991	A	把 snapshotLastIdx 和 snapshotLastTerm 写成刚装入的快照。对应 EndLoadSnapshot	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2020	D	条目自带 free_func 时才走这里。驱动的条目没有这个函数	低优先级，不采样
+raft_server.c	2021	D	条目自带 free_func 时才走这里。驱动的条目没有这个函数	低优先级，不采样
+raft_server.c	2023	D	条目自带 free_func 时才走这里。驱动的条目没有这个函数	低优先级，不采样
+raft_server.c	2028	D	释放发送缓冲区。驱动不直接调用，只跟在未执行到的发送后面	低优先级，不采样
+raft_server.c	2030	D	释放发送缓冲区。驱动不直接调用，只跟在未执行到的发送后面	低优先级，不采样
+raft_server.c	2031	D	释放发送缓冲区。驱动不直接调用，只跟在未执行到的发送后面	低优先级，不采样
+raft_server.c	2034	D	释放发送缓冲区。驱动不直接调用，只跟在未执行到的发送后面	低优先级，不采样
+raft_server.c	2035	D	释放发送缓冲区。驱动不直接调用，只跟在未执行到的发送后面	低优先级，不采样
+raft_server.c	2038	D	释放发送缓冲区。驱动不直接调用，只跟在未执行到的发送后面	低优先级，不采样
+raft_server.c	2041	E	把读请求放进库内队列并增加 msg_id。规格的读是驱动里的两个锁存，没有这个队列	已经放进 scenarios.md
+raft_server.c	2043	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	2044	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	2047	E	把读请求放进库内队列并增加 msg_id。规格的读是驱动里的两个锁存，没有这个队列	已经放进 scenarios.md
+raft_server.c	2049	E	把读请求放进库内队列并增加 msg_id。规格的读是驱动里的两个锁存，没有这个队列	已经放进 scenarios.md
+raft_server.c	2050	E	把读请求放进库内队列并增加 msg_id。规格的读是驱动里的两个锁存，没有这个队列	已经放进 scenarios.md
+raft_server.c	2051	E	把读请求放进库内队列并增加 msg_id。规格的读是驱动里的两个锁存，没有这个队列	已经放进 scenarios.md
+raft_server.c	2052	E	把读请求放进库内队列并增加 msg_id。规格的读是驱动里的两个锁存，没有这个队列	已经放进 scenarios.md
+raft_server.c	2053	E	把读请求放进库内队列并增加 msg_id。规格的读是驱动里的两个锁存，没有这个队列	已经放进 scenarios.md
+raft_server.c	2055	E	把读请求放进库内队列并增加 msg_id。规格的读是驱动里的两个锁存，没有这个队列	已经放进 scenarios.md
+raft_server.c	2056	E	把读请求放进库内队列并增加 msg_id。规格的读是驱动里的两个锁存，没有这个队列	已经放进 scenarios.md
+raft_server.c	2057	E	把读请求放进库内队列并增加 msg_id。规格的读是驱动里的两个锁存，没有这个队列	已经放进 scenarios.md
+raft_server.c	2058	E	把读请求放进库内队列并增加 msg_id。规格的读是驱动里的两个锁存，没有这个队列	已经放进 scenarios.md
+raft_server.c	2059	E	把读请求放进库内队列并增加 msg_id。规格的读是驱动里的两个锁存，没有这个队列	已经放进 scenarios.md
+raft_server.c	2061	E	把读请求放进库内队列并增加 msg_id。规格的读是驱动里的两个锁存，没有这个队列	已经放进 scenarios.md
+raft_server.c	2062	E	把读请求放进库内队列并增加 msg_id。规格的读是驱动里的两个锁存，没有这个队列	已经放进 scenarios.md
+raft_server.c	2064	E	把读请求放进库内队列并增加 msg_id。规格的读是驱动里的两个锁存，没有这个队列	已经放进 scenarios.md
+raft_server.c	2067	E	弹出库内读队列。规格没有这个队列	已经放进 scenarios.md
+raft_server.c	2069	E	弹出库内读队列。规格没有这个队列	已经放进 scenarios.md
+raft_server.c	2071	E	弹出库内读队列。规格没有这个队列	已经放进 scenarios.md
+raft_server.c	2074	E	弹出库内读队列。规格没有这个队列	已经放进 scenarios.md
+raft_server.c	2075	E	弹出库内读队列。规格没有这个队列	已经放进 scenarios.md
+raft_server.c	2076	E	弹出库内读队列。规格没有这个队列	已经放进 scenarios.md
+raft_server.c	2077	E	弹出库内读队列。规格没有这个队列	已经放进 scenarios.md
+raft_server.c	2079	E	弹出库内读队列。规格没有这个队列	已经放进 scenarios.md
+raft_server.c	2080	E	弹出库内读队列。规格没有这个队列	已经放进 scenarios.md
+raft_server.c	2083	E	弹出库内读队列。规格没有这个队列	已经放进 scenarios.md
+raft_server.c	2084	E	弹出库内读队列。规格没有这个队列	已经放进 scenarios.md
+raft_server.c	2086	E	按 msg_id 多数派放行读请求。规格没有 msg_id，也没有这个队列	已经放进 scenarios.md
+raft_server.c	2088	E	按 msg_id 多数派放行读请求。规格没有 msg_id，也没有这个队列	已经放进 scenarios.md
+raft_server.c	2089	E	按 msg_id 多数派放行读请求。规格没有 msg_id，也没有这个队列	已经放进 scenarios.md
+raft_server.c	2093	E	按 msg_id 多数派放行读请求。规格没有 msg_id，也没有这个队列	已经放进 scenarios.md
+raft_server.c	2094	E	按 msg_id 多数派放行读请求。规格没有 msg_id，也没有这个队列	已经放进 scenarios.md
+raft_server.c	2095	E	按 msg_id 多数派放行读请求。规格没有 msg_id，也没有这个队列	已经放进 scenarios.md
+raft_server.c	2097	E	按 msg_id 多数派放行读请求。规格没有 msg_id，也没有这个队列	已经放进 scenarios.md
+raft_server.c	2105	E	按 msg_id 多数派放行读请求。规格没有 msg_id，也没有这个队列	已经放进 scenarios.md
+raft_server.c	2106	E	按 msg_id 多数派放行读请求。规格没有 msg_id，也没有这个队列	已经放进 scenarios.md
+raft_server.c	2109	E	按 msg_id 多数派放行读请求。规格没有 msg_id，也没有这个队列	已经放进 scenarios.md
+raft_server.c	2111	E	按 msg_id 多数派放行读请求。规格没有 msg_id，也没有这个队列	已经放进 scenarios.md
+raft_server.c	2112	E	按 msg_id 多数派放行读请求。规格没有 msg_id，也没有这个队列	已经放进 scenarios.md
+raft_server.c	2113	E	按 msg_id 多数派放行读请求。规格没有 msg_id，也没有这个队列	已经放进 scenarios.md
+raft_server.c	2115	E	按 msg_id 多数派放行读请求。规格没有 msg_id，也没有这个队列	已经放进 scenarios.md
+raft_server.c	2116	E	按 msg_id 多数派放行读请求。规格没有 msg_id，也没有这个队列	已经放进 scenarios.md
+raft_server.c	2117	E	按 msg_id 多数派放行读请求。规格没有 msg_id，也没有这个队列	已经放进 scenarios.md
+raft_server.c	2120	E	按 msg_id 多数派放行读请求。规格没有 msg_id，也没有这个队列	已经放进 scenarios.md
+raft_server.c	2124	E	领导权转移。规格没有这个动作，也不记录转移目标	已经放进 scenarios.md
+raft_server.c	2126	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	2127	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	2130	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	2131	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	2134	E	领导权转移。规格没有这个动作，也不记录转移目标	已经放进 scenarios.md
+raft_server.c	2136	E	领导权转移。规格没有这个动作，也不记录转移目标	已经放进 scenarios.md
+raft_server.c	2137	E	领导权转移。规格没有这个动作，也不记录转移目标	已经放进 scenarios.md
+raft_server.c	2141	E	领导权转移。规格没有这个动作，也不记录转移目标	已经放进 scenarios.md
+raft_server.c	2143	E	领导权转移。规格没有这个动作，也不记录转移目标	已经放进 scenarios.md
+raft_server.c	2144	E	领导权转移。规格没有这个动作，也不记录转移目标	已经放进 scenarios.md
+raft_server.c	2145	E	领导权转移。规格没有这个动作，也不记录转移目标	已经放进 scenarios.md
+raft_server.c	2147	E	领导权转移。规格没有这个动作，也不记录转移目标	已经放进 scenarios.md
+raft_server.c	2148	E	领导权转移。规格没有这个动作，也不记录转移目标	已经放进 scenarios.md
+raft_server.c	2149	E	领导权转移。规格没有这个动作，也不记录转移目标	已经放进 scenarios.md
+raft_server.c	2154	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	2155	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	2158	E	领导权转移。规格没有这个动作，也不记录转移目标	已经放进 scenarios.md
+raft_server.c	2159	E	领导权转移。规格没有这个动作，也不记录转移目标	已经放进 scenarios.md
+raft_server.c	2160	E	领导权转移。规格没有这个动作，也不记录转移目标	已经放进 scenarios.md
+raft_server.c	2162	E	领导权转移。规格没有这个动作，也不记录转移目标	已经放进 scenarios.md
+raft_server.c	2166	E	领导权转移。规格没有这个动作，也不记录转移目标	已经放进 scenarios.md
+raft_server.c	2167	E	领导权转移。规格没有这个动作，也不记录转移目标	已经放进 scenarios.md
+raft_server.c	2169	E	领导权转移。规格没有这个动作，也不记录转移目标	已经放进 scenarios.md
+raft_server.c	2174	E	收到 TimeoutNow 后立刻选举。规格没有这封消息	已经放进 scenarios.md
+raft_server.c	2176	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	2177	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	2188	E	收到 TimeoutNow 后立刻选举。规格没有这封消息	已经放进 scenarios.md
+raft_server.c	2203	E	结束领导权转移并清掉转移目标。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	2204	E	结束领导权转移并清掉转移目标。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	2206	E	结束领导权转移并清掉转移目标。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	2207	E	结束领导权转移并清掉转移目标。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	2211	E	结束领导权转移并清掉转移目标。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	2212	E	结束领导权转移并清掉转移目标。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	2215	E	结束领导权转移并清掉转移目标。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	2216	E	结束领导权转移并清掉转移目标。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	2217	E	结束领导权转移并清掉转移目标。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	2220	B	给 matchIndex 排序，自身不改写规格变量。AdvanceCommitIndex 用得到	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	2222	B	给 matchIndex 排序，自身不改写规格变量。AdvanceCommitIndex 用得到	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	2223	B	给 matchIndex 排序，自身不改写规格变量。AdvanceCommitIndex 用得到	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	2225	B	给 matchIndex 排序，自身不改写规格变量。AdvanceCommitIndex 用得到	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	2228	A	按投票节点 matchIndex 的中位数抬高 commitIndex，并且该下标的任期必须是当前任期。对应 AdvanceCommitIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2229	A	按投票节点 matchIndex 的中位数抬高 commitIndex，并且该下标的任期必须是当前任期。对应 AdvanceCommitIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2230	A	按投票节点 matchIndex 的中位数抬高 commitIndex，并且该下标的任期必须是当前任期。对应 AdvanceCommitIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2231	A	按投票节点 matchIndex 的中位数抬高 commitIndex，并且该下标的任期必须是当前任期。对应 AdvanceCommitIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2233	A	按投票节点 matchIndex 的中位数抬高 commitIndex，并且该下标的任期必须是当前任期。对应 AdvanceCommitIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2235	A	按投票节点 matchIndex 的中位数抬高 commitIndex，并且该下标的任期必须是当前任期。对应 AdvanceCommitIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2236	A	按投票节点 matchIndex 的中位数抬高 commitIndex，并且该下标的任期必须是当前任期。对应 AdvanceCommitIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2237	A	按投票节点 matchIndex 的中位数抬高 commitIndex，并且该下标的任期必须是当前任期。对应 AdvanceCommitIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2239	A	按投票节点 matchIndex 的中位数抬高 commitIndex，并且该下标的任期必须是当前任期。对应 AdvanceCommitIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2242	A	按投票节点 matchIndex 的中位数抬高 commitIndex，并且该下标的任期必须是当前任期。对应 AdvanceCommitIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2243	A	按投票节点 matchIndex 的中位数抬高 commitIndex，并且该下标的任期必须是当前任期。对应 AdvanceCommitIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2244	A	按投票节点 matchIndex 的中位数抬高 commitIndex，并且该下标的任期必须是当前任期。对应 AdvanceCommitIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2246	A	按投票节点 matchIndex 的中位数抬高 commitIndex，并且该下标的任期必须是当前任期。对应 AdvanceCommitIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2247	A	按投票节点 matchIndex 的中位数抬高 commitIndex，并且该下标的任期必须是当前任期。对应 AdvanceCommitIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2248	A	按投票节点 matchIndex 的中位数抬高 commitIndex，并且该下标的任期必须是当前任期。对应 AdvanceCommitIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2250	A	按投票节点 matchIndex 的中位数抬高 commitIndex，并且该下标的任期必须是当前任期。对应 AdvanceCommitIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2252	A	按投票节点 matchIndex 的中位数抬高 commitIndex，并且该下标的任期必须是当前任期。对应 AdvanceCommitIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2254	A	转调 raft_update_commit_idx。这是本轮为了把提交从 raft_flush 拆出来的入口，对应 AdvanceCommitIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2256	A	转调 raft_update_commit_idx。这是本轮为了把提交从 raft_flush 拆出来的入口，对应 AdvanceCommitIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2257	A	转调 raft_update_commit_idx。这是本轮为了把提交从 raft_flush 拆出来的入口，对应 AdvanceCommitIndex	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2259	E	维护 next_sync_index。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	2261	E	维护 next_sync_index。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	2263	E	维护 next_sync_index。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	2264	E	维护 next_sync_index。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	2267	E	维护 next_sync_index。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	2268	E	维护 next_sync_index。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	2271	A	领导者把自己的 matchIndex 写成刚追加的下标。specula_step 下在这里返回，提交和广播是后面的动作	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2273	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	2274	B	防御性返回。守卫可以用角色、是否正在改配置、是否正在装快照或转移领导权写出来	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server.c	2277	A	领导者把自己的 matchIndex 写成刚追加的下标。specula_step 下在这里返回，提交和广播是后面的动作	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2278	A	领导者把自己的 matchIndex 写成刚追加的下标。specula_step 下在这里返回，提交和广播是后面的动作	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2283	A	specula_step 下 raft_flush 在更新自己的 matchIndex 之后返回，不在同一步提交或广播	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2284	A	specula_step 下 raft_flush 在更新自己的 matchIndex 之后返回，不在同一步提交或广播	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2287	D	specula_step 为真时函数已经返回，这些是关闸门后的提交和广播	低优先级，不采样
+raft_server.c	2289	D	specula_step 为真时函数已经返回，这些是关闸门后的提交和广播	低优先级，不采样
+raft_server.c	2291	D	specula_step 为真时函数已经返回，这些是关闸门后的提交和广播	低优先级，不采样
+raft_server.c	2293	D	specula_step 为真时函数已经返回，这些是关闸门后的提交和广播	低优先级，不采样
+raft_server.c	2294	D	specula_step 为真时函数已经返回，这些是关闸门后的提交和广播	低优先级，不采样
+raft_server.c	2296	D	specula_step 为真时函数已经返回，这些是关闸门后的提交和广播	低优先级，不采样
+raft_server.c	2297	D	specula_step 为真时函数已经返回，这些是关闸门后的提交和广播	低优先级，不采样
+raft_server.c	2298	D	specula_step 为真时函数已经返回，这些是关闸门后的提交和广播	低优先级，不采样
+raft_server.c	2300	D	specula_step 为真时函数已经返回，这些是关闸门后的提交和广播	低优先级，不采样
+raft_server.c	2303	A	领导者把自己的 matchIndex 写成刚追加的下标。specula_step 下在这里返回，提交和广播是后面的动作	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2304	A	领导者把自己的 matchIndex 写成刚追加的下标。specula_step 下在这里返回，提交和广播是后面的动作	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server.c	2315	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2316	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2317	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2318	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2319	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2321	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2323	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2324	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2325	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2326	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2328	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2330	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2331	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2332	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2333	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2335	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2337	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2342	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2345	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2346	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2347	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2349	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2351	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2352	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2353	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2354	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2356	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2358	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2359	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2360	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2361	D	raft_config 里驱动没有设置的配置项	低优先级，不采样
+raft_server.c	2368	E	读 pending_operations。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	2370	E	读 pending_operations。规格没有这个字段	已经放进 scenarios.md
+raft_server.c	2373	E	按墙钟期限应用日志并处理读队列。规格没有这个调度	已经放进 scenarios.md
+raft_server.c	2378	E	按墙钟期限应用日志并处理读队列。规格没有这个调度	已经放进 scenarios.md
+raft_server.c	2379	E	按墙钟期限应用日志并处理读队列。规格没有这个调度	已经放进 scenarios.md
+raft_server.c	2381	E	按墙钟期限应用日志并处理读队列。规格没有这个调度	已经放进 scenarios.md
+raft_server.c	2382	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	2383	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	2386	E	按墙钟期限应用日志并处理读队列。规格没有这个调度	已经放进 scenarios.md
+raft_server.c	2388	E	按墙钟期限应用日志并处理读队列。规格没有这个调度	已经放进 scenarios.md
+raft_server.c	2391	E	按墙钟期限应用日志并处理读队列。规格没有这个调度	已经放进 scenarios.md
+raft_server.c	2393	E	按墙钟期限应用日志并处理读队列。规格没有这个调度	已经放进 scenarios.md
+raft_server.c	2396	D	从磁盘把配置条目再放到节点上。驱动的恢复直接重放条目并自己设投票权，不调用它	低优先级，不采样
+raft_server.c	2398	D	从磁盘把配置条目再放到节点上。驱动的恢复直接重放条目并自己设投票权，不调用它	低优先级，不采样
+raft_server.c	2399	C	回调、分配或接口误用的错误返回，写不出协议谓词	白名单，不采样
+raft_server.c	2402	D	从磁盘把配置条目再放到节点上。驱动的恢复直接重放条目并自己设投票权，不调用它	低优先级，不采样
+raft_server.c	2404	D	从磁盘把配置条目再放到节点上。驱动的恢复直接重放条目并自己设投票权，不调用它	低优先级，不采样
+raft_server.c	2405	D	从磁盘把配置条目再放到节点上。驱动的恢复直接重放条目并自己设投票权，不调用它	低优先级，不采样
+raft_server.c	2406	D	从磁盘把配置条目再放到节点上。驱动的恢复直接重放条目并自己设投票权，不调用它	低优先级，不采样
+raft_server.c	2407	D	从磁盘把配置条目再放到节点上。驱动的恢复直接重放条目并自己设投票权，不调用它	低优先级，不采样
+raft_server.c	2410	D	从磁盘把配置条目再放到节点上。驱动的恢复直接重放条目并自己设投票权，不调用它	低优先级，不采样
+raft_server.c	2411	D	从磁盘把配置条目再放到节点上。驱动的恢复直接重放条目并自己设投票权，不调用它	低优先级，不采样
+raft_server.c	2414	D	从磁盘把配置条目再放到节点上。驱动的恢复直接重放条目并自己设投票权，不调用它	低优先级，不采样
+raft_server.c	2415	D	从磁盘把配置条目再放到节点上。驱动的恢复直接重放条目并自己设投票权，不调用它	低优先级，不采样
+raft_server.c	2418	D	从磁盘把配置条目再放到节点上。驱动的恢复直接重放条目并自己设投票权，不调用它	低优先级，不采样
+raft_server.c	2419	D	从磁盘把配置条目再放到节点上。驱动的恢复直接重放条目并自己设投票权，不调用它	低优先级，不采样
+raft_node.c	46	C	分配节点失败，写不出协议谓词	白名单，不采样
+raft_node.c	58	D	释放节点。specula_step 下不在成员变更里删节点	低优先级，不采样
+raft_node.c	60	D	释放节点。specula_step 下不在成员变更里删节点	低优先级，不采样
+raft_node.c	61	D	释放节点。specula_step 下不在成员变更里删节点	低优先级，不采样
+raft_node.c	84	E	写 match msgid。规格没有 msg_id	已经放进 scenarios.md
+raft_node.c	86	E	写 match msgid。规格没有 msg_id	已经放进 scenarios.md
+raft_node.c	87	E	写 match msgid。规格没有 msg_id	已经放进 scenarios.md
+raft_node.c	89	E	读 match msgid。规格没有 msg_id	已经放进 scenarios.md
+raft_node.c	91	E	读 match msgid。规格没有 msg_id	已经放进 scenarios.md
+raft_node.c	94	E	写 next msgid。规格没有 msg_id	已经放进 scenarios.md
+raft_node.c	96	E	写 next msgid。规格没有 msg_id	已经放进 scenarios.md
+raft_node.c	97	E	写 next msgid。规格没有 msg_id	已经放进 scenarios.md
+raft_node.c	99	E	读 next msgid。规格没有 msg_id	已经放进 scenarios.md
+raft_node.c	101	E	读 next msgid。规格没有 msg_id	已经放进 scenarios.md
+raft_node.c	104	E	写见过的最大 msg_id。规格没有这个字段	已经放进 scenarios.md
+raft_node.c	106	E	写见过的最大 msg_id。规格没有这个字段	已经放进 scenarios.md
+raft_node.c	107	E	写见过的最大 msg_id。规格没有这个字段	已经放进 scenarios.md
+raft_node.c	109	E	写见过的最大 msg_id。规格没有这个字段	已经放进 scenarios.md
+raft_node.c	111	E	读见过的最大 msg_id。规格没有这个字段	已经放进 scenarios.md
+raft_node.c	113	E	读见过的最大 msg_id。规格没有这个字段	已经放进 scenarios.md
+raft_node.c	116	D	读节点用户数据的 getter。驱动不调用	低优先级，不采样
+raft_node.c	118	D	读节点用户数据的 getter。驱动不调用	低优先级，不采样
+raft_node.c	121	D	写节点用户数据。驱动在创建节点时用别的入口	低优先级，不采样
+raft_node.c	123	D	写节点用户数据。驱动在创建节点时用别的入口	低优先级，不采样
+raft_node.c	124	D	写节点用户数据。驱动在创建节点时用别的入口	低优先级，不采样
+raft_node.c	126	D	清节点标志。只在 specula_step 为假的装入快照里调用	低优先级，不采样
+raft_node.c	128	D	清节点标志。只在 specula_step 为假的装入快照里调用	低优先级，不采样
+raft_node.c	129	D	清节点标志。只在 specula_step 为假的装入快照里调用	低优先级，不采样
+raft_node.c	150	A	清掉节点的投票权。对应配置移除后的 EffectiveConfig	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_node.c	160	E	读 sufficient_logs 标志。规格没有这个字段	已经放进 scenarios.md
+raft_node.c	162	E	读 sufficient_logs 标志。规格没有这个字段	已经放进 scenarios.md
+raft_node.c	165	E	写 sufficient_logs 标志。规格没有这个字段	已经放进 scenarios.md
+raft_node.c	167	E	写 sufficient_logs 标志。规格没有这个字段	已经放进 scenarios.md
+raft_node.c	168	E	写 sufficient_logs 标志。规格没有这个字段	已经放进 scenarios.md
+raft_node.c	170	E	写 sufficient_logs 标志。规格没有这个字段	已经放进 scenarios.md
+raft_node.c	172	E	写 sufficient_logs 标志。规格没有这个字段	已经放进 scenarios.md
+raft_node.c	177	E	把节点标成 inactive。规格没有这个标志	已经放进 scenarios.md
+raft_node.c	183	D	读 active 标志的 getter。未覆盖的是没人调用这条 getter	低优先级，不采样
+raft_node.c	185	D	读 active 标志的 getter。未覆盖的是没人调用这条 getter	低优先级，不采样
+raft_node.c	188	E	写 voting_committed。规格没有这个标志	已经放进 scenarios.md
+raft_node.c	190	E	写 voting_committed。规格没有这个标志	已经放进 scenarios.md
+raft_node.c	191	E	写 voting_committed。规格没有这个标志	已经放进 scenarios.md
+raft_node.c	193	E	写 voting_committed。规格没有这个标志	已经放进 scenarios.md
+raft_node.c	195	E	写 voting_committed。规格没有这个标志	已经放进 scenarios.md
+raft_node.c	197	E	读 voting_committed。规格没有这个标志	已经放进 scenarios.md
+raft_node.c	199	E	读 voting_committed。规格没有这个标志	已经放进 scenarios.md
+raft_node.c	207	E	写 addition_committed。规格没有这个标志	已经放进 scenarios.md
+raft_node.c	209	E	写 addition_committed。规格没有这个标志	已经放进 scenarios.md
+raft_node.c	210	E	写 addition_committed。规格没有这个标志	已经放进 scenarios.md
+raft_node.c	212	E	写 addition_committed。规格没有这个标志	已经放进 scenarios.md
+raft_node.c	214	E	写 addition_committed。规格没有这个标志	已经放进 scenarios.md
+raft_node.c	216	E	读 addition_committed。规格没有这个标志	已经放进 scenarios.md
+raft_node.c	218	E	读 addition_committed。规格没有这个标志	已经放进 scenarios.md
+raft_node.c	221	E	读快照字节偏移。规格的快照只有下标和任期	已经放进 scenarios.md
+raft_node.c	223	E	读快照字节偏移。规格的快照只有下标和任期	已经放进 scenarios.md
+raft_server_properties.c	21	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	23	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	39	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	41	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	44	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	46	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	49	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	51	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	57	B	新任期不大于 currentTerm 就返回。守卫是 term <= currentTerm，不改写规格变量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server_properties.c	63	C	持久化新任期失败，写不出协议谓词	白名单，不采样
+raft_server_properties.c	73	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	75	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	83	A	把 commitIndex 写成新下标。AdvanceCommitIndex 和 AppendEntries 都会走到	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server_properties.c	85	B	断言新的 commitIndex 不小于旧值且不超过最后日志下标	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server_properties.c	86	B	断言新的 commitIndex 不小于旧值且不超过最后日志下标	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server_properties.c	87	A	把 commitIndex 写成新下标。AdvanceCommitIndex 和 AppendEntries 都会走到	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server_properties.c	88	A	把 commitIndex 写成新下标。AdvanceCommitIndex 和 AppendEntries 都会走到	已经放进 scenarios.md。现有动作对得上，但轨迹在 BecomeLeader 的 nextIndex 或投票响应的 currentTerm 停住
+raft_server_properties.c	90	D	单独设置 lastApplied 的 setter。驱动不调用，应用路径写的是字段	低优先级，不采样
+raft_server_properties.c	92	D	单独设置 lastApplied 的 setter。驱动不调用，应用路径写的是字段	低优先级，不采样
+raft_server_properties.c	93	D	单独设置 lastApplied 的 setter。驱动不调用，应用路径写的是字段	低优先级，不采样
+raft_server_properties.c	95	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	97	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	100	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	102	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	105	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	107	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	118	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	120	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	123	D	把角色格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	125	D	把角色格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	126	D	把角色格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	127	D	把角色格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	128	D	把角色格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	129	D	把角色格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	130	D	把角色格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	131	D	把角色格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	132	D	把角色格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	133	D	把角色格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	134	D	把角色格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	135	D	把角色格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	139	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	141	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	142	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	143	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	144	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	145	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	146	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	147	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	148	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	149	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	150	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	151	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	152	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	153	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	154	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	155	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	156	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	157	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	158	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	159	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	160	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	161	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	162	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	163	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	164	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	165	D	把错误码格式化成字符串。驱动不调用	低优先级，不采样
+raft_server_properties.c	173	B	按 id 找到节点就返回。守卫是 id 属于当前节点集，不改写规格变量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server_properties.c	180	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	182	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	185	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	187	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	190	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	192	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	195	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	197	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	200	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	202	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	205	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	207	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	233	B	最后一条日志的任期。守卫是最后下标大于 0，并且要么等于快照下标，要么日志里有这条。不改写规格变量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server_properties.c	234	B	最后一条日志的任期。守卫是最后下标大于 0，并且要么等于快照下标，要么日志里有这条。不改写规格变量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server_properties.c	237	B	最后一条日志的任期。守卫是最后下标大于 0，并且要么等于快照下标，要么日志里有这条。不改写规格变量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server_properties.c	238	B	最后一条日志的任期。守卫是最后下标大于 0，并且要么等于快照下标，要么日志里有这条。不改写规格变量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server_properties.c	239	B	最后一条日志的任期。守卫是最后下标大于 0，并且要么等于快照下标，要么日志里有这条。不改写规格变量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server_properties.c	240	B	最后一条日志的任期。守卫是最后下标大于 0，并且要么等于快照下标，要么日志里有这条。不改写规格变量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server_properties.c	241	B	最后一条日志的任期。守卫是最后下标大于 0，并且要么等于快照下标，要么日志里有这条。不改写规格变量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server_properties.c	244	B	最后一条日志的任期。守卫是最后下标大于 0，并且要么等于快照下标，要么日志里有这条。不改写规格变量	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server_properties.c	247	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	249	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	252	B	快照进行中是否还允许应用。不改写规格变量。守卫是 snapshot_in_progress	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server_properties.c	254	B	快照进行中是否还允许应用。不改写规格变量。守卫是 snapshot_in_progress	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server_properties.c	255	B	快照进行中是否还允许应用。不改写规格变量。守卫是 snapshot_in_progress	交给 TLC 找使守卫为真的状态。本轮轨迹在更早的规格差上停住。断言把进程打死时按 crash 记，不改集合
+raft_server_properties.c	258	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	260	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	261	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	263	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	266	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	268	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	271	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	273	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	276	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	278	D	getter。驱动直接读字段，不调用这个函数	低优先级，不采样
+raft_server_properties.c	281	E	读 msg_id。规格没有这个字段	已经放进 scenarios.md
+raft_server_properties.c	283	E	读 msg_id。规格没有这个字段	已经放进 scenarios.md
+raft_server_properties.c	286	E	读领导权转移目标。规格没有这个字段	已经放进 scenarios.md
+raft_server_properties.c	288	E	读领导权转移目标。规格没有这个字段	已经放进 scenarios.md
