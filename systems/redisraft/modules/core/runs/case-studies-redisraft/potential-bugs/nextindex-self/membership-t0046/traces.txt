@@ -1,0 +1,4841 @@
+# [1] Init
+init 3
+execute n1 net connectall
+execute n1 raft init
+execute n2 net connectall
+execute n2 raft init
+execute n3 net connectall
+execute n3 raft init
+wait-init 3
+loop execute n1 net isallconnected
+loop execute n2 net isallconnected
+loop execute n3 net isallconnected
+execute n1 get currentTerm
+# variable currentTerm s1 0
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 Nil
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 1
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 0
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 Nil
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 0
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 Nil
+compare variable
+execute n3 get log
+# variable log s3 []
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 1
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 0
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 0
+compare net-len
+status
+# [2] Crash s1
+execute n1 raft crash
+execute n1 get currentTerm
+# variable currentTerm s1 0
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 Nil
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 1
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 0
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 Nil
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 0
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 Nil
+compare variable
+execute n3 get log
+# variable log s3 []
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 1
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 0
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 0
+compare net-len
+status
+# [3] Timeout s3
+intercept n3 inc_time_ms 2000
+execute n3 raft timeout
+execute n1 get currentTerm
+# variable currentTerm s1 0
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 Nil
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 1
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 0
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 Nil
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 1
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 []
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 3
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 0
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 2
+compare net-len
+status
+# [4] Timeout s3
+intercept n3 inc_time_ms 2000
+execute n3 raft timeout
+execute n1 get currentTerm
+# variable currentTerm s1 0
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 Nil
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 1
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 0
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 Nil
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 2
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 []
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 3
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 0
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 4
+compare net-len
+status
+# [5] Timeout s3
+intercept n3 inc_time_ms 2000
+execute n3 raft timeout
+execute n1 get currentTerm
+# variable currentTerm s1 0
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 Nil
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 1
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 0
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 Nil
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 []
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 3
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 0
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 6
+compare net-len
+status
+# [6] Timeout s1
+intercept n1 inc_time_ms 2000
+execute n1 raft timeout
+execute n1 get currentTerm
+# variable currentTerm s1 1
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n1
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 3
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 0
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 Nil
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 []
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 3
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 0
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 8
+compare net-len
+status
+# [7] Timeout s1
+intercept n1 inc_time_ms 2000
+execute n1 raft timeout
+execute n1 get currentTerm
+# variable currentTerm s1 2
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n1
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 3
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 0
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 Nil
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 []
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 3
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 0
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 10
+compare net-len
+status
+# [8] DropStaleMessage s1 s3 10
+drop-unordered n1 n3 10
+execute n1 get currentTerm
+# variable currentTerm s1 2
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n1
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 3
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 0
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 Nil
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 []
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 3
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 0
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 9
+compare net-len
+status
+# [9] LoseMessage s1 s2 9
+drop-unordered n1 n2 9
+execute n1 get currentTerm
+# variable currentTerm s1 2
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n1
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 3
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 0
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 Nil
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 []
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 3
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 0
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 8
+compare net-len
+status
+# [10] LoseMessage s3 s2 4
+drop-unordered n3 n2 4
+execute n1 get currentTerm
+# variable currentTerm s1 2
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n1
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 3
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 0
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 Nil
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 []
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 3
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 0
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 7
+compare net-len
+status
+# [11] LoseMessage s1 s2 7
+drop-unordered n1 n2 7
+execute n1 get currentTerm
+# variable currentTerm s1 2
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n1
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 3
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 0
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 Nil
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 []
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 3
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 0
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 6
+compare net-len
+status
+# [12] HandleRequestVoteRequest s2 s3 2
+deliver-unordered n3 n2 2
+loop intercept n2 check_has_recv_queue n3
+execute n2 raft recvfrom n3
+execute n1 get currentTerm
+# variable currentTerm s1 2
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n1
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 3
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 1
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 n3
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 []
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 3
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 0
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 6
+compare net-len
+status
+# [13] HandleRequestVoteRequest s1 s3 3
+deliver-unordered n3 n1 3
+loop intercept n1 check_has_recv_queue n3
+execute n1 raft recvfrom n3
+execute n1 get currentTerm
+# variable currentTerm s1 2
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n1
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 3
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 1
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 n3
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 []
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 3
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 0
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 6
+compare net-len
+status
+# [14] HandleRequestVoteRequest s2 s3 6
+deliver-unordered n3 n2 6
+loop intercept n2 check_has_recv_queue n3
+execute n2 raft recvfrom n3
+execute n1 get currentTerm
+# variable currentTerm s1 2
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n1
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 3
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 3
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 n3
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 []
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 3
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 0
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 6
+compare net-len
+status
+# [15] DropStaleMessage s2 s3 11
+drop-unordered n2 n3 11
+execute n1 get currentTerm
+# variable currentTerm s1 2
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n1
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 3
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 3
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 n3
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 []
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 3
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 0
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 5
+compare net-len
+status
+# [16] HandleRequestVoteResponse s3 s2 13
+deliver-unordered n2 n3 13
+loop intercept n3 check_has_recv_queue n2
+execute n3 raft recvfrom n2
+execute n1 get currentTerm
+# variable currentTerm s1 2
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n1
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 3
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 3
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 n3
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 []
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 3
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n2,n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 0
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 4
+compare net-len
+status
+# [17] BecomeLeader s3
+execute n3 raft become-leader
+execute n1 get currentTerm
+# variable currentTerm s1 2
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n1
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 3
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 3
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 n3
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 [(3, Noop, {})]
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 4
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 2}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 1}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n2,n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 0
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 4
+compare net-len
+status
+# [18] ClientRequest s3
+execute n3 raft cli
+execute n1 get currentTerm
+# variable currentTerm s1 2
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n1
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 3
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 3
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 n3
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 [(3, Noop, {}), (3, Value, {})]
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 4
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 2}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 2}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n2,n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 0
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 4
+compare net-len
+status
+# [19] ProposeRemoveServer s3 s1
+execute n3 raft remove n1
+execute n1 get currentTerm
+# variable currentTerm s1 2
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n1
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 3
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 3
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 n3
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 [(3, Noop, {}), (3, Value, {}), (3, Config, {n2,n3})]
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 4
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 2}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 3}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n2,n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 3
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 4
+compare net-len
+status
+# [20] DropStaleMessage s3 s1 1
+drop-unordered n3 n1 1
+execute n1 get currentTerm
+# variable currentTerm s1 2
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n1
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 3
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 3
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 n3
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 [(3, Noop, {}), (3, Value, {}), (3, Config, {n2,n3})]
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 4
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 2}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 3}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n2,n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 3
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 3
+compare net-len
+status
+# [21] HandleRequestVoteRequest s1 s3 5
+deliver-unordered n3 n1 5
+loop intercept n1 check_has_recv_queue n3
+execute n1 raft recvfrom n3
+execute n1 get currentTerm
+# variable currentTerm s1 3
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n3
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 1
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 3
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 n3
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 [(3, Noop, {}), (3, Value, {}), (3, Config, {n2,n3})]
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 4
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 2}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 3}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n2,n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 3
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 3
+compare net-len
+status
+# [22] ClientRequest s3
+execute n3 raft cli
+execute n1 get currentTerm
+# variable currentTerm s1 3
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n3
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 1
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 3
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 n3
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 [(3, Noop, {}), (3, Value, {}), (3, Config, {n2,n3}), (3, Value, {})]
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 4
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 2}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 4}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n2,n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 3
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 3
+compare net-len
+status
+# [23] HandleRequestVoteRequest s3 s1 8
+deliver-unordered n1 n3 8
+loop intercept n3 check_has_recv_queue n1
+execute n3 raft recvfrom n1
+execute n1 get currentTerm
+# variable currentTerm s1 3
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n3
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 1
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 3
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 n3
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 [(3, Noop, {}), (3, Value, {}), (3, Config, {n2,n3}), (3, Value, {})]
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 4
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 2}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 4}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n2,n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 3
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 3
+compare net-len
+status
+# [24] AppendEntries s3 s2
+execute n3 raft send n2
+execute n1 get currentTerm
+# variable currentTerm s1 3
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n3
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 1
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 3
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 n3
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 [(3, Noop, {}), (3, Value, {}), (3, Config, {n2,n3}), (3, Value, {})]
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 4
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 2}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 4}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n2,n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 3
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 4
+compare net-len
+status
+# [25] AppendEntries s3 s2
+execute n3 raft send n2
+execute n1 get currentTerm
+# variable currentTerm s1 3
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n3
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 1
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 3
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 n3
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 [(3, Noop, {}), (3, Value, {}), (3, Config, {n2,n3}), (3, Value, {})]
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 4
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 2}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 4}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n2,n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 3
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 5
+compare net-len
+status
+# [26] AppendEntries s3 s2
+execute n3 raft send n2
+execute n1 get currentTerm
+# variable currentTerm s1 3
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n3
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 1
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 3
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 n3
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 [(3, Noop, {}), (3, Value, {}), (3, Config, {n2,n3}), (3, Value, {})]
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 4
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 2}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 4}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n2,n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 3
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 6
+compare net-len
+status
+# [27] HandleRequestVoteResponse s1 s3 15
+deliver-unordered n3 n1 15
+loop intercept n1 check_has_recv_queue n3
+execute n1 raft recvfrom n3
+execute n1 get currentTerm
+# variable currentTerm s1 3
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n3
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 1
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 3
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 n3
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 [(3, Noop, {}), (3, Value, {}), (3, Config, {n2,n3}), (3, Value, {})]
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 4
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 2}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 4}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n2,n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 3
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 5
+compare net-len
+status
+# [28] AppendEntries s3 s2
+execute n3 raft send n2
+execute n1 get currentTerm
+# variable currentTerm s1 3
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n3
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 1
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 3
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 n3
+compare variable
+execute n2 get log
+# variable log s2 []
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 0
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 [(3, Noop, {}), (3, Value, {}), (3, Config, {n2,n3}), (3, Value, {})]
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 4
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 2}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 4}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n2,n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 3
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 6
+compare net-len
+status
+# [29] HandleAppendEntriesRequest s2 s3 16
+deliver-unordered n3 n2 16
+loop intercept n2 check_has_recv_queue n3
+execute n2 raft recvfrom n3
+execute n1 get currentTerm
+# variable currentTerm s1 3
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n3
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 1
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 3
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 n3
+compare variable
+execute n2 get log
+# variable log s2 [(3, Noop, {}), (3, Value, {}), (3, Config, {n2,n3}), (3, Value, {})]
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 3
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 [(3, Noop, {}), (3, Value, {}), (3, Config, {n2,n3}), (3, Value, {})]
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 4
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 2}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 4}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n2,n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 3
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 6
+compare net-len
+status
+# [30] AppendEntries s3 s2
+execute n3 raft send n2
+execute n1 get currentTerm
+# variable currentTerm s1 3
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n3
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 1
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 3
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 n3
+compare variable
+execute n2 get log
+# variable log s2 [(3, Noop, {}), (3, Value, {}), (3, Config, {n2,n3}), (3, Value, {})]
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 3
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 [(3, Noop, {}), (3, Value, {}), (3, Config, {n2,n3}), (3, Value, {})]
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 4
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 2}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 4}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n2,n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 3
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 7
+compare net-len
+status
+# [31] HandleRequestVoteResponse s3 s1 12
+deliver-unordered n1 n3 12
+loop intercept n3 check_has_recv_queue n1
+execute n3 raft recvfrom n1
+execute n1 get currentTerm
+# variable currentTerm s1 3
+compare variable
+execute n1 get votedFor
+# variable votedFor s1 n3
+compare variable
+execute n1 get log
+# variable log s1 []
+compare variable
+execute n1 get logOffset
+# variable logOffset s1 0
+compare variable
+execute n1 get state
+# variable state s1 1
+compare variable
+execute n1 get commitIndex
+# variable commitIndex s1 0
+compare variable
+execute n1 get nextIndex
+# variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n1 get matchIndex
+# variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n1 get votesGranted
+# variable votesGranted s1 {n1}
+compare variable
+execute n1 get snapshotLastIdx
+# variable snapshotLastIdx s1 0
+compare variable
+execute n1 get snapshotLastTerm
+# variable snapshotLastTerm s1 0
+compare variable
+execute n1 get loadingSnapshot
+# variable loadingSnapshot s1 FALSE
+compare variable
+execute n1 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s1 0
+compare variable
+execute n1 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s1 0
+compare variable
+execute n1 get clusterConfig
+# variable clusterConfig s1 {n1,n2,n3}
+compare variable
+execute n1 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s1 0
+compare variable
+execute n2 get currentTerm
+# variable currentTerm s2 3
+compare variable
+execute n2 get votedFor
+# variable votedFor s2 n3
+compare variable
+execute n2 get log
+# variable log s2 [(3, Noop, {}), (3, Value, {}), (3, Config, {n2,n3}), (3, Value, {})]
+compare variable
+execute n2 get logOffset
+# variable logOffset s2 0
+compare variable
+execute n2 get state
+# variable state s2 1
+compare variable
+execute n2 get commitIndex
+# variable commitIndex s2 0
+compare variable
+execute n2 get nextIndex
+# variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}
+compare variable
+execute n2 get matchIndex
+# variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+compare variable
+execute n2 get votesGranted
+# variable votesGranted s2 {}
+compare variable
+execute n2 get snapshotLastIdx
+# variable snapshotLastIdx s2 0
+compare variable
+execute n2 get snapshotLastTerm
+# variable snapshotLastTerm s2 0
+compare variable
+execute n2 get loadingSnapshot
+# variable loadingSnapshot s2 FALSE
+compare variable
+execute n2 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s2 0
+compare variable
+execute n2 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s2 0
+compare variable
+execute n2 get clusterConfig
+# variable clusterConfig s2 {n1,n2,n3}
+compare variable
+execute n2 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s2 3
+compare variable
+execute n3 get currentTerm
+# variable currentTerm s3 3
+compare variable
+execute n3 get votedFor
+# variable votedFor s3 n3
+compare variable
+execute n3 get log
+# variable log s3 [(3, Noop, {}), (3, Value, {}), (3, Config, {n2,n3}), (3, Value, {})]
+compare variable
+execute n3 get logOffset
+# variable logOffset s3 0
+compare variable
+execute n3 get state
+# variable state s3 4
+compare variable
+execute n3 get commitIndex
+# variable commitIndex s3 0
+compare variable
+execute n3 get nextIndex
+# variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 2}
+compare variable
+execute n3 get matchIndex
+# variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 4}
+compare variable
+execute n3 get votesGranted
+# variable votesGranted s3 {n2,n3}
+compare variable
+execute n3 get snapshotLastIdx
+# variable snapshotLastIdx s3 0
+compare variable
+execute n3 get snapshotLastTerm
+# variable snapshotLastTerm s3 0
+compare variable
+execute n3 get loadingSnapshot
+# variable loadingSnapshot s3 FALSE
+compare variable
+execute n3 get pendingSnapshotIdx
+# variable pendingSnapshotIdx s3 0
+compare variable
+execute n3 get pendingSnapshotTerm
+# variable pendingSnapshotTerm s3 0
+compare variable
+execute n3 get clusterConfig
+# variable clusterConfig s3 {n1,n2,n3}
+compare variable
+execute n3 get votingCfgChangeIdx
+# variable votingCfgChangeIdx s3 3
+compare variable
+execute n1 get staleReadDetected
+# variable staleReadDetected s1 FALSE
+compare variable
+execute n1 get noopReadDetected
+# variable noopReadDetected s1 FALSE
+compare variable
+# net-len 6
+compare net-len
+status
+execute n1 raft statemachine
+execute n2 raft statemachine
+execute n3 raft statemachine

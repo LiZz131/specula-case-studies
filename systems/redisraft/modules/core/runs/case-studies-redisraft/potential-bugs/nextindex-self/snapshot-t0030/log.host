@@ -1,0 +1,1794 @@
+TRACE nextIndex node=n3 code={'n1': 1, 'n2': 1, 'n3': 1} model={'n1': 1, 'n2': 1, 'n3': 1}          
+[INFO] Read cmd (line 751): execute n3 get matchIndex                           
+[DETL] Received data from node "n3": {'n1': 0, 'n2': 0, 'n3': 0}                
+[INFO] Comment (line 752): # variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 0} 
+[INFO] Read cmd (line 753): compare variable                                    
+TRACE matchIndex node=n3 code={'n1': 0, 'n2': 0, 'n3': 0} model={'n1': 0, 'n2': 0, 'n3': 0}         
+[INFO] Read cmd (line 754): execute n3 get votesGranted                         
+[DETL] Received data from node "n3": {} 
+[INFO] Comment (line 755): # variable votesGranted s3 {}                        
+[INFO] Read cmd (line 756): compare variable                                    
+TRACE votesGranted node=n3 code={} model={}                                     
+[INFO] Read cmd (line 757): execute n3 get snapshotLastIdx                      
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 758): # variable snapshotLastIdx s3 0                      
+[INFO] Read cmd (line 759): compare variable                                    
+TRACE snapshotLastIdx node=n3 code=0 model=0                                    
+[INFO] Read cmd (line 760): execute n3 get snapshotLastTerm                     
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 761): # variable snapshotLastTerm s3 0                     
+[INFO] Read cmd (line 762): compare variable                                    
+TRACE snapshotLastTerm node=n3 code=0 model=0                                   
+[INFO] Read cmd (line 763): execute n3 get loadingSnapshot                      
+[DETL] Received data from node "n3": FALSE                                      
+[INFO] Comment (line 764): # variable loadingSnapshot s3 FALSE                  
+[INFO] Read cmd (line 765): compare variable                                    
+TRACE loadingSnapshot node=n3 code=FALSE model=FALSE                            
+[INFO] Read cmd (line 766): execute n3 get pendingSnapshotIdx                   
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 767): # variable pendingSnapshotIdx s3 0                   
+[INFO] Read cmd (line 768): compare variable                                    
+TRACE pendingSnapshotIdx node=n3 code=0 model=0                                 
+[INFO] Read cmd (line 769): execute n3 get pendingSnapshotTerm                  
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 770): # variable pendingSnapshotTerm s3 0                  
+[INFO] Read cmd (line 771): compare variable                                    
+TRACE pendingSnapshotTerm node=n3 code=0 model=0                                
+[INFO] Read cmd (line 772): execute n3 get clusterConfig                        
+[DETL] Received data from node "n3": {n1,n2,n3}                                 
+[INFO] Comment (line 773): # variable clusterConfig s3 {n1,n2,n3}               
+[INFO] Read cmd (line 774): compare variable                                    
+TRACE clusterConfig node=n3 code={n1,n2,n3} model={n1,n2,n3}                    
+[INFO] Read cmd (line 775): execute n3 get votingCfgChangeIdx                   
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 776): # variable votingCfgChangeIdx s3 0                   
+[INFO] Read cmd (line 777): compare variable                                    
+TRACE votingCfgChangeIdx node=n3 code=0 model=0                                 
+[INFO] Read cmd (line 778): execute n1 get staleReadDetected                    
+[DETL] Received data from node "n1": FALSE                                      
+[INFO] Comment (line 779): # variable staleReadDetected s1 FALSE                
+[INFO] Read cmd (line 780): compare variable                                    
+TRACE staleReadDetected node=n1 code=FALSE model=FALSE                          
+[INFO] Read cmd (line 781): execute n1 get noopReadDetected                     
+[DETL] Received data from node "n1": FALSE                                      
+[INFO] Comment (line 782): # variable noopReadDetected s1 FALSE                 
+[INFO] Read cmd (line 783): compare variable                                    
+TRACE noopReadDetected node=n1 code=FALSE model=FALSE                           
+[INFO] Comment (line 784): # net-len 1  
+[INFO] Read cmd (line 785): compare net-len                                     
+[INFO] Read cmd (line 786): status      
+FD: 5, n1 (10.255.255.101) <-> router (10.255.255.100:10100)                    
+FD: 7, n2 (10.255.255.102) <-> router (10.255.255.100:10100)                    
+FD: 9, n3 (10.255.255.103) <-> router (10.255.255.100:10100)                    
+FD: 11, n1 (10.255.255.101) -> n2 (10.255.255.102), connnected, msgs: 0         
+FD: 12, n2 (10.255.255.102) -> n1 (10.255.255.101), connnected, msgs: 0         
+FD: 13, n1 (10.255.255.101) -> n3 (10.255.255.103), connnected, msgs: 0         
+FD: 14, n3 (10.255.255.103) -> n1 (10.255.255.101), connnected, msgs: 0         
+FD: 15, n2 (10.255.255.102) -> n3 (10.255.255.103), connnected, msgs: 1         
+FD: 16, n3 (10.255.255.103) -> n2 (10.255.255.102), connnected, msgs: 0         
+msgs n1: n2(0) n3(0)                    
+msgs n2: n1(0) n3(1)                    
+msgs n3: n1(0) n2(0)                    
+[INFO] Comment (line 787): # [6] HandleRequestVoteRequest s3 s2 2               
+[DETL] Send cmd (print [6] HandleRequestVoteRequest s3 s2 2) to all             
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 788): deliver-unordered n2 n3 2                           
+[DETL] Deliver msg n2 (10.255.255.102) -> n3 (10.255.255.103) fd: 16 size: 48   
+[INFO] Read cmd (line 789): loop intercept n3 check_has_recv_queue n2           
+[INFO] Read cmd (line 789): intercept n3 check_has_recv_queue n2                
+[DETL] Send cmd to n3 (10.255.255.103): check_has_recv_queue n2                 
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 790): execute n3 raft recvfrom n2                         
+[DETL] Capture seq 3 bytes 40           
+[DETL] Enqueue in_fd: 16, out_fd: 15, n3 (10.255.255.103) -> n2 (10.255.255.102) size: 40           
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 791): execute n1 get currentTerm                          
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 792): # variable currentTerm s1 0                          
+[INFO] Read cmd (line 793): compare variable                                    
+TRACE currentTerm node=n1 code=0 model=0                                        
+[INFO] Read cmd (line 794): execute n1 get votedFor                             
+[DETL] Received data from node "n1": Nil                                        
+[INFO] Comment (line 795): # variable votedFor s1 Nil                           
+[INFO] Read cmd (line 796): compare variable                                    
+TRACE votedFor node=n1 code=Nil model=Nil                                       
+[INFO] Read cmd (line 797): execute n1 get log                                  
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 798): # variable log s1 []                                 
+[INFO] Read cmd (line 799): compare variable                                    
+TRACE log node=n1 code=[] model=[]      
+[INFO] Read cmd (line 800): execute n1 get logOffset                            
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 801): # variable logOffset s1 0                            
+[INFO] Read cmd (line 802): compare variable                                    
+TRACE logOffset node=n1 code=0 model=0  
+[INFO] Read cmd (line 803): execute n1 get state                                
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 804): # variable state s1 1                                
+[INFO] Read cmd (line 805): compare variable                                    
+TRACE state node=n1 code=1 model=1      
+[INFO] Read cmd (line 806): execute n1 get commitIndex                          
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 807): # variable commitIndex s1 0                          
+[INFO] Read cmd (line 808): compare variable                                    
+TRACE commitIndex node=n1 code=0 model=0                                        
+[INFO] Read cmd (line 809): execute n1 get nextIndex                            
+[DETL] Received data from node "n1": {'n1': 1, 'n2': 1, 'n3': 1}                
+[INFO] Comment (line 810): # variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}  
+[INFO] Read cmd (line 811): compare variable                                    
+TRACE nextIndex node=n1 code={'n1': 1, 'n2': 1, 'n3': 1} model={'n1': 1, 'n2': 1, 'n3': 1}          
+[INFO] Read cmd (line 812): execute n1 get matchIndex                           
+[DETL] Received data from node "n1": {'n1': 0, 'n2': 0, 'n3': 0}                
+[INFO] Comment (line 813): # variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0} 
+[INFO] Read cmd (line 814): compare variable                                    
+TRACE matchIndex node=n1 code={'n1': 0, 'n2': 0, 'n3': 0} model={'n1': 0, 'n2': 0, 'n3': 0}         
+[INFO] Read cmd (line 815): execute n1 get votesGranted                         
+[DETL] Received data from node "n1": {} 
+[INFO] Comment (line 816): # variable votesGranted s1 {}                        
+[INFO] Read cmd (line 817): compare variable                                    
+TRACE votesGranted node=n1 code={} model={}                                     
+[INFO] Read cmd (line 818): execute n1 get snapshotLastIdx                      
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 819): # variable snapshotLastIdx s1 0                      
+[INFO] Read cmd (line 820): compare variable                                    
+TRACE snapshotLastIdx node=n1 code=0 model=0                                    
+[INFO] Read cmd (line 821): execute n1 get snapshotLastTerm                     
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 822): # variable snapshotLastTerm s1 0                     
+[INFO] Read cmd (line 823): compare variable                                    
+TRACE snapshotLastTerm node=n1 code=0 model=0                                   
+[INFO] Read cmd (line 824): execute n1 get loadingSnapshot                      
+[DETL] Received data from node "n1": FALSE                                      
+[INFO] Comment (line 825): # variable loadingSnapshot s1 FALSE                  
+[INFO] Read cmd (line 826): compare variable                                    
+TRACE loadingSnapshot node=n1 code=FALSE model=FALSE                            
+[INFO] Read cmd (line 827): execute n1 get pendingSnapshotIdx                   
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 828): # variable pendingSnapshotIdx s1 0                   
+[INFO] Read cmd (line 829): compare variable                                    
+TRACE pendingSnapshotIdx node=n1 code=0 model=0                                 
+[INFO] Read cmd (line 830): execute n1 get pendingSnapshotTerm                  
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 831): # variable pendingSnapshotTerm s1 0                  
+[INFO] Read cmd (line 832): compare variable                                    
+TRACE pendingSnapshotTerm node=n1 code=0 model=0                                
+[INFO] Read cmd (line 833): execute n1 get clusterConfig                        
+[DETL] Received data from node "n1": {n1,n2,n3}                                 
+[INFO] Comment (line 834): # variable clusterConfig s1 {n1,n2,n3}               
+[INFO] Read cmd (line 835): compare variable                                    
+TRACE clusterConfig node=n1 code={n1,n2,n3} model={n1,n2,n3}                    
+[INFO] Read cmd (line 836): execute n1 get votingCfgChangeIdx                   
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 837): # variable votingCfgChangeIdx s1 0                   
+[INFO] Read cmd (line 838): compare variable                                    
+TRACE votingCfgChangeIdx node=n1 code=0 model=0                                 
+[INFO] Read cmd (line 839): execute n2 get currentTerm                          
+[DETL] Received data from node "n2": 1  
+[INFO] Comment (line 840): # variable currentTerm s2 1                          
+[INFO] Read cmd (line 841): compare variable                                    
+TRACE currentTerm node=n2 code=1 model=1                                        
+[INFO] Read cmd (line 842): execute n2 get votedFor                             
+[DETL] Received data from node "n2": n2 
+[INFO] Comment (line 843): # variable votedFor s2 n2                            
+[INFO] Read cmd (line 844): compare variable                                    
+TRACE votedFor node=n2 code=n2 model=n2 
+[INFO] Read cmd (line 845): execute n2 get log                                  
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 846): # variable log s2 []                                 
+[INFO] Read cmd (line 847): compare variable                                    
+TRACE log node=n2 code=[] model=[]      
+[INFO] Read cmd (line 848): execute n2 get logOffset                            
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 849): # variable logOffset s2 0                            
+[INFO] Read cmd (line 850): compare variable                                    
+TRACE logOffset node=n2 code=0 model=0  
+[INFO] Read cmd (line 851): execute n2 get state                                
+[DETL] Received data from node "n2": 3  
+[INFO] Comment (line 852): # variable state s2 3                                
+[INFO] Read cmd (line 853): compare variable                                    
+TRACE state node=n2 code=3 model=3      
+[INFO] Read cmd (line 854): execute n2 get commitIndex                          
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 855): # variable commitIndex s2 0                          
+[INFO] Read cmd (line 856): compare variable                                    
+TRACE commitIndex node=n2 code=0 model=0                                        
+[INFO] Read cmd (line 857): execute n2 get nextIndex                            
+[DETL] Received data from node "n2": {'n1': 1, 'n2': 1, 'n3': 1}                
+[INFO] Comment (line 858): # variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1}  
+[INFO] Read cmd (line 859): compare variable                                    
+TRACE nextIndex node=n2 code={'n1': 1, 'n2': 1, 'n3': 1} model={'n1': 1, 'n2': 1, 'n3': 1}          
+[INFO] Read cmd (line 860): execute n2 get matchIndex                           
+[DETL] Received data from node "n2": {'n1': 0, 'n2': 0, 'n3': 0}                
+[INFO] Comment (line 861): # variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0} 
+[INFO] Read cmd (line 862): compare variable                                    
+TRACE matchIndex node=n2 code={'n1': 0, 'n2': 0, 'n3': 0} model={'n1': 0, 'n2': 0, 'n3': 0}         
+[INFO] Read cmd (line 863): execute n2 get votesGranted                         
+[DETL] Received data from node "n2": {n2}                                       
+[INFO] Comment (line 864): # variable votesGranted s2 {n2}                      
+[INFO] Read cmd (line 865): compare variable                                    
+TRACE votesGranted node=n2 code={n2} model={n2}                                 
+[INFO] Read cmd (line 866): execute n2 get snapshotLastIdx                      
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 867): # variable snapshotLastIdx s2 0                      
+[INFO] Read cmd (line 868): compare variable                                    
+TRACE snapshotLastIdx node=n2 code=0 model=0                                    
+[INFO] Read cmd (line 869): execute n2 get snapshotLastTerm                     
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 870): # variable snapshotLastTerm s2 0                     
+[INFO] Read cmd (line 871): compare variable                                    
+TRACE snapshotLastTerm node=n2 code=0 model=0                                   
+[INFO] Read cmd (line 872): execute n2 get loadingSnapshot                      
+[DETL] Received data from node "n2": FALSE                                      
+[INFO] Comment (line 873): # variable loadingSnapshot s2 FALSE                  
+[INFO] Read cmd (line 874): compare variable                                    
+TRACE loadingSnapshot node=n2 code=FALSE model=FALSE                            
+[INFO] Read cmd (line 875): execute n2 get pendingSnapshotIdx                   
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 876): # variable pendingSnapshotIdx s2 0                   
+[INFO] Read cmd (line 877): compare variable                                    
+TRACE pendingSnapshotIdx node=n2 code=0 model=0                                 
+[INFO] Read cmd (line 878): execute n2 get pendingSnapshotTerm                  
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 879): # variable pendingSnapshotTerm s2 0                  
+[INFO] Read cmd (line 880): compare variable                                    
+TRACE pendingSnapshotTerm node=n2 code=0 model=0                                
+[INFO] Read cmd (line 881): execute n2 get clusterConfig                        
+[DETL] Received data from node "n2": {n1,n2,n3}                                 
+[INFO] Comment (line 882): # variable clusterConfig s2 {n1,n2,n3}               
+[INFO] Read cmd (line 883): compare variable                                    
+TRACE clusterConfig node=n2 code={n1,n2,n3} model={n1,n2,n3}                    
+[INFO] Read cmd (line 884): execute n2 get votingCfgChangeIdx                   
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 885): # variable votingCfgChangeIdx s2 0                   
+[INFO] Read cmd (line 886): compare variable                                    
+TRACE votingCfgChangeIdx node=n2 code=0 model=0                                 
+[INFO] Read cmd (line 887): execute n3 get currentTerm                          
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 888): # variable currentTerm s3 1                          
+[INFO] Read cmd (line 889): compare variable                                    
+TRACE currentTerm node=n3 code=1 model=1                                        
+[INFO] Read cmd (line 890): execute n3 get votedFor                             
+[DETL] Received data from node "n3": n2 
+[INFO] Comment (line 891): # variable votedFor s3 n2                            
+[INFO] Read cmd (line 892): compare variable                                    
+TRACE votedFor node=n3 code=n2 model=n2 
+[INFO] Read cmd (line 893): execute n3 get log                                  
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 894): # variable log s3 []                                 
+[INFO] Read cmd (line 895): compare variable                                    
+TRACE log node=n3 code=[] model=[]      
+[INFO] Read cmd (line 896): execute n3 get logOffset                            
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 897): # variable logOffset s3 0                            
+[INFO] Read cmd (line 898): compare variable                                    
+TRACE logOffset node=n3 code=0 model=0  
+[INFO] Read cmd (line 899): execute n3 get state                                
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 900): # variable state s3 1                                
+[INFO] Read cmd (line 901): compare variable                                    
+TRACE state node=n3 code=1 model=1      
+[INFO] Read cmd (line 902): execute n3 get commitIndex                          
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 903): # variable commitIndex s3 0                          
+[INFO] Read cmd (line 904): compare variable                                    
+TRACE commitIndex node=n3 code=0 model=0                                        
+[INFO] Read cmd (line 905): execute n3 get nextIndex                            
+[DETL] Received data from node "n3": {'n1': 1, 'n2': 1, 'n3': 1}                
+[INFO] Comment (line 906): # variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 1}  
+[INFO] Read cmd (line 907): compare variable                                    
+TRACE nextIndex node=n3 code={'n1': 1, 'n2': 1, 'n3': 1} model={'n1': 1, 'n2': 1, 'n3': 1}          
+[INFO] Read cmd (line 908): execute n3 get matchIndex                           
+[DETL] Received data from node "n3": {'n1': 0, 'n2': 0, 'n3': 0}                
+[INFO] Comment (line 909): # variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 0} 
+[INFO] Read cmd (line 910): compare variable                                    
+TRACE matchIndex node=n3 code={'n1': 0, 'n2': 0, 'n3': 0} model={'n1': 0, 'n2': 0, 'n3': 0}         
+[INFO] Read cmd (line 911): execute n3 get votesGranted                         
+[DETL] Received data from node "n3": {} 
+[INFO] Comment (line 912): # variable votesGranted s3 {}                        
+[INFO] Read cmd (line 913): compare variable                                    
+TRACE votesGranted node=n3 code={} model={}                                     
+[INFO] Read cmd (line 914): execute n3 get snapshotLastIdx                      
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 915): # variable snapshotLastIdx s3 0                      
+[INFO] Read cmd (line 916): compare variable                                    
+TRACE snapshotLastIdx node=n3 code=0 model=0                                    
+[INFO] Read cmd (line 917): execute n3 get snapshotLastTerm                     
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 918): # variable snapshotLastTerm s3 0                     
+[INFO] Read cmd (line 919): compare variable                                    
+TRACE snapshotLastTerm node=n3 code=0 model=0                                   
+[INFO] Read cmd (line 920): execute n3 get loadingSnapshot                      
+[DETL] Received data from node "n3": FALSE                                      
+[INFO] Comment (line 921): # variable loadingSnapshot s3 FALSE                  
+[INFO] Read cmd (line 922): compare variable                                    
+TRACE loadingSnapshot node=n3 code=FALSE model=FALSE                            
+[INFO] Read cmd (line 923): execute n3 get pendingSnapshotIdx                   
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 924): # variable pendingSnapshotIdx s3 0                   
+[INFO] Read cmd (line 925): compare variable                                    
+TRACE pendingSnapshotIdx node=n3 code=0 model=0                                 
+[INFO] Read cmd (line 926): execute n3 get pendingSnapshotTerm                  
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 927): # variable pendingSnapshotTerm s3 0                  
+[INFO] Read cmd (line 928): compare variable                                    
+TRACE pendingSnapshotTerm node=n3 code=0 model=0                                
+[INFO] Read cmd (line 929): execute n3 get clusterConfig                        
+[DETL] Received data from node "n3": {n1,n2,n3}                                 
+[INFO] Comment (line 930): # variable clusterConfig s3 {n1,n2,n3}               
+[INFO] Read cmd (line 931): compare variable                                    
+TRACE clusterConfig node=n3 code={n1,n2,n3} model={n1,n2,n3}                    
+[INFO] Read cmd (line 932): execute n3 get votingCfgChangeIdx                   
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 933): # variable votingCfgChangeIdx s3 0                   
+[INFO] Read cmd (line 934): compare variable                                    
+TRACE votingCfgChangeIdx node=n3 code=0 model=0                                 
+[INFO] Read cmd (line 935): execute n1 get staleReadDetected                    
+[DETL] Received data from node "n1": FALSE                                      
+[INFO] Comment (line 936): # variable staleReadDetected s1 FALSE                
+[INFO] Read cmd (line 937): compare variable                                    
+TRACE staleReadDetected node=n1 code=FALSE model=FALSE                          
+[INFO] Read cmd (line 938): execute n1 get noopReadDetected                     
+[DETL] Received data from node "n1": FALSE                                      
+[INFO] Comment (line 939): # variable noopReadDetected s1 FALSE                 
+[INFO] Read cmd (line 940): compare variable                                    
+TRACE noopReadDetected node=n1 code=FALSE model=FALSE                           
+[INFO] Comment (line 941): # net-len 1  
+[INFO] Read cmd (line 942): compare net-len                                     
+[INFO] Read cmd (line 943): status      
+FD: 5, n1 (10.255.255.101) <-> router (10.255.255.100:10100)                    
+FD: 7, n2 (10.255.255.102) <-> router (10.255.255.100:10100)                    
+FD: 9, n3 (10.255.255.103) <-> router (10.255.255.100:10100)                    
+FD: 11, n1 (10.255.255.101) -> n2 (10.255.255.102), connnected, msgs: 0         
+FD: 12, n2 (10.255.255.102) -> n1 (10.255.255.101), connnected, msgs: 0         
+FD: 13, n1 (10.255.255.101) -> n3 (10.255.255.103), connnected, msgs: 0         
+FD: 14, n3 (10.255.255.103) -> n1 (10.255.255.101), connnected, msgs: 0         
+FD: 15, n2 (10.255.255.102) -> n3 (10.255.255.103), connnected, msgs: 0         
+FD: 16, n3 (10.255.255.103) -> n2 (10.255.255.102), connnected, msgs: 1         
+msgs n1: n2(0) n3(0)                    
+msgs n2: n1(0) n3(0)                    
+msgs n3: n1(0) n2(1)                    
+[INFO] Comment (line 944): # [7] HandleRequestVoteResponse s2 s3 3              
+[DETL] Send cmd (print [7] HandleRequestVoteResponse s2 s3 3) to all            
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 945): deliver-unordered n3 n2 3                           
+[DETL] Deliver msg n3 (10.255.255.103) -> n2 (10.255.255.102) fd: 15 size: 40   
+[INFO] Read cmd (line 946): loop intercept n2 check_has_recv_queue n3           
+[INFO] Read cmd (line 946): intercept n2 check_has_recv_queue n3                
+[DETL] Send cmd to n2 (10.255.255.102): check_has_recv_queue n3                 
+[DETL] Received ack ok from node "n2": True                                     
+[INFO] Read cmd (line 947): execute n2 raft recvfrom n3                         
+[DETL] Received ack ok from node "n2": True                                     
+[INFO] Read cmd (line 948): execute n1 get currentTerm                          
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 949): # variable currentTerm s1 0                          
+[INFO] Read cmd (line 950): compare variable                                    
+TRACE currentTerm node=n1 code=0 model=0                                        
+[INFO] Read cmd (line 951): execute n1 get votedFor                             
+[DETL] Received data from node "n1": Nil                                        
+[INFO] Comment (line 952): # variable votedFor s1 Nil                           
+[INFO] Read cmd (line 953): compare variable                                    
+TRACE votedFor node=n1 code=Nil model=Nil                                       
+[INFO] Read cmd (line 954): execute n1 get log                                  
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 955): # variable log s1 []                                 
+[INFO] Read cmd (line 956): compare variable                                    
+TRACE log node=n1 code=[] model=[]      
+[INFO] Read cmd (line 957): execute n1 get logOffset                            
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 958): # variable logOffset s1 0                            
+[INFO] Read cmd (line 959): compare variable                                    
+TRACE logOffset node=n1 code=0 model=0  
+[INFO] Read cmd (line 960): execute n1 get state                                
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 961): # variable state s1 1                                
+[INFO] Read cmd (line 962): compare variable                                    
+TRACE state node=n1 code=1 model=1      
+[INFO] Read cmd (line 963): execute n1 get commitIndex                          
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 964): # variable commitIndex s1 0                          
+[INFO] Read cmd (line 965): compare variable                                    
+TRACE commitIndex node=n1 code=0 model=0                                        
+[INFO] Read cmd (line 966): execute n1 get nextIndex                            
+[DETL] Received data from node "n1": {'n1': 1, 'n2': 1, 'n3': 1}                
+[INFO] Comment (line 967): # variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1}  
+[INFO] Read cmd (line 968): compare variable                                    
+TRACE nextIndex node=n1 code={'n1': 1, 'n2': 1, 'n3': 1} model={'n1': 1, 'n2': 1, 'n3': 1}          
+[INFO] Read cmd (line 969): execute n1 get matchIndex                           
+[DETL] Received data from node "n1": {'n1': 0, 'n2': 0, 'n3': 0}                
+[INFO] Comment (line 970): # variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0} 
+[INFO] Read cmd (line 971): compare variable                                    
+TRACE matchIndex node=n1 code={'n1': 0, 'n2': 0, 'n3': 0} model={'n1': 0, 'n2': 0, 'n3': 0}         
+[INFO] Read cmd (line 972): execute n1 get votesGranted                         
+[DETL] Received data from node "n1": {} 
+[INFO] Comment (line 973): # variable votesGranted s1 {}                        
+[INFO] Read cmd (line 974): compare variable                                    
+TRACE votesGranted node=n1 code={} model={}                                     
+[INFO] Read cmd (line 975): execute n1 get snapshotLastIdx                      
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 976): # variable snapshotLastIdx s1 0                      
+[INFO] Read cmd (line 977): compare variable                                    
+TRACE snapshotLastIdx node=n1 code=0 model=0                                    
+[INFO] Read cmd (line 978): execute n1 get snapshotLastTerm                     
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 979): # variable snapshotLastTerm s1 0                     
+[INFO] Read cmd (line 980): compare variable                                    
+TRACE snapshotLastTerm node=n1 code=0 model=0                                   
+[INFO] Read cmd (line 981): execute n1 get loadingSnapshot                      
+[DETL] Received data from node "n1": FALSE                                      
+[INFO] Comment (line 982): # variable loadingSnapshot s1 FALSE                  
+[INFO] Read cmd (line 983): compare variable                                    
+TRACE loadingSnapshot node=n1 code=FALSE model=FALSE                            
+[INFO] Read cmd (line 984): execute n1 get pendingSnapshotIdx                   
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 985): # variable pendingSnapshotIdx s1 0                   
+[INFO] Read cmd (line 986): compare variable                                    
+TRACE pendingSnapshotIdx node=n1 code=0 model=0                                 
+[INFO] Read cmd (line 987): execute n1 get pendingSnapshotTerm                  
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 988): # variable pendingSnapshotTerm s1 0                  
+[INFO] Read cmd (line 989): compare variable                                    
+TRACE pendingSnapshotTerm node=n1 code=0 model=0                                
+[INFO] Read cmd (line 990): execute n1 get clusterConfig                        
+[DETL] Received data from node "n1": {n1,n2,n3}                                 
+[INFO] Comment (line 991): # variable clusterConfig s1 {n1,n2,n3}               
+[INFO] Read cmd (line 992): compare variable                                    
+TRACE clusterConfig node=n1 code={n1,n2,n3} model={n1,n2,n3}                    
+[INFO] Read cmd (line 993): execute n1 get votingCfgChangeIdx                   
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 994): # variable votingCfgChangeIdx s1 0                   
+[INFO] Read cmd (line 995): compare variable                                    
+TRACE votingCfgChangeIdx node=n1 code=0 model=0                                 
+[INFO] Read cmd (line 996): execute n2 get currentTerm                          
+[DETL] Received data from node "n2": 1  
+[INFO] Comment (line 997): # variable currentTerm s2 1                          
+[INFO] Read cmd (line 998): compare variable                                    
+TRACE currentTerm node=n2 code=1 model=1                                        
+[INFO] Read cmd (line 999): execute n2 get votedFor                             
+[DETL] Received data from node "n2": n2 
+[INFO] Comment (line 1000): # variable votedFor s2 n2                           
+[INFO] Read cmd (line 1001): compare variable                                   
+TRACE votedFor node=n2 code=n2 model=n2 
+[INFO] Read cmd (line 1002): execute n2 get log                                 
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 1003): # variable log s2 []                                
+[INFO] Read cmd (line 1004): compare variable                                   
+TRACE log node=n2 code=[] model=[]      
+[INFO] Read cmd (line 1005): execute n2 get logOffset                           
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1006): # variable logOffset s2 0                           
+[INFO] Read cmd (line 1007): compare variable                                   
+TRACE logOffset node=n2 code=0 model=0  
+[INFO] Read cmd (line 1008): execute n2 get state                               
+[DETL] Received data from node "n2": 3  
+[INFO] Comment (line 1009): # variable state s2 3                               
+[INFO] Read cmd (line 1010): compare variable                                   
+TRACE state node=n2 code=3 model=3      
+[INFO] Read cmd (line 1011): execute n2 get commitIndex                         
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1012): # variable commitIndex s2 0                         
+[INFO] Read cmd (line 1013): compare variable                                   
+TRACE commitIndex node=n2 code=0 model=0                                        
+[INFO] Read cmd (line 1014): execute n2 get nextIndex                           
+[DETL] Received data from node "n2": {'n1': 1, 'n2': 1, 'n3': 1}                
+[INFO] Comment (line 1015): # variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1} 
+[INFO] Read cmd (line 1016): compare variable                                   
+TRACE nextIndex node=n2 code={'n1': 1, 'n2': 1, 'n3': 1} model={'n1': 1, 'n2': 1, 'n3': 1}          
+[INFO] Read cmd (line 1017): execute n2 get matchIndex                          
+[DETL] Received data from node "n2": {'n1': 0, 'n2': 0, 'n3': 0}                
+[INFO] Comment (line 1018): # variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+[INFO] Read cmd (line 1019): compare variable                                   
+TRACE matchIndex node=n2 code={'n1': 0, 'n2': 0, 'n3': 0} model={'n1': 0, 'n2': 0, 'n3': 0}         
+[INFO] Read cmd (line 1020): execute n2 get votesGranted                        
+[DETL] Received data from node "n2": {n2,n3}                                    
+[INFO] Comment (line 1021): # variable votesGranted s2 {n2,n3}                  
+[INFO] Read cmd (line 1022): compare variable                                   
+TRACE votesGranted node=n2 code={n2,n3} model={n2,n3}                           
+[INFO] Read cmd (line 1023): execute n2 get snapshotLastIdx                     
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1024): # variable snapshotLastIdx s2 0                     
+[INFO] Read cmd (line 1025): compare variable                                   
+TRACE snapshotLastIdx node=n2 code=0 model=0                                    
+[INFO] Read cmd (line 1026): execute n2 get snapshotLastTerm                    
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1027): # variable snapshotLastTerm s2 0                    
+[INFO] Read cmd (line 1028): compare variable                                   
+TRACE snapshotLastTerm node=n2 code=0 model=0                                   
+[INFO] Read cmd (line 1029): execute n2 get loadingSnapshot                     
+[DETL] Received data from node "n2": FALSE                                      
+[INFO] Comment (line 1030): # variable loadingSnapshot s2 FALSE                 
+[INFO] Read cmd (line 1031): compare variable                                   
+TRACE loadingSnapshot node=n2 code=FALSE model=FALSE                            
+[INFO] Read cmd (line 1032): execute n2 get pendingSnapshotIdx                  
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1033): # variable pendingSnapshotIdx s2 0                  
+[INFO] Read cmd (line 1034): compare variable                                   
+TRACE pendingSnapshotIdx node=n2 code=0 model=0                                 
+[INFO] Read cmd (line 1035): execute n2 get pendingSnapshotTerm                 
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1036): # variable pendingSnapshotTerm s2 0                 
+[INFO] Read cmd (line 1037): compare variable                                   
+TRACE pendingSnapshotTerm node=n2 code=0 model=0                                
+[INFO] Read cmd (line 1038): execute n2 get clusterConfig                       
+[DETL] Received data from node "n2": {n1,n2,n3}                                 
+[INFO] Comment (line 1039): # variable clusterConfig s2 {n1,n2,n3}              
+[INFO] Read cmd (line 1040): compare variable                                   
+TRACE clusterConfig node=n2 code={n1,n2,n3} model={n1,n2,n3}                    
+[INFO] Read cmd (line 1041): execute n2 get votingCfgChangeIdx                  
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1042): # variable votingCfgChangeIdx s2 0                  
+[INFO] Read cmd (line 1043): compare variable                                   
+TRACE votingCfgChangeIdx node=n2 code=0 model=0                                 
+[INFO] Read cmd (line 1044): execute n3 get currentTerm                         
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 1045): # variable currentTerm s3 1                         
+[INFO] Read cmd (line 1046): compare variable                                   
+TRACE currentTerm node=n3 code=1 model=1                                        
+[INFO] Read cmd (line 1047): execute n3 get votedFor                            
+[DETL] Received data from node "n3": n2 
+[INFO] Comment (line 1048): # variable votedFor s3 n2                           
+[INFO] Read cmd (line 1049): compare variable                                   
+TRACE votedFor node=n3 code=n2 model=n2 
+[INFO] Read cmd (line 1050): execute n3 get log                                 
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 1051): # variable log s3 []                                
+[INFO] Read cmd (line 1052): compare variable                                   
+TRACE log node=n3 code=[] model=[]      
+[INFO] Read cmd (line 1053): execute n3 get logOffset                           
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1054): # variable logOffset s3 0                           
+[INFO] Read cmd (line 1055): compare variable                                   
+TRACE logOffset node=n3 code=0 model=0  
+[INFO] Read cmd (line 1056): execute n3 get state                               
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 1057): # variable state s3 1                               
+[INFO] Read cmd (line 1058): compare variable                                   
+TRACE state node=n3 code=1 model=1      
+[INFO] Read cmd (line 1059): execute n3 get commitIndex                         
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1060): # variable commitIndex s3 0                         
+[INFO] Read cmd (line 1061): compare variable                                   
+TRACE commitIndex node=n3 code=0 model=0                                        
+[INFO] Read cmd (line 1062): execute n3 get nextIndex                           
+[DETL] Received data from node "n3": {'n1': 1, 'n2': 1, 'n3': 1}                
+[INFO] Comment (line 1063): # variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 1} 
+[INFO] Read cmd (line 1064): compare variable                                   
+TRACE nextIndex node=n3 code={'n1': 1, 'n2': 1, 'n3': 1} model={'n1': 1, 'n2': 1, 'n3': 1}          
+[INFO] Read cmd (line 1065): execute n3 get matchIndex                          
+[DETL] Received data from node "n3": {'n1': 0, 'n2': 0, 'n3': 0}                
+[INFO] Comment (line 1066): # variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 0}
+[INFO] Read cmd (line 1067): compare variable                                   
+TRACE matchIndex node=n3 code={'n1': 0, 'n2': 0, 'n3': 0} model={'n1': 0, 'n2': 0, 'n3': 0}         
+[INFO] Read cmd (line 1068): execute n3 get votesGranted                        
+[DETL] Received data from node "n3": {} 
+[INFO] Comment (line 1069): # variable votesGranted s3 {}                       
+[INFO] Read cmd (line 1070): compare variable                                   
+TRACE votesGranted node=n3 code={} model={}                                     
+[INFO] Read cmd (line 1071): execute n3 get snapshotLastIdx                     
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1072): # variable snapshotLastIdx s3 0                     
+[INFO] Read cmd (line 1073): compare variable                                   
+TRACE snapshotLastIdx node=n3 code=0 model=0                                    
+[INFO] Read cmd (line 1074): execute n3 get snapshotLastTerm                    
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1075): # variable snapshotLastTerm s3 0                    
+[INFO] Read cmd (line 1076): compare variable                                   
+TRACE snapshotLastTerm node=n3 code=0 model=0                                   
+[INFO] Read cmd (line 1077): execute n3 get loadingSnapshot                     
+[DETL] Received data from node "n3": FALSE                                      
+[INFO] Comment (line 1078): # variable loadingSnapshot s3 FALSE                 
+[INFO] Read cmd (line 1079): compare variable                                   
+TRACE loadingSnapshot node=n3 code=FALSE model=FALSE                            
+[INFO] Read cmd (line 1080): execute n3 get pendingSnapshotIdx                  
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1081): # variable pendingSnapshotIdx s3 0                  
+[INFO] Read cmd (line 1082): compare variable                                   
+TRACE pendingSnapshotIdx node=n3 code=0 model=0                                 
+[INFO] Read cmd (line 1083): execute n3 get pendingSnapshotTerm                 
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1084): # variable pendingSnapshotTerm s3 0                 
+[INFO] Read cmd (line 1085): compare variable                                   
+TRACE pendingSnapshotTerm node=n3 code=0 model=0                                
+[INFO] Read cmd (line 1086): execute n3 get clusterConfig                       
+[DETL] Received data from node "n3": {n1,n2,n3}                                 
+[INFO] Comment (line 1087): # variable clusterConfig s3 {n1,n2,n3}              
+[INFO] Read cmd (line 1088): compare variable                                   
+TRACE clusterConfig node=n3 code={n1,n2,n3} model={n1,n2,n3}                    
+[INFO] Read cmd (line 1089): execute n3 get votingCfgChangeIdx                  
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1090): # variable votingCfgChangeIdx s3 0                  
+[INFO] Read cmd (line 1091): compare variable                                   
+TRACE votingCfgChangeIdx node=n3 code=0 model=0                                 
+[INFO] Read cmd (line 1092): execute n1 get staleReadDetected                   
+[DETL] Received data from node "n1": FALSE                                      
+[INFO] Comment (line 1093): # variable staleReadDetected s1 FALSE               
+[INFO] Read cmd (line 1094): compare variable                                   
+TRACE staleReadDetected node=n1 code=FALSE model=FALSE                          
+[INFO] Read cmd (line 1095): execute n1 get noopReadDetected                    
+[DETL] Received data from node "n1": FALSE                                      
+[INFO] Comment (line 1096): # variable noopReadDetected s1 FALSE                
+[INFO] Read cmd (line 1097): compare variable                                   
+TRACE noopReadDetected node=n1 code=FALSE model=FALSE                           
+[INFO] Comment (line 1098): # net-len 0 
+[INFO] Read cmd (line 1099): compare net-len                                    
+[INFO] Read cmd (line 1100): status     
+FD: 5, n1 (10.255.255.101) <-> router (10.255.255.100:10100)                    
+FD: 7, n2 (10.255.255.102) <-> router (10.255.255.100:10100)                    
+FD: 9, n3 (10.255.255.103) <-> router (10.255.255.100:10100)                    
+FD: 11, n1 (10.255.255.101) -> n2 (10.255.255.102), connnected, msgs: 0         
+FD: 12, n2 (10.255.255.102) -> n1 (10.255.255.101), connnected, msgs: 0         
+FD: 13, n1 (10.255.255.101) -> n3 (10.255.255.103), connnected, msgs: 0         
+FD: 14, n3 (10.255.255.103) -> n1 (10.255.255.101), connnected, msgs: 0         
+FD: 15, n2 (10.255.255.102) -> n3 (10.255.255.103), connnected, msgs: 0         
+FD: 16, n3 (10.255.255.103) -> n2 (10.255.255.102), connnected, msgs: 0         
+msgs n1: n2(0) n3(0)                    
+msgs n2: n1(0) n3(0)                    
+msgs n3: n1(0) n2(0)                    
+[INFO] Comment (line 1101): # [8] Timeout s1                                    
+[DETL] Send cmd (print [8] Timeout s1) to all                                   
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 1102): intercept n1 inc_time_ms 2000                      
+[DETL] Send cmd to n1 (10.255.255.101): inc_time_ms 2000                        
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 1103): execute n1 raft timeout                            
+[DETL] Capture seq 4 bytes 48           
+[DETL] Enqueue in_fd: 11, out_fd: 12, n1 (10.255.255.101) -> n2 (10.255.255.102) size: 48           
+[DETL] Capture seq 5 bytes 48           
+[DETL] Enqueue in_fd: 13, out_fd: 14, n1 (10.255.255.101) -> n3 (10.255.255.103) size: 48           
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 1104): execute n1 get currentTerm                         
+[DETL] Received data from node "n1": 1  
+[INFO] Comment (line 1105): # variable currentTerm s1 1                         
+[INFO] Read cmd (line 1106): compare variable                                   
+TRACE currentTerm node=n1 code=1 model=1                                        
+[INFO] Read cmd (line 1107): execute n1 get votedFor                            
+[DETL] Received data from node "n1": n1 
+[INFO] Comment (line 1108): # variable votedFor s1 n1                           
+[INFO] Read cmd (line 1109): compare variable                                   
+TRACE votedFor node=n1 code=n1 model=n1 
+[INFO] Read cmd (line 1110): execute n1 get log                                 
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 1111): # variable log s1 []                                
+[INFO] Read cmd (line 1112): compare variable                                   
+TRACE log node=n1 code=[] model=[]      
+[INFO] Read cmd (line 1113): execute n1 get logOffset                           
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1114): # variable logOffset s1 0                           
+[INFO] Read cmd (line 1115): compare variable                                   
+TRACE logOffset node=n1 code=0 model=0  
+[INFO] Read cmd (line 1116): execute n1 get state                               
+[DETL] Received data from node "n1": 3  
+[INFO] Comment (line 1117): # variable state s1 3                               
+[INFO] Read cmd (line 1118): compare variable                                   
+TRACE state node=n1 code=3 model=3      
+[INFO] Read cmd (line 1119): execute n1 get commitIndex                         
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1120): # variable commitIndex s1 0                         
+[INFO] Read cmd (line 1121): compare variable                                   
+TRACE commitIndex node=n1 code=0 model=0                                        
+[INFO] Read cmd (line 1122): execute n1 get nextIndex                           
+[DETL] Received data from node "n1": {'n1': 1, 'n2': 1, 'n3': 1}                
+[INFO] Comment (line 1123): # variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1} 
+[INFO] Read cmd (line 1124): compare variable                                   
+TRACE nextIndex node=n1 code={'n1': 1, 'n2': 1, 'n3': 1} model={'n1': 1, 'n2': 1, 'n3': 1}          
+[INFO] Read cmd (line 1125): execute n1 get matchIndex                          
+[DETL] Received data from node "n1": {'n1': 0, 'n2': 0, 'n3': 0}                
+[INFO] Comment (line 1126): # variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+[INFO] Read cmd (line 1127): compare variable                                   
+TRACE matchIndex node=n1 code={'n1': 0, 'n2': 0, 'n3': 0} model={'n1': 0, 'n2': 0, 'n3': 0}         
+[INFO] Read cmd (line 1128): execute n1 get votesGranted                        
+[DETL] Received data from node "n1": {n1}                                       
+[INFO] Comment (line 1129): # variable votesGranted s1 {n1}                     
+[INFO] Read cmd (line 1130): compare variable                                   
+TRACE votesGranted node=n1 code={n1} model={n1}                                 
+[INFO] Read cmd (line 1131): execute n1 get snapshotLastIdx                     
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1132): # variable snapshotLastIdx s1 0                     
+[INFO] Read cmd (line 1133): compare variable                                   
+TRACE snapshotLastIdx node=n1 code=0 model=0                                    
+[INFO] Read cmd (line 1134): execute n1 get snapshotLastTerm                    
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1135): # variable snapshotLastTerm s1 0                    
+[INFO] Read cmd (line 1136): compare variable                                   
+TRACE snapshotLastTerm node=n1 code=0 model=0                                   
+[INFO] Read cmd (line 1137): execute n1 get loadingSnapshot                     
+[DETL] Received data from node "n1": FALSE                                      
+[INFO] Comment (line 1138): # variable loadingSnapshot s1 FALSE                 
+[INFO] Read cmd (line 1139): compare variable                                   
+TRACE loadingSnapshot node=n1 code=FALSE model=FALSE                            
+[INFO] Read cmd (line 1140): execute n1 get pendingSnapshotIdx                  
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1141): # variable pendingSnapshotIdx s1 0                  
+[INFO] Read cmd (line 1142): compare variable                                   
+TRACE pendingSnapshotIdx node=n1 code=0 model=0                                 
+[INFO] Read cmd (line 1143): execute n1 get pendingSnapshotTerm                 
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1144): # variable pendingSnapshotTerm s1 0                 
+[INFO] Read cmd (line 1145): compare variable                                   
+TRACE pendingSnapshotTerm node=n1 code=0 model=0                                
+[INFO] Read cmd (line 1146): execute n1 get clusterConfig                       
+[DETL] Received data from node "n1": {n1,n2,n3}                                 
+[INFO] Comment (line 1147): # variable clusterConfig s1 {n1,n2,n3}              
+[INFO] Read cmd (line 1148): compare variable                                   
+TRACE clusterConfig node=n1 code={n1,n2,n3} model={n1,n2,n3}                    
+[INFO] Read cmd (line 1149): execute n1 get votingCfgChangeIdx                  
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1150): # variable votingCfgChangeIdx s1 0                  
+[INFO] Read cmd (line 1151): compare variable                                   
+TRACE votingCfgChangeIdx node=n1 code=0 model=0                                 
+[INFO] Read cmd (line 1152): execute n2 get currentTerm                         
+[DETL] Received data from node "n2": 1  
+[INFO] Comment (line 1153): # variable currentTerm s2 1                         
+[INFO] Read cmd (line 1154): compare variable                                   
+TRACE currentTerm node=n2 code=1 model=1                                        
+[INFO] Read cmd (line 1155): execute n2 get votedFor                            
+[DETL] Received data from node "n2": n2 
+[INFO] Comment (line 1156): # variable votedFor s2 n2                           
+[INFO] Read cmd (line 1157): compare variable                                   
+TRACE votedFor node=n2 code=n2 model=n2 
+[INFO] Read cmd (line 1158): execute n2 get log                                 
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 1159): # variable log s2 []                                
+[INFO] Read cmd (line 1160): compare variable                                   
+TRACE log node=n2 code=[] model=[]      
+[INFO] Read cmd (line 1161): execute n2 get logOffset                           
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1162): # variable logOffset s2 0                           
+[INFO] Read cmd (line 1163): compare variable                                   
+TRACE logOffset node=n2 code=0 model=0  
+[INFO] Read cmd (line 1164): execute n2 get state                               
+[DETL] Received data from node "n2": 3  
+[INFO] Comment (line 1165): # variable state s2 3                               
+[INFO] Read cmd (line 1166): compare variable                                   
+TRACE state node=n2 code=3 model=3      
+[INFO] Read cmd (line 1167): execute n2 get commitIndex                         
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1168): # variable commitIndex s2 0                         
+[INFO] Read cmd (line 1169): compare variable                                   
+TRACE commitIndex node=n2 code=0 model=0                                        
+[INFO] Read cmd (line 1170): execute n2 get nextIndex                           
+[DETL] Received data from node "n2": {'n1': 1, 'n2': 1, 'n3': 1}                
+[INFO] Comment (line 1171): # variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1} 
+[INFO] Read cmd (line 1172): compare variable                                   
+TRACE nextIndex node=n2 code={'n1': 1, 'n2': 1, 'n3': 1} model={'n1': 1, 'n2': 1, 'n3': 1}          
+[INFO] Read cmd (line 1173): execute n2 get matchIndex                          
+[DETL] Received data from node "n2": {'n1': 0, 'n2': 0, 'n3': 0}                
+[INFO] Comment (line 1174): # variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+[INFO] Read cmd (line 1175): compare variable                                   
+TRACE matchIndex node=n2 code={'n1': 0, 'n2': 0, 'n3': 0} model={'n1': 0, 'n2': 0, 'n3': 0}         
+[INFO] Read cmd (line 1176): execute n2 get votesGranted                        
+[DETL] Received data from node "n2": {n2,n3}                                    
+[INFO] Comment (line 1177): # variable votesGranted s2 {n2,n3}                  
+[INFO] Read cmd (line 1178): compare variable                                   
+TRACE votesGranted node=n2 code={n2,n3} model={n2,n3}                           
+[INFO] Read cmd (line 1179): execute n2 get snapshotLastIdx                     
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1180): # variable snapshotLastIdx s2 0                     
+[INFO] Read cmd (line 1181): compare variable                                   
+TRACE snapshotLastIdx node=n2 code=0 model=0                                    
+[INFO] Read cmd (line 1182): execute n2 get snapshotLastTerm                    
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1183): # variable snapshotLastTerm s2 0                    
+[INFO] Read cmd (line 1184): compare variable                                   
+TRACE snapshotLastTerm node=n2 code=0 model=0                                   
+[INFO] Read cmd (line 1185): execute n2 get loadingSnapshot                     
+[DETL] Received data from node "n2": FALSE                                      
+[INFO] Comment (line 1186): # variable loadingSnapshot s2 FALSE                 
+[INFO] Read cmd (line 1187): compare variable                                   
+TRACE loadingSnapshot node=n2 code=FALSE model=FALSE                            
+[INFO] Read cmd (line 1188): execute n2 get pendingSnapshotIdx                  
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1189): # variable pendingSnapshotIdx s2 0                  
+[INFO] Read cmd (line 1190): compare variable                                   
+TRACE pendingSnapshotIdx node=n2 code=0 model=0                                 
+[INFO] Read cmd (line 1191): execute n2 get pendingSnapshotTerm                 
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1192): # variable pendingSnapshotTerm s2 0                 
+[INFO] Read cmd (line 1193): compare variable                                   
+TRACE pendingSnapshotTerm node=n2 code=0 model=0                                
+[INFO] Read cmd (line 1194): execute n2 get clusterConfig                       
+[DETL] Received data from node "n2": {n1,n2,n3}                                 
+[INFO] Comment (line 1195): # variable clusterConfig s2 {n1,n2,n3}              
+[INFO] Read cmd (line 1196): compare variable                                   
+TRACE clusterConfig node=n2 code={n1,n2,n3} model={n1,n2,n3}                    
+[INFO] Read cmd (line 1197): execute n2 get votingCfgChangeIdx                  
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1198): # variable votingCfgChangeIdx s2 0                  
+[INFO] Read cmd (line 1199): compare variable                                   
+TRACE votingCfgChangeIdx node=n2 code=0 model=0                                 
+[INFO] Read cmd (line 1200): execute n3 get currentTerm                         
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 1201): # variable currentTerm s3 1                         
+[INFO] Read cmd (line 1202): compare variable                                   
+TRACE currentTerm node=n3 code=1 model=1                                        
+[INFO] Read cmd (line 1203): execute n3 get votedFor                            
+[DETL] Received data from node "n3": n2 
+[INFO] Comment (line 1204): # variable votedFor s3 n2                           
+[INFO] Read cmd (line 1205): compare variable                                   
+TRACE votedFor node=n3 code=n2 model=n2 
+[INFO] Read cmd (line 1206): execute n3 get log                                 
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 1207): # variable log s3 []                                
+[INFO] Read cmd (line 1208): compare variable                                   
+TRACE log node=n3 code=[] model=[]      
+[INFO] Read cmd (line 1209): execute n3 get logOffset                           
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1210): # variable logOffset s3 0                           
+[INFO] Read cmd (line 1211): compare variable                                   
+TRACE logOffset node=n3 code=0 model=0  
+[INFO] Read cmd (line 1212): execute n3 get state                               
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 1213): # variable state s3 1                               
+[INFO] Read cmd (line 1214): compare variable                                   
+TRACE state node=n3 code=1 model=1      
+[INFO] Read cmd (line 1215): execute n3 get commitIndex                         
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1216): # variable commitIndex s3 0                         
+[INFO] Read cmd (line 1217): compare variable                                   
+TRACE commitIndex node=n3 code=0 model=0                                        
+[INFO] Read cmd (line 1218): execute n3 get nextIndex                           
+[DETL] Received data from node "n3": {'n1': 1, 'n2': 1, 'n3': 1}                
+[INFO] Comment (line 1219): # variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 1} 
+[INFO] Read cmd (line 1220): compare variable                                   
+TRACE nextIndex node=n3 code={'n1': 1, 'n2': 1, 'n3': 1} model={'n1': 1, 'n2': 1, 'n3': 1}          
+[INFO] Read cmd (line 1221): execute n3 get matchIndex                          
+[DETL] Received data from node "n3": {'n1': 0, 'n2': 0, 'n3': 0}                
+[INFO] Comment (line 1222): # variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 0}
+[INFO] Read cmd (line 1223): compare variable                                   
+TRACE matchIndex node=n3 code={'n1': 0, 'n2': 0, 'n3': 0} model={'n1': 0, 'n2': 0, 'n3': 0}         
+[INFO] Read cmd (line 1224): execute n3 get votesGranted                        
+[DETL] Received data from node "n3": {} 
+[INFO] Comment (line 1225): # variable votesGranted s3 {}                       
+[INFO] Read cmd (line 1226): compare variable                                   
+TRACE votesGranted node=n3 code={} model={}                                     
+[INFO] Read cmd (line 1227): execute n3 get snapshotLastIdx                     
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1228): # variable snapshotLastIdx s3 0                     
+[INFO] Read cmd (line 1229): compare variable                                   
+TRACE snapshotLastIdx node=n3 code=0 model=0                                    
+[INFO] Read cmd (line 1230): execute n3 get snapshotLastTerm                    
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1231): # variable snapshotLastTerm s3 0                    
+[INFO] Read cmd (line 1232): compare variable                                   
+TRACE snapshotLastTerm node=n3 code=0 model=0                                   
+[INFO] Read cmd (line 1233): execute n3 get loadingSnapshot                     
+[DETL] Received data from node "n3": FALSE                                      
+[INFO] Comment (line 1234): # variable loadingSnapshot s3 FALSE                 
+[INFO] Read cmd (line 1235): compare variable                                   
+TRACE loadingSnapshot node=n3 code=FALSE model=FALSE                            
+[INFO] Read cmd (line 1236): execute n3 get pendingSnapshotIdx                  
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1237): # variable pendingSnapshotIdx s3 0                  
+[INFO] Read cmd (line 1238): compare variable                                   
+TRACE pendingSnapshotIdx node=n3 code=0 model=0                                 
+[INFO] Read cmd (line 1239): execute n3 get pendingSnapshotTerm                 
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1240): # variable pendingSnapshotTerm s3 0                 
+[INFO] Read cmd (line 1241): compare variable                                   
+TRACE pendingSnapshotTerm node=n3 code=0 model=0                                
+[INFO] Read cmd (line 1242): execute n3 get clusterConfig                       
+[DETL] Received data from node "n3": {n1,n2,n3}                                 
+[INFO] Comment (line 1243): # variable clusterConfig s3 {n1,n2,n3}              
+[INFO] Read cmd (line 1244): compare variable                                   
+TRACE clusterConfig node=n3 code={n1,n2,n3} model={n1,n2,n3}                    
+[INFO] Read cmd (line 1245): execute n3 get votingCfgChangeIdx                  
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1246): # variable votingCfgChangeIdx s3 0                  
+[INFO] Read cmd (line 1247): compare variable                                   
+TRACE votingCfgChangeIdx node=n3 code=0 model=0                                 
+[INFO] Read cmd (line 1248): execute n1 get staleReadDetected                   
+[DETL] Received data from node "n1": FALSE                                      
+[INFO] Comment (line 1249): # variable staleReadDetected s1 FALSE               
+[INFO] Read cmd (line 1250): compare variable                                   
+TRACE staleReadDetected node=n1 code=FALSE model=FALSE                          
+[INFO] Read cmd (line 1251): execute n1 get noopReadDetected                    
+[DETL] Received data from node "n1": FALSE                                      
+[INFO] Comment (line 1252): # variable noopReadDetected s1 FALSE                
+[INFO] Read cmd (line 1253): compare variable                                   
+TRACE noopReadDetected node=n1 code=FALSE model=FALSE                           
+[INFO] Comment (line 1254): # net-len 2 
+[INFO] Read cmd (line 1255): compare net-len                                    
+[INFO] Read cmd (line 1256): status     
+FD: 5, n1 (10.255.255.101) <-> router (10.255.255.100:10100)                    
+FD: 7, n2 (10.255.255.102) <-> router (10.255.255.100:10100)                    
+FD: 9, n3 (10.255.255.103) <-> router (10.255.255.100:10100)                    
+FD: 11, n1 (10.255.255.101) -> n2 (10.255.255.102), connnected, msgs: 1         
+FD: 12, n2 (10.255.255.102) -> n1 (10.255.255.101), connnected, msgs: 0         
+FD: 13, n1 (10.255.255.101) -> n3 (10.255.255.103), connnected, msgs: 1         
+FD: 14, n3 (10.255.255.103) -> n1 (10.255.255.101), connnected, msgs: 0         
+FD: 15, n2 (10.255.255.102) -> n3 (10.255.255.103), connnected, msgs: 0         
+FD: 16, n3 (10.255.255.103) -> n2 (10.255.255.102), connnected, msgs: 0         
+msgs n1: n2(1) n3(1)                    
+msgs n2: n1(0) n3(0)                    
+msgs n3: n1(0) n2(0)                    
+[INFO] Comment (line 1257): # [9] Timeout s1                                    
+[DETL] Send cmd (print [9] Timeout s1) to all                                   
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 1258): intercept n1 inc_time_ms 2000                      
+[DETL] Send cmd to n1 (10.255.255.101): inc_time_ms 2000                        
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 1259): execute n1 raft timeout                            
+[DETL] Capture seq 6 bytes 48           
+[DETL] Enqueue in_fd: 11, out_fd: 12, n1 (10.255.255.101) -> n2 (10.255.255.102) size: 48           
+[DETL] Capture seq 7 bytes 48           
+[DETL] Enqueue in_fd: 13, out_fd: 14, n1 (10.255.255.101) -> n3 (10.255.255.103) size: 48           
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 1260): execute n1 get currentTerm                         
+[DETL] Received data from node "n1": 2  
+[INFO] Comment (line 1261): # variable currentTerm s1 2                         
+[INFO] Read cmd (line 1262): compare variable                                   
+TRACE currentTerm node=n1 code=2 model=2                                        
+[INFO] Read cmd (line 1263): execute n1 get votedFor                            
+[DETL] Received data from node "n1": n1 
+[INFO] Comment (line 1264): # variable votedFor s1 n1                           
+[INFO] Read cmd (line 1265): compare variable                                   
+TRACE votedFor node=n1 code=n1 model=n1 
+[INFO] Read cmd (line 1266): execute n1 get log                                 
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 1267): # variable log s1 []                                
+[INFO] Read cmd (line 1268): compare variable                                   
+TRACE log node=n1 code=[] model=[]      
+[INFO] Read cmd (line 1269): execute n1 get logOffset                           
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1270): # variable logOffset s1 0                           
+[INFO] Read cmd (line 1271): compare variable                                   
+TRACE logOffset node=n1 code=0 model=0  
+[INFO] Read cmd (line 1272): execute n1 get state                               
+[DETL] Received data from node "n1": 3  
+[INFO] Comment (line 1273): # variable state s1 3                               
+[INFO] Read cmd (line 1274): compare variable                                   
+TRACE state node=n1 code=3 model=3      
+[INFO] Read cmd (line 1275): execute n1 get commitIndex                         
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1276): # variable commitIndex s1 0                         
+[INFO] Read cmd (line 1277): compare variable                                   
+TRACE commitIndex node=n1 code=0 model=0                                        
+[INFO] Read cmd (line 1278): execute n1 get nextIndex                           
+[DETL] Received data from node "n1": {'n1': 1, 'n2': 1, 'n3': 1}                
+[INFO] Comment (line 1279): # variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1} 
+[INFO] Read cmd (line 1280): compare variable                                   
+TRACE nextIndex node=n1 code={'n1': 1, 'n2': 1, 'n3': 1} model={'n1': 1, 'n2': 1, 'n3': 1}          
+[INFO] Read cmd (line 1281): execute n1 get matchIndex                          
+[DETL] Received data from node "n1": {'n1': 0, 'n2': 0, 'n3': 0}                
+[INFO] Comment (line 1282): # variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+[INFO] Read cmd (line 1283): compare variable                                   
+TRACE matchIndex node=n1 code={'n1': 0, 'n2': 0, 'n3': 0} model={'n1': 0, 'n2': 0, 'n3': 0}         
+[INFO] Read cmd (line 1284): execute n1 get votesGranted                        
+[DETL] Received data from node "n1": {n1}                                       
+[INFO] Comment (line 1285): # variable votesGranted s1 {n1}                     
+[INFO] Read cmd (line 1286): compare variable                                   
+TRACE votesGranted node=n1 code={n1} model={n1}                                 
+[INFO] Read cmd (line 1287): execute n1 get snapshotLastIdx                     
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1288): # variable snapshotLastIdx s1 0                     
+[INFO] Read cmd (line 1289): compare variable                                   
+TRACE snapshotLastIdx node=n1 code=0 model=0                                    
+[INFO] Read cmd (line 1290): execute n1 get snapshotLastTerm                    
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1291): # variable snapshotLastTerm s1 0                    
+[INFO] Read cmd (line 1292): compare variable                                   
+TRACE snapshotLastTerm node=n1 code=0 model=0                                   
+[INFO] Read cmd (line 1293): execute n1 get loadingSnapshot                     
+[DETL] Received data from node "n1": FALSE                                      
+[INFO] Comment (line 1294): # variable loadingSnapshot s1 FALSE                 
+[INFO] Read cmd (line 1295): compare variable                                   
+TRACE loadingSnapshot node=n1 code=FALSE model=FALSE                            
+[INFO] Read cmd (line 1296): execute n1 get pendingSnapshotIdx                  
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1297): # variable pendingSnapshotIdx s1 0                  
+[INFO] Read cmd (line 1298): compare variable                                   
+TRACE pendingSnapshotIdx node=n1 code=0 model=0                                 
+[INFO] Read cmd (line 1299): execute n1 get pendingSnapshotTerm                 
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1300): # variable pendingSnapshotTerm s1 0                 
+[INFO] Read cmd (line 1301): compare variable                                   
+TRACE pendingSnapshotTerm node=n1 code=0 model=0                                
+[INFO] Read cmd (line 1302): execute n1 get clusterConfig                       
+[DETL] Received data from node "n1": {n1,n2,n3}                                 
+[INFO] Comment (line 1303): # variable clusterConfig s1 {n1,n2,n3}              
+[INFO] Read cmd (line 1304): compare variable                                   
+TRACE clusterConfig node=n1 code={n1,n2,n3} model={n1,n2,n3}                    
+[INFO] Read cmd (line 1305): execute n1 get votingCfgChangeIdx                  
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1306): # variable votingCfgChangeIdx s1 0                  
+[INFO] Read cmd (line 1307): compare variable                                   
+TRACE votingCfgChangeIdx node=n1 code=0 model=0                                 
+[INFO] Read cmd (line 1308): execute n2 get currentTerm                         
+[DETL] Received data from node "n2": 1  
+[INFO] Comment (line 1309): # variable currentTerm s2 1                         
+[INFO] Read cmd (line 1310): compare variable                                   
+TRACE currentTerm node=n2 code=1 model=1                                        
+[INFO] Read cmd (line 1311): execute n2 get votedFor                            
+[DETL] Received data from node "n2": n2 
+[INFO] Comment (line 1312): # variable votedFor s2 n2                           
+[INFO] Read cmd (line 1313): compare variable                                   
+TRACE votedFor node=n2 code=n2 model=n2 
+[INFO] Read cmd (line 1314): execute n2 get log                                 
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 1315): # variable log s2 []                                
+[INFO] Read cmd (line 1316): compare variable                                   
+TRACE log node=n2 code=[] model=[]      
+[INFO] Read cmd (line 1317): execute n2 get logOffset                           
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1318): # variable logOffset s2 0                           
+[INFO] Read cmd (line 1319): compare variable                                   
+TRACE logOffset node=n2 code=0 model=0  
+[INFO] Read cmd (line 1320): execute n2 get state                               
+[DETL] Received data from node "n2": 3  
+[INFO] Comment (line 1321): # variable state s2 3                               
+[INFO] Read cmd (line 1322): compare variable                                   
+TRACE state node=n2 code=3 model=3      
+[INFO] Read cmd (line 1323): execute n2 get commitIndex                         
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1324): # variable commitIndex s2 0                         
+[INFO] Read cmd (line 1325): compare variable                                   
+TRACE commitIndex node=n2 code=0 model=0                                        
+[INFO] Read cmd (line 1326): execute n2 get nextIndex                           
+[DETL] Received data from node "n2": {'n1': 1, 'n2': 1, 'n3': 1}                
+[INFO] Comment (line 1327): # variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1} 
+[INFO] Read cmd (line 1328): compare variable                                   
+TRACE nextIndex node=n2 code={'n1': 1, 'n2': 1, 'n3': 1} model={'n1': 1, 'n2': 1, 'n3': 1}          
+[INFO] Read cmd (line 1329): execute n2 get matchIndex                          
+[DETL] Received data from node "n2": {'n1': 0, 'n2': 0, 'n3': 0}                
+[INFO] Comment (line 1330): # variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+[INFO] Read cmd (line 1331): compare variable                                   
+TRACE matchIndex node=n2 code={'n1': 0, 'n2': 0, 'n3': 0} model={'n1': 0, 'n2': 0, 'n3': 0}         
+[INFO] Read cmd (line 1332): execute n2 get votesGranted                        
+[DETL] Received data from node "n2": {n2,n3}                                    
+[INFO] Comment (line 1333): # variable votesGranted s2 {n2,n3}                  
+[INFO] Read cmd (line 1334): compare variable                                   
+TRACE votesGranted node=n2 code={n2,n3} model={n2,n3}                           
+[INFO] Read cmd (line 1335): execute n2 get snapshotLastIdx                     
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1336): # variable snapshotLastIdx s2 0                     
+[INFO] Read cmd (line 1337): compare variable                                   
+TRACE snapshotLastIdx node=n2 code=0 model=0                                    
+[INFO] Read cmd (line 1338): execute n2 get snapshotLastTerm                    
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1339): # variable snapshotLastTerm s2 0                    
+[INFO] Read cmd (line 1340): compare variable                                   
+TRACE snapshotLastTerm node=n2 code=0 model=0                                   
+[INFO] Read cmd (line 1341): execute n2 get loadingSnapshot                     
+[DETL] Received data from node "n2": FALSE                                      
+[INFO] Comment (line 1342): # variable loadingSnapshot s2 FALSE                 
+[INFO] Read cmd (line 1343): compare variable                                   
+TRACE loadingSnapshot node=n2 code=FALSE model=FALSE                            
+[INFO] Read cmd (line 1344): execute n2 get pendingSnapshotIdx                  
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1345): # variable pendingSnapshotIdx s2 0                  
+[INFO] Read cmd (line 1346): compare variable                                   
+TRACE pendingSnapshotIdx node=n2 code=0 model=0                                 
+[INFO] Read cmd (line 1347): execute n2 get pendingSnapshotTerm                 
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1348): # variable pendingSnapshotTerm s2 0                 
+[INFO] Read cmd (line 1349): compare variable                                   
+TRACE pendingSnapshotTerm node=n2 code=0 model=0                                
+[INFO] Read cmd (line 1350): execute n2 get clusterConfig                       
+[DETL] Received data from node "n2": {n1,n2,n3}                                 
+[INFO] Comment (line 1351): # variable clusterConfig s2 {n1,n2,n3}              
+[INFO] Read cmd (line 1352): compare variable                                   
+TRACE clusterConfig node=n2 code={n1,n2,n3} model={n1,n2,n3}                    
+[INFO] Read cmd (line 1353): execute n2 get votingCfgChangeIdx                  
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1354): # variable votingCfgChangeIdx s2 0                  
+[INFO] Read cmd (line 1355): compare variable                                   
+TRACE votingCfgChangeIdx node=n2 code=0 model=0                                 
+[INFO] Read cmd (line 1356): execute n3 get currentTerm                         
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 1357): # variable currentTerm s3 1                         
+[INFO] Read cmd (line 1358): compare variable                                   
+TRACE currentTerm node=n3 code=1 model=1                                        
+[INFO] Read cmd (line 1359): execute n3 get votedFor                            
+[DETL] Received data from node "n3": n2 
+[INFO] Comment (line 1360): # variable votedFor s3 n2                           
+[INFO] Read cmd (line 1361): compare variable                                   
+TRACE votedFor node=n3 code=n2 model=n2 
+[INFO] Read cmd (line 1362): execute n3 get log                                 
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 1363): # variable log s3 []                                
+[INFO] Read cmd (line 1364): compare variable                                   
+TRACE log node=n3 code=[] model=[]      
+[INFO] Read cmd (line 1365): execute n3 get logOffset                           
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1366): # variable logOffset s3 0                           
+[INFO] Read cmd (line 1367): compare variable                                   
+TRACE logOffset node=n3 code=0 model=0  
+[INFO] Read cmd (line 1368): execute n3 get state                               
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 1369): # variable state s3 1                               
+[INFO] Read cmd (line 1370): compare variable                                   
+TRACE state node=n3 code=1 model=1      
+[INFO] Read cmd (line 1371): execute n3 get commitIndex                         
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1372): # variable commitIndex s3 0                         
+[INFO] Read cmd (line 1373): compare variable                                   
+TRACE commitIndex node=n3 code=0 model=0                                        
+[INFO] Read cmd (line 1374): execute n3 get nextIndex                           
+[DETL] Received data from node "n3": {'n1': 1, 'n2': 1, 'n3': 1}                
+[INFO] Comment (line 1375): # variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 1} 
+[INFO] Read cmd (line 1376): compare variable                                   
+TRACE nextIndex node=n3 code={'n1': 1, 'n2': 1, 'n3': 1} model={'n1': 1, 'n2': 1, 'n3': 1}          
+[INFO] Read cmd (line 1377): execute n3 get matchIndex                          
+[DETL] Received data from node "n3": {'n1': 0, 'n2': 0, 'n3': 0}                
+[INFO] Comment (line 1378): # variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 0}
+[INFO] Read cmd (line 1379): compare variable                                   
+TRACE matchIndex node=n3 code={'n1': 0, 'n2': 0, 'n3': 0} model={'n1': 0, 'n2': 0, 'n3': 0}         
+[INFO] Read cmd (line 1380): execute n3 get votesGranted                        
+[DETL] Received data from node "n3": {} 
+[INFO] Comment (line 1381): # variable votesGranted s3 {}                       
+[INFO] Read cmd (line 1382): compare variable                                   
+TRACE votesGranted node=n3 code={} model={}                                     
+[INFO] Read cmd (line 1383): execute n3 get snapshotLastIdx                     
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1384): # variable snapshotLastIdx s3 0                     
+[INFO] Read cmd (line 1385): compare variable                                   
+TRACE snapshotLastIdx node=n3 code=0 model=0                                    
+[INFO] Read cmd (line 1386): execute n3 get snapshotLastTerm                    
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1387): # variable snapshotLastTerm s3 0                    
+[INFO] Read cmd (line 1388): compare variable                                   
+TRACE snapshotLastTerm node=n3 code=0 model=0                                   
+[INFO] Read cmd (line 1389): execute n3 get loadingSnapshot                     
+[DETL] Received data from node "n3": FALSE                                      
+[INFO] Comment (line 1390): # variable loadingSnapshot s3 FALSE                 
+[INFO] Read cmd (line 1391): compare variable                                   
+TRACE loadingSnapshot node=n3 code=FALSE model=FALSE                            
+[INFO] Read cmd (line 1392): execute n3 get pendingSnapshotIdx                  
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1393): # variable pendingSnapshotIdx s3 0                  
+[INFO] Read cmd (line 1394): compare variable                                   
+TRACE pendingSnapshotIdx node=n3 code=0 model=0                                 
+[INFO] Read cmd (line 1395): execute n3 get pendingSnapshotTerm                 
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1396): # variable pendingSnapshotTerm s3 0                 
+[INFO] Read cmd (line 1397): compare variable                                   
+TRACE pendingSnapshotTerm node=n3 code=0 model=0                                
+[INFO] Read cmd (line 1398): execute n3 get clusterConfig                       
+[DETL] Received data from node "n3": {n1,n2,n3}                                 
+[INFO] Comment (line 1399): # variable clusterConfig s3 {n1,n2,n3}              
+[INFO] Read cmd (line 1400): compare variable                                   
+TRACE clusterConfig node=n3 code={n1,n2,n3} model={n1,n2,n3}                    
+[INFO] Read cmd (line 1401): execute n3 get votingCfgChangeIdx                  
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1402): # variable votingCfgChangeIdx s3 0                  
+[INFO] Read cmd (line 1403): compare variable                                   
+TRACE votingCfgChangeIdx node=n3 code=0 model=0                                 
+[INFO] Read cmd (line 1404): execute n1 get staleReadDetected                   
+[DETL] Received data from node "n1": FALSE                                      
+[INFO] Comment (line 1405): # variable staleReadDetected s1 FALSE               
+[INFO] Read cmd (line 1406): compare variable                                   
+TRACE staleReadDetected node=n1 code=FALSE model=FALSE                          
+[INFO] Read cmd (line 1407): execute n1 get noopReadDetected                    
+[DETL] Received data from node "n1": FALSE                                      
+[INFO] Comment (line 1408): # variable noopReadDetected s1 FALSE                
+[INFO] Read cmd (line 1409): compare variable                                   
+TRACE noopReadDetected node=n1 code=FALSE model=FALSE                           
+[INFO] Comment (line 1410): # net-len 4 
+[INFO] Read cmd (line 1411): compare net-len                                    
+[INFO] Read cmd (line 1412): status     
+FD: 5, n1 (10.255.255.101) <-> router (10.255.255.100:10100)                    
+FD: 7, n2 (10.255.255.102) <-> router (10.255.255.100:10100)                    
+FD: 9, n3 (10.255.255.103) <-> router (10.255.255.100:10100)                    
+FD: 11, n1 (10.255.255.101) -> n2 (10.255.255.102), connnected, msgs: 2         
+FD: 12, n2 (10.255.255.102) -> n1 (10.255.255.101), connnected, msgs: 0         
+FD: 13, n1 (10.255.255.101) -> n3 (10.255.255.103), connnected, msgs: 2         
+FD: 14, n3 (10.255.255.103) -> n1 (10.255.255.101), connnected, msgs: 0         
+FD: 15, n2 (10.255.255.102) -> n3 (10.255.255.103), connnected, msgs: 0         
+FD: 16, n3 (10.255.255.103) -> n2 (10.255.255.102), connnected, msgs: 0         
+msgs n1: n2(2) n3(2)                    
+msgs n2: n1(0) n3(0)                    
+msgs n3: n1(0) n2(0)                    
+[INFO] Comment (line 1413): # [10] HandleRequestVoteRequest s3 s1 7             
+[DETL] Send cmd (print [10] HandleRequestVoteRequest s3 s1 7) to all            
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 1414): deliver-unordered n1 n3 7                          
+[DETL] Deliver msg n1 (10.255.255.101) -> n3 (10.255.255.103) fd: 14 size: 48   
+[INFO] Read cmd (line 1415): loop intercept n3 check_has_recv_queue n1          
+[INFO] Read cmd (line 1415): intercept n3 check_has_recv_queue n1               
+[DETL] Send cmd to n3 (10.255.255.103): check_has_recv_queue n1                 
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 1416): execute n3 raft recvfrom n1                        
+[DETL] Capture seq 8 bytes 40           
+[DETL] Enqueue in_fd: 14, out_fd: 13, n3 (10.255.255.103) -> n1 (10.255.255.101) size: 40           
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 1417): execute n1 get currentTerm                         
+[DETL] Received data from node "n1": 2  
+[INFO] Comment (line 1418): # variable currentTerm s1 2                         
+[INFO] Read cmd (line 1419): compare variable                                   
+TRACE currentTerm node=n1 code=2 model=2                                        
+[INFO] Read cmd (line 1420): execute n1 get votedFor                            
+[DETL] Received data from node "n1": n1 
+[INFO] Comment (line 1421): # variable votedFor s1 n1                           
+[INFO] Read cmd (line 1422): compare variable                                   
+TRACE votedFor node=n1 code=n1 model=n1 
+[INFO] Read cmd (line 1423): execute n1 get log                                 
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 1424): # variable log s1 []                                
+[INFO] Read cmd (line 1425): compare variable                                   
+TRACE log node=n1 code=[] model=[]      
+[INFO] Read cmd (line 1426): execute n1 get logOffset                           
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1427): # variable logOffset s1 0                           
+[INFO] Read cmd (line 1428): compare variable                                   
+TRACE logOffset node=n1 code=0 model=0  
+[INFO] Read cmd (line 1429): execute n1 get state                               
+[DETL] Received data from node "n1": 3  
+[INFO] Comment (line 1430): # variable state s1 3                               
+[INFO] Read cmd (line 1431): compare variable                                   
+TRACE state node=n1 code=3 model=3      
+[INFO] Read cmd (line 1432): execute n1 get commitIndex                         
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1433): # variable commitIndex s1 0                         
+[INFO] Read cmd (line 1434): compare variable                                   
+TRACE commitIndex node=n1 code=0 model=0                                        
+[INFO] Read cmd (line 1435): execute n1 get nextIndex                           
+[DETL] Received data from node "n1": {'n1': 1, 'n2': 1, 'n3': 1}                
+[INFO] Comment (line 1436): # variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1} 
+[INFO] Read cmd (line 1437): compare variable                                   
+TRACE nextIndex node=n1 code={'n1': 1, 'n2': 1, 'n3': 1} model={'n1': 1, 'n2': 1, 'n3': 1}          
+[INFO] Read cmd (line 1438): execute n1 get matchIndex                          
+[DETL] Received data from node "n1": {'n1': 0, 'n2': 0, 'n3': 0}                
+[INFO] Comment (line 1439): # variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+[INFO] Read cmd (line 1440): compare variable                                   
+TRACE matchIndex node=n1 code={'n1': 0, 'n2': 0, 'n3': 0} model={'n1': 0, 'n2': 0, 'n3': 0}         
+[INFO] Read cmd (line 1441): execute n1 get votesGranted                        
+[DETL] Received data from node "n1": {n1}                                       
+[INFO] Comment (line 1442): # variable votesGranted s1 {n1}                     
+[INFO] Read cmd (line 1443): compare variable                                   
+TRACE votesGranted node=n1 code={n1} model={n1}                                 
+[INFO] Read cmd (line 1444): execute n1 get snapshotLastIdx                     
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1445): # variable snapshotLastIdx s1 0                     
+[INFO] Read cmd (line 1446): compare variable                                   
+TRACE snapshotLastIdx node=n1 code=0 model=0                                    
+[INFO] Read cmd (line 1447): execute n1 get snapshotLastTerm                    
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1448): # variable snapshotLastTerm s1 0                    
+[INFO] Read cmd (line 1449): compare variable                                   
+TRACE snapshotLastTerm node=n1 code=0 model=0                                   
+[INFO] Read cmd (line 1450): execute n1 get loadingSnapshot                     
+[DETL] Received data from node "n1": FALSE                                      
+[INFO] Comment (line 1451): # variable loadingSnapshot s1 FALSE                 
+[INFO] Read cmd (line 1452): compare variable                                   
+TRACE loadingSnapshot node=n1 code=FALSE model=FALSE                            
+[INFO] Read cmd (line 1453): execute n1 get pendingSnapshotIdx                  
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1454): # variable pendingSnapshotIdx s1 0                  
+[INFO] Read cmd (line 1455): compare variable                                   
+TRACE pendingSnapshotIdx node=n1 code=0 model=0                                 
+[INFO] Read cmd (line 1456): execute n1 get pendingSnapshotTerm                 
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1457): # variable pendingSnapshotTerm s1 0                 
+[INFO] Read cmd (line 1458): compare variable                                   
+TRACE pendingSnapshotTerm node=n1 code=0 model=0                                
+[INFO] Read cmd (line 1459): execute n1 get clusterConfig                       
+[DETL] Received data from node "n1": {n1,n2,n3}                                 
+[INFO] Comment (line 1460): # variable clusterConfig s1 {n1,n2,n3}              
+[INFO] Read cmd (line 1461): compare variable                                   
+TRACE clusterConfig node=n1 code={n1,n2,n3} model={n1,n2,n3}                    
+[INFO] Read cmd (line 1462): execute n1 get votingCfgChangeIdx                  
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1463): # variable votingCfgChangeIdx s1 0                  
+[INFO] Read cmd (line 1464): compare variable                                   
+TRACE votingCfgChangeIdx node=n1 code=0 model=0                                 
+[INFO] Read cmd (line 1465): execute n2 get currentTerm                         
+[DETL] Received data from node "n2": 1  
+[INFO] Comment (line 1466): # variable currentTerm s2 1                         
+[INFO] Read cmd (line 1467): compare variable                                   
+TRACE currentTerm node=n2 code=1 model=1                                        
+[INFO] Read cmd (line 1468): execute n2 get votedFor                            
+[DETL] Received data from node "n2": n2 
+[INFO] Comment (line 1469): # variable votedFor s2 n2                           
+[INFO] Read cmd (line 1470): compare variable                                   
+TRACE votedFor node=n2 code=n2 model=n2 
+[INFO] Read cmd (line 1471): execute n2 get log                                 
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 1472): # variable log s2 []                                
+[INFO] Read cmd (line 1473): compare variable                                   
+TRACE log node=n2 code=[] model=[]      
+[INFO] Read cmd (line 1474): execute n2 get logOffset                           
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1475): # variable logOffset s2 0                           
+[INFO] Read cmd (line 1476): compare variable                                   
+TRACE logOffset node=n2 code=0 model=0  
+[INFO] Read cmd (line 1477): execute n2 get state                               
+[DETL] Received data from node "n2": 3  
+[INFO] Comment (line 1478): # variable state s2 3                               
+[INFO] Read cmd (line 1479): compare variable                                   
+TRACE state node=n2 code=3 model=3      
+[INFO] Read cmd (line 1480): execute n2 get commitIndex                         
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1481): # variable commitIndex s2 0                         
+[INFO] Read cmd (line 1482): compare variable                                   
+TRACE commitIndex node=n2 code=0 model=0                                        
+[INFO] Read cmd (line 1483): execute n2 get nextIndex                           
+[DETL] Received data from node "n2": {'n1': 1, 'n2': 1, 'n3': 1}                
+[INFO] Comment (line 1484): # variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1} 
+[INFO] Read cmd (line 1485): compare variable                                   
+TRACE nextIndex node=n2 code={'n1': 1, 'n2': 1, 'n3': 1} model={'n1': 1, 'n2': 1, 'n3': 1}          
+[INFO] Read cmd (line 1486): execute n2 get matchIndex                          
+[DETL] Received data from node "n2": {'n1': 0, 'n2': 0, 'n3': 0}                
+[INFO] Comment (line 1487): # variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+[INFO] Read cmd (line 1488): compare variable                                   
+TRACE matchIndex node=n2 code={'n1': 0, 'n2': 0, 'n3': 0} model={'n1': 0, 'n2': 0, 'n3': 0}         
+[INFO] Read cmd (line 1489): execute n2 get votesGranted                        
+[DETL] Received data from node "n2": {n2,n3}                                    
+[INFO] Comment (line 1490): # variable votesGranted s2 {n2,n3}                  
+[INFO] Read cmd (line 1491): compare variable                                   
+TRACE votesGranted node=n2 code={n2,n3} model={n2,n3}                           
+[INFO] Read cmd (line 1492): execute n2 get snapshotLastIdx                     
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1493): # variable snapshotLastIdx s2 0                     
+[INFO] Read cmd (line 1494): compare variable                                   
+TRACE snapshotLastIdx node=n2 code=0 model=0                                    
+[INFO] Read cmd (line 1495): execute n2 get snapshotLastTerm                    
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1496): # variable snapshotLastTerm s2 0                    
+[INFO] Read cmd (line 1497): compare variable                                   
+TRACE snapshotLastTerm node=n2 code=0 model=0                                   
+[INFO] Read cmd (line 1498): execute n2 get loadingSnapshot                     
+[DETL] Received data from node "n2": FALSE                                      
+[INFO] Comment (line 1499): # variable loadingSnapshot s2 FALSE                 
+[INFO] Read cmd (line 1500): compare variable                                   
+TRACE loadingSnapshot node=n2 code=FALSE model=FALSE                            
+[INFO] Read cmd (line 1501): execute n2 get pendingSnapshotIdx                  
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1502): # variable pendingSnapshotIdx s2 0                  
+[INFO] Read cmd (line 1503): compare variable                                   
+TRACE pendingSnapshotIdx node=n2 code=0 model=0                                 
+[INFO] Read cmd (line 1504): execute n2 get pendingSnapshotTerm                 
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1505): # variable pendingSnapshotTerm s2 0                 
+[INFO] Read cmd (line 1506): compare variable                                   
+TRACE pendingSnapshotTerm node=n2 code=0 model=0                                
+[INFO] Read cmd (line 1507): execute n2 get clusterConfig                       
+[DETL] Received data from node "n2": {n1,n2,n3}                                 
+[INFO] Comment (line 1508): # variable clusterConfig s2 {n1,n2,n3}              
+[INFO] Read cmd (line 1509): compare variable                                   
+TRACE clusterConfig node=n2 code={n1,n2,n3} model={n1,n2,n3}                    
+[INFO] Read cmd (line 1510): execute n2 get votingCfgChangeIdx                  
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1511): # variable votingCfgChangeIdx s2 0                  
+[INFO] Read cmd (line 1512): compare variable                                   
+TRACE votingCfgChangeIdx node=n2 code=0 model=0                                 
+[INFO] Read cmd (line 1513): execute n3 get currentTerm                         
+[DETL] Received data from node "n3": 2  
+[INFO] Comment (line 1514): # variable currentTerm s3 2                         
+[INFO] Read cmd (line 1515): compare variable                                   
+TRACE currentTerm node=n3 code=2 model=2                                        
+[INFO] Read cmd (line 1516): execute n3 get votedFor                            
+[DETL] Received data from node "n3": n1 
+[INFO] Comment (line 1517): # variable votedFor s3 n1                           
+[INFO] Read cmd (line 1518): compare variable                                   
+TRACE votedFor node=n3 code=n1 model=n1 
+[INFO] Read cmd (line 1519): execute n3 get log                                 
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 1520): # variable log s3 []                                
+[INFO] Read cmd (line 1521): compare variable                                   
+TRACE log node=n3 code=[] model=[]      
+[INFO] Read cmd (line 1522): execute n3 get logOffset                           
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1523): # variable logOffset s3 0                           
+[INFO] Read cmd (line 1524): compare variable                                   
+TRACE logOffset node=n3 code=0 model=0  
+[INFO] Read cmd (line 1525): execute n3 get state                               
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 1526): # variable state s3 1                               
+[INFO] Read cmd (line 1527): compare variable                                   
+TRACE state node=n3 code=1 model=1      
+[INFO] Read cmd (line 1528): execute n3 get commitIndex                         
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1529): # variable commitIndex s3 0                         
+[INFO] Read cmd (line 1530): compare variable                                   
+TRACE commitIndex node=n3 code=0 model=0                                        
+[INFO] Read cmd (line 1531): execute n3 get nextIndex                           
+[DETL] Received data from node "n3": {'n1': 1, 'n2': 1, 'n3': 1}                
+[INFO] Comment (line 1532): # variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 1} 
+[INFO] Read cmd (line 1533): compare variable                                   
+TRACE nextIndex node=n3 code={'n1': 1, 'n2': 1, 'n3': 1} model={'n1': 1, 'n2': 1, 'n3': 1}          
+[INFO] Read cmd (line 1534): execute n3 get matchIndex                          
+[DETL] Received data from node "n3": {'n1': 0, 'n2': 0, 'n3': 0}                
+[INFO] Comment (line 1535): # variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 0}
+[INFO] Read cmd (line 1536): compare variable                                   
+TRACE matchIndex node=n3 code={'n1': 0, 'n2': 0, 'n3': 0} model={'n1': 0, 'n2': 0, 'n3': 0}         
+[INFO] Read cmd (line 1537): execute n3 get votesGranted                        
+[DETL] Received data from node "n3": {} 
+[INFO] Comment (line 1538): # variable votesGranted s3 {}                       
+[INFO] Read cmd (line 1539): compare variable                                   
+TRACE votesGranted node=n3 code={} model={}                                     
+[INFO] Read cmd (line 1540): execute n3 get snapshotLastIdx                     
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1541): # variable snapshotLastIdx s3 0                     
+[INFO] Read cmd (line 1542): compare variable                                   
+TRACE snapshotLastIdx node=n3 code=0 model=0                                    
+[INFO] Read cmd (line 1543): execute n3 get snapshotLastTerm                    
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1544): # variable snapshotLastTerm s3 0                    
+[INFO] Read cmd (line 1545): compare variable                                   
+TRACE snapshotLastTerm node=n3 code=0 model=0                                   
+[INFO] Read cmd (line 1546): execute n3 get loadingSnapshot                     
+[DETL] Received data from node "n3": FALSE                                      
+[INFO] Comment (line 1547): # variable loadingSnapshot s3 FALSE                 
+[INFO] Read cmd (line 1548): compare variable                                   
+TRACE loadingSnapshot node=n3 code=FALSE model=FALSE                            
+[INFO] Read cmd (line 1549): execute n3 get pendingSnapshotIdx                  
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1550): # variable pendingSnapshotIdx s3 0                  
+[INFO] Read cmd (line 1551): compare variable                                   
+TRACE pendingSnapshotIdx node=n3 code=0 model=0                                 
+[INFO] Read cmd (line 1552): execute n3 get pendingSnapshotTerm                 
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1553): # variable pendingSnapshotTerm s3 0                 
+[INFO] Read cmd (line 1554): compare variable                                   
+TRACE pendingSnapshotTerm node=n3 code=0 model=0                                
+[INFO] Read cmd (line 1555): execute n3 get clusterConfig                       
+[DETL] Received data from node "n3": {n1,n2,n3}                                 
+[INFO] Comment (line 1556): # variable clusterConfig s3 {n1,n2,n3}              
+[INFO] Read cmd (line 1557): compare variable                                   
+TRACE clusterConfig node=n3 code={n1,n2,n3} model={n1,n2,n3}                    
+[INFO] Read cmd (line 1558): execute n3 get votingCfgChangeIdx                  
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1559): # variable votingCfgChangeIdx s3 0                  
+[INFO] Read cmd (line 1560): compare variable                                   
+TRACE votingCfgChangeIdx node=n3 code=0 model=0                                 
+[INFO] Read cmd (line 1561): execute n1 get staleReadDetected                   
+[DETL] Received data from node "n1": FALSE                                      
+[INFO] Comment (line 1562): # variable staleReadDetected s1 FALSE               
+[INFO] Read cmd (line 1563): compare variable                                   
+TRACE staleReadDetected node=n1 code=FALSE model=FALSE                          
+[INFO] Read cmd (line 1564): execute n1 get noopReadDetected                    
+[DETL] Received data from node "n1": FALSE                                      
+[INFO] Comment (line 1565): # variable noopReadDetected s1 FALSE                
+[INFO] Read cmd (line 1566): compare variable                                   
+TRACE noopReadDetected node=n1 code=FALSE model=FALSE                           
+[INFO] Comment (line 1567): # net-len 4 
+[INFO] Read cmd (line 1568): compare net-len                                    
+[INFO] Read cmd (line 1569): status     
+FD: 5, n1 (10.255.255.101) <-> router (10.255.255.100:10100)                    
+FD: 7, n2 (10.255.255.102) <-> router (10.255.255.100:10100)                    
+FD: 9, n3 (10.255.255.103) <-> router (10.255.255.100:10100)                    
+FD: 11, n1 (10.255.255.101) -> n2 (10.255.255.102), connnected, msgs: 2         
+FD: 12, n2 (10.255.255.102) -> n1 (10.255.255.101), connnected, msgs: 0         
+FD: 13, n1 (10.255.255.101) -> n3 (10.255.255.103), connnected, msgs: 1         
+FD: 14, n3 (10.255.255.103) -> n1 (10.255.255.101), connnected, msgs: 1         
+FD: 15, n2 (10.255.255.102) -> n3 (10.255.255.103), connnected, msgs: 0         
+FD: 16, n3 (10.255.255.103) -> n2 (10.255.255.102), connnected, msgs: 0         
+msgs n1: n2(2) n3(1)                    
+msgs n2: n1(0) n3(0)                    
+msgs n3: n1(1) n2(0)                    
+[INFO] Comment (line 1570): # [11] HandleRequestVoteResponse s1 s3 8            
+[DETL] Send cmd (print [11] HandleRequestVoteResponse s1 s3 8) to all           
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 1571): deliver-unordered n3 n1 8                          
+[DETL] Deliver msg n3 (10.255.255.103) -> n1 (10.255.255.101) fd: 13 size: 40   
+[INFO] Read cmd (line 1572): loop intercept n1 check_has_recv_queue n3          
+[INFO] Read cmd (line 1572): intercept n1 check_has_recv_queue n3               
+[DETL] Send cmd to n1 (10.255.255.101): check_has_recv_queue n3                 
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 1573): execute n1 raft recvfrom n3                        
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 1574): execute n1 get currentTerm                         
+[DETL] Received data from node "n1": 2  
+[INFO] Comment (line 1575): # variable currentTerm s1 2                         
+[INFO] Read cmd (line 1576): compare variable                                   
+TRACE currentTerm node=n1 code=2 model=2                                        
+[INFO] Read cmd (line 1577): execute n1 get votedFor                            
+[DETL] Received data from node "n1": n1 
+[INFO] Comment (line 1578): # variable votedFor s1 n1                           
+[INFO] Read cmd (line 1579): compare variable                                   
+TRACE votedFor node=n1 code=n1 model=n1 
+[INFO] Read cmd (line 1580): execute n1 get log                                 
+[DETL] Received data from node "n1": [] 
+[INFO] Comment (line 1581): # variable log s1 []                                
+[INFO] Read cmd (line 1582): compare variable                                   
+TRACE log node=n1 code=[] model=[]      
+[INFO] Read cmd (line 1583): execute n1 get logOffset                           
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1584): # variable logOffset s1 0                           
+[INFO] Read cmd (line 1585): compare variable                                   
+TRACE logOffset node=n1 code=0 model=0  
+[INFO] Read cmd (line 1586): execute n1 get state                               
+[DETL] Received data from node "n1": 3  
+[INFO] Comment (line 1587): # variable state s1 3                               
+[INFO] Read cmd (line 1588): compare variable                                   
+TRACE state node=n1 code=3 model=3      
+[INFO] Read cmd (line 1589): execute n1 get commitIndex                         
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1590): # variable commitIndex s1 0                         
+[INFO] Read cmd (line 1591): compare variable                                   
+TRACE commitIndex node=n1 code=0 model=0                                        
+[INFO] Read cmd (line 1592): execute n1 get nextIndex                           
+[DETL] Received data from node "n1": {'n1': 1, 'n2': 1, 'n3': 1}                
+[INFO] Comment (line 1593): # variable nextIndex s1 {'n1': 1, 'n2': 1, 'n3': 1} 
+[INFO] Read cmd (line 1594): compare variable                                   
+TRACE nextIndex node=n1 code={'n1': 1, 'n2': 1, 'n3': 1} model={'n1': 1, 'n2': 1, 'n3': 1}          
+[INFO] Read cmd (line 1595): execute n1 get matchIndex                          
+[DETL] Received data from node "n1": {'n1': 0, 'n2': 0, 'n3': 0}                
+[INFO] Comment (line 1596): # variable matchIndex s1 {'n1': 0, 'n2': 0, 'n3': 0}
+[INFO] Read cmd (line 1597): compare variable                                   
+TRACE matchIndex node=n1 code={'n1': 0, 'n2': 0, 'n3': 0} model={'n1': 0, 'n2': 0, 'n3': 0}         
+[INFO] Read cmd (line 1598): execute n1 get votesGranted                        
+[DETL] Received data from node "n1": {n1,n3}                                    
+[INFO] Comment (line 1599): # variable votesGranted s1 {n1,n3}                  
+[INFO] Read cmd (line 1600): compare variable                                   
+TRACE votesGranted node=n1 code={n1,n3} model={n1,n3}                           
+[INFO] Read cmd (line 1601): execute n1 get snapshotLastIdx                     
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1602): # variable snapshotLastIdx s1 0                     
+[INFO] Read cmd (line 1603): compare variable                                   
+TRACE snapshotLastIdx node=n1 code=0 model=0                                    
+[INFO] Read cmd (line 1604): execute n1 get snapshotLastTerm                    
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1605): # variable snapshotLastTerm s1 0                    
+[INFO] Read cmd (line 1606): compare variable                                   
+TRACE snapshotLastTerm node=n1 code=0 model=0                                   
+[INFO] Read cmd (line 1607): execute n1 get loadingSnapshot                     
+[DETL] Received data from node "n1": FALSE                                      
+[INFO] Comment (line 1608): # variable loadingSnapshot s1 FALSE                 
+[INFO] Read cmd (line 1609): compare variable                                   
+TRACE loadingSnapshot node=n1 code=FALSE model=FALSE                            
+[INFO] Read cmd (line 1610): execute n1 get pendingSnapshotIdx                  
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1611): # variable pendingSnapshotIdx s1 0                  
+[INFO] Read cmd (line 1612): compare variable                                   
+TRACE pendingSnapshotIdx node=n1 code=0 model=0                                 
+[INFO] Read cmd (line 1613): execute n1 get pendingSnapshotTerm                 
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1614): # variable pendingSnapshotTerm s1 0                 
+[INFO] Read cmd (line 1615): compare variable                                   
+TRACE pendingSnapshotTerm node=n1 code=0 model=0                                
+[INFO] Read cmd (line 1616): execute n1 get clusterConfig                       
+[DETL] Received data from node "n1": {n1,n2,n3}                                 
+[INFO] Comment (line 1617): # variable clusterConfig s1 {n1,n2,n3}              
+[INFO] Read cmd (line 1618): compare variable                                   
+TRACE clusterConfig node=n1 code={n1,n2,n3} model={n1,n2,n3}                    
+[INFO] Read cmd (line 1619): execute n1 get votingCfgChangeIdx                  
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1620): # variable votingCfgChangeIdx s1 0                  
+[INFO] Read cmd (line 1621): compare variable                                   
+TRACE votingCfgChangeIdx node=n1 code=0 model=0                                 
+[INFO] Read cmd (line 1622): execute n2 get currentTerm                         
+[DETL] Received data from node "n2": 1  
+[INFO] Comment (line 1623): # variable currentTerm s2 1                         
+[INFO] Read cmd (line 1624): compare variable                                   
+TRACE currentTerm node=n2 code=1 model=1                                        
+[INFO] Read cmd (line 1625): execute n2 get votedFor                            
+[DETL] Received data from node "n2": n2 
+[INFO] Comment (line 1626): # variable votedFor s2 n2                           
+[INFO] Read cmd (line 1627): compare variable                                   
+TRACE votedFor node=n2 code=n2 model=n2 
+[INFO] Read cmd (line 1628): execute n2 get log                                 
+[DETL] Received data from node "n2": [] 
+[INFO] Comment (line 1629): # variable log s2 []                                
+[INFO] Read cmd (line 1630): compare variable                                   
+TRACE log node=n2 code=[] model=[]      
+[INFO] Read cmd (line 1631): execute n2 get logOffset                           
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1632): # variable logOffset s2 0                           
+[INFO] Read cmd (line 1633): compare variable                                   
+TRACE logOffset node=n2 code=0 model=0  
+[INFO] Read cmd (line 1634): execute n2 get state                               
+[DETL] Received data from node "n2": 3  
+[INFO] Comment (line 1635): # variable state s2 3                               
+[INFO] Read cmd (line 1636): compare variable                                   
+TRACE state node=n2 code=3 model=3      
+[INFO] Read cmd (line 1637): execute n2 get commitIndex                         
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1638): # variable commitIndex s2 0                         
+[INFO] Read cmd (line 1639): compare variable                                   
+TRACE commitIndex node=n2 code=0 model=0                                        
+[INFO] Read cmd (line 1640): execute n2 get nextIndex                           
+[DETL] Received data from node "n2": {'n1': 1, 'n2': 1, 'n3': 1}                
+[INFO] Comment (line 1641): # variable nextIndex s2 {'n1': 1, 'n2': 1, 'n3': 1} 
+[INFO] Read cmd (line 1642): compare variable                                   
+TRACE nextIndex node=n2 code={'n1': 1, 'n2': 1, 'n3': 1} model={'n1': 1, 'n2': 1, 'n3': 1}          
+[INFO] Read cmd (line 1643): execute n2 get matchIndex                          
+[DETL] Received data from node "n2": {'n1': 0, 'n2': 0, 'n3': 0}                
+[INFO] Comment (line 1644): # variable matchIndex s2 {'n1': 0, 'n2': 0, 'n3': 0}
+[INFO] Read cmd (line 1645): compare variable                                   
+TRACE matchIndex node=n2 code={'n1': 0, 'n2': 0, 'n3': 0} model={'n1': 0, 'n2': 0, 'n3': 0}         
+[INFO] Read cmd (line 1646): execute n2 get votesGranted                        
+[DETL] Received data from node "n2": {n2,n3}                                    
+[INFO] Comment (line 1647): # variable votesGranted s2 {n2,n3}                  
+[INFO] Read cmd (line 1648): compare variable                                   
+TRACE votesGranted node=n2 code={n2,n3} model={n2,n3}                           
+[INFO] Read cmd (line 1649): execute n2 get snapshotLastIdx                     
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1650): # variable snapshotLastIdx s2 0                     
+[INFO] Read cmd (line 1651): compare variable                                   
+TRACE snapshotLastIdx node=n2 code=0 model=0                                    
+[INFO] Read cmd (line 1652): execute n2 get snapshotLastTerm                    
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1653): # variable snapshotLastTerm s2 0                    
+[INFO] Read cmd (line 1654): compare variable                                   
+TRACE snapshotLastTerm node=n2 code=0 model=0                                   
+[INFO] Read cmd (line 1655): execute n2 get loadingSnapshot                     
+[DETL] Received data from node "n2": FALSE                                      
+[INFO] Comment (line 1656): # variable loadingSnapshot s2 FALSE                 
+[INFO] Read cmd (line 1657): compare variable                                   
+TRACE loadingSnapshot node=n2 code=FALSE model=FALSE                            
+[INFO] Read cmd (line 1658): execute n2 get pendingSnapshotIdx                  
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1659): # variable pendingSnapshotIdx s2 0                  
+[INFO] Read cmd (line 1660): compare variable                                   
+TRACE pendingSnapshotIdx node=n2 code=0 model=0                                 
+[INFO] Read cmd (line 1661): execute n2 get pendingSnapshotTerm                 
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1662): # variable pendingSnapshotTerm s2 0                 
+[INFO] Read cmd (line 1663): compare variable                                   
+TRACE pendingSnapshotTerm node=n2 code=0 model=0                                
+[INFO] Read cmd (line 1664): execute n2 get clusterConfig                       
+[DETL] Received data from node "n2": {n1,n2,n3}                                 
+[INFO] Comment (line 1665): # variable clusterConfig s2 {n1,n2,n3}              
+[INFO] Read cmd (line 1666): compare variable                                   
+TRACE clusterConfig node=n2 code={n1,n2,n3} model={n1,n2,n3}                    
+[INFO] Read cmd (line 1667): execute n2 get votingCfgChangeIdx                  
+[DETL] Received data from node "n2": 0  
+[INFO] Comment (line 1668): # variable votingCfgChangeIdx s2 0                  
+[INFO] Read cmd (line 1669): compare variable                                   
+TRACE votingCfgChangeIdx node=n2 code=0 model=0                                 
+[INFO] Read cmd (line 1670): execute n3 get currentTerm                         
+[DETL] Received data from node "n3": 2  
+[INFO] Comment (line 1671): # variable currentTerm s3 2                         
+[INFO] Read cmd (line 1672): compare variable                                   
+TRACE currentTerm node=n3 code=2 model=2                                        
+[INFO] Read cmd (line 1673): execute n3 get votedFor                            
+[DETL] Received data from node "n3": n1 
+[INFO] Comment (line 1674): # variable votedFor s3 n1                           
+[INFO] Read cmd (line 1675): compare variable                                   
+TRACE votedFor node=n3 code=n1 model=n1 
+[INFO] Read cmd (line 1676): execute n3 get log                                 
+[DETL] Received data from node "n3": [] 
+[INFO] Comment (line 1677): # variable log s3 []                                
+[INFO] Read cmd (line 1678): compare variable                                   
+TRACE log node=n3 code=[] model=[]      
+[INFO] Read cmd (line 1679): execute n3 get logOffset                           
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1680): # variable logOffset s3 0                           
+[INFO] Read cmd (line 1681): compare variable                                   
+TRACE logOffset node=n3 code=0 model=0  
+[INFO] Read cmd (line 1682): execute n3 get state                               
+[DETL] Received data from node "n3": 1  
+[INFO] Comment (line 1683): # variable state s3 1                               
+[INFO] Read cmd (line 1684): compare variable                                   
+TRACE state node=n3 code=1 model=1      
+[INFO] Read cmd (line 1685): execute n3 get commitIndex                         
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1686): # variable commitIndex s3 0                         
+[INFO] Read cmd (line 1687): compare variable                                   
+TRACE commitIndex node=n3 code=0 model=0                                        
+[INFO] Read cmd (line 1688): execute n3 get nextIndex                           
+[DETL] Received data from node "n3": {'n1': 1, 'n2': 1, 'n3': 1}                
+[INFO] Comment (line 1689): # variable nextIndex s3 {'n1': 1, 'n2': 1, 'n3': 1} 
+[INFO] Read cmd (line 1690): compare variable                                   
+TRACE nextIndex node=n3 code={'n1': 1, 'n2': 1, 'n3': 1} model={'n1': 1, 'n2': 1, 'n3': 1}          
+[INFO] Read cmd (line 1691): execute n3 get matchIndex                          
+[DETL] Received data from node "n3": {'n1': 0, 'n2': 0, 'n3': 0}                
+[INFO] Comment (line 1692): # variable matchIndex s3 {'n1': 0, 'n2': 0, 'n3': 0}
+[INFO] Read cmd (line 1693): compare variable                                   
+TRACE matchIndex node=n3 code={'n1': 0, 'n2': 0, 'n3': 0} model={'n1': 0, 'n2': 0, 'n3': 0}         
+[INFO] Read cmd (line 1694): execute n3 get votesGranted                        
+[DETL] Received data from node "n3": {} 
+[INFO] Comment (line 1695): # variable votesGranted s3 {}                       
+[INFO] Read cmd (line 1696): compare variable                                   
+TRACE votesGranted node=n3 code={} model={}                                     
+[INFO] Read cmd (line 1697): execute n3 get snapshotLastIdx                     
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1698): # variable snapshotLastIdx s3 0                     
+[INFO] Read cmd (line 1699): compare variable                                   
+TRACE snapshotLastIdx node=n3 code=0 model=0                                    
+[INFO] Read cmd (line 1700): execute n3 get snapshotLastTerm                    
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1701): # variable snapshotLastTerm s3 0                    
+[INFO] Read cmd (line 1702): compare variable                                   
+TRACE snapshotLastTerm node=n3 code=0 model=0                                   
+[INFO] Read cmd (line 1703): execute n3 get loadingSnapshot                     
+[DETL] Received data from node "n3": FALSE                                      
+[INFO] Comment (line 1704): # variable loadingSnapshot s3 FALSE                 
+[INFO] Read cmd (line 1705): compare variable                                   
+TRACE loadingSnapshot node=n3 code=FALSE model=FALSE                            
+[INFO] Read cmd (line 1706): execute n3 get pendingSnapshotIdx                  
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1707): # variable pendingSnapshotIdx s3 0                  
+[INFO] Read cmd (line 1708): compare variable                                   
+TRACE pendingSnapshotIdx node=n3 code=0 model=0                                 
+[INFO] Read cmd (line 1709): execute n3 get pendingSnapshotTerm                 
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1710): # variable pendingSnapshotTerm s3 0                 
+[INFO] Read cmd (line 1711): compare variable                                   
+TRACE pendingSnapshotTerm node=n3 code=0 model=0                                
+[INFO] Read cmd (line 1712): execute n3 get clusterConfig                       
+[DETL] Received data from node "n3": {n1,n2,n3}                                 
+[INFO] Comment (line 1713): # variable clusterConfig s3 {n1,n2,n3}              
+[INFO] Read cmd (line 1714): compare variable                                   
+TRACE clusterConfig node=n3 code={n1,n2,n3} model={n1,n2,n3}                    
+[INFO] Read cmd (line 1715): execute n3 get votingCfgChangeIdx                  
+[DETL] Received data from node "n3": 0  
+[INFO] Comment (line 1716): # variable votingCfgChangeIdx s3 0                  
+[INFO] Read cmd (line 1717): compare variable                                   
+TRACE votingCfgChangeIdx node=n3 code=0 model=0                                 
+[INFO] Read cmd (line 1718): execute n1 get staleReadDetected                   
+[DETL] Received data from node "n1": FALSE                                      
+[INFO] Comment (line 1719): # variable staleReadDetected s1 FALSE               
+[INFO] Read cmd (line 1720): compare variable                                   
+TRACE staleReadDetected node=n1 code=FALSE model=FALSE                          
+[INFO] Read cmd (line 1721): execute n1 get noopReadDetected                    
+[DETL] Received data from node "n1": FALSE                                      
+[INFO] Comment (line 1722): # variable noopReadDetected s1 FALSE                
+[INFO] Read cmd (line 1723): compare variable                                   
+TRACE noopReadDetected node=n1 code=FALSE model=FALSE                           
+[INFO] Comment (line 1724): # net-len 3 
+[INFO] Read cmd (line 1725): compare net-len                                    
+[INFO] Read cmd (line 1726): status     
+FD: 5, n1 (10.255.255.101) <-> router (10.255.255.100:10100)                    
+FD: 7, n2 (10.255.255.102) <-> router (10.255.255.100:10100)                    
+FD: 9, n3 (10.255.255.103) <-> router (10.255.255.100:10100)                    
+FD: 11, n1 (10.255.255.101) -> n2 (10.255.255.102), connnected, msgs: 2         
+FD: 12, n2 (10.255.255.102) -> n1 (10.255.255.101), connnected, msgs: 0         
+FD: 13, n1 (10.255.255.101) -> n3 (10.255.255.103), connnected, msgs: 1         
+FD: 14, n3 (10.255.255.103) -> n1 (10.255.255.101), connnected, msgs: 0         
+FD: 15, n2 (10.255.255.102) -> n3 (10.255.255.103), connnected, msgs: 0         
+FD: 16, n3 (10.255.255.103) -> n2 (10.255.255.102), connnected, msgs: 0         
+msgs n1: n2(2) n3(1)                    
+msgs n2: n1(0) n3(0)                    
+msgs n3: n1(0) n2(0)                    
+[INFO] Comment (line 1727): # [12] BecomeLeader s1                              
+[DETL] Send cmd (print [12] BecomeLeader s1) to all                             
+[DETL] Received ack ok from node "n1": True                                     
+[DETL] Received ack ok from node "n2": True                                     
+[DETL] Received ack ok from node "n3": True                                     
+[INFO] Read cmd (line 1728): execute n1 raft become-leader                      
+[DETL] Received ack ok from node "n1": True                                     
+[INFO] Read cmd (line 1729): execute n1 get currentTerm                         
+[DETL] Received data from node "n1": 2  
+[INFO] Comment (line 1730): # variable currentTerm s1 2                         
+[INFO] Read cmd (line 1731): compare variable                                   
+TRACE currentTerm node=n1 code=2 model=2                                        
+[INFO] Read cmd (line 1732): execute n1 get votedFor                            
+[DETL] Received data from node "n1": n1 
+[INFO] Comment (line 1733): # variable votedFor s1 n1                           
+[INFO] Read cmd (line 1734): compare variable                                   
+TRACE votedFor node=n1 code=n1 model=n1 
+[INFO] Read cmd (line 1735): execute n1 get log                                 
+[DETL] Received data from node "n1": [(2, Noop, {})]                            
+[INFO] Comment (line 1736): # variable log s1 [(2, Noop, {})]                   
+[INFO] Read cmd (line 1737): compare variable                                   
+TRACE log node=n1 code=[(2, Noop, {})] model=[(2, Noop, {})]                    
+[INFO] Read cmd (line 1738): execute n1 get logOffset                           
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1739): # variable logOffset s1 0                           
+[INFO] Read cmd (line 1740): compare variable                                   
+TRACE logOffset node=n1 code=0 model=0  
+[INFO] Read cmd (line 1741): execute n1 get state                               
+[DETL] Received data from node "n1": 4  
+[INFO] Comment (line 1742): # variable state s1 4                               
+[INFO] Read cmd (line 1743): compare variable                                   
+TRACE state node=n1 code=4 model=4      
+[INFO] Read cmd (line 1744): execute n1 get commitIndex                         
+[DETL] Received data from node "n1": 0  
+[INFO] Comment (line 1745): # variable commitIndex s1 0                         
+[INFO] Read cmd (line 1746): compare variable                                   
+TRACE commitIndex node=n1 code=0 model=0                                        
+[INFO] Read cmd (line 1747): execute n1 get nextIndex                           
+[DETL] Received data from node "n1": {'n1': 1, 'n2': 1, 'n3': 1}                
+[INFO] Comment (line 1748): # variable nextIndex s1 {'n1': 2, 'n2': 1, 'n3': 1} 
+[INFO] Read cmd (line 1749): compare variable                                   
+TRACE nextIndex node=n1 code={'n1': 1, 'n2': 1, 'n3': 1} model={'n1': 2, 'n2': 1, 'n3': 1}          
+[WARN] Variable "nextIndex" compare failed!                                     
+- Code (n1): {'n1': 1, 'n2': 1, 'n3': 1}                                        
+- Model(s1): {'n1': 2, 'n2': 1, 'n3': 1}                                        
+controller: /root/sandtable/src/controller/Command.cpp:302: void Command::run_read_cmd(): Assertion `code_var == model_var' failed.                             
+Aborted (core dumped)                   
+logout              
+
