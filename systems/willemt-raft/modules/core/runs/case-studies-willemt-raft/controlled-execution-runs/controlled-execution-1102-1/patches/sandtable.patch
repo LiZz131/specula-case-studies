@@ -1,0 +1,459 @@
+--- a/scripts/collect_gcov.sh
++++ b/scripts/collect_gcov.sh
+@@ -0,0 +1,24 @@
++#!/bin/bash
++# Merge the three nodes' gcda inside the controller and emit gcov for the library.
++set -euo pipefail
++BASE=/root/sandtable/specula-wraft/sandtable/systems/WRaft-series/driver/build/CMakeFiles/WRaftDriver.dir
++SRC=root/sandtable/specula-wraft/system/src
++OUT=/root/sandtable/specula-wraft/gcov-out
++rm -rf /tmp/wraft-gcov-a /tmp/wraft-gcov "$OUT"
++mkdir -p "$OUT"
++gcov-tool merge -o /tmp/wraft-gcov-a /tmp/gcov-n1 /tmp/gcov-n2
++gcov-tool merge -o /tmp/wraft-gcov /tmp/wraft-gcov-a /tmp/gcov-n3
++cd "$OUT"
++shopt -s nullglob
++found=0
++for g in "$BASE/$SRC"/*.gcno; do
++    name=$(basename "$g" .gcno)
++    cp "/tmp/wraft-gcov/$BASE/$SRC/$name.gcda" .
++    cp "$g" .
++    found=1
++done
++if [[ "$found" -ne 1 ]]; then
++    echo "no library gcno" >&2
++    exit 1
++fi
++gcov -b ./*.gcno > "$OUT/summary.txt"
+--- a/scripts/run_round.py
++++ b/scripts/run_round.py
+@@ -0,0 +1,429 @@
++#!/usr/bin/env python3
++"""Sample and replay the wraft controlled-execution round.
++
++The mount is a working copy. Records stay in the round directory.
++"""
++
++import argparse
++import json
++import os
++import re
++import shutil
++import subprocess
++import time
++from concurrent.futures import ThreadPoolExecutor, as_completed
++from pathlib import Path
++
++CE = Path("/users/bingzhuo/Specula/case-studies/systems/willemt-raft/modules/core/runs/case-studies-willemt-raft/controlled-execution-runs/controlled-execution-1102-1")
++RUN = CE.parent.parent
++MOUNT = Path("/users/bingzhuo/sandtable/build/mount/specula-wraft")
++CONTAINER = "/root/sandtable/specula-wraft"
++JAR = Path("/users/bingzhuo/sandtable/scripts/tla2tools.jar")
++SPEC = CE / "spec"
++SOURCE_FILES = (
++    "raft_log.c", "raft_server.c", "raft_node.c", "raft_server_properties.c",
++)
++CONFIGS = [
++    ("standard", "MC_for_sandtable.cfg", "MC_for_sandtable"),
++    ("snapshot", "MC_for_sandtable_snapshot.cfg", "MC_for_sandtable"),
++    ("vote", "MC_for_sandtable_vote.cfg", "MC_for_sandtable"),
++    ("broadcast", "MC_for_sandtable_broadcast.cfg", "MC_for_sandtable"),
++    ("commit", "MC_for_sandtable_commit.cfg", "MC_for_sandtable"),
++    ("log", "MC_for_sandtable_log.cfg", "MC_for_sandtable"),
++    ("commit-witness", "MC_for_sandtable_commit_witness.cfg", "MC_for_sandtable_witness"),
++    ("install-deep", "MC_for_sandtable_deep.cfg", "MC_for_sandtable_deep"),
++]
++LINE_RE = re.compile(r"^\s*(#####|\d+\*?):\s*(\d+):")
++FUNC_RE = re.compile(r"^function\s+(\S+)\s+called\s+(\d+)", re.M)
++
++
++def trace_name(seed):
++    return "t%04d" % seed
++
++
++def trace_dir(config, seed):
++    return CE / config / "traces" / trace_name(seed)
++
++
++def run(cmd, timeout=None, cwd=None):
++    return subprocess.run(
++        cmd, cwd=cwd, timeout=timeout, text=True,
++        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
++    )
++
++
++def sync_working_copy():
++    MOUNT.mkdir(parents=True, exist_ok=True)
++    subprocess.run(["rsync", "-a", "--delete", str(CE / "system") + "/", str(MOUNT / "system") + "/"], check=True)
++    subprocess.run(
++        ["rsync", "-a", "--delete", "--exclude", "driver/build", "--exclude", "__pycache__",
++         str(CE / "sandtable") + "/", str(MOUNT / "sandtable") + "/"],
++        check=True,
++    )
++    for script in (MOUNT / "sandtable").rglob("*.sh"):
++        script.chmod(0o755)
++
++
++def build_driver():
++    sync_working_copy()
++    cmd = (
++        "set -e; cd /root/sandtable/specula-wraft/sandtable/systems/WRaft-series/driver; "
++        "rm -rf build; cmake -S . -B build >/tmp/wraft-cmake.log; "
++        "cmake --build build -j$(nproc) >>/tmp/wraft-cmake.log"
++    )
++    result = run(["sudo", "docker", "exec", "controller", "bash", "-lc", cmd], timeout=180)
++    if result.returncode != 0:
++        log = run(["sudo", "docker", "exec", "controller", "bash", "-lc", "tail -100 /tmp/wraft-cmake.log"])
++        raise SystemExit(result.stdout + result.stderr + log.stdout)
++    binary = MOUNT / "sandtable/systems/WRaft-series/driver/build/WRaftDriver"
++    if not binary.is_file():
++        raise SystemExit("WRaftDriver missing")
++
++
++def tlc_one(config, cfg, module, seed):
++    dest = trace_dir(config, seed)
++    dest.mkdir(parents=True, exist_ok=True)
++    out = dest / "MC.out"
++    if out.is_file() and "pc |->" in out.read_text(errors="replace"):
++        return config, seed, "cached"
++    meta = Path("/tmp") / ("tlc-wraft-%s-%d" % (config, seed))
++    if meta.exists():
++        shutil.rmtree(meta, ignore_errors=True)
++    cmd = [
++        "java", "-Xmx2g", "-jar", str(JAR), "-tool", "-workers", "1", "-simulate",
++        "-depth", "50", "-seed", str(seed), "-metadir", str(meta),
++        "-config", cfg, module,
++    ]
++    try:
++        result = subprocess.run(
++            cmd, cwd=SPEC, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=180,
++        )
++    except subprocess.TimeoutExpired as exc:
++        out.write_text((exc.stdout or "") + "\n" + (exc.stderr or "") + "\nTIMEOUT\n")
++        (dest / "tlc.err").write_text(exc.stderr or "")
++        (dest / "tlc.status").write_text("124")
++        shutil.rmtree(meta, ignore_errors=True)
++        return config, seed, "timeout"
++    text = result.stdout if "@!" in result.stdout else result.stdout + "\n" + result.stderr
++    out.write_text(text)
++    (dest / "tlc.err").write_text(result.stderr)
++    (dest / "tlc.status").write_text(str(result.returncode))
++    shutil.rmtree(meta, ignore_errors=True)
++    if "pc |->" not in text:
++        return config, seed, "no-pc"
++    if "Invariant DepthBound is violated" in text:
++        return config, seed, "depth"
++    if "is violated" in text:
++        return config, seed, "safety"
++    return config, seed, "short"
++
++
++def sample(names, seeds, jobs):
++    tasks = []
++    for name, cfg, module in CONFIGS:
++        if name not in names:
++            continue
++        for seed in seeds:
++            tasks.append((name, cfg, module, seed))
++    print("sampling %d" % len(tasks), flush=True)
++    done = 0
++    with ThreadPoolExecutor(max_workers=jobs) as pool:
++        futures = [pool.submit(tlc_one, *task) for task in tasks]
++        for fut in as_completed(futures):
++            config, seed, kind = fut.result()
++            done += 1
++            if kind not in ("cached", "depth") or done == len(tasks) or done % 20 == 0:
++                print("tlc %d/%d %s %s %s" % (done, len(tasks), config, trace_name(seed), kind), flush=True)
++
++
++def clear_gcda():
++    for node in ("n1", "n2", "n3"):
++        run(["sudo", "docker", "exec", node, "bash", "-lc", "rm -rf /tmp/gcov-%s /tmp/wraft-persist-%s /tmp/wraft-freeze-%s" % (node, node, node)])
++    run(["sudo", "docker", "exec", "controller", "bash", "-lc",
++         "find /root/sandtable/specula-wraft/sandtable/systems/WRaft-series/driver/build -name '*.gcda' -delete"])
++
++
++def replay_one(config, seed):
++    src = trace_dir(config, seed) / "MC.out"
++    host_work = MOUNT / "work" / config / trace_name(seed)
++    run(["sudo", "rm", "-rf", str(host_work)])
++    host_work.mkdir(parents=True)
++    shutil.copy(src, host_work / "MC.out")
++    container_mc = "%s/work/%s/%s/MC.out" % (CONTAINER, config, trace_name(seed))
++    script = CONTAINER + "/sandtable/systems/WRaft-series/WRaft/scripts/run_one_testcase.sh"
++    started = time.monotonic()
++    try:
++        result = run(["sudo", "docker", "exec", "controller", "bash", script, container_mc, "3"], timeout=180)
++        elapsed = time.monotonic() - started
++        code = result.returncode
++        extra = (result.stdout or "")[-2000:] + "\n" + (result.stderr or "")[-2000:]
++    except subprocess.TimeoutExpired as exc:
++        elapsed = time.monotonic() - started
++        code = 124
++        extra = "timeout\n" + str(exc)[-1000:]
++    log_host = next(host_work.rglob("log.host"), None)
++    traces = next(host_work.rglob("traces.txt"), None)
++    dest = trace_dir(config, seed)
++    if traces:
++        shutil.copy(traces, dest / "traces.txt")
++    if log_host:
++        shutil.copy(log_host, dest / "log.host")
++    (dest / "replay.status").write_text("exit %s\n%s\n" % (code, extra))
++    run(["sudo", "rm", "-rf", str(host_work)])
++    return elapsed, code
++
++
++def judge(config, seed, exit_code):
++    path = trace_dir(config, seed) / "log.host"
++    text = path.read_text(errors="replace") if path.is_file() else ""
++    variable = re.search(r'Variable "([^"]+)" compare failed', text)
++    logout = "logout" in text
++    sanitizer = "Sanitizer" in text or "stack smashing" in text
++    library_assert = "Assertion" in text and not variable
++    died = "Segmentation fault" in text or "core dumped" in text or "Aborted" in text
++    traces = trace_dir(config, seed) / "traces.txt"
++    comments = []
++    if traces.is_file():
++        comments = [line for line in traces.read_text(errors="replace").splitlines() if line.startswith("# [")]
++    finished = bool(comments) and comments[-1] in text
++    code_value = model_value = pc = ""
++    if variable:
++        window = text[variable.start():variable.start() + 900]
++        code_m = re.search(r"- Code \([^)]+\): (.*)", window)
++        model_m = re.search(r"- Model\([^)]+\): (.*)", window)
++        code_value = code_m.group(1).strip() if code_m else ""
++        model_value = model_m.group(1).strip() if model_m else ""
++        step = re.search(r"# \[(\d+)\]", text[max(0, variable.start() - 500):variable.start()])
++        if step and comments:
++            index = int(step.group(1)) - 1
++            if 0 <= index < len(comments):
++                pc = comments[index]
++    if not path.is_file():
++        kind, ok, detail = "crash", False, "no log.host"
++    elif variable:
++        kind, ok, detail = "variable", False, variable.group(0)
++    elif sanitizer or library_assert or died or exit_code not in (0, None) or not logout or not finished:
++        kind, ok = "crash", False
++        if sanitizer:
++            detail = "sanitizer"
++        elif library_assert or died:
++            detail = "assert" if library_assert else "segfault"
++        elif not finished:
++            detail = "incomplete"
++        else:
++            detail = "exit %s" % exit_code
++    else:
++        kind, ok = "pass", True
++        detail = "net-len" if "Net mgs length compare failed" in text else ""
++    return {
++        "ok": ok, "logout": logout, "kind": kind, "variable": variable.group(1) if variable else "",
++        "code_value": code_value, "model_value": model_value, "detail": detail,
++        "netlen_warn": "Net mgs length compare failed" in text, "pc": pc,
++    }
++
++
++def collect_coverage(config, seed, elapsed, ok):
++    host_nodes = Path("/tmp/wraft-gcov-nodes")
++    run(["sudo", "rm", "-rf", str(host_nodes)])
++    host_nodes.mkdir(parents=True)
++    for node in ("n1", "n2", "n3"):
++        run(["sudo", "docker", "cp", "%s:/tmp/gcov-%s" % (node, node), str(host_nodes / node)])
++        run(["sudo", "docker", "exec", "controller", "rm", "-rf", "/tmp/gcov-%s" % node])
++        run(["sudo", "docker", "cp", str(host_nodes / node), "controller:/tmp/gcov-%s" % node])
++    script = CONTAINER + "/sandtable/scripts/collect_gcov.sh"
++    result = run(["sudo", "docker", "exec", "controller", "bash", script], timeout=60)
++    out_dir = CE / config / "gcov"
++    if out_dir.exists():
++        run(["sudo", "rm", "-rf", str(out_dir)])
++    out_dir.mkdir(parents=True)
++    copied = run(["sudo", "docker", "cp", "controller:%s/gcov-out/." % CONTAINER, str(out_dir)])
++    run(["sudo", "chown", "-R", "%d:%d" % (os.getuid(), os.getgid()), str(out_dir)])
++    summary = (out_dir / "summary.txt").read_text(errors="replace") if (out_dir / "summary.txt").is_file() else ""
++    if result.returncode != 0 or copied.returncode != 0 or "Lines executed" not in summary:
++        raise SystemExit("gcov failed\n" + result.stdout + result.stderr + summary[-500:])
++    files = {}
++    current = None
++    for line in summary.splitlines():
++        named = re.match(r"File '(.+)'", line)
++        if named:
++            current = Path(named.group(1)).name
++            files[current] = {}
++            continue
++        match = re.search(r"([\d.]+)% of (\d+)", line)
++        if not current or not match:
++            continue
++        pct, total = float(match.group(1)), int(match.group(2))
++        if line.startswith("Lines executed:"):
++            files[current]["line_pct"] = pct
++            files[current]["lines"] = total
++        elif line.startswith("Taken at least once:"):
++            files[current]["branch_taken_pct"] = pct
++            files[current]["branches"] = total
++        elif line.startswith("Branches executed:"):
++            files[current]["branch_exec_pct"] = pct
++    library = [item for name, item in files.items() if name in SOURCE_FILES and "lines" in item]
++    line_total = sum(item["lines"] for item in library)
++    line_hit = sum(item["line_pct"] / 100.0 * item["lines"] for item in library)
++    branch_total = sum(item.get("branches", 0) for item in library)
++    branch_hit = sum(item.get("branch_taken_pct", 0) / 100.0 * item.get("branches", 0) for item in library)
++    entry = {
++        "trace": trace_name(seed),
++        "replay_s": round(elapsed, 3),
++        "ok": ok,
++        "line_pct": round(100.0 * line_hit / line_total, 2) if line_total else 0,
++        "branch_taken_pct": round(100.0 * branch_hit / branch_total, 2) if branch_total else 0,
++        "files": {name: files[name] for name in SOURCE_FILES if name in files},
++    }
++    path = CE / config / "coverage.json"
++    rows = json.loads(path.read_text()) if path.is_file() else []
++    rows = [row for row in rows if row["trace"] != entry["trace"]]
++    rows.append(entry)
++    rows.sort(key=lambda row: row["trace"])
++    path.write_text(json.dumps(rows, indent=2) + "\n")
++    run(["sudo", "rm", "-rf", str(host_nodes)])
++    return entry
++
++
++def failing_window(text):
++    marks = list(re.finditer(r"# \[\d+\]", text))
++    return text[marks[-1].start():] if marks else text
++
++
++def label_failure(verdict, text):
++    if verdict["kind"] == "variable":
++        window = failing_window(text)
++        broken = re.search(
++            r"deliver-unordered failed|was dropped|cannot find channel|Loop more than 40|"
++            r"out of boundary",
++            window,
++        )
++        return "adapter" if broken else "bug"
++    if verdict["detail"] in ("no log.host",) and "docker" in text.lower():
++        return "environment"
++    return "crash"
++
++
++def record_failure(config, seed, exit_code, verdict, label):
++    path = CE / "failures.tsv"
++    if not path.is_file():
++        path.write_text("配置\t轨迹\t种子\t归类\t退出码\tlogout\t变量\t代码值\t模型值\tpc\t记录目录\n")
++    row_key = "%s\t%s\t" % (config, trace_name(seed))
++    kept = [line for line in path.read_text().splitlines() if not line.startswith(row_key)]
++    record = "potential-bugs/%s/%s" % (bug_name(verdict), trace_name(seed)) if label in ("bug", "crash") else ""
++    kept.append("\t".join([
++        config, trace_name(seed), str(seed), label, str(exit_code),
++        "yes" if verdict["logout"] else "no", verdict["variable"], verdict["code_value"],
++        verdict["model_value"], verdict["pc"], record,
++    ]))
++    path.write_text("\n".join(kept) + "\n")
++    if label in ("bug", "crash"):
++        copy_bug(config, seed, verdict, label)
++
++
++def bug_name(verdict):
++    kind = "crash"
++    if verdict["pc"]:
++        parts = verdict["pc"].split()
++        kind = parts[2] if len(parts) > 2 else "step"
++    variable = verdict["variable"] or verdict["detail"] or "crash"
++    return re.sub(r"[^A-Za-z0-9_.-]+", "-", "%s-%s" % (variable, kind))[:80]
++
++
++def copy_bug(config, seed, verdict, label):
++    src = trace_dir(config, seed)
++    dest = RUN / "potential-bugs" / bug_name(verdict) / trace_name(seed)
++    dest.mkdir(parents=True, exist_ok=True)
++    for name in ("MC.out", "traces.txt", "log.host", "replay.status", "tlc.err", "tlc.status"):
++        if (src / name).is_file():
++            shutil.copy(src / name, dest / name)
++    note = dest.parent / "README.md"
++    if not note.is_file():
++        note.write_text("# %s\n\n归类先按 failures.tsv。复现和上游链接在本轮结束时补全。\n" % bug_name(verdict))
++
++
++def fresh_config(name):
++    root = CE / name
++    if (root / "coverage.json").is_file():
++        (root / "coverage.json").unlink()
++    if (root / "gcov").is_dir():
++        shutil.rmtree(root / "gcov")
++    traces = root / "traces"
++    if traces.is_dir():
++        for path in traces.glob("t*/*"):
++            if path.name in ("log.host", "traces.txt", "replay.status"):
++                path.unlink()
++
++
++def safety_name(config, seed):
++    text = (trace_dir(config, seed) / "MC.out").read_text(errors="replace")
++    match = re.search(r"Invariant (\S+) is violated", text)
++    if match and match.group(1) != "DepthBound":
++        return match.group(1)
++    return ""
++
++
++def main():
++    parser = argparse.ArgumentParser()
++    parser.add_argument("--phase", default="replay", choices=["build", "sample", "replay", "one", "all"])
++    parser.add_argument("--configs", default="standard")
++    parser.add_argument("--seeds", default="1")
++    parser.add_argument("--jobs", type=int, default=8)
++    parser.add_argument("--fresh", action="store_true")
++    args = parser.parse_args()
++    names = [item for item in args.configs.split(",") if item]
++    if names == ["all"]:
++        names = [item[0] for item in CONFIGS]
++    if "-" in args.seeds:
++        start, end = args.seeds.split("-")
++        seeds = list(range(int(start), int(end) + 1))
++    else:
++        seeds = [int(item) for item in args.seeds.split(",") if item]
++    if args.fresh:
++        failures = CE / "failures.tsv"
++        if failures.is_file():
++            failures.unlink()
++        for name in names:
++            fresh_config(name)
++    binary = MOUNT / "sandtable/systems/WRaft-series/driver/build/WRaftDriver"
++    if args.phase == "replay" and binary.is_file():
++        sync_working_copy()
++        print("binary kept", flush=True)
++    elif args.phase in ("build", "one", "replay", "all"):
++        build_driver()
++        print("built", flush=True)
++    if args.phase in ("sample", "one", "replay", "all"):
++        sample(names, seeds, args.jobs)
++    if args.phase in ("build", "sample"):
++        return
++    for name in names:
++        if not (CE / name / "coverage.json").is_file():
++            clear_gcda()
++        for seed in seeds:
++            dest = trace_dir(name, seed)
++            if (dest / "log.host").is_file() and (dest / "replay.status").is_file():
++                print("skip %s %s" % (name, trace_name(seed)), flush=True)
++                continue
++            elapsed, code = replay_one(name, seed)
++            verdict = judge(name, seed, code)
++            try:
++                entry = collect_coverage(name, seed, elapsed, verdict["ok"])
++                covered = "line %.2f" % entry["line_pct"]
++            except SystemExit as exc:
++                covered = "gcov-failed"
++                if verdict["ok"]:
++                    print("STOP %s %s %s" % (name, trace_name(seed), exc), flush=True)
++                    return
++            if verdict["ok"]:
++                print("replay %s %s %.1fs pass %s" % (name, trace_name(seed), elapsed, covered), flush=True)
++                continue
++            text = (dest / "log.host").read_text(errors="replace") if (dest / "log.host").is_file() else ""
++            label = label_failure(verdict, text)
++            record_failure(name, seed, code, verdict, label)
++            print("FAIL %s %s %s %s %s" % (label, name, trace_name(seed), verdict["variable"] or verdict["detail"], verdict["pc"]), flush=True)
++            if label in ("adapter", "crash"):
++                print("STOP %s %s" % (name, trace_name(seed)), flush=True)
++                return
++
++
++if __name__ == "__main__":
++    main()
