@@ -1,0 +1,356 @@
+[MYSYSCALL] Intercept (real 0x7f6b56eee610 -> fake 0x7f6b57305dc6) "clock_gettime"
+[MYSYSCALL] Discharge (real 0x7f6b56eae3a0) "free"
+[MYSYSCALL] Discharge (real 0x7f6b56eae060) "malloc"
+[MYSYSCALL] Discharge (real 0x7f6b56eaf4e0) "calloc"
+[MYSYSCALL] Discharge (real 0x7f6b56eae700) "realloc"
+[MYSYSCALL] Discharge (real 0x7f6b56f1d630) "open"
+[MYSYSCALL] Intercept (real 0x7f6b56f1e0a0 -> fake 0x7f6b57306510) "close"
+[MYSYSCALL] Intercept (real 0x7f6b56f30bc0 -> fake 0x7f6b573066ad) "socket"
+[MYSYSCALL] Intercept (real 0x7f6b56f304a0 -> fake 0x7f6b573067f6) "accept"
+[MYSYSCALL] Intercept (real 0x7f6b56f30570 -> fake 0x7f6b57306984) "connect"
+[MYSYSCALL] Intercept (real 0x7f6b56f30a80 -> fake 0x7f6b57306ba7) "sendto"
+[MYSYSCALL] Intercept (real 0x7f6b56f30920 -> fake 0x7f6b5730709e) "send"
+[MYSYSCALL] Intercept (real 0x7f6b56f1d9c0 -> fake 0x7f6b5730717c) "write"
+[MYSYSCALL] Intercept (real 0x7f6b56f309e0 -> fake 0x7f6b57307355) "sendmsg"
+[MYSYSCALL] Intercept (real 0x7f6b56f222c0 -> fake 0x7f6b5730749f) "sendfile"
+[MYSYSCALL] Discharge (real 0x7f6b56f1d7c0) "openat"
+[MYSYSCALL] Intercept (real 0x7f6b56f30d60 -> fake 0x7f6b573075db) "accept4"
+[MYSYSCALL] Discharge (real 0x7f6b56e4f230) "random"
+[MYSYSCALL] Intercept (real 0x7fff938fcbd0 -> fake 0x7f6b57307867) "gettimeofday"
+[MYSYSCALL] Discharge (real 0x7fff938fcbe0) "time"
+[MYSYSCALL] Intercept (real 0x7f6b56eee5a0 -> fake 0x7f6b57307b85) "clock_getres"
+[MYSYSCALL] Intercept (real 0x7f6b56f30ed0 -> fake 0x7f6b57307ca3) "sendmmsg"
+[MYSYSCALL] Intercept (real 0x7f6b56f23b90 -> fake 0x7f6b57307dfc) "writev"
+[MYSYSCALL] Intercept (real 0x7f6b56f306e0 -> fake 0x7f6b57308050) "recv"
+[MYSYSCALL] Intercept (real 0x7f6b56f307a0 -> fake 0x7f6b573081d3) "recvfrom"
+[MYSYSCALL] Discharge (real 0x7f6b56f30870) "recvmsg"
+[MYSYSCALL] Intercept (real 0x7f6b56f1d920 -> fake 0x7f6b573084ec) "read"
+[MYSYSCALL] Program /root/sandtable/specula-wraft/sandtable/systems/WRaft-series/driver/build/WRaftDriver
+[MYSYSCALL] Read config file "/root/sandtable/specula-wraft/work/typical-01-election/test/config/config.txt"
+  - map-cidr 10.1.0.0/24 10.255.255.0/24
+  - router 10.255.255.100:10100
+  - node n1 10.255.255.101:0
+  - node n2 10.255.255.102:0
+  - node n3 10.255.255.103:0
+[MYSYSCALL] Init completed
+[INFO] Reading config file
+  - map-cidr 10.1.0.0/24 10.255.255.0/24
+[INFO]   - node n1 10.1.0.101
+[INFO]   - node n2 10.1.0.102
+[INFO]   - node n3 10.1.0.103
+[INFO] Set self node (n3, 10.1.0.103:10100)
+[INFO] Load 2 peer nodes
+[MYSYSCALL] Call 1/1, return 3, socket(domain: 0x2, type: 0x1, protocol: 0x6)
+[INFO] listening port 10100
+[INFO] start accept thread
+[INFO] Repl ack is enabled
+[MYSYSCALL] Call 1/1, concern, return 5, accept(sockfd: 3, addr: 10.1.0.101:38165, addrlen: 16)
+[INFO] accept (n1, 10.1.0.101:10100)
+[MYSYSCALL] Call 2/3, concern, return 6, accept(sockfd: 3, addr: 10.1.0.102:38305, addrlen: 16)
+[INFO] accept (n2, 10.1.0.102:10100)
+[MYSYSCALL] Call 1/0, recv from 10.1.0.101:38165, return -1, recv(sockfd: 5, buf: 0x7fff9386ebaf, len: 1, flags: 0x42
+[MYSYSCALL] Call 2/0, recv from 10.1.0.102:38305, return -1, recv(sockfd: 6, buf: 0x7fff9386ebaf, len: 1, flags: 0x42
+[1;32m[OK][0m
+[1;32m[OK][0m
+[MYSYSCALL] Call 3/0, recv from 10.1.0.101:38165, return -1, recv(sockfd: 5, buf: 0x7fff9386eb2f, len: 1, flags: 0x42
+[MYSYSCALL] Call 4/0, recv from 10.1.0.102:38305, return -1, recv(sockfd: 6, buf: 0x7fff9386eb2f, len: 1, flags: 0x42
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+[]
+[1;32m[OK][0m
+1
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+Nil
+[1;32m[OK][0m
+{}
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+FALSE
+[1;32m[OK][0m
+{'n1': 1, 'n2': 1, 'n3': 1}
+[1;32m[OK][0m
+{'n1': 0, 'n2': 0, 'n3': 0}
+[1;32m[OK][0m
+[MYSYSCALL] Router cmd (line 124): print [2] Timeout s2
+0
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+[]
+[1;32m[OK][0m
+1
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+Nil
+[1;32m[OK][0m
+{}
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+FALSE
+[1;32m[OK][0m
+{'n1': 1, 'n2': 1, 'n3': 1}
+[1;32m[OK][0m
+{'n1': 0, 'n2': 0, 'n3': 0}
+[1;32m[OK][0m
+[MYSYSCALL] Router cmd (line 238): print [3] Timeout s2
+0
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+[]
+[1;32m[OK][0m
+1
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+Nil
+[1;32m[OK][0m
+{}
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+FALSE
+[1;32m[OK][0m
+{'n1': 1, 'n2': 1, 'n3': 1}
+[1;32m[OK][0m
+{'n1': 0, 'n2': 0, 'n3': 0}
+[1;32m[OK][0m
+[MYSYSCALL] Router cmd (line 352): print [4] HandleRequestVoteRequest s3 s2 4 lease
+[1;32m[OK][0m
+[MYSYSCALL] Router cmd (line 355): check_has_recv_queue n2
+[MYSYSCALL] Check recv queue: 40
+[MYSYSCALL] Call 5/0, recv from 10.1.0.102:38305, return 4, recv(sockfd: 6, buf: 0x7fff9386ea60, len: 4, flags: 0x42
+[MYSYSCALL] Call 6/0, recv from 10.1.0.102:38305, return 4, recv(sockfd: 6, buf: 0x7fff9386ea60, len: 4, flags: 0x40
+[MYSYSCALL] Call 7/0, recv from 10.1.0.102:38305, return 36, recv(sockfd: 6, buf: 0x5586946243f0, len: 36, flags: 0x100
+[INFO] RaftRecvMsg MSG_RV
+[DETL] node requested vote: -1805385584 replying: not granted
+[MYSYSCALL] Call 1/43, hack 10.1.0.102:38305, return 24, write(sockfd: 6, buf: "\x00\x00\x00\x14\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", count: 24)
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+[]
+[1;32m[OK][0m
+1
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+Nil
+[1;32m[OK][0m
+{}
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+FALSE
+[1;32m[OK][0m
+{'n1': 1, 'n2': 1, 'n3': 1}
+[1;32m[OK][0m
+{'n1': 0, 'n2': 0, 'n3': 0}
+[1;32m[OK][0m
+[MYSYSCALL] Router cmd (line 468): print [5] HandleRequestVoteResponse s2 s3 5
+0
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+[]
+[1;32m[OK][0m
+1
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+Nil
+[1;32m[OK][0m
+{}
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+FALSE
+[1;32m[OK][0m
+{'n1': 1, 'n2': 1, 'n3': 1}
+[1;32m[OK][0m
+{'n1': 0, 'n2': 0, 'n3': 0}
+[1;32m[OK][0m
+[MYSYSCALL] Router cmd (line 583): print [6] HandleRequestVoteRequest s1 s2 1 lease
+0
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+[]
+[1;32m[OK][0m
+1
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+Nil
+[1;32m[OK][0m
+{}
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+FALSE
+[1;32m[OK][0m
+{'n1': 1, 'n2': 1, 'n3': 1}
+[1;32m[OK][0m
+{'n1': 0, 'n2': 0, 'n3': 0}
+[1;32m[OK][0m
+[MYSYSCALL] Router cmd (line 699): print [7] HandleRequestVoteResponse s2 s1 6
+0
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+[]
+[1;32m[OK][0m
+1
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+Nil
+[1;32m[OK][0m
+{}
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+FALSE
+[1;32m[OK][0m
+{'n1': 1, 'n2': 1, 'n3': 1}
+[1;32m[OK][0m
+{'n1': 0, 'n2': 0, 'n3': 0}
+[1;32m[OK][0m
+[MYSYSCALL] Router cmd (line 814): print [8] HandleRequestVoteRequest s1 s2 3 lease
+0
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+[]
+[1;32m[OK][0m
+1
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+Nil
+[1;32m[OK][0m
+{}
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+FALSE
+[1;32m[OK][0m
+{'n1': 1, 'n2': 1, 'n3': 1}
+[1;32m[OK][0m
+{'n1': 0, 'n2': 0, 'n3': 0}
+[1;32m[OK][0m
+[MYSYSCALL] Router cmd (line 930): print [9] HandleRequestVoteResponse s2 s1 7
+0
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+[]
+[1;32m[OK][0m
+1
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+Nil
+[1;32m[OK][0m
+{}
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+FALSE
+[1;32m[OK][0m
+{'n1': 1, 'n2': 1, 'n3': 1}
+[1;32m[OK][0m
+{'n1': 0, 'n2': 0, 'n3': 0}
+[1;32m[OK][0m
+[MYSYSCALL] Router cmd (line 1045): print [10] HandleRequestVoteRequest s3 s2 2 open
+[1;32m[OK][0m
+[MYSYSCALL] Router cmd (line 1048): check_has_recv_queue n2
+[MYSYSCALL] Check recv queue: 40
+[MYSYSCALL] Call 8/0, recv from 10.1.0.102:38305, return 4, recv(sockfd: 6, buf: 0x7fff9386ea60, len: 4, flags: 0x42
+[MYSYSCALL] Call 9/0, recv from 10.1.0.102:38305, return 4, recv(sockfd: 6, buf: 0x7fff9386ea60, len: 4, flags: 0x40
+[MYSYSCALL] Call 10/0, recv from 10.1.0.102:38305, return 36, recv(sockfd: 6, buf: 0x5586946243f0, len: 36, flags: 0x100
+[INFO] RaftRecvMsg MSG_RV
+[DETL] becoming follower
+[DETL] randomize election timeout to 1886
+[DETL] node requested vote: -1805385584 replying: granted
+[MYSYSCALL] Call 2/121, hack 10.1.0.102:38305, return 24, write(sockfd: 6, buf: "\x00\x00\x00\x14\x03\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00", count: 24)
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+1
+[1;32m[OK][0m
+[]
+[1;32m[OK][0m
+1
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+n2
+[1;32m[OK][0m
+{}
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+FALSE
+[1;32m[OK][0m
+{'n1': 1, 'n2': 1, 'n3': 1}
+[1;32m[OK][0m
+{'n1': 0, 'n2': 0, 'n3': 0}
+[1;32m[OK][0m
+[MYSYSCALL] Router cmd (line 1161): print [11] HandleRequestVoteResponse s2 s3 8
+0
+[1;32m[OK][0m
+1
+[1;32m[OK][0m
+[]
+[1;32m[OK][0m
+1
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+n2
+[1;32m[OK][0m
+{}
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+FALSE
+[1;32m[OK][0m
+{'n1': 1, 'n2': 1, 'n3': 1}
+[1;32m[OK][0m
+{'n1': 0, 'n2': 0, 'n3': 0}
+[1;32m[OK][0m
+init
+[1;32m[OK][0m
+[MYSYSCALL] Router socket is closed, exiting ..

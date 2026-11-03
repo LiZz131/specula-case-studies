@@ -1,0 +1,62 @@
+OK][0m
+{'n1': 0, 'n2': 0, 'n3': 0}
+[1;32m[OK][0m
+[MYSYSCALL] Router cmd (line 3778): print [34] HandleAppendEntriesResponse s3 s1 25
+0
+[1;32m[OK][0m
+2
+[1;32m[OK][0m
+[]
+[1;32m[OK][0m
+1
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+n3
+[1;32m[OK][0m
+{n2}
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+FALSE
+[1;32m[OK][0m
+{'n1': 1, 'n2': 1, 'n3': 1}
+[1;32m[OK][0m
+{'n1': 0, 'n2': 0, 'n3': 0}
+[1;32m[OK][0m
+[MYSYSCALL] Router cmd (line 3893): print [35] SendAppendEntries s3 s2
+0
+[1;32m[OK][0m
+2
+[1;32m[OK][0m
+[]
+[1;32m[OK][0m
+1
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+n3
+[1;32m[OK][0m
+{n2}
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+0
+[1;32m[OK][0m
+FALSE
+[1;32m[OK][0m
+{'n1': 1, 'n2': 1, 'n3': 1}
+[1;32m[OK][0m
+{'n1': 0, 'n2': 0, 'n3': 0}
+[1;32m[OK][0m
+[MYSYSCALL] Router cmd (line 4006): print [36] HandleAppendEntriesRequest s2 s3 26
+[MYSYSCALL] Router cmd (line 4008): check_has_recv_queue n3
+[MYSYSCALL] Check recv queue: 56
+[MYSYSCALL] Call 13/0, recv from 10.1.0.103:10100, return 4, recv(sockfd: 6, buf: 0x7ffd6dfe5ce0, len: 4, flags: 0x42
+[MYSYSCALL] Call 14/0, recv from 10.1.0.103:10100, return 4, recv(sockfd: 6, buf: 0x7ffd6dfe5ce0, len: 4, flags: 0x40
+[MYSYSCALL] Call 15/0, recv from 10.1.0.103:10100, return 52, recv(sockfd: 6, buf: 0x55a476012f30, len: 52, flags: 0x100
+[INFO] RaftRecvMsg MSG_AE
+WRaftDriver: /root/sandtable/specula-wraft/system/src/raft_server_properties.c:118: raft_set_commit_idx: Assertion `idx <= raft_get_current_idx(me_)' failed.
+Aborted (core dumped)

@@ -1,0 +1,16 @@
+配置	轨迹	种子	归类	退出码	logout	变量	代码值	模型值	pc	记录目录
+standard	t0049	49	spec	0	yes	nextIndex	{'n1': 2, 'n2': 1, 'n3': 2}	{'n1': 2, 'n2': 2, 'n3': 2}	# [20] HandleRequestVoteResponse s2 s3 15	potential-bugs/nextIndex-crash/t0049
+vote	t0084	84	spec	0	yes	nextIndex	{'n1': 2, 'n2': 1, 'n3': 2}	{'n1': 2, 'n2': 2, 'n3': 2}	# [28] HandleRequestVoteResponse s2 s3 17	potential-bugs/nextIndex-crash/t0084
+install-deep	t0014	14	bug	0	yes	log	[(1, 'v1'), (1, 'v1'), (1, 'v1')]	[(1, 'v1'), (1, 'v1')]	# [40] HandleAppendEntriesRequest s1 s2 16	potential-bugs/log-crash/t0014
+install-deep	t0020	20	spec	0	yes	log	[(3, 'v1')]	[(3, 'v1'), (3, 'v1')]	# [42] HandleAppendEntriesRequest s3 s1 28	potential-bugs/log-crash/t0020
+install-deep	t0026	26	bug	0	yes	commitIndex		2	# [36] HandleAppendEntriesRequest s2 s3 26	potential-bugs/commit-index-assert/t0026
+install-deep	t0030	30	bug	0	yes	log	[(2, 'v1'), (2, 'v1'), (2, 'v1')]	[(2, 'v1'), (2, 'v1')]	# [38] HandleAppendEntriesRequest s1 s2 15	potential-bugs/log-crash/t0030
+install-deep	t0033	33	spec	0	yes	log	[(3, 'v1')]	[(3, 'v1'), (3, 'v1')]	# [44] HandleAppendEntriesRequest s1 s2 29	potential-bugs/log-crash/t0033
+install-deep	t0036	36	bug	0	yes	log	[(3, 'v1'), (3, 'v1'), (3, 'v1')]	[(3, 'v1'), (3, 'v1')]	# [36] HandleAppendEntriesRequest s3 s2 15	potential-bugs/log-crash/t0036
+install-deep	t0037	37	bug	0	yes	log	[(4, 'v1'), (4, 'v1'), (4, 'v1'), (4, 'v1'), (4, 'v1'), (4, 'v1')]	[(4, 'v1'), (4, 'v1'), (4, 'v1')]	# [43] HandleAppendEntriesRequest s1 s3 15	potential-bugs/log-crash/t0037
+install-deep	t0038	38	bug	0	yes	log	[(2, 'v1'), (2, 'v1')]	[(2, 'v1')]	# [37] HandleAppendEntriesRequest s2 s3 17	potential-bugs/log-crash/t0038
+install-deep	t0051	51	bug	0	yes	log	[(2, 'v1'), (2, 'v1')]	[(2, 'v1')]	# [42] HandleAppendEntriesRequest s2 s1 14	potential-bugs/log-crash/t0051
+install-deep	t0060	60	bug	0	yes	log	[(2, 'v1'), (2, 'v1'), (2, 'v1')]	[(2, 'v1')]	# [41] HandleAppendEntriesRequest s3 s1 24	potential-bugs/log-crash/t0060
+install-deep	t0073	73	bug	0	yes	log	[(3, 'v1'), (3, 'v1'), (3, 'v1'), (3, 'v1')]	[(3, 'v1'), (3, 'v1'), (3, 'v1')]	# [41] HandleAppendEntriesRequest s2 s3 20	potential-bugs/log-crash/t0073
+install-deep	t0083	83	bug	0	yes	log	[(3, 'v1'), (3, 'v1'), (3, 'v1')]	[(3, 'v1'), (3, 'v1')]	# [43] HandleAppendEntriesRequest s1 s2 20	potential-bugs/log-crash/t0083
+install-deep	t0086	86	bug	0	yes	commitIndex		1	# [35] HandleAppendEntriesRequest s3 s2 26	potential-bugs/commit-index-assert/t0086
