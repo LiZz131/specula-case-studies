@@ -1,0 +1,1363 @@
+diff -ruN a/scripts/run_round.py b/scripts/run_round.py
+--- /dev/null
++++ b/scripts/run_round.py	2026-11-03 15:41:16.046924635 +0000
+@@ -0,0 +1,465 @@
++#!/usr/bin/env python3
++"""Sample and replay eliben/raft controlled execution.
++
++Coverage is go tool cover statement counts, not gcov. Go has no branch
++counters, so branch_taken_pct stays null. A bug is recorded and the walk
++continues. spec, adapter, an unclassified mismatch, or a plan-outside
++crash stops the walk.
++"""
++
++import argparse
++import json
++import os
++import re
++import shutil
++import subprocess
++import sys
++import time
++from concurrent.futures import ThreadPoolExecutor, as_completed
++from pathlib import Path
++
++CE = Path("/users/bingzhuo/Specula/case-studies/systems/eliben-raft/modules/core/runs/case-studies-eliben-raft/controlled-execution-runs/controlled-execution-1103-1")
++RUN = CE.parent.parent
++SPEC = CE / "spec"
++MOUNT = Path("/users/bingzhuo/sandtable/build/mount/specula-eliben")
++CONTAINER = "/root/sandtable/specula-eliben"
++JAR = "/users/bingzhuo/sandtable/scripts/tla2tools.jar"
++SCRIPT = CONTAINER + "/sandtable/systems/ElibenRaft/scripts/run_one_testcase.sh"
++
++CONFIGS = [
++    ("standard", "MC_for_sandtable.cfg"),
++    ("f1a", "MC_for_sandtable_f1a.cfg"),
++    ("f1b", "MC_for_sandtable_f1b.cfg"),
++    ("f1c", "MC_for_sandtable_f1c.cfg"),
++    ("f2a", "MC_for_sandtable_f2a.cfg"),
++]
++SOURCE_FILES = ("raft.go", "server.go", "storage.go", "controlled.go", "filestorage.go")
++SYSTEM = CE / "system"
++
++
++def run(cmd, timeout=180):
++    return subprocess.run(cmd, text=True, capture_output=True, timeout=timeout)
++
++
++def trace_name(seed):
++    return "t%04d" % seed
++
++
++def trace_dir(config, seed):
++    return CE / config / "traces" / trace_name(seed)
++
++
++def sample_one(config, cfg, seed):
++    dest = trace_dir(config, seed)
++    dest.mkdir(parents=True, exist_ok=True)
++    out = dest / "MC.out"
++    if out.is_file() and "pc |->" in out.read_text(errors="replace"):
++        return config, seed, "skip"
++    meta = "/tmp/tlc-eliben-%s-%d" % (config, seed)
++    shutil.rmtree(meta, ignore_errors=True)
++    cmd = [
++        "java", "-Xmx512m", "-jar", JAR, "-tool", "-workers", "1", "-simulate",
++        "-depth", "50", "-seed", str(seed), "-metadir", meta,
++        "-config", str(SPEC / cfg), "MC_for_sandtable",
++    ]
++    result = subprocess.run(cmd, cwd=SPEC, text=True, capture_output=True, timeout=180)
++    shutil.rmtree(meta, ignore_errors=True)
++    text = result.stdout
++    if "pc |->" not in text:
++        (dest / "tlc.err").write_text((result.stdout or "")[-4000:] + "\n" + (result.stderr or "")[-2000:])
++        (dest / "tlc.status").write_text("exit %d\n" % result.returncode)
++        return config, seed, "tlc-fail"
++    out.write_text(text)
++    violated = re.findall(r"Invariant (\S+) is violated", text)
++    (dest / "tlc.status").write_text("exit %d\n%s\n" % (result.returncode, "\n".join(violated)))
++    return config, seed, "ok"
++
++
++def sample(configs, seeds, jobs):
++    tasks = [(name, cfg, seed) for name, cfg in CONFIGS if name in configs for seed in seeds]
++    with ThreadPoolExecutor(max_workers=jobs) as pool:
++        futures = [pool.submit(sample_one, name, cfg, seed) for name, cfg, seed in tasks]
++        for future in as_completed(futures):
++            name, seed, status = future.result()
++            print("sample %s %s %s" % (name, trace_name(seed), status), flush=True)
++
++
++def sync_mount():
++    MOUNT.mkdir(parents=True, exist_ok=True)
++    subprocess.check_call(["rsync", "-a", "--delete", "--exclude", "driver/build", str(CE / "sandtable") + "/", str(MOUNT / "sandtable") + "/"])
++    subprocess.check_call(["rsync", "-a", str(SYSTEM) + "/", str(MOUNT / "system") + "/"])
++    so = CE / "sandtable/systems/ElibenRaft/driver/libeliben.so"
++    build = MOUNT / "sandtable/systems/ElibenRaft/driver/build"
++    if so.is_file() and build.is_dir():
++        subprocess.check_call(["sudo", "cp", "-f", str(so), str(build / "libeliben.so")])
++
++
++def clear_cover():
++    for node in ("n1", "n2", "n3"):
++        run(["sudo", "docker", "exec", node, "rm", "-rf", "/tmp/gocov-%s" % node])
++
++
++def cleanup_eliben():
++    """Drop leftover processes from a timed-out replay. Do not touch other mounts."""
++    script = (
++        "ps -eo pid,args | awk '/specula-eliben/ && !/awk/ {print $1}' | "
++        "while read p; do kill -9 \"$p\" 2>/dev/null || true; done"
++    )
++    for node in ("controller", "n1", "n2", "n3"):
++        run(["sudo", "docker", "exec", node, "bash", "-lc", script])
++
++
++def replay_one(config, seed):
++    cleanup_eliben()
++    src = trace_dir(config, seed) / "MC.out"
++    host_work = MOUNT / "work" / config / trace_name(seed)
++    run(["sudo", "rm", "-rf", str(host_work)])
++    host_work.mkdir(parents=True)
++    shutil.copy(src, host_work / "MC.out")
++    container_mc = "%s/work/%s/%s/MC.out" % (CONTAINER, config, trace_name(seed))
++    started = time.monotonic()
++    try:
++        result = run(["sudo", "docker", "exec", "controller", "bash", SCRIPT, container_mc, "3"], timeout=180)
++        elapsed = time.monotonic() - started
++        code = result.returncode
++        extra = (result.stdout or "")[-1500:] + "\n" + (result.stderr or "")[-1500:]
++    except subprocess.TimeoutExpired:
++        elapsed = time.monotonic() - started
++        code = 124
++        extra = "timeout"
++        cleanup_eliben()
++    dest = trace_dir(config, seed)
++    test = host_work / "test"
++    for name in ("traces.txt", "log.host"):
++        found = test / name
++        if found.is_file():
++            subprocess.check_call(["sudo", "cp", str(found), str(dest / name)])
++            subprocess.check_call(["sudo", "chown", "%d:%d" % (os.getuid(), os.getgid()), str(dest / name)])
++    for index in (1, 2, 3):
++        found = test / ("log.%d" % index)
++        if found.is_file():
++            target = dest / ("n%d.log" % index)
++            subprocess.check_call(["sudo", "cp", str(found), str(target)])
++            subprocess.check_call(["sudo", "chown", "%d:%d" % (os.getuid(), os.getgid()), str(target)])
++    cover_dir = dest / "cover"
++    if cover_dir.exists():
++        subprocess.check_call(["sudo", "rm", "-rf", str(cover_dir)])
++    cover_dir.mkdir()
++    for node in ("n1", "n2", "n3"):
++        copied = run(["sudo", "docker", "cp", "%s:/tmp/gocov-%s" % (node, node), str(cover_dir / node)])
++        if copied.returncode != 0:
++            extra += "\ndocker cp %s failed" % node
++    run(["sudo", "chmod", "-R", "a+rX", str(cover_dir)])
++    (dest / "replay.status").write_text("exit %s\n%s\n" % (code, extra))
++    run(["sudo", "rm", "-rf", str(host_work)])
++    return elapsed, code
++
++
++def step_pc(text, variable_at):
++    matches = list(re.finditer(r"# \[(\d+)\][^\n]*", text[:variable_at]))
++    if not matches:
++        return ""
++    line = matches[-1].group(0)
++    return re.sub(r"\s+", " ", line).strip()
++
++
++def node_logs(config, seed):
++    parts = []
++    for index in (1, 2, 3):
++        path = trace_dir(config, seed) / ("n%d.log" % index)
++        if path.is_file():
++            parts.append(path.read_text(errors="replace"))
++    return "\n".join(parts)
++
++
++def judge(config, seed, exit_code):
++    path = trace_dir(config, seed) / "log.host"
++    if not path.is_file():
++        return {"ok": False, "logout": False, "kind": "crash", "variable": "",
++                "code_value": "", "model_value": "", "detail": "no log.host", "pc": ""}
++    text = path.read_text(errors="replace")
++    nodes = node_logs(config, seed)
++    fatal = re.search(r"(?m)^.*(?:not found in storage|panic:|fatal error:).*$", nodes)
++    variable = re.search(r'Variable "([^"]+)" compare failed', text)
++    logout = "logout" in text
++    sanitizer = ("Sanitizer" in text) or ("stack smashing" in text)
++    lib_assert = bool(re.search(r"(?m)^(?!.*Command\.cpp).*(Assertion|panic:)", text))
++    code_value = model_value = ""
++    pc = ""
++    # Torn storage: restoreFromStorage fatals. MCPartialPersist instead
++    # recovers a live follower. Confirmed on standard t0007.
++    if fatal and "not found in storage" in fatal.group(0):
++        pc = step_pc(text, len(text))
++        return {
++            "ok": False, "logout": logout, "kind": "spec",
++            "variable": "restore",
++            "code_value": fatal.group(0).strip(),
++            "model_value": "MCPartialPersist recovers a live follower",
++            "detail": fatal.group(0).strip(), "pc": pc,
++        }
++    if variable:
++        window = text[variable.start():variable.start() + 500]
++        code_m = re.search(r"Code \(([^)]*)\): (.*)", window)
++        model_m = re.search(r"Model\(([^)]*)\): (.*)", window)
++        if code_m:
++            code_value = code_m.group(0).strip()
++        if model_m:
++            model_value = model_m.group(0).strip()
++        pc = step_pc(text, variable.start())
++        before = text[max(0, variable.start() - 400):variable.start()]
++        trace_line = re.search(r"TRACE \S+ node=\S+ code=(.*?) model=", before)
++        trace_empty = trace_line is not None and trace_line.group(1).strip() == ""
++        if (code_m and code_m.group(2).strip() == "") or trace_empty:
++            kind, ok, detail = "environment", False, "empty code value"
++        else:
++            kind, ok, detail = "pending", False, variable.group(0)
++    elif fatal or sanitizer or lib_assert or exit_code not in (0, None) or not logout:
++        pc = step_pc(text, len(text))
++        kind, ok = "crash", False
++        if fatal:
++            detail = fatal.group(0).strip()
++        elif sanitizer:
++            detail = "sanitizer"
++        elif lib_assert:
++            detail = "assert"
++        else:
++            detail = "exit %s logout=%s" % (exit_code, logout)
++    else:
++        kind, ok, detail = "pass", True, ""
++    return {
++        "ok": ok, "logout": logout, "kind": kind,
++        "variable": variable.group(1) if variable else "",
++        "code_value": code_value, "model_value": model_value,
++        "detail": detail, "pc": pc,
++    }
++
++
++def append_failure(config, seed, exit_code, verdict, klass):
++    path = CE / "failures.tsv"
++    if not path.is_file():
++        path.write_text("配置\t轨迹\t种子\t归类\t退出码\tlogout\t变量\t代码值\t模型值\tpc\t记录目录\n")
++    row = "\t".join([
++        config, trace_name(seed), str(seed), klass, str(exit_code),
++        "yes" if verdict["logout"] else "no",
++        verdict["variable"],
++        verdict["code_value"].replace("\t", " ").replace("\n", " "),
++        verdict["model_value"].replace("\t", " ").replace("\n", " "),
++        verdict["pc"],
++        str(trace_dir(config, seed).relative_to(RUN)),
++    ])
++    with path.open("a") as handle:
++        handle.write(row + "\n")
++
++
++def parse_cover_dir(path):
++    blocks = {}
++    if not path.is_dir():
++        return blocks
++    for tsv in path.rglob("cover.*.tsv"):
++        for line in tsv.read_text(errors="replace").splitlines():
++            parts = line.split("\t")
++            if len(parts) != 5:
++                continue
++            file, start, end, stmts, count = parts
++            key = (file, int(start), int(end), int(stmts))
++            blocks[key] = blocks.get(key, 0) + int(count)
++    return blocks
++
++
++def merge_blocks(accum, extra):
++    for key, count in extra.items():
++        accum[key] = accum.get(key, 0) + count
++
++
++def line_map(blocks):
++    lines = {}
++    for (file, start, end, _stmts), count in blocks.items():
++        source = Path(file).name
++        lo, hi = (start, end) if start <= end else (end, start)
++        for number in range(lo, hi + 1):
++            key = (source, number)
++            lines[key] = max(lines.get(key, 0), count)
++    return lines
++
++
++def line_pct(blocks):
++    lines = line_map(blocks)
++    if not lines:
++        return 0.0
++    hit = sum(1 for count in lines.values() if count > 0)
++    return 100.0 * hit / len(lines)
++
++
++def write_gcov(config, blocks):
++    gcov_dir = CE / config / "gcov"
++    if gcov_dir.exists():
++        shutil.rmtree(gcov_dir)
++    gcov_dir.mkdir(parents=True)
++    lines = line_map(blocks)
++    by_file = {}
++    for (source, number), count in lines.items():
++        by_file.setdefault(source, {})[number] = count
++    for source, rows in by_file.items():
++        text = ["        -:    0:Source:%s" % (SYSTEM / source)]
++        for number in sorted(rows):
++            count = rows[number]
++            mark = "#####" if count == 0 else "%8d" % min(count, 99999999)
++            text.append("%s:%5d:" % (mark, number))
++        (gcov_dir / (source + ".gcov")).write_text("\n".join(text) + "\n")
++
++
++def load_coverage(config):
++    path = CE / config / "coverage.json"
++    if not path.is_file():
++        return {"config": config, "traces": []}
++    return json.loads(path.read_text())
++
++
++def save_coverage(config, doc):
++    traces = doc["traces"]
++    pcts = [item["line_pct"] for item in traces]
++    last_rise = 0
++    for index, pct in enumerate(pcts, start=1):
++        if index == 1 or pct > pcts[index - 2] + 1e-9:
++            last_rise = index
++    wall = [item["replay_s"] for item in traces]
++    doc["summary"] = {
++        "traces": len(traces),
++        "variable_ok": sum(1 for item in traces if item["ok"]),
++        "line_pct": pcts[-1] if pcts else 0,
++        "branch_taken_pct": None,
++        "branch_note": "Go cover counts statements and has no branch counters",
++        "plateau_trace": trace_name(traces[last_rise - 1]["seed"]) if traces and last_rise else "",
++        "plateaued": bool(pcts) and last_rise < len(pcts),
++        "wall_s": round(sum(wall), 1) if wall else 0,
++        "wall_avg": round(sum(wall) / len(wall), 2) if wall else 0,
++        "wall_min": round(min(wall), 2) if wall else 0,
++        "wall_max": round(max(wall), 2) if wall else 0,
++    }
++    (CE / config / "coverage.json").write_text(json.dumps(doc, indent=2) + "\n")
++
++
++def replay(configs, seeds):
++    stopped = False
++    for name, _cfg in CONFIGS:
++        if name not in configs or stopped:
++            continue
++        doc = load_coverage(name)
++        have = {item["trace"] for item in doc["traces"]}
++        accum = {}
++        for item in doc["traces"]:
++            merge_blocks(accum, parse_cover_dir(CE / name / "traces" / item["trace"] / "cover"))
++        for seed in seeds:
++            label = trace_name(seed)
++            if label in have:
++                continue
++            if not (trace_dir(name, seed) / "MC.out").is_file():
++                print("skip %s %s no MC.out" % (name, label), flush=True)
++                continue
++            print("replay %s %s" % (name, label), flush=True)
++            clear_cover()
++            elapsed, code = replay_one(name, seed)
++            verdict = judge(name, seed, code)
++            if verdict["kind"] == "environment":
++                print("  retry %s %s" % (name, label), flush=True)
++                clear_cover()
++                elapsed, code = replay_one(name, seed)
++                verdict = judge(name, seed, code)
++            fresh = parse_cover_dir(trace_dir(name, seed) / "cover")
++            merge_blocks(accum, fresh)
++            doc["traces"].append({
++                "trace": label,
++                "seed": seed,
++                "replay_s": round(elapsed, 3),
++                "ok": verdict["ok"],
++                "logout": verdict["logout"],
++                "kind": verdict["kind"],
++                "variable": verdict["variable"],
++                "detail": verdict["detail"],
++                "pc": verdict["pc"],
++                "line_pct": round(line_pct(accum), 4),
++                "branch_taken_pct": None,
++            })
++            save_coverage(name, doc)
++            write_gcov(name, accum)
++            print("  ok=%s kind=%s line=%.2f %.1fs %s %s" % (
++                verdict["ok"], verdict["kind"], line_pct(accum), elapsed, verdict["pc"], verdict["detail"]), flush=True)
++            if verdict["kind"] == "bug":
++                append_failure(name, seed, code, verdict, "bug")
++            if verdict["kind"] in ("pending", "spec", "crash", "environment", "adapter"):
++                append_failure(name, seed, code, verdict, verdict["kind"])
++                print("STOP %s %s %s" % (name, label, verdict["kind"]), flush=True)
++                stopped = True
++                break
++        save_coverage(name, doc)
++        write_gcov(name, accum)
++    return stopped
++
++
++def write_union(configs):
++    merged = {}
++    for name in configs:
++        blocks = {}
++        gcov_dir = CE / name / "gcov"
++        if not gcov_dir.is_dir():
++            continue
++        for path in gcov_dir.glob("*.gcov"):
++            source = path.name[:-5]
++            for line in path.read_text(errors="replace").splitlines():
++                match = re.match(r"\s*(#####|\d+):\s*(\d+):", line)
++                if not match or match.group(2) == "0":
++                    continue
++                count = 0 if match.group(1) == "#####" else int(match.group(1))
++                key = (source, int(match.group(2)))
++                blocks[key] = count
++        for key, count in blocks.items():
++            merged[key] = max(merged.get(key, 0), count)
++    records = []
++    for source in SOURCE_FILES:
++        rows = [(number, count) for (src, number), count in sorted(merged.items()) if src == source]
++        if not rows:
++            continue
++        body = ["SF:%s" % (SYSTEM / source)]
++        for number, count in rows:
++            body.append("DA:%d,%d" % (number, count))
++        hit = sum(1 for _, count in rows if count > 0)
++        body.append("LH:%d" % hit)
++        body.append("LF:%d" % len(rows))
++        body.append("end_of_record")
++        records.append("\n".join(body))
++    (CE / "lcov.info").write_text("\n".join(records) + "\n")
++    uncovered = ["%s:%d" % (source, number) for (source, number), count in sorted(merged.items()) if count == 0]
++    (CE / "uncovered.txt").write_text("\n".join(uncovered) + ("\n" if uncovered else ""))
++    hit = sum(1 for count in merged.values() if count > 0)
++    print("union lines %d hit %d uncovered %d" % (len(merged), hit, len(uncovered)), flush=True)
++
++
++def main():
++    parser = argparse.ArgumentParser()
++    parser.add_argument("--phase", choices=("sample", "replay", "uncovered", "all"), default="all")
++    parser.add_argument("--configs", default=",".join(name for name, _ in CONFIGS))
++    parser.add_argument("--seed-from", type=int, default=1)
++    parser.add_argument("--count", type=int, default=100)
++    parser.add_argument("--jobs", type=int, default=4)
++    args = parser.parse_args()
++    if args.configs == "all":
++        configs = [name for name, _cfg in CONFIGS]
++    else:
++        configs = [item for item in args.configs.split(",") if item]
++    seeds = list(range(args.seed_from, args.seed_from + args.count))
++    CE.mkdir(parents=True, exist_ok=True)
++    if args.phase in ("sample", "all"):
++        sample(configs, seeds, args.jobs)
++    if args.phase in ("replay", "all"):
++        sync_mount()
++        stopped = replay(configs, seeds)
++        if stopped:
++            print("REPLAY_STOPPED", flush=True)
++            return
++    if args.phase in ("uncovered", "all"):
++        write_union([name for name, _ in CONFIGS if name in configs])
++    print("ROUND_DONE", flush=True)
++
++
++if __name__ == "__main__":
++    main()
+diff -ruN a/systems/ElibenRaft/driver/bridge/go.mod b/systems/ElibenRaft/driver/bridge/go.mod
+--- /dev/null
++++ b/systems/ElibenRaft/driver/bridge/go.mod	2026-11-03 04:07:33.742795643 +0000
+@@ -0,0 +1,3 @@
++module elibendriver
++
++go 1.23.1
+diff -ruN a/systems/ElibenRaft/driver/bridge/main.go b/systems/ElibenRaft/driver/bridge/main.go
+--- /dev/null
++++ b/systems/ElibenRaft/driver/bridge/main.go	2026-11-03 04:07:32.954793895 +0000
+@@ -0,0 +1,168 @@
++package main
++
++/*
++#cgo LDFLAGS: -pthread
++*/
++import "C"
++
++import (
++	"fmt"
++	"os"
++	"path/filepath"
++	"unsafe"
++
++	raft "github.com/eliben/raft/part3/raft"
++)
++
++func main() {}
++
++var (
++	cm      *raft.ConsensusModule
++	pending []raft.OutMsg
++	selfID  int
++	peerIDs []int
++	storeDir string
++)
++
++func setPending(msgs []raft.OutMsg, err error) C.int {
++	if err != nil {
++		fmt.Fprintf(os.Stderr, "eliben: %v\n", err)
++		pending = nil
++		return -1
++	}
++	pending = append(pending[:0], msgs...)
++	return 0
++}
++
++func openModule(fresh bool) {
++	if fresh {
++		_ = os.RemoveAll(storeDir)
++	}
++	cm = raft.NewControlled(selfID, peerIDs, storeDir)
++	pending = nil
++}
++
++//export ElibenInit
++func ElibenInit(id C.int, npeers C.int, peers *C.int) {
++	raw := unsafe.Slice(peers, int(npeers))
++	peerIDs = make([]int, len(raw))
++	for i, peer := range raw {
++		peerIDs[i] = int(peer)
++	}
++	selfID = int(id)
++	storeDir = filepath.Join(os.TempDir(), fmt.Sprintf("eliben-store-%d", selfID))
++	openModule(true)
++}
++
++//export ElibenTimeout
++func ElibenTimeout() C.int {
++	if cm == nil {
++		return -1
++	}
++	return setPending(cm.ControlledTimeout(), nil)
++}
++
++//export ElibenSendAE
++func ElibenSendAE(peer C.int) C.int {
++	if cm == nil {
++		return -1
++	}
++	return setPending(cm.ControlledSendAE(int(peer)), nil)
++}
++
++//export ElibenSubmit
++func ElibenSubmit(cmd *C.char) C.int {
++	if cm == nil {
++		return -1
++	}
++	return setPending(cm.ControlledSubmit(C.GoString(cmd)), nil)
++}
++
++//export ElibenBecomeLeader
++func ElibenBecomeLeader() C.int {
++	if cm == nil {
++		return -1
++	}
++	cm.ControlledBecomeLeader()
++	return setPending(nil, nil)
++}
++
++//export ElibenAdvanceCommit
++func ElibenAdvanceCommit() C.int {
++	if cm == nil {
++		return -1
++	}
++	cm.ControlledAdvanceCommit()
++	return setPending(nil, nil)
++}
++
++//export ElibenCrash
++func ElibenCrash() C.int {
++	if cm == nil {
++		return -1
++	}
++	openModule(false)
++	return 0
++}
++
++//export ElibenPartialPersist
++func ElibenPartialPersist() C.int {
++	if cm == nil {
++		return -1
++	}
++	cm.ControlledPersistTermOnly()
++	openModule(false)
++	return 0
++}
++
++//export ElibenDeliver
++func ElibenDeliver(from C.int, data *C.char, n C.int) C.int {
++	if cm == nil {
++		return -1
++	}
++	payload := C.GoStringN(data, n)
++	msgs, err := cm.ControlledDeliverFrom(int(from), payload)
++	return setPending(msgs, err)
++}
++
++//export ElibenPop
++func ElibenPop(dst *C.int, buf *C.char, cap C.int) C.int {
++	if len(pending) == 0 {
++		return 0
++	}
++	msg := pending[0]
++	pending = pending[1:]
++	if len(msg.Data) >= int(cap) {
++		fmt.Fprintf(os.Stderr, "eliben: outgoing message too large\n")
++		return -1
++	}
++	*dst = C.int(msg.Peer)
++	out := unsafe.Slice((*byte)(unsafe.Pointer(buf)), int(cap))
++	copy(out, msg.Data)
++	return C.int(len(msg.Data))
++}
++
++//export ElibenGet
++func ElibenGet(key *C.char) *C.char {
++	text := ""
++	if cm != nil {
++		text = cm.ControlledGet(C.GoString(key))
++	}
++	return C.CString(text)
++}
++
++//export ElibenDumpCover
++func ElibenDumpCover() {
++	dir := os.Getenv("GOCOVERDIR")
++	if dir == "" {
++		return
++	}
++	if err := os.MkdirAll(dir, 0o755); err != nil {
++		fmt.Fprintf(os.Stderr, "eliben: cover dir: %v\n", err)
++		return
++	}
++	path := filepath.Join(dir, fmt.Sprintf("cover.%d.tsv", os.Getpid()))
++	if err := raft.WriteCoverProfile(path); err != nil {
++		fmt.Fprintf(os.Stderr, "eliben: cover profile: %v\n", err)
++	}
++}
+diff -ruN a/systems/ElibenRaft/driver/CMakeLists.txt b/systems/ElibenRaft/driver/CMakeLists.txt
+--- /dev/null
++++ b/systems/ElibenRaft/driver/CMakeLists.txt	2026-11-03 04:07:45.082820810 +0000
+@@ -0,0 +1,44 @@
++cmake_minimum_required(VERSION 3.16)
++project(specula_eliben_driver C CXX)
++
++set(CMAKE_CXX_STANDARD 20)
++set(CMAKE_CXX_STANDARD_REQUIRED ON)
++
++set(STOCK_DRIVER "/root/sandtable/systems/WRaft-series/driver" CACHE PATH "SandTable driver sources")
++set(TLPI_LIB "/root/sandtable/cmake-build-debug/drivers/tlpi/libtlpi.a" CACHE FILEPATH "Prebuilt tlpi")
++
++option(SPECULA_SANITIZE "Build the C++ driver with -fsanitize=address,undefined and no coverage" OFF)
++
++set(DRIVER_SOURCES
++    ${CMAKE_CURRENT_SOURCE_DIR}/ElibenRaft.cpp
++    ${STOCK_DRIVER}/main.cpp
++    ${STOCK_DRIVER}/Network.cpp
++    ${STOCK_DRIVER}/Config.cpp
++    ${STOCK_DRIVER}/Repl.cpp
++    ${STOCK_DRIVER}/common.cpp
++    ${STOCK_DRIVER}/Node.cpp
++    ${STOCK_DRIVER}/TcpNetwork.cpp)
++
++add_executable(ElibenRaftDriver ${DRIVER_SOURCES})
++target_include_directories(ElibenRaftDriver PRIVATE ${STOCK_DRIVER})
++if(SPECULA_SANITIZE)
++    target_compile_options(ElibenRaftDriver PRIVATE
++        -g -O1 -Wall -Wextra -Wno-unused-parameter -Wno-unused-function -fno-omit-frame-pointer
++        -fsanitize=address,undefined)
++    target_link_options(ElibenRaftDriver PRIVATE
++        -fsanitize=address,undefined -Wl,--export-dynamic)
++else()
++    target_compile_options(ElibenRaftDriver PRIVATE
++        -Wall -Wextra -Wno-unused-parameter -Wno-unused-function)
++    target_link_options(ElibenRaftDriver PRIVATE -Wl,--export-dynamic)
++endif()
++target_link_libraries(ElibenRaftDriver PRIVATE
++    ${CMAKE_CURRENT_SOURCE_DIR}/libeliben.so
++    readline gflags ${TLPI_LIB} pthread)
++set_target_properties(ElibenRaftDriver PROPERTIES
++    BUILD_RPATH "$ORIGIN"
++    INSTALL_RPATH "$ORIGIN")
++add_custom_command(TARGET ElibenRaftDriver POST_BUILD
++    COMMAND ${CMAKE_COMMAND} -E copy_if_different
++        ${CMAKE_CURRENT_SOURCE_DIR}/libeliben.so
++        $<TARGET_FILE_DIR:ElibenRaftDriver>/libeliben.so)
+diff -ruN a/systems/ElibenRaft/driver/ElibenRaft.cpp b/systems/ElibenRaft/driver/ElibenRaft.cpp
+--- /dev/null
++++ b/systems/ElibenRaft/driver/ElibenRaft.cpp	2026-11-03 04:07:41.318812455 +0000
+@@ -0,0 +1,153 @@
++#include "Raft.h"
++#include "Config.h"
++#include "Network.h"
++
++#include <algorithm>
++#include <cstdlib>
++#include <cstring>
++#include <string>
++#include <vector>
++
++extern "C" {
++void ElibenInit(int id, int npeers, int *peers);
++int ElibenTimeout(void);
++int ElibenSendAE(int peer);
++int ElibenSubmit(const char *cmd);
++int ElibenBecomeLeader(void);
++int ElibenAdvanceCommit(void);
++int ElibenCrash(void);
++int ElibenPartialPersist(void);
++int ElibenDeliver(int from, const char *data, int n);
++int ElibenPop(int *dst, char *buf, int cap);
++const char *ElibenGet(const char *key);
++void ElibenDumpCover(void);
++}
++
++extern "C" void wraft_gcov_dump(void) { ElibenDumpCover(); }
++
++static bool flush_sends() {
++    char buf[65536];
++    int dst = 0;
++    while (true) {
++        int n = ElibenPop(&dst, buf, static_cast<int>(sizeof(buf)));
++        if (n == 0) {
++            return true;
++        }
++        if (n < 0) {
++            return false;
++        }
++        Node peer(dst);
++        if (net->send_to(peer, string(buf, buf + n)) <= 0) {
++            cerr_warning << "send_to " << peer.name << " failed" << endl;
++            return false;
++        }
++    }
++}
++
++static void discard_sends() {
++    char buf[65536];
++    int dst = 0;
++    while (ElibenPop(&dst, buf, static_cast<int>(sizeof(buf))) > 0) {
++    }
++}
++
++bool RaftInit() {
++    Node self = config.get_self_node();
++    vector<int> peers;
++    for (Node node : config.get_all_nodes()) {
++        if (node.getid() != self.getid()) {
++            peers.push_back(node.getid());
++        }
++    }
++    sort(peers.begin(), peers.end());
++    if (peers.empty()) {
++        cerr_warning << "RaftInit has no peers" << endl;
++        return false;
++    }
++    ElibenInit(self.id, static_cast<int>(peers.size()), peers.data());
++    return true;
++}
++
++bool RaftRecvMsg(Node node) {
++    if (!config.get_node(node)) {
++        cerr_warning << "RaftRecvMsg cannot find node" << endl;
++        return false;
++    }
++    string data;
++    if (net->recv_from(node, data) < 0) {
++        return false;
++    }
++    if (ElibenDeliver(node.getid(), data.data(), static_cast<int>(data.size())) < 0) {
++        return false;
++    }
++    return flush_sends();
++}
++
++bool RaftRepl(const string &cmd) {
++    auto tokens = tokenize(cmd);
++    if (tokens.empty()) {
++        return false;
++    }
++    if (tokens[0] == "init") {
++        return RaftInit();
++    } else if (tokens[0] == "recvfrom") {
++        if (tokens.size() <= 1) {
++            return false;
++        }
++        return RaftRecvMsg(Node(tokens[1]));
++    } else if (tokens[0] == "timeout") {
++        if (ElibenTimeout() < 0) {
++            return false;
++        }
++        return flush_sends();
++    } else if (tokens[0] == "send") {
++        if (tokens.size() <= 1) {
++            return false;
++        }
++        if (ElibenSendAE(Node(tokens[1]).getid()) < 0) {
++            return false;
++        }
++        return flush_sends();
++    } else if (tokens[0] == "cli") {
++        if (tokens.size() <= 1) {
++            return false;
++        }
++        if (ElibenSubmit(tokens[1].c_str()) < 0) {
++            return false;
++        }
++        discard_sends();
++        return true;
++    } else if (tokens[0] == "become-leader") {
++        if (ElibenBecomeLeader() < 0) {
++            return false;
++        }
++        discard_sends();
++        return true;
++    } else if (tokens[0] == "advance-commit") {
++        if (ElibenAdvanceCommit() < 0) {
++            return false;
++        }
++        discard_sends();
++        return true;
++    } else if (tokens[0] == "crash") {
++        discard_sends();
++        return ElibenCrash() == 0;
++    } else if (tokens[0] == "partial-persist") {
++        discard_sends();
++        return ElibenPartialPersist() == 0;
++    } else if (tokens[0] == "statemachine") {
++        cerr << "init" << endl;
++        return true;
++    }
++    return false;
++}
++
++string RaftGet(const string &variable) {
++    char *text = const_cast<char *>(ElibenGet(variable.c_str()));
++    if (text == nullptr) {
++        return "";
++    }
++    string value(text);
++    free(text);
++    return value;
++}
+diff -ruN a/systems/ElibenRaft/driver/libeliben.h b/systems/ElibenRaft/driver/libeliben.h
+--- /dev/null
++++ b/systems/ElibenRaft/driver/libeliben.h	2026-11-03 04:09:49.103096917 +0000
+@@ -0,0 +1,97 @@
++/* Code generated by cmd/cgo; DO NOT EDIT. */
++
++/* package elibendriver */
++
++
++#line 1 "cgo-builtin-export-prolog"
++
++#include <stddef.h>
++
++#ifndef GO_CGO_EXPORT_PROLOGUE_H
++#define GO_CGO_EXPORT_PROLOGUE_H
++
++#ifndef GO_CGO_GOSTRING_TYPEDEF
++typedef struct { const char *p; ptrdiff_t n; } _GoString_;
++#endif
++
++#endif
++
++/* Start of preamble from import "C" comments.  */
++
++
++#line 3 "main.go"
++
++
++
++#line 1 "cgo-generated-wrapper"
++
++
++/* End of preamble from import "C" comments.  */
++
++
++/* Start of boilerplate cgo prologue.  */
++#line 1 "cgo-gcc-export-header-prolog"
++
++#ifndef GO_CGO_PROLOGUE_H
++#define GO_CGO_PROLOGUE_H
++
++typedef signed char GoInt8;
++typedef unsigned char GoUint8;
++typedef short GoInt16;
++typedef unsigned short GoUint16;
++typedef int GoInt32;
++typedef unsigned int GoUint32;
++typedef long long GoInt64;
++typedef unsigned long long GoUint64;
++typedef GoInt64 GoInt;
++typedef GoUint64 GoUint;
++typedef size_t GoUintptr;
++typedef float GoFloat32;
++typedef double GoFloat64;
++#ifdef _MSC_VER
++#include <complex.h>
++typedef _Fcomplex GoComplex64;
++typedef _Dcomplex GoComplex128;
++#else
++typedef float _Complex GoComplex64;
++typedef double _Complex GoComplex128;
++#endif
++
++/*
++  static assertion to make sure the file is being used on architecture
++  at least with matching size of GoInt.
++*/
++typedef char _check_for_64_bit_pointer_matching_GoInt[sizeof(void*)==64/8 ? 1:-1];
++
++#ifndef GO_CGO_GOSTRING_TYPEDEF
++typedef _GoString_ GoString;
++#endif
++typedef void *GoMap;
++typedef void *GoChan;
++typedef struct { void *t; void *v; } GoInterface;
++typedef struct { void *data; GoInt len; GoInt cap; } GoSlice;
++
++#endif
++
++/* End of boilerplate cgo prologue.  */
++
++#ifdef __cplusplus
++extern "C" {
++#endif
++
++extern void ElibenInit(int id, int npeers, int* peers);
++extern int ElibenTimeout();
++extern int ElibenSendAE(int peer);
++extern int ElibenSubmit(char* cmd);
++extern int ElibenBecomeLeader();
++extern int ElibenAdvanceCommit();
++extern int ElibenCrash();
++extern int ElibenPartialPersist();
++extern int ElibenDeliver(int from, char* data, int n);
++extern int ElibenPop(int* dst, char* buf, int cap);
++extern char* ElibenGet(char* key);
++extern void ElibenDumpCover();
++
++#ifdef __cplusplus
++}
++#endif
+diff -ruN a/systems/ElibenRaft/scripts/build_lib.sh b/systems/ElibenRaft/scripts/build_lib.sh
+--- /dev/null
++++ b/systems/ElibenRaft/scripts/build_lib.sh	2026-11-03 04:08:31.726924468 +0000
+@@ -0,0 +1,75 @@
++#!/bin/bash
++# Instrument eliben/raft with go tool cover and build libeliben.so.
++# go build -cover -buildmode=c-shared leaves covermode invalid, so counters
++# are inserted in the source and dumped from wraft_gcov_dump.
++set -euo pipefail
++HERE=$(cd "$(dirname "$0")" && pwd)
++ROOT=$(cd "$HERE/../../../.." && pwd)
++SRC="$ROOT/system"
++BRIDGE="$HERE/../driver/bridge"
++OUT="$HERE/../driver/libeliben.so"
++WORK=$(mktemp -d)
++COVER="$WORK/src"
++mkdir -p "$COVER"
++export PATH="${PATH}:/users/bingzhuo/sdk/go/bin:/usr/local/go/bin"
++export GO111MODULE=on
++
++instrument() {
++    local base=$1
++    local var=$2
++    go tool cover -mode=count -var="$var" "$SRC/$base.go" > "$COVER/$base.go"
++}
++
++instrument raft RaftCov
++instrument server ServerCov
++instrument storage StorageCov
++instrument controlled ControlledCov
++instrument filestorage FileStorageCov
++cp "$SRC/go.mod" "$SRC/go.sum" "$COVER/"
++
++cat > "$COVER/cover_dump.go" <<EOF
++package raft
++
++import (
++    "fmt"
++    "io"
++    "os"
++)
++
++func emitCover(w io.Writer, file string, count []uint32, pos []uint32, nstmt []uint16) {
++    for i := range count {
++        fmt.Fprintf(w, "%s\\t%d\\t%d\\t%d\\t%d\\n", file, pos[i*3], pos[i*3+1], nstmt[i], count[i])
++    }
++}
++
++func WriteCoverProfile(path string) error {
++    f, err := os.Create(path)
++    if err != nil {
++        return err
++    }
++    defer f.Close()
++    emitCover(f, "$SRC/raft.go", RaftCov.Count[:], RaftCov.Pos[:], RaftCov.NumStmt[:])
++    emitCover(f, "$SRC/server.go", ServerCov.Count[:], ServerCov.Pos[:], ServerCov.NumStmt[:])
++    emitCover(f, "$SRC/storage.go", StorageCov.Count[:], StorageCov.Pos[:], StorageCov.NumStmt[:])
++    emitCover(f, "$SRC/controlled.go", ControlledCov.Count[:], ControlledCov.Pos[:], ControlledCov.NumStmt[:])
++    emitCover(f, "$SRC/filestorage.go", FileStorageCov.Count[:], FileStorageCov.Pos[:], FileStorageCov.NumStmt[:])
++    return nil
++}
++EOF
++
++cat > "$WORK/go.mod" <<EOF
++module elibendriver
++
++go 1.23.1
++
++require github.com/eliben/raft/part3/raft v0.0.0
++
++replace github.com/eliben/raft/part3/raft => ./src
++EOF
++cp "$BRIDGE/main.go" "$WORK/main.go"
++(
++    cd "$WORK"
++    go build -buildmode=c-shared -o "$OUT" .
++)
++rm -rf "$WORK"
++echo "built $OUT"
+diff -ruN a/systems/ElibenRaft/scripts/env.sh b/systems/ElibenRaft/scripts/env.sh
+--- /dev/null
++++ b/systems/ElibenRaft/scripts/env.sh	2026-11-03 04:08:13.610884181 +0000
+@@ -0,0 +1,10 @@
++source $(dirname "$(realpath "$0")")/../../../scripts/env.sh && export CUR_SCRIPT_DIR=$(eval $(get_dir_cmd)) && export_more
++export testcase_generator_py=$(dirname "$CUR_SCRIPT_DIR")/testcase_generator.py
++export SANDTABLE_SCRIPTS=/root/sandtable/scripts
++if [ -x /root/sandtable/cmake-build-debug/controller/controller ]; then
++    export CONTROLLER=/root/sandtable/cmake-build-debug/controller/controller
++    export INTERCEPTOR_SH=/root/sandtable/cmake-build-debug/interceptor/run.sh
++fi
++if [ -n "$SPECULA_START_DOCKER" ]; then
++    export start_docker_sh=$SPECULA_START_DOCKER
++fi
+diff -ruN a/systems/ElibenRaft/scripts/run_one_testcase.sh b/systems/ElibenRaft/scripts/run_one_testcase.sh
+--- /dev/null
++++ b/systems/ElibenRaft/scripts/run_one_testcase.sh	2026-11-03 04:08:17.046891818 +0000
+@@ -0,0 +1,4 @@
++#!/bin/bash
++
++source $(dirname "$(realpath "$0")")/env.sh
++source ${RUN_ONE_TESTCASE_COMMON_SH} "$@"
+diff -ruN a/systems/ElibenRaft/scripts/start_docker.sh b/systems/ElibenRaft/scripts/start_docker.sh
+--- /dev/null
++++ b/systems/ElibenRaft/scripts/start_docker.sh	2026-11-03 04:08:16.286890129 +0000
+@@ -0,0 +1,20 @@
++#!/bin/bash
++
++source $(dirname "$(realpath "$0")")/env.sh
++source $START_DOCKER_COMMON_SH "$@"
++
++CLIENT=/root/sandtable/specula-eliben/sandtable/systems/ElibenRaft/driver/build/ElibenRaftDriver
++
++HOST_CMD="$CONTROLLER -detail -config $CONFIG_FILE -tmpdir $TMPDIR; exit"
++
++cat <<EOF | "$SPSSH_SH" -H -S -q -t -e -s -r "$HOST_CMD" -w "$TMPDIR" root@n{1,2,3}
++cd $TESTCASE_DIR
++export PROGRAM_PATH=$CLIENT
++export GOCOVERDIR=/tmp/gocov-n\${SSH_NO}
++export GCOV_PREFIX=/tmp/gcov-n\${SSH_NO}
++export GCOV_PREFIX_STRIP=0
++mkdir -p "\$GOCOVERDIR"
++$INTERCEPTOR_SH -config $CONFIG_FILE $CLIENT -config $CONFIG_FILE -detail -name "n\${SSH_NO}"; exit
++EOF
++
++source $WAIT_TMUX_COMMON_SH
+diff -ruN a/systems/ElibenRaft/scripts/system_config.sh b/systems/ElibenRaft/scripts/system_config.sh
+--- /dev/null
++++ b/systems/ElibenRaft/scripts/system_config.sh	2026-11-03 04:08:14.342885807 +0000
+@@ -0,0 +1,9 @@
++#!/bin/bash
++
++source $(dirname "$(realpath "$0")")/env.sh
++source $SYSTEM_CONFIG_COMMON_SH "$@"
++
++cat <<EOF >> "$GEN_FILE"
++option partition_keep_msgs
++option allow_msg_unordered
++EOF
+diff -ruN a/systems/ElibenRaft/testcase_generator.py b/systems/ElibenRaft/testcase_generator.py
+--- /dev/null
++++ b/systems/ElibenRaft/testcase_generator.py	2026-11-03 04:08:12.194881033 +0000
+@@ -0,0 +1,267 @@
++#!/usr/bin/env python3
++"""Turn an eliben/raft TLC trace with scr.pc into SandTable controller commands.
++
++State integers are the Go iota values: Follower=0, Candidate=1, Leader=2.
++votedFor uses the node id, and Nil is -1. Log entries are (term, 'v').
++Indexes in the compare comments are the specification's 1-based indexes.
++"""
++
++import argparse
++import os
++import shutil
++import sys
++
++
++def set_path():
++    candidates = []
++    env = os.environ.get("SANDTABLE_SCRIPTS")
++    if env:
++        candidates.append(env)
++    name = os.path.dirname(os.path.realpath(__file__))
++    for _ in range(8):
++        candidates.append(os.path.join(name, "scripts"))
++        name = os.path.dirname(name)
++    candidates.append("/root/sandtable/scripts")
++    candidates.append("/users/bingzhuo/sandtable/scripts")
++    for path in candidates:
++        if os.path.isfile(os.path.join(path, "trace_reader.py")):
++            sys.path.append(path)
++            return
++    raise SystemExit("trace_reader.py not found")
++
++
++set_path()
++from trace_reader import TraceReader  # noqa: E402
++
++
++class NotControllable(Exception):
++    pass
++
++
++STATE_CODE = {"Follower": "0", "Candidate": "1", "Leader": "2"}
++
++
++def node_name(server):
++    return "n%d" % server_id(server)
++
++
++def server_id(server):
++    if isinstance(server, int):
++        return server
++    text = str(server)
++    if text.startswith("s") and text[1:].isdigit():
++        return int(text[1:])
++    if text.startswith("n") and text[1:].isdigit():
++        return int(text[1:])
++    if text.isdigit() or (text.startswith("-") and text[1:].isdigit()):
++        return int(text)
++    raise NotControllable("cannot map server %s" % server)
++
++
++def parse_args():
++    parser = argparse.ArgumentParser()
++    parser.add_argument("trace_file")
++    parser.add_argument("-c", dest="config", required=True)
++    parser.add_argument("-o", dest="output", default="traces.txt")
++    parser.add_argument("-i", dest="in_place", action="store_true")
++    parser.add_argument("-I", dest="in_dir", default="")
++    parser.add_argument("-f", dest="conn_fd", default="126")
++    parser.add_argument("-n", dest="node_port", default="9000")
++    parser.add_argument("-d", dest="debug", action="store_true")
++    args = parser.parse_args()
++    if not args.in_place:
++        args.trace_file = os.path.realpath(args.trace_file)
++        args.config = os.path.realpath(args.config)
++        if args.in_dir:
++            directory = os.path.join(os.path.dirname(args.trace_file), args.in_dir)
++            os.makedirs(directory, mode=0o755, exist_ok=True)
++        else:
++            directory = os.path.dirname(args.trace_file)
++        os.chdir(directory)
++        case_dir = os.path.basename(args.trace_file) + ".dir"
++        os.makedirs(case_dir, mode=0o755, exist_ok=True)
++        os.chdir(case_dir)
++    return args
++
++
++def copy_config(config_file, in_parent):
++    try:
++        if in_parent:
++            os.symlink(os.path.dirname(config_file), "config")
++        else:
++            shutil.copy2(config_file, os.path.basename(config_file))
++    except OSError:
++        pass
++
++
++def parse_record(reader, key):
++    if not isinstance(key, str):
++        return key
++    text = key.replace("<<", "<").replace(">>", "$")
++    return reader._variable_converter(text)
++
++
++def bag_messages(reader, state):
++    messages = state.get("messages")
++    if not isinstance(messages, dict):
++        return []
++    items = []
++    for key, count in messages.items():
++        message = parse_record(reader, key)
++        items.extend([message] * int(count))
++    return items
++
++
++def fmt_log(entries):
++    if not entries:
++        return "[]"
++    parts = []
++    for entry in entries:
++        term = entry.get("term") if isinstance(entry, dict) else entry
++        parts.append("(%s, 'v')" % term)
++    return "[" + ", ".join(parts) + "]"
++
++
++def fmt_index_map(mapping, self_name):
++    items = []
++    for key, value in sorted(mapping.items(), key=lambda kv: node_name(kv[0])):
++        if node_name(key) == self_name:
++            continue
++        items.append("'%s': %s" % (node_name(key), value))
++    return "{" + ", ".join(items) + "}"
++
++
++def fmt_vote(value):
++    if value in ("Nil", None, "null"):
++        return "-1"
++    return str(server_id(value))
++
++
++def fmt_votes(value):
++    if not value:
++        return "{}"
++    if isinstance(value, str):
++        return "{}" if value in ("{}", "Nil") else value
++    ids = sorted(server_id(item) for item in value)
++    if not ids:
++        return "{}"
++    return "{" + ", ".join(str(item) for item in ids) + "}"
++
++
++class Builder:
++    def __init__(self, reader, states):
++        self.reader = reader
++        self.states = states
++        self.servers = sorted(states[0]["state"].keys(), key=node_name)
++        self.lines = []
++
++    def emit(self, *words):
++        self.lines.append(" ".join(str(word) for word in words))
++
++    def comment(self, text):
++        self.lines.append("# " + text)
++
++    def compare_node(self, state, server):
++        name = node_name(server)
++        pairs = [
++            ("commitIdx", state["commitIndex"][server]),
++            ("currentTerm", state["currentTerm"][server]),
++            ("votedFor", fmt_vote(state["votedFor"][server])),
++            ("persistedTerm", state["persistedTerm"][server]),
++            ("persistedVotedFor", fmt_vote(state["persistedVotedFor"][server])),
++            ("log", fmt_log(state["log"][server])),
++            ("votes", fmt_votes(state["votesGranted"][server])),
++            ("nextIdx", fmt_index_map(state["nextIndex"][server], name)),
++            ("matchIdx", fmt_index_map(state["matchIndex"][server], name)),
++        ]
++        role = state["state"][server]
++        if role not in STATE_CODE:
++            raise NotControllable("unmapped state %s" % role)
++        pairs.append(("state", STATE_CODE[role]))
++        for key, value in pairs:
++            self.emit("execute", name, "get " + key)
++            self.comment("variable %s %s %s" % (key, name, value))
++            self.emit("compare", "variable")
++
++    def compare_all(self, state):
++        for server in self.servers:
++            self.compare_node(state, server)
++        self.comment("net-len %d" % len(bag_messages(self.reader, state)))
++        self.emit("compare", "net-len")
++
++    def deliver(self, src, dest, seq):
++        self.emit("deliver-unordered", node_name(src), node_name(dest), seq)
++        self.emit("loop", "intercept", node_name(dest), "check_has_recv_queue", node_name(src))
++        self.emit("execute", node_name(dest), "raft recvfrom " + node_name(src))
++
++    def drop(self, src, dest, seq):
++        self.emit("drop-unordered", node_name(src), node_name(dest), seq)
++
++
++def build_from_pc(reader, states):
++    builder = Builder(reader, states)
++    for index, state in enumerate(states):
++        scr = state.get("scr") or {}
++        pc = scr.get("pc")
++        if not isinstance(pc, list) or not pc:
++            raise NotControllable("state %d has no scr.pc" % index)
++        cmd = str(pc[0])
++        builder.comment("[%d] %s" % (index, " ".join(str(part) for part in pc)))
++        if cmd == "Init":
++            builder.emit("init", len(builder.servers))
++            for server in builder.servers:
++                name = node_name(server)
++                builder.emit("execute", name, "net connectall")
++                builder.emit("execute", name, "raft init")
++            builder.emit("wait-init", len(builder.servers))
++            for server in builder.servers:
++                builder.emit("loop", "execute", node_name(server), "net isallconnected")
++        elif cmd == "Timeout":
++            builder.emit("execute", node_name(pc[1]), "raft timeout")
++        elif cmd == "BecomeLeader":
++            builder.emit("execute", node_name(pc[1]), "raft become-leader")
++        elif cmd == "ClientRequest":
++            builder.emit("execute", node_name(pc[1]), "raft cli v")
++        elif cmd == "AdvanceCommitIndex":
++            builder.emit("execute", node_name(pc[1]), "raft advance-commit")
++        elif cmd == "AppendEntries":
++            builder.emit("execute", node_name(pc[1]), "raft send " + node_name(pc[2]))
++        elif cmd == "Crash":
++            builder.emit("execute", node_name(pc[1]), "raft crash")
++        elif cmd == "PartialPersist":
++            builder.emit("execute", node_name(pc[1]), "raft partial-persist")
++        elif cmd in ("LoseMessage", "DropStaleMessage"):
++            builder.drop(pc[1], pc[2], pc[3])
++        elif cmd.startswith("Handle"):
++            builder.deliver(pc[2], pc[1], pc[3])
++        else:
++            raise NotControllable("no command for pc %s" % pc)
++        builder.compare_all(state)
++    for server in builder.servers:
++        builder.emit("execute", node_name(server), "raft statemachine")
++    return builder
++
++
++def main():
++    args = parse_args()
++    copy_config(args.config, not args.in_place)
++    try:
++        os.symlink(args.trace_file, "tlc_trace.txt")
++    except OSError:
++        pass
++    reader = TraceReader(True)
++    states = list(reader.trace_reader(args.trace_file))
++    if len(states) < 1:
++        raise SystemExit("no states in " + args.trace_file)
++    if "scr" not in states[0]:
++        raise SystemExit("not controllable: trace has no scr; eliben replay requires scr.pc")
++    try:
++        builder = build_from_pc(reader, states)
++    except NotControllable as exc:
++        raise SystemExit("not controllable: " + str(exc))
++    with open(args.output, "w") as handle:
++        handle.write("\n".join(builder.lines) + "\n")
++
++
++if __name__ == "__main__":
++    main()

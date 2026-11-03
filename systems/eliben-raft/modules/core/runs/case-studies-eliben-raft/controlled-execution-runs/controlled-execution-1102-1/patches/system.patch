@@ -1,0 +1,429 @@
+diff -ruN --exclude .git --exclude __pycache__ --exclude '*.pyc' a/controlled.go b/controlled.go
+--- a/controlled.go	2026-11-02 15:18:34.326612348 +0000
++++ b/controlled.go	2026-11-03 04:09:41.979081014 +0000
+@@ -1,6 +1,7 @@
+ package raft
+ 
+ import (
++	"bytes"
+ 	"encoding/gob"
+ 	"fmt"
+ 	"sort"
+@@ -8,21 +9,25 @@
+ 	"strings"
+ )
+ 
+-// Per-election vote counters. The stock startElection keeps votesReceived in
+-// the goroutine closure, so a later election does not reset an in-flight
+-// reply's counter. Keyed by the term captured when that election started.
+-var ctrlVotes = map[*ConsensusModule]map[int]int{}
++// Voters recorded for the current votesGranted set. Timeout replaces it
++// with the candidate itself. A granted reply adds the sender. Crash builds
++// a new module, so the set starts empty.
++var ctrlGrants = map[*ConsensusModule]map[int]struct{}{}
+ 
+ func noteControlledElection(cm *ConsensusModule) {
+-	if ctrlVotes[cm] == nil {
+-		ctrlVotes[cm] = map[int]int{}
++	ctrlGrants[cm] = map[int]struct{}{cm.id: {}}
++}
++
++func noteGrant(cm *ConsensusModule, from int) {
++	if ctrlGrants[cm] == nil {
++		ctrlGrants[cm] = map[int]struct{}{}
+ 	}
+-	ctrlVotes[cm][cm.currentTerm] = 1
++	ctrlGrants[cm][from] = struct{}{}
+ }
+ 
+ // onVoteReply is the body of the RequestVote reply goroutine (raft.go).
+ // Expects cm.mu to be held. F2a is the comparison against savedCurrentTerm.
+-func (cm *ConsensusModule) onVoteReply(savedCurrentTerm int, reply RequestVoteReply, votesReceived *int) {
++func (cm *ConsensusModule) onVoteReply(savedCurrentTerm int, reply RequestVoteReply, votesReceived *int, from int) {
+ 	cm.dlog("received RequestVoteReply %+v", reply)
+ 	if cm.state != Candidate {
+ 		cm.dlog("while waiting for reply, state = %v", cm.state)
+@@ -32,13 +37,15 @@
+ 		cm.dlog("term out of date in RequestVoteReply")
+ 		cm.becomeFollower(reply.Term)
+ 		return
+-	} else if reply.Term == savedCurrentTerm {
+-		if reply.VoteGranted {
+-			*votesReceived++
+-			if *votesReceived*2 > len(cm.peerIds)+1 {
+-				cm.dlog("wins election with %d votes", *votesReceived)
+-				cm.startLeader()
+-			}
++	} else if reply.Term == savedCurrentTerm && reply.VoteGranted {
++		*votesReceived++
++		if controlledReplay {
++			noteGrant(cm, from)
++			return
++		}
++		if *votesReceived*2 > len(cm.peerIds)+1 {
++			cm.dlog("wins election with %d votes", *votesReceived)
++			cm.startLeader()
+ 		}
+ 	}
+ }
+@@ -55,6 +62,10 @@
+ 		if reply.Success {
+ 			cm.nextIndex[peerId] = ni + len(entries)
+ 			cm.matchIndex[peerId] = cm.nextIndex[peerId] - 1
++			if controlledReplay {
++				cm.dlog("AppendEntries reply from %d success: nextIndex := %v, matchIndex := %v", peerId, cm.nextIndex, cm.matchIndex)
++				return false
++			}
+ 			savedCommitIndex := cm.commitIndex
+ 			for i := cm.commitIndex + 1; i < len(cm.log); i++ {
+ 				if cm.log[i].Term == cm.currentTerm {
+@@ -70,11 +81,7 @@
+ 				}
+ 			}
+ 			cm.dlog("AppendEntries reply from %d success: nextIndex := %v, matchIndex := %v; commitIndex := %d", peerId, cm.nextIndex, cm.matchIndex, cm.commitIndex)
+-			if cm.commitIndex != savedCommitIndex {
+-				cm.dlog("leader sets commitIndex := %d", cm.commitIndex)
+-				return true
+-			}
+-			return false
++			return cm.commitIndex != savedCommitIndex
+ 		}
+ 		if reply.ConflictTerm >= 0 {
+ 			lastIndexOfTerm := -1
+@@ -103,12 +110,20 @@
+ 	Data string
+ }
+ 
+-func NewControlled(id int, peers []int) *ConsensusModule {
++func NewControlled(id int, peers []int, dir string) *ConsensusModule {
+ 	controlledReplay = true
+ 	gob.Register("")
+ 	ready := make(chan any)
+ 	commitCh := make(chan CommitEntry, 64)
+-	return NewConsensusModule(id, peers, nil, NewMapStorage(), ready, commitCh)
++	return NewConsensusModule(id, peers, nil, NewFileStorage(dir), ready, commitCh)
++}
++
++func (cm *ConsensusModule) StoreDir() string {
++	fs, ok := cm.storage.(*FileStorage)
++	if !ok {
++		return ""
++	}
++	return fs.dir
+ }
+ 
+ func (cm *ConsensusModule) snapshotAEsLocked() []OutMsg {
+@@ -177,7 +192,7 @@
+ 	}
+ 	cm.log = append(cm.log, LogEntry{Command: command, Term: cm.currentTerm})
+ 	cm.persistToStorage()
+-	return cm.snapshotAEsLocked()
++	return nil
+ }
+ 
+ func (cm *ConsensusModule) ControlledDeliver(payload string) ([]OutMsg, error) {
+@@ -188,8 +203,6 @@
+ 	switch fields[0] {
+ 	case "RV":
+ 		return cm.deliverRV(fields)
+-	case "RVR":
+-		return cm.deliverRVR(fields)
+ 	case "AE":
+ 		return cm.deliverAE(fields)
+ 	default:
+@@ -216,7 +229,7 @@
+ 	return []OutMsg{{Peer: cand, Data: encodeRVR(reply, args.Term)}}, nil
+ }
+ 
+-func (cm *ConsensusModule) deliverRVR(fields []string) ([]OutMsg, error) {
++func (cm *ConsensusModule) deliverRVR(from int, fields []string) ([]OutMsg, error) {
+ 	if len(fields) != 4 {
+ 		return nil, fmt.Errorf("RVR fields %d", len(fields))
+ 	}
+@@ -230,18 +243,7 @@
+ 	cm.mu.Lock()
+ 	defer cm.mu.Unlock()
+ 	votes := 0
+-	if bucket := ctrlVotes[cm]; bucket != nil {
+-		votes = bucket[saved]
+-	}
+-	before := cm.state
+-	cm.onVoteReply(saved, reply, &votes)
+-	if ctrlVotes[cm] == nil {
+-		ctrlVotes[cm] = map[int]int{}
+-	}
+-	ctrlVotes[cm][saved] = votes
+-	if before != Leader && cm.state == Leader {
+-		return cm.snapshotAEsLocked(), nil
+-	}
++	cm.onVoteReply(saved, reply, &votes, from)
+ 	return nil, nil
+ }
+ 
+@@ -287,6 +289,9 @@
+ 	if len(fields) == 0 {
+ 		return nil, fmt.Errorf("empty payload")
+ 	}
++	if fields[0] == "RVR" {
++		return cm.deliverRVR(from, fields)
++	}
+ 	if fields[0] != "AER" {
+ 		return cm.ControlledDeliver(payload)
+ 	}
+@@ -312,13 +317,74 @@
+ 	saved := nums[6]
+ 	cm.mu.Lock()
+ 	defer cm.mu.Unlock()
+-	advanced := cm.onAEReply(from, saved, ni, entries, reply)
+-	if advanced {
+-		return cm.snapshotAEsLocked(), nil
+-	}
++	cm.onAEReply(from, saved, ni, entries, reply)
+ 	return nil, nil
+ }
+ 
++func (cm *ConsensusModule) ControlledSendAE(peer int) []OutMsg {
++	cm.mu.Lock()
++	defer cm.mu.Unlock()
++	if cm.state != Leader || peer == cm.id {
++		return nil
++	}
++	ni := cm.nextIndex[peer]
++	prevLogIndex := ni - 1
++	prevLogTerm := -1
++	var entries []LogEntry
++	if prevLogIndex >= 0 && prevLogIndex < len(cm.log) {
++		prevLogTerm = cm.log[prevLogIndex].Term
++	}
++	if ni >= 0 && ni < len(cm.log) {
++		entries = append([]LogEntry(nil), cm.log[ni:]...)
++	}
++	args := AppendEntriesArgs{
++		Term:         cm.currentTerm,
++		LeaderId:     cm.id,
++		PrevLogIndex: prevLogIndex,
++		PrevLogTerm:  prevLogTerm,
++		Entries:      entries,
++		LeaderCommit: cm.commitIndex,
++	}
++	return []OutMsg{{Peer: peer, Data: encodeAE(args)}}
++}
++
++func (cm *ConsensusModule) ControlledBecomeLeader() {
++	cm.mu.Lock()
++	defer cm.mu.Unlock()
++	if cm.state != Candidate {
++		return
++	}
++	cm.startLeader()
++}
++
++func (cm *ConsensusModule) ControlledAdvanceCommit() {
++	cm.mu.Lock()
++	defer cm.mu.Unlock()
++	if cm.state != Leader {
++		return
++	}
++	for i := cm.commitIndex + 1; i < len(cm.log); i++ {
++		if cm.log[i].Term != cm.currentTerm {
++			continue
++		}
++		matchCount := 1
++		for _, id := range cm.peerIds {
++			if cm.matchIndex[id] >= i {
++				matchCount++
++			}
++		}
++		if matchCount*2 > len(cm.peerIds)+1 {
++			cm.commitIndex = i
++		}
++	}
++}
++
++func (cm *ConsensusModule) ControlledPersistTermOnly() {
++	cm.mu.Lock()
++	defer cm.mu.Unlock()
++	cm.writeCurrentTerm()
++}
++
+ func (cm *ConsensusModule) ControlledGet(key string) string {
+ 	cm.mu.Lock()
+ 	defer cm.mu.Unlock()
+@@ -329,6 +395,14 @@
+ 		return strconv.Itoa(cm.currentTerm)
+ 	case "state":
+ 		return strconv.Itoa(int(cm.state))
++	case "votedFor":
++		return strconv.Itoa(cm.votedFor)
++	case "persistedTerm":
++		return strconv.Itoa(cm.storedInt("currentTerm", 0))
++	case "persistedVotedFor":
++		return strconv.Itoa(cm.storedInt("votedFor", -1))
++	case "votes":
++		return formatIDSet(ctrlGrants[cm])
+ 	case "log":
+ 		if len(cm.log) == 0 {
+ 			return "[]"
+@@ -339,16 +413,18 @@
+ 		}
+ 		return "[" + strings.Join(parts, ", ") + "]"
+ 	case "nextIdx", "matchIdx":
+-		if cm.state != Leader {
+-			return "{}"
+-		}
+ 		ids := append([]int(nil), cm.peerIds...)
+ 		sort.Ints(ids)
+ 		parts := make([]string, 0, len(ids))
+ 		for _, id := range ids {
+-			value := cm.nextIndex[id] + 1
++			value := 1
+ 			if key == "matchIdx" {
+-				value = cm.matchIndex[id] + 1
++				value = 0
++				if stored, ok := cm.matchIndex[id]; ok {
++					value = stored + 1
++				}
++			} else if stored, ok := cm.nextIndex[id]; ok {
++				value = stored + 1
+ 			}
+ 			parts = append(parts, fmt.Sprintf("'n%d': %d", id, value))
+ 		}
+@@ -358,6 +434,34 @@
+ 	}
+ }
+ 
++func (cm *ConsensusModule) storedInt(key string, missing int) int {
++	buf, found := cm.storage.Get(key)
++	if !found {
++		return missing
++	}
++	var value int
++	if err := gob.NewDecoder(bytes.NewBuffer(buf)).Decode(&value); err != nil {
++		return missing
++	}
++	return value
++}
++
++func formatIDSet(ids map[int]struct{}) string {
++	if len(ids) == 0 {
++		return "{}"
++	}
++	ordered := make([]int, 0, len(ids))
++	for id := range ids {
++		ordered = append(ordered, id)
++	}
++	sort.Ints(ordered)
++	parts := make([]string, len(ordered))
++	for i, id := range ordered {
++		parts[i] = strconv.Itoa(id)
++	}
++	return "{" + strings.Join(parts, ", ") + "}"
++}
++
+ func encodeRV(args RequestVoteArgs) string {
+ 	return fmt.Sprintf("RV %d %d %d %d", args.Term, args.CandidateId, args.LastLogIndex, args.LastLogTerm)
+ }
+diff -ruN --exclude .git --exclude __pycache__ --exclude '*.pyc' a/filestorage.go b/filestorage.go
+--- /dev/null
++++ b/filestorage.go	2026-11-03 04:06:34.782665016 +0000
+@@ -0,0 +1,65 @@
++package raft
++
++import (
++	"os"
++	"path/filepath"
++	"strings"
++	"sync"
++)
++
++// FileStorage is the durable Storage used by controlled replay.
++// Set writes a file and renames it into place. Get reads that file.
++// A new ConsensusModule must load this directory; it must not be handed
++// the previous module's memory.
++type FileStorage struct {
++	dir string
++	mu  sync.Mutex
++}
++
++func NewFileStorage(dir string) *FileStorage {
++	if err := os.MkdirAll(dir, 0o755); err != nil {
++		panic(err)
++	}
++	return &FileStorage{dir: dir}
++}
++
++func (fs *FileStorage) path(key string) string {
++	return filepath.Join(fs.dir, key)
++}
++
++func (fs *FileStorage) Set(key string, value []byte) {
++	fs.mu.Lock()
++	defer fs.mu.Unlock()
++	tmp := fs.path(key) + ".tmp"
++	if err := os.WriteFile(tmp, value, 0o644); err != nil {
++		panic(err)
++	}
++	if err := os.Rename(tmp, fs.path(key)); err != nil {
++		panic(err)
++	}
++}
++
++func (fs *FileStorage) Get(key string) ([]byte, bool) {
++	fs.mu.Lock()
++	defer fs.mu.Unlock()
++	buf, err := os.ReadFile(fs.path(key))
++	if err != nil {
++		return nil, false
++	}
++	return buf, true
++}
++
++func (fs *FileStorage) HasData() bool {
++	fs.mu.Lock()
++	defer fs.mu.Unlock()
++	entries, err := os.ReadDir(fs.dir)
++	if err != nil {
++		return false
++	}
++	for _, entry := range entries {
++		if !strings.HasSuffix(entry.Name(), ".tmp") {
++			return true
++		}
++	}
++	return false
++}
+diff -ruN --exclude .git --exclude __pycache__ --exclude '*.pyc' a/raft.go b/raft.go
+--- a/raft.go	2026-11-02 15:18:34.326612348 +0000
++++ b/raft.go	2026-11-03 04:09:42.647082505 +0000
+@@ -232,14 +232,20 @@
+ 	}
+ }
+ 
+-// persistToStorage saves all of CM's persistent state in cm.storage.
++// writeCurrentTerm is the first Set inside persistToStorage.
+ // Expects cm.mu to be locked.
+-func (cm *ConsensusModule) persistToStorage() {
++func (cm *ConsensusModule) writeCurrentTerm() {
+ 	var termData bytes.Buffer
+ 	if err := gob.NewEncoder(&termData).Encode(cm.currentTerm); err != nil {
+ 		log.Fatal(err)
+ 	}
+ 	cm.storage.Set("currentTerm", termData.Bytes())
++}
++
++// persistToStorage saves all of CM's persistent state in cm.storage.
++// Expects cm.mu to be locked.
++func (cm *ConsensusModule) persistToStorage() {
++	cm.writeCurrentTerm()
+ 
+ 	var votedData bytes.Buffer
+ 	if err := gob.NewEncoder(&votedData).Encode(cm.votedFor); err != nil {
+@@ -513,7 +519,7 @@
+ 			if err := cm.server.Call(peerId, "ConsensusModule.RequestVote", args, &reply); err == nil {
+ 				cm.mu.Lock()
+ 				defer cm.mu.Unlock()
+-				cm.onVoteReply(savedCurrentTerm, reply, &votesReceived)
++				cm.onVoteReply(savedCurrentTerm, reply, &votesReceived, peerId)
+ 			}
+ 		}()
+ 	}
