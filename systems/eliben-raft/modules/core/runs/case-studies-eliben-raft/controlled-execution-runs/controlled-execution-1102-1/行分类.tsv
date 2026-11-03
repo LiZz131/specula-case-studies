@@ -1,0 +1,576 @@
+文件	行号	集合	依据	下一步
+controlled.go	23	B	noteGrant 在表还不存在时新建。startElection 会先调用 noteControlledElection，投票应答只有候选人处理	死代码。死代码。规格里的投票应答只发给候选人，而候选人在本驱动里建表之后才收应答
+controlled.go	24	B	noteGrant 在表还不存在时新建。startElection 会先调用 noteControlledElection，投票应答只有候选人处理	死代码。死代码。规格里的投票应答只发给候选人，而候选人在本驱动里建表之后才收应答
+controlled.go	33	B	state 不是 Candidate 时丢掉投票应答，不改任期、投票或角色	死代码。死代码。HandleRequestVoteResponse 要求 state = Candidate，TLC 不会把应答交给其他角色
+controlled.go	34	B	state 不是 Candidate 时丢掉投票应答，不改任期、投票或角色	死代码。死代码。HandleRequestVoteResponse 要求 state = Candidate，TLC 不会把应答交给其他角色
+controlled.go	35	B	state 不是 Candidate 时丢掉投票应答，不改任期、投票或角色	死代码。死代码。HandleRequestVoteResponse 要求 state = Candidate，TLC 不会把应答交给其他角色
+controlled.go	46	D	凑够票时直接 startLeader。只在 controlledReplay 为 false 时运行，驱动把它设为 true	不采样。当选由 BecomeLeader 单独驱动
+controlled.go	47	D	凑够票时直接 startLeader。只在 controlledReplay 为 false 时运行，驱动把它设为 true	不采样。当选由 BecomeLeader 单独驱动
+controlled.go	48	D	凑够票时直接 startLeader。只在 controlledReplay 为 false 时运行，驱动把它设为 true	不采样。当选由 BecomeLeader 单独驱动
+controlled.go	49	D	凑够票时直接 startLeader。只在 controlledReplay 为 false 时运行，驱动把它设为 true	不采样。当选由 BecomeLeader 单独驱动
+controlled.go	69	D	成功应答里顺手推进 commitIndex。受控路径在这里返回，提交交给 AdvanceCommitIndex	不采样
+controlled.go	70	D	成功应答里顺手推进 commitIndex。受控路径在这里返回，提交交给 AdvanceCommitIndex	不采样
+controlled.go	71	D	成功应答里顺手推进 commitIndex。受控路径在这里返回，提交交给 AdvanceCommitIndex	不采样
+controlled.go	72	D	成功应答里顺手推进 commitIndex。受控路径在这里返回，提交交给 AdvanceCommitIndex	不采样
+controlled.go	73	D	成功应答里顺手推进 commitIndex。受控路径在这里返回，提交交给 AdvanceCommitIndex	不采样
+controlled.go	74	D	成功应答里顺手推进 commitIndex。受控路径在这里返回，提交交给 AdvanceCommitIndex	不采样
+controlled.go	75	D	成功应答里顺手推进 commitIndex。受控路径在这里返回，提交交给 AdvanceCommitIndex	不采样
+controlled.go	76	D	成功应答里顺手推进 commitIndex。受控路径在这里返回，提交交给 AdvanceCommitIndex	不采样
+controlled.go	78	D	成功应答里顺手推进 commitIndex。受控路径在这里返回，提交交给 AdvanceCommitIndex	不采样
+controlled.go	79	D	成功应答里顺手推进 commitIndex。受控路径在这里返回，提交交给 AdvanceCommitIndex	不采样
+controlled.go	80	D	成功应答里顺手推进 commitIndex。受控路径在这里返回，提交交给 AdvanceCommitIndex	不采样
+controlled.go	83	D	成功应答里顺手推进 commitIndex。受控路径在这里返回，提交交给 AdvanceCommitIndex	不采样
+controlled.go	84	D	成功应答里顺手推进 commitIndex。受控路径在这里返回，提交交给 AdvanceCommitIndex	不采样
+controlled.go	86	A	失败应答按 ConflictTerm、ConflictIndex 改 nextIndex。规格的失败分支只把 nextIndex 减 1，写入的值对不上	写入 scenarios.md。不把库改成减 1
+controlled.go	87	A	失败应答按 ConflictTerm、ConflictIndex 改 nextIndex。规格的失败分支只把 nextIndex 减 1，写入的值对不上	写入 scenarios.md。不把库改成减 1
+controlled.go	88	A	失败应答按 ConflictTerm、ConflictIndex 改 nextIndex。规格的失败分支只把 nextIndex 减 1，写入的值对不上	写入 scenarios.md。不把库改成减 1
+controlled.go	89	A	失败应答按 ConflictTerm、ConflictIndex 改 nextIndex。规格的失败分支只把 nextIndex 减 1，写入的值对不上	写入 scenarios.md。不把库改成减 1
+controlled.go	90	A	失败应答按 ConflictTerm、ConflictIndex 改 nextIndex。规格的失败分支只把 nextIndex 减 1，写入的值对不上	写入 scenarios.md。不把库改成减 1
+controlled.go	91	A	失败应答按 ConflictTerm、ConflictIndex 改 nextIndex。规格的失败分支只把 nextIndex 减 1，写入的值对不上	写入 scenarios.md。不把库改成减 1
+controlled.go	94	A	失败应答按 ConflictTerm、ConflictIndex 改 nextIndex。规格的失败分支只把 nextIndex 减 1，写入的值对不上	写入 scenarios.md。不把库改成减 1
+controlled.go	95	A	失败应答按 ConflictTerm、ConflictIndex 改 nextIndex。规格的失败分支只把 nextIndex 减 1，写入的值对不上	写入 scenarios.md。不把库改成减 1
+controlled.go	96	A	失败应答按 ConflictTerm、ConflictIndex 改 nextIndex。规格的失败分支只把 nextIndex 减 1，写入的值对不上	写入 scenarios.md。不把库改成减 1
+controlled.go	97	A	失败应答按 ConflictTerm、ConflictIndex 改 nextIndex。规格的失败分支只把 nextIndex 减 1，写入的值对不上	写入 scenarios.md。不把库改成减 1
+controlled.go	98	A	失败应答按 ConflictTerm、ConflictIndex 改 nextIndex。规格的失败分支只把 nextIndex 减 1，写入的值对不上	写入 scenarios.md。不把库改成减 1
+controlled.go	99	A	失败应答按 ConflictTerm、ConflictIndex 改 nextIndex。规格的失败分支只把 nextIndex 减 1，写入的值对不上	写入 scenarios.md。不把库改成减 1
+controlled.go	100	A	失败应答按 ConflictTerm、ConflictIndex 改 nextIndex。规格的失败分支只把 nextIndex 减 1，写入的值对不上	写入 scenarios.md。不把库改成减 1
+controlled.go	101	A	失败应答按 ConflictTerm、ConflictIndex 改 nextIndex。规格的失败分支只把 nextIndex 减 1，写入的值对不上	写入 scenarios.md。不把库改成减 1
+controlled.go	102	A	失败应答按 ConflictTerm、ConflictIndex 改 nextIndex。规格的失败分支只把 nextIndex 减 1，写入的值对不上	写入 scenarios.md。不把库改成减 1
+controlled.go	121	D	StoreDir 只把目录路径交回去，驱动不调用	不采样
+controlled.go	122	D	StoreDir 只把目录路径交回去，驱动不调用	不采样
+controlled.go	123	D	StoreDir 只把目录路径交回去，驱动不调用	不采样
+controlled.go	124	D	StoreDir 只把目录路径交回去，驱动不调用	不采样
+controlled.go	125	D	StoreDir 只把目录路径交回去，驱动不调用	不采样
+controlled.go	126	D	StoreDir 只把目录路径交回去，驱动不调用	不采样
+controlled.go	129	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	130	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	131	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	132	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	133	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	134	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	135	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	136	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	137	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	138	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	139	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	140	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	141	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	142	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	143	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	144	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	145	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	146	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	147	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	148	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	149	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	150	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	151	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	152	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	153	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	154	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	156	D	snapshotAEsLocked 只被 ControlledHeartbeat 调用，生成器没有心跳命令	不采样。单播 AppendEntries 走 ControlledSendAE
+controlled.go	163	B	Timeout 落在领导者上直接返回，不改状态	死代码。死代码。Timeout 要求 Follower 或 Candidate
+controlled.go	164	B	Timeout 落在领导者上直接返回，不改状态	死代码。死代码。Timeout 要求 Follower 或 Candidate
+controlled.go	181	D	ControlledHeartbeat 驱动不调用	不采样
+controlled.go	182	D	ControlledHeartbeat 驱动不调用	不采样
+controlled.go	183	D	ControlledHeartbeat 驱动不调用	不采样
+controlled.go	184	D	ControlledHeartbeat 驱动不调用	不采样
+controlled.go	185	D	ControlledHeartbeat 驱动不调用	不采样
+controlled.go	191	B	ClientRequest 落在非领导者上返回，不改日志	死代码。死代码。ClientRequest 要求 Leader
+controlled.go	192	B	ClientRequest 落在非领导者上返回，不改日志	死代码。死代码。ClientRequest 要求 Leader
+controlled.go	201	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	202	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	208	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	209	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	215	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	216	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	222	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	223	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	227	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	228	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	234	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	235	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	240	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	241	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	252	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	253	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	258	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	259	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	264	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	265	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	280	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	281	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	290	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	291	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	299	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	300	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	305	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	306	C	交付函数解析失败就返回 error。字节格式写不成规格谓词	不采样
+controlled.go	328	B	AppendEntries 的发送方不是 Leader，或目标是自己，就返回	死代码。死代码。AppendEntries 只从领导者发向其他服务器
+controlled.go	329	B	AppendEntries 的发送方不是 Leader，或目标是自己，就返回	死代码。死代码。AppendEntries 只从领导者发向其他服务器
+controlled.go	355	B	BecomeLeader 落在非候选人上返回	死代码。死代码。BecomeLeader 要求 Candidate
+controlled.go	356	B	BecomeLeader 落在非候选人上返回	死代码。死代码。BecomeLeader 要求 Candidate
+controlled.go	364	B	AdvanceCommitIndex 落在非领导者上返回	死代码。死代码。AdvanceCommitIndex 要求 Leader
+controlled.go	365	B	AdvanceCommitIndex 落在非领导者上返回	死代码。死代码。AdvanceCommitIndex 要求 Leader
+controlled.go	368	B	提交循环遇到旧任期条目就 continue，不改 commitIndex。守卫是 log[i].term /= currentTerm	五个配置的行覆盖已经封顶，同一配置再加种子不会专门去碰这一行。要执行它，领导者日志里得留着尚未提交的旧任期条目
+controlled.go	432	D	ControlledGet 的 default。驱动只读规格里的那些键	不采样
+controlled.go	433	D	ControlledGet 的 default。驱动只读规格里的那些键	不采样
+controlled.go	444	C	持久化整数解码失败时返回缺省值。gob 错误写不成规格谓词	不采样
+controlled.go	445	C	持久化整数解码失败时返回缺省值。gob 错误写不成规格谓词	不采样
+filestorage.go	21	C	MkdirAll 失败就 panic。文件系统错误写不成规格谓词	不采样
+filestorage.go	35	C	WriteFile 失败就 panic	不采样
+filestorage.go	38	C	Rename 失败就 panic	不采样
+filestorage.go	57	C	ReadDir 失败时 HasData 返回 false	不采样
+filestorage.go	58	C	ReadDir 失败时 HasData 返回 false	不采样
+raft.go	48	D	CMState.String。驱动读的是状态的整数，不调用这个方法	不采样
+raft.go	49	D	CMState.String。驱动读的是状态的整数，不调用这个方法	不采样
+raft.go	50	D	CMState.String。驱动读的是状态的整数，不调用这个方法	不采样
+raft.go	51	D	CMState.String。驱动读的是状态的整数，不调用这个方法	不采样
+raft.go	52	D	CMState.String。驱动读的是状态的整数，不调用这个方法	不采样
+raft.go	53	D	CMState.String。驱动读的是状态的整数，不调用这个方法	不采样
+raft.go	54	D	CMState.String。驱动读的是状态的整数，不调用这个方法	不采样
+raft.go	55	D	CMState.String。驱动读的是状态的整数，不调用这个方法	不采样
+raft.go	56	D	CMState.String。驱动读的是状态的整数，不调用这个方法	不采样
+raft.go	57	D	CMState.String。驱动读的是状态的整数，不调用这个方法	不采样
+raft.go	58	D	CMState.String。驱动读的是状态的整数，不调用这个方法	不采样
+raft.go	59	D	CMState.String。驱动读的是状态的整数，不调用这个方法	不采样
+raft.go	143	D	非受控路径才启动选举计时和 commitChanSender。驱动构造时 controlledReplay 为 true	不采样。选举由 Timeout 驱动
+raft.go	144	D	非受控路径才启动选举计时和 commitChanSender。驱动构造时 controlledReplay 为 true	不采样。选举由 Timeout 驱动
+raft.go	145	D	非受控路径才启动选举计时和 commitChanSender。驱动构造时 controlledReplay 为 true	不采样。选举由 Timeout 驱动
+raft.go	146	D	非受控路径才启动选举计时和 commitChanSender。驱动构造时 controlledReplay 为 true	不采样。选举由 Timeout 驱动
+raft.go	147	D	非受控路径才启动选举计时和 commitChanSender。驱动构造时 controlledReplay 为 true	不采样。选举由 Timeout 驱动
+raft.go	148	D	非受控路径才启动选举计时和 commitChanSender。驱动构造时 controlledReplay 为 true	不采样。选举由 Timeout 驱动
+raft.go	149	D	非受控路径才启动选举计时和 commitChanSender。驱动构造时 controlledReplay 为 true	不采样。选举由 Timeout 驱动
+raft.go	150	D	非受控路径才启动选举计时和 commitChanSender。驱动构造时 controlledReplay 为 true	不采样。选举由 Timeout 驱动
+raft.go	151	D	非受控路径才启动选举计时和 commitChanSender。驱动构造时 controlledReplay 为 true	不采样。选举由 Timeout 驱动
+raft.go	153	D	非受控路径才启动选举计时和 commitChanSender。驱动构造时 controlledReplay 为 true	不采样。选举由 Timeout 驱动
+raft.go	154	D	非受控路径才启动选举计时和 commitChanSender。驱动构造时 controlledReplay 为 true	不采样。选举由 Timeout 驱动
+raft.go	160	D	Report 是驱动不调用的 getter	不采样
+raft.go	161	D	Report 是驱动不调用的 getter	不采样
+raft.go	162	D	Report 是驱动不调用的 getter	不采样
+raft.go	163	D	Report 是驱动不调用的 getter	不采样
+raft.go	164	D	Report 是驱动不调用的 getter	不采样
+raft.go	171	D	Submit 是非受控入口。驱动走 ControlledSubmit	不采样
+raft.go	172	D	Submit 是非受控入口。驱动走 ControlledSubmit	不采样
+raft.go	173	D	Submit 是非受控入口。驱动走 ControlledSubmit	不采样
+raft.go	174	D	Submit 是非受控入口。驱动走 ControlledSubmit	不采样
+raft.go	175	D	Submit 是非受控入口。驱动走 ControlledSubmit	不采样
+raft.go	176	D	Submit 是非受控入口。驱动走 ControlledSubmit	不采样
+raft.go	177	D	Submit 是非受控入口。驱动走 ControlledSubmit	不采样
+raft.go	178	D	Submit 是非受控入口。驱动走 ControlledSubmit	不采样
+raft.go	179	D	Submit 是非受控入口。驱动走 ControlledSubmit	不采样
+raft.go	180	D	Submit 是非受控入口。驱动走 ControlledSubmit	不采样
+raft.go	181	D	Submit 是非受控入口。驱动走 ControlledSubmit	不采样
+raft.go	182	D	Submit 是非受控入口。驱动走 ControlledSubmit	不采样
+raft.go	183	D	Submit 是非受控入口。驱动走 ControlledSubmit	不采样
+raft.go	186	D	Submit 是非受控入口。驱动走 ControlledSubmit	不采样
+raft.go	187	D	Submit 是非受控入口。驱动走 ControlledSubmit	不采样
+raft.go	193	D	Stop 把状态写成 Dead 并等待提交 goroutine。规格没有单独的销毁动作。这条路径可能藏着 WaitGroup 上的等待，不为此发明崩溃	不采样
+raft.go	194	D	Stop 把状态写成 Dead 并等待提交 goroutine。规格没有单独的销毁动作。这条路径可能藏着 WaitGroup 上的等待，不为此发明崩溃	不采样
+raft.go	195	D	Stop 把状态写成 Dead 并等待提交 goroutine。规格没有单独的销毁动作。这条路径可能藏着 WaitGroup 上的等待，不为此发明崩溃	不采样
+raft.go	196	D	Stop 把状态写成 Dead 并等待提交 goroutine。规格没有单独的销毁动作。这条路径可能藏着 WaitGroup 上的等待，不为此发明崩溃	不采样
+raft.go	197	D	Stop 把状态写成 Dead 并等待提交 goroutine。规格没有单独的销毁动作。这条路径可能藏着 WaitGroup 上的等待，不为此发明崩溃	不采样
+raft.go	198	D	Stop 把状态写成 Dead 并等待提交 goroutine。规格没有单独的销毁动作。这条路径可能藏着 WaitGroup 上的等待，不为此发明崩溃	不采样
+raft.go	199	D	Stop 把状态写成 Dead 并等待提交 goroutine。规格没有单独的销毁动作。这条路径可能藏着 WaitGroup 上的等待，不为此发明崩溃	不采样
+raft.go	200	D	Stop 把状态写成 Dead 并等待提交 goroutine。规格没有单独的销毁动作。这条路径可能藏着 WaitGroup 上的等待，不为此发明崩溃	不采样
+raft.go	201	D	Stop 把状态写成 Dead 并等待提交 goroutine。规格没有单独的销毁动作。这条路径可能藏着 WaitGroup 上的等待，不为此发明崩溃	不采样
+raft.go	202	D	Stop 把状态写成 Dead 并等待提交 goroutine。规格没有单独的销毁动作。这条路径可能藏着 WaitGroup 上的等待，不为此发明崩溃	不采样
+raft.go	203	D	Stop 把状态写成 Dead 并等待提交 goroutine。规格没有单独的销毁动作。这条路径可能藏着 WaitGroup 上的等待，不为此发明崩溃	不采样
+raft.go	204	D	Stop 把状态写成 Dead 并等待提交 goroutine。规格没有单独的销毁动作。这条路径可能藏着 WaitGroup 上的等待，不为此发明崩溃	不采样
+raft.go	212	C	currentTerm 的 gob 解码失败就 log.Fatal	不采样
+raft.go	213	C	currentTerm 的 gob 解码失败就 log.Fatal	不采样
+raft.go	214	C	currentTerm 的 gob 解码失败就 log.Fatal	不采样
+raft.go	215	B	存储里没有 currentTerm 键就 log.Fatal。守卫是这个键不存在	PartialPersist 先写下 currentTerm，所以这行没走到。不改 restoreFromStorage
+raft.go	216	B	存储里没有 currentTerm 键就 log.Fatal。守卫是这个键不存在	PartialPersist 先写下 currentTerm，所以这行没走到。不改 restoreFromStorage
+raft.go	220	C	votedFor 的 gob 解码失败就 log.Fatal	不采样
+raft.go	221	C	votedFor 的 gob 解码失败就 log.Fatal	不采样
+raft.go	222	C	votedFor 的 gob 解码失败就 log.Fatal	不采样
+raft.go	223	B	存储里没有 votedFor 键就 log.Fatal。守卫是这个键不存在	PartialPersist 在只有 currentTerm 的目录上执行过这行，log.Fatal 在覆盖率 dump 之前把进程打死，计数仍是 0。不改库去记下这次计数，也不再采样
+raft.go	224	B	存储里没有 votedFor 键就 log.Fatal。守卫是这个键不存在	PartialPersist 在只有 currentTerm 的目录上执行过这行，log.Fatal 在覆盖率 dump 之前把进程打死，计数仍是 0。不改库去记下这次计数，也不再采样
+raft.go	228	C	log 的 gob 解码失败就 log.Fatal	不采样
+raft.go	229	C	log 的 gob 解码失败就 log.Fatal	不采样
+raft.go	230	C	log 的 gob 解码失败就 log.Fatal	不采样
+raft.go	231	B	存储里没有 log 键就 log.Fatal。前面的 votedFor 缺失已经退出，这行没走到	不改 restoreFromStorage。不为此再采样
+raft.go	232	B	存储里没有 log 键就 log.Fatal。前面的 votedFor 缺失已经退出，这行没走到	不改 restoreFromStorage。不为此再采样
+raft.go	240	C	编码 currentTerm 失败就 log.Fatal	不采样
+raft.go	241	C	编码 currentTerm 失败就 log.Fatal	不采样
+raft.go	252	C	编码 votedFor 失败就 log.Fatal	不采样
+raft.go	253	C	编码 votedFor 失败就 log.Fatal	不采样
+raft.go	258	C	编码 log 失败就 log.Fatal	不采样
+raft.go	259	C	编码 log 失败就 log.Fatal	不采样
+raft.go	266	D	DebugCM 为 0，调试打印不运行	不采样
+raft.go	267	D	DebugCM 为 0，调试打印不运行	不采样
+raft.go	268	D	DebugCM 为 0，调试打印不运行	不采样
+raft.go	289	C	RequestVote 看到 Dead 就返回。规格里没有 Dead	不采样
+raft.go	290	C	RequestVote 看到 Dead 就返回。规格里没有 Dead	不采样
+raft.go	340	C	AppendEntries 看到 Dead 就返回。规格里没有 Dead	不采样
+raft.go	341	C	AppendEntries 看到 Dead 就返回。规格里没有 Dead	不采样
+raft.go	395	D	非受控路径才向 newCommitReadyChan 发送	不采样
+raft.go	396	D	非受控路径才向 newCommitReadyChan 发送	不采样
+raft.go	398	B	prev 对不上时填写 ConflictIndex 和 ConflictTerm，不改本机日志、任期或提交点。守卫是日志在该下标的任期不同，或下标超出日志	五个配置已经封顶，这 500 条里的 AppendEntries 应答都是成功。不在同一配置上加种子。对应的领导者赋值见 scenarios.md
+raft.go	399	B	prev 对不上时填写 ConflictIndex 和 ConflictTerm，不改本机日志、任期或提交点。守卫是日志在该下标的任期不同，或下标超出日志	五个配置已经封顶，这 500 条里的 AppendEntries 应答都是成功。不在同一配置上加种子。对应的领导者赋值见 scenarios.md
+raft.go	400	B	prev 对不上时填写 ConflictIndex 和 ConflictTerm，不改本机日志、任期或提交点。守卫是日志在该下标的任期不同，或下标超出日志	五个配置已经封顶，这 500 条里的 AppendEntries 应答都是成功。不在同一配置上加种子。对应的领导者赋值见 scenarios.md
+raft.go	401	B	prev 对不上时填写 ConflictIndex 和 ConflictTerm，不改本机日志、任期或提交点。守卫是日志在该下标的任期不同，或下标超出日志	五个配置已经封顶，这 500 条里的 AppendEntries 应答都是成功。不在同一配置上加种子。对应的领导者赋值见 scenarios.md
+raft.go	402	B	prev 对不上时填写 ConflictIndex 和 ConflictTerm，不改本机日志、任期或提交点。守卫是日志在该下标的任期不同，或下标超出日志	五个配置已经封顶，这 500 条里的 AppendEntries 应答都是成功。不在同一配置上加种子。对应的领导者赋值见 scenarios.md
+raft.go	403	B	prev 对不上时填写 ConflictIndex 和 ConflictTerm，不改本机日志、任期或提交点。守卫是日志在该下标的任期不同，或下标超出日志	五个配置已经封顶，这 500 条里的 AppendEntries 应答都是成功。不在同一配置上加种子。对应的领导者赋值见 scenarios.md
+raft.go	404	B	prev 对不上时填写 ConflictIndex 和 ConflictTerm，不改本机日志、任期或提交点。守卫是日志在该下标的任期不同，或下标超出日志	五个配置已经封顶，这 500 条里的 AppendEntries 应答都是成功。不在同一配置上加种子。对应的领导者赋值见 scenarios.md
+raft.go	405	B	prev 对不上时填写 ConflictIndex 和 ConflictTerm，不改本机日志、任期或提交点。守卫是日志在该下标的任期不同，或下标超出日志	五个配置已经封顶，这 500 条里的 AppendEntries 应答都是成功。不在同一配置上加种子。对应的领导者赋值见 scenarios.md
+raft.go	406	B	prev 对不上时填写 ConflictIndex 和 ConflictTerm，不改本机日志、任期或提交点。守卫是日志在该下标的任期不同，或下标超出日志	五个配置已经封顶，这 500 条里的 AppendEntries 应答都是成功。不在同一配置上加种子。对应的领导者赋值见 scenarios.md
+raft.go	407	B	prev 对不上时填写 ConflictIndex 和 ConflictTerm，不改本机日志、任期或提交点。守卫是日志在该下标的任期不同，或下标超出日志	五个配置已经封顶，这 500 条里的 AppendEntries 应答都是成功。不在同一配置上加种子。对应的领导者赋值见 scenarios.md
+raft.go	408	B	prev 对不上时填写 ConflictIndex 和 ConflictTerm，不改本机日志、任期或提交点。守卫是日志在该下标的任期不同，或下标超出日志	五个配置已经封顶，这 500 条里的 AppendEntries 应答都是成功。不在同一配置上加种子。对应的领导者赋值见 scenarios.md
+raft.go	409	B	prev 对不上时填写 ConflictIndex 和 ConflictTerm，不改本机日志、任期或提交点。守卫是日志在该下标的任期不同，或下标超出日志	五个配置已经封顶，这 500 条里的 AppendEntries 应答都是成功。不在同一配置上加种子。对应的领导者赋值见 scenarios.md
+raft.go	410	B	prev 对不上时填写 ConflictIndex 和 ConflictTerm，不改本机日志、任期或提交点。守卫是日志在该下标的任期不同，或下标超出日志	五个配置已经封顶，这 500 条里的 AppendEntries 应答都是成功。不在同一配置上加种子。对应的领导者赋值见 scenarios.md
+raft.go	411	B	prev 对不上时填写 ConflictIndex 和 ConflictTerm，不改本机日志、任期或提交点。守卫是日志在该下标的任期不同，或下标超出日志	五个配置已经封顶，这 500 条里的 AppendEntries 应答都是成功。不在同一配置上加种子。对应的领导者赋值见 scenarios.md
+raft.go	412	B	prev 对不上时填写 ConflictIndex 和 ConflictTerm，不改本机日志、任期或提交点。守卫是日志在该下标的任期不同，或下标超出日志	五个配置已经封顶，这 500 条里的 AppendEntries 应答都是成功。不在同一配置上加种子。对应的领导者赋值见 scenarios.md
+raft.go	413	B	prev 对不上时填写 ConflictIndex 和 ConflictTerm，不改本机日志、任期或提交点。守卫是日志在该下标的任期不同，或下标超出日志	五个配置已经封顶，这 500 条里的 AppendEntries 应答都是成功。不在同一配置上加种子。对应的领导者赋值见 scenarios.md
+raft.go	416	B	prev 对不上时填写 ConflictIndex 和 ConflictTerm，不改本机日志、任期或提交点。守卫是日志在该下标的任期不同，或下标超出日志	五个配置已经封顶，这 500 条里的 AppendEntries 应答都是成功。不在同一配置上加种子。对应的领导者赋值见 scenarios.md
+raft.go	428	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	429	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	430	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	431	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	432	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	433	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	434	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	435	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	436	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	445	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	446	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	447	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	448	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	449	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	450	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	451	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	452	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	453	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	454	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	455	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	456	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	457	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	458	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	459	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	460	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	461	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	462	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	463	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	464	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	465	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	466	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	467	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	469	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	470	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	471	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	472	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	473	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	477	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	478	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	479	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	480	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	481	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	482	D	electionTimeout 和 runElectionTimer。受控路径不启动选举计时	不采样。Timeout 是显式命令
+raft.go	504	D	startElection 后半段向每个 peer 起 RPC goroutine。受控路径在 noteControlledElection 处返回，由驱动组 RequestVote	不采样
+raft.go	505	D	startElection 后半段向每个 peer 起 RPC goroutine。受控路径在 noteControlledElection 处返回，由驱动组 RequestVote	不采样
+raft.go	506	D	startElection 后半段向每个 peer 起 RPC goroutine。受控路径在 noteControlledElection 处返回，由驱动组 RequestVote	不采样
+raft.go	507	D	startElection 后半段向每个 peer 起 RPC goroutine。受控路径在 noteControlledElection 处返回，由驱动组 RequestVote	不采样
+raft.go	508	D	startElection 后半段向每个 peer 起 RPC goroutine。受控路径在 noteControlledElection 处返回，由驱动组 RequestVote	不采样
+raft.go	509	D	startElection 后半段向每个 peer 起 RPC goroutine。受控路径在 noteControlledElection 处返回，由驱动组 RequestVote	不采样
+raft.go	510	D	startElection 后半段向每个 peer 起 RPC goroutine。受控路径在 noteControlledElection 处返回，由驱动组 RequestVote	不采样
+raft.go	511	D	startElection 后半段向每个 peer 起 RPC goroutine。受控路径在 noteControlledElection 处返回，由驱动组 RequestVote	不采样
+raft.go	512	D	startElection 后半段向每个 peer 起 RPC goroutine。受控路径在 noteControlledElection 处返回，由驱动组 RequestVote	不采样
+raft.go	513	D	startElection 后半段向每个 peer 起 RPC goroutine。受控路径在 noteControlledElection 处返回，由驱动组 RequestVote	不采样
+raft.go	514	D	startElection 后半段向每个 peer 起 RPC goroutine。受控路径在 noteControlledElection 处返回，由驱动组 RequestVote	不采样
+raft.go	515	D	startElection 后半段向每个 peer 起 RPC goroutine。受控路径在 noteControlledElection 处返回，由驱动组 RequestVote	不采样
+raft.go	516	D	startElection 后半段向每个 peer 起 RPC goroutine。受控路径在 noteControlledElection 处返回，由驱动组 RequestVote	不采样
+raft.go	517	D	startElection 后半段向每个 peer 起 RPC goroutine。受控路径在 noteControlledElection 处返回，由驱动组 RequestVote	不采样
+raft.go	518	D	startElection 后半段向每个 peer 起 RPC goroutine。受控路径在 noteControlledElection 处返回，由驱动组 RequestVote	不采样
+raft.go	519	D	startElection 后半段向每个 peer 起 RPC goroutine。受控路径在 noteControlledElection 处返回，由驱动组 RequestVote	不采样
+raft.go	520	D	startElection 后半段向每个 peer 起 RPC goroutine。受控路径在 noteControlledElection 处返回，由驱动组 RequestVote	不采样
+raft.go	521	D	startElection 后半段向每个 peer 起 RPC goroutine。受控路径在 noteControlledElection 处返回，由驱动组 RequestVote	不采样
+raft.go	522	D	startElection 后半段向每个 peer 起 RPC goroutine。受控路径在 noteControlledElection 处返回，由驱动组 RequestVote	不采样
+raft.go	523	D	startElection 后半段向每个 peer 起 RPC goroutine。受控路径在 noteControlledElection 处返回，由驱动组 RequestVote	不采样
+raft.go	528	D	startElection 后半段向每个 peer 起 RPC goroutine。受控路径在 noteControlledElection 处返回，由驱动组 RequestVote	不采样
+raft.go	541	D	非受控路径才在 becomeFollower 里重启选举计时	不采样
+raft.go	542	D	非受控路径才在 becomeFollower 里重启选举计时	不采样
+raft.go	563	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	564	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	565	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	566	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	567	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	568	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	569	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	570	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	571	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	572	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	573	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	574	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	575	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	576	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	577	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	578	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	579	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	580	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	581	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	582	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	583	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	586	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	587	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	588	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	589	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	592	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	593	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	594	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	595	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	596	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	597	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	598	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	599	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	600	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	608	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	609	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	610	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	611	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	612	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	613	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	614	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	615	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	616	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	617	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	618	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	619	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	620	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	621	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	622	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	623	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	624	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	625	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	626	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	627	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	628	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	629	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	630	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	631	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	632	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	633	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	634	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	635	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	636	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	637	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	638	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	639	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	640	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	641	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	642	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	643	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	644	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	645	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	646	D	startLeader 的心跳循环和 leaderSendAEs。受控路径在 startLeader 里返回，发送走 ControlledSendAE	不采样
+raft.go	670	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+raft.go	671	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+raft.go	672	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+raft.go	673	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+raft.go	674	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+raft.go	675	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+raft.go	676	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+raft.go	677	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+raft.go	678	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+raft.go	679	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+raft.go	680	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+raft.go	681	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+raft.go	682	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+raft.go	683	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+raft.go	684	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+raft.go	685	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+raft.go	686	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+raft.go	687	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+raft.go	688	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+raft.go	689	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+raft.go	690	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+raft.go	691	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+raft.go	692	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+raft.go	693	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+raft.go	695	D	commitChanSender 把已提交条目送到客户端通道。受控构造不启动它	不采样。提交点由 AdvanceCommitIndex 比较
+server.go	46	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	47	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	48	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	49	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	50	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	51	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	52	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	53	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	54	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	55	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	56	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	58	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	59	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	60	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	61	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	62	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	63	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	64	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	65	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	66	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	67	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	68	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	69	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	70	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	71	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	72	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	73	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	74	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	75	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	76	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	77	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	78	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	79	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	80	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	81	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	82	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	83	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	84	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	85	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	86	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	87	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	90	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	91	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	92	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	93	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	94	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	100	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	101	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	102	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	105	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	106	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	107	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	108	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	109	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	110	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	111	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	112	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	117	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	118	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	119	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	120	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	121	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	122	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	124	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	125	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	126	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	127	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	128	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	130	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	131	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	132	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	133	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	134	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	135	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	136	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	137	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	138	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	140	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	144	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	145	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	146	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	147	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	148	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	149	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	150	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	151	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	152	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	155	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	156	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	157	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	158	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	159	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	160	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	161	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	162	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	163	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	164	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	165	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	166	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	170	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	171	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	172	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	173	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	177	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	178	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	179	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	201	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	202	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	203	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	204	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	205	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	206	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	208	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	209	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	210	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	211	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	212	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	213	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	214	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	215	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	216	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	217	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	218	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	219	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	220	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	221	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	224	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	225	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	226	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	227	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	228	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	229	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	230	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	231	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	232	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	233	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	234	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	235	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	236	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	237	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	240	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	241	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	242	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	243	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	244	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	245	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	246	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	247	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	248	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	249	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	250	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	251	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	257	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	258	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	259	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	260	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	261	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	262	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	264	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	265	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	266	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	267	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	268	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+server.go	269	D	RPC 服务器、连接和 RPCProxy。受控驱动不调用 NewServer，消息由 SandTable 投递	不采样
+storage.go	23	D	MapStorage 是内存实现。驱动用 FileStorage，这些方法不会被调用	不采样
+storage.go	24	D	MapStorage 是内存实现。驱动用 FileStorage，这些方法不会被调用	不采样
+storage.go	25	D	MapStorage 是内存实现。驱动用 FileStorage，这些方法不会被调用	不采样
+storage.go	26	D	MapStorage 是内存实现。驱动用 FileStorage，这些方法不会被调用	不采样
+storage.go	27	D	MapStorage 是内存实现。驱动用 FileStorage，这些方法不会被调用	不采样
+storage.go	28	D	MapStorage 是内存实现。驱动用 FileStorage，这些方法不会被调用	不采样
+storage.go	30	D	MapStorage 是内存实现。驱动用 FileStorage，这些方法不会被调用	不采样
+storage.go	31	D	MapStorage 是内存实现。驱动用 FileStorage，这些方法不会被调用	不采样
+storage.go	32	D	MapStorage 是内存实现。驱动用 FileStorage，这些方法不会被调用	不采样
+storage.go	33	D	MapStorage 是内存实现。驱动用 FileStorage，这些方法不会被调用	不采样
+storage.go	34	D	MapStorage 是内存实现。驱动用 FileStorage，这些方法不会被调用	不采样
+storage.go	35	D	MapStorage 是内存实现。驱动用 FileStorage，这些方法不会被调用	不采样
+storage.go	37	D	MapStorage 是内存实现。驱动用 FileStorage，这些方法不会被调用	不采样
+storage.go	38	D	MapStorage 是内存实现。驱动用 FileStorage，这些方法不会被调用	不采样
+storage.go	39	D	MapStorage 是内存实现。驱动用 FileStorage，这些方法不会被调用	不采样
+storage.go	40	D	MapStorage 是内存实现。驱动用 FileStorage，这些方法不会被调用	不采样
+storage.go	41	D	MapStorage 是内存实现。驱动用 FileStorage，这些方法不会被调用	不采样
+storage.go	43	D	MapStorage 是内存实现。驱动用 FileStorage，这些方法不会被调用	不采样
+storage.go	44	D	MapStorage 是内存实现。驱动用 FileStorage，这些方法不会被调用	不采样
+storage.go	45	D	MapStorage 是内存实现。驱动用 FileStorage，这些方法不会被调用	不采样
+storage.go	46	D	MapStorage 是内存实现。驱动用 FileStorage，这些方法不会被调用	不采样
+storage.go	47	D	MapStorage 是内存实现。驱动用 FileStorage，这些方法不会被调用	不采样
