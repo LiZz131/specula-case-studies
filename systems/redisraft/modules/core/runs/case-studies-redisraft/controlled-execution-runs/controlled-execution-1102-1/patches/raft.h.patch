@@ -1,0 +1,13 @@
+--- /users/bingzhuo/Specula/case-studies/systems/redisraft/modules/core/runs/case-studies-redisraft/artifact/redisraft/include/raft.h	2026-11-02 15:18:35.030614561 +0000
++++ /users/bingzhuo/Specula/case-studies/systems/redisraft/modules/core/runs/case-studies-redisraft/controlled-execution-runs/controlled-execution-1102-1/system/include/raft.h	2026-11-03 03:52:38.004853879 +0000
+@@ -1537,6 +1537,10 @@
+  */
+ int raft_flush(raft_server_t* me, raft_index_t sync_index);
+ 
++/** Advance commit index from match indexes. Used when specula_step splits
++ *  this out of raft_flush. */
++void raft_specula_advance_commit(raft_server_t *me);
++
+ /** Returns the latest entry index that needs to be written to the disk.
+  *
+  * This function is only useful when auto flush is disabled. Same index will be

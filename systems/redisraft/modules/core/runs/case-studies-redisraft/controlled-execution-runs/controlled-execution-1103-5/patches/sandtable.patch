@@ -1,0 +1,2232 @@
+--- a/systems/WRaft-series/driver/CMakeLists.txt
++++ b/systems/WRaft-series/driver/CMakeLists.txt
+@@ -1,28 +1,25 @@
+ cmake_minimum_required(VERSION 3.16)
+-project(raftdriver)
++project(redisraft-driver)
+ 
+ set(CMAKE_CXX_STANDARD 20)
+-add_compile_options(-Wall -Wextra -Werror -Wno-unused-parameter -Wno-unused-function)
++set(CMAKE_C_STANDARD 99)
+ 
+-add_subdirectory(deps/WRaft EXCLUDE_FROM_ALL)
+-add_subdirectory(deps/RedisRaft EXCLUDE_FROM_ALL)
+-add_subdirectory(deps/DaosRaft EXCLUDE_FROM_ALL)
+ add_subdirectory(tlpi EXCLUDE_FROM_ALL)
+ 
+-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
++set(SYSTEM_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../../system)
++set(RAFT_SOURCES
++        ${SYSTEM_DIR}/src/raft_log.c
++        ${SYSTEM_DIR}/src/raft_server.c
++        ${SYSTEM_DIR}/src/raft_node.c
++        ${SYSTEM_DIR}/src/raft_server_properties.c)
++set(DRIVER_SOURCES main.cpp Network.cpp Config.cpp Repl.cpp common.cpp Node.cpp TcpNetwork.cpp)
+ 
+ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
+-
+ find_package(gflags REQUIRED)
+ find_package(Readline REQUIRED)
+ 
+-set(DRIVER_SOURCES main.cpp Network.cpp Network.h Config.cpp Config.h Repl.cpp Repl.h Raft.h common.h common.cpp Node.cpp Node.h TcpNetwork.cpp TcpNetwork.h)
+-
+-macro(define_driver name)
+-    add_executable(${name}Driver deps/${name}.cpp ${DRIVER_SOURCES})
+-    target_link_libraries(${name}Driver ${name} readline gflags tlpi)
+-endmacro()
+-
+-define_driver(WRaft)
+-define_driver(RedisRaft)
+-define_driver(DaosRaft)
++add_executable(RedisRaftDriver deps/RedisRaft.cpp ${DRIVER_SOURCES} ${RAFT_SOURCES})
++target_include_directories(RedisRaftDriver PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${SYSTEM_DIR}/include)
++target_compile_options(RedisRaftDriver PRIVATE -g --coverage -Wall -Wno-unused-parameter -Wno-unused-function -Wno-error)
++target_link_libraries(RedisRaftDriver readline gflags tlpi)
++target_link_options(RedisRaftDriver PRIVATE --coverage -Wl,--export-dynamic)
+--- a/systems/WRaft-series/driver/deps/RedisRaft.cpp
++++ b/systems/WRaft-series/driver/deps/RedisRaft.cpp
+@@ -1,455 +1,940 @@
+-//
+-// Created by tangruize on 2/14/23.
+-//
+-// WARN: we do not consider endian problem while serialization.
+-// WARN: we do not consider 32-bit or 64-bit memory.
++// Controlled-execution driver for the RedisRaft vendored raft library.
++// Each spec action is one command. Persistent fields are rewritten to a file
++// and crash rebuilds the server from that file.
+ 
+ #include <cassert>
+-#include <sys/time.h>
++#include <fcntl.h>
++#include <sys/file.h>
++#include <sys/stat.h>
++
+ #include "Raft.h"
+ #include "Network.h"
+ 
+ extern "C" {
+-#include "deps/RedisRaft/include/raft.h"
+-#include "deps/RedisRaft/include/raft_log.h"
+-#include "deps/RedisRaft/include/raft_private.h"
++#include "raft.h"
++#include "raft_log.h"
++#include "raft_private.h"
++#include "specula_step.h"
++int raft_send_snapshot(raft_server_t *me, raft_node_t *node);
+ }
+ 
+-#define DATA_LEN 8
++DECLARE_string(config);
+ 
+-string state_machine = "init";
++extern "C" void __gcov_dump(void);
++extern "C" void wraft_gcov_dump(void) { __gcov_dump(); }
++
++namespace {
+ 
+ enum {
+-    MSG_AE,
++    MSG_AE = 1,
+     MSG_AER,
+     MSG_RV,
+-    MSG_RVR
++    MSG_RVR,
++    MSG_SNAP
+ };
+ 
++bool capture_sends = false;
++bool replaying = false;
++bool loading_snapshot = false;
++long pending_idx = 0;
++long pending_term = 0;
++long disk_term = 0;
++long disk_vote = -1;
++set<int> cluster_ids;
++string state_machine = "init";
++
++raft_server_t *me_of() {
++    return static_cast<raft_server_t *>(config.get_raft_server());
++}
++
++string self_name() {
++    return config.get_self_node().name;
++}
++
++string persist_path() {
++    return "/tmp/rr-persist-" + self_name();
++}
++
++string shared_dir() {
++    string cfg = FLAGS_config;
++    auto slash = cfg.rfind('/');
++    string parent = slash == string::npos ? "." : cfg.substr(0, slash);
++    slash = parent.rfind('/');
++    string test = slash == string::npos ? "." : parent.substr(0, slash);
++    return test + "/rr-shared";
++}
++
+ string pack_msg(const string &msg, int type) {
+     string ret;
+-    ret.resize(4);
+-    *(int*)&ret.front() = type;
+-    ret += msg;
++    ret.resize(4 + msg.size());
++    memcpy(&ret[0], &type, 4);
++    memcpy(&ret[4], msg.data(), msg.size());
+     return ret;
+ }
+ 
+ string unpack_msg(const string &msg, int &type) {
+-    assert(msg.size() > sizeof(int));
+-    type = *(const int*)&msg.front();
+-    return msg.substr(sizeof(int));
++    assert(msg.size() >= 4);
++    memcpy(&type, msg.data(), 4);
++    return msg.substr(4);
++}
++
++int emit(int dest, const string &payload, int type) {
++    if (!capture_sends)
++        return 0;
++    string data = pack_msg(payload, type);
++    return net->send_to(dest, data) == (ssize_t)data.size() ? 0 : -1;
++}
++
++string ids_text(const set<int> &ids) {
++    string out;
++    for (int id : ids) {
++        if (!out.empty())
++            out += ",";
++        out += to_string(id);
++    }
++    return out;
++}
++
++set<int> parse_ids(const string &text) {
++    set<int> ids;
++    string cur;
++    for (char ch : text) {
++        if (ch == ',') {
++            if (!cur.empty())
++                ids.insert(stoi(cur));
++            cur.clear();
++        } else if (ch != ' ') {
++            cur.push_back(ch);
++        }
++    }
++    if (!cur.empty())
++        ids.insert(stoi(cur));
++    return ids;
+ }
+ 
+-static int raft_send_requestvote (
+-        raft_server_t* raft,
+-        void *user_data,
+-        raft_node_t* node,
+-        raft_requestvote_req_t* msg
+-)
+-{
+-    string data;
+-    data.resize(sizeof(*msg));
+-    *(raft_requestvote_req_t*)&data.front() = *msg;
+-    data = pack_msg(data, MSG_RV);
+-    return net->send_to(raft_node_get_id(node), data) == (ssize_t)data.size() ? 0 : -1;
++string node_name(int id) {
++    return "n" + to_string(id);
+ }
+ 
+-static string serialization_ae(raft_appendentries_req_t* msg) {
+-    string data;
+-    data.resize(sizeof(*msg) + msg->n_entries * (DATA_LEN + sizeof(raft_entry_req_t)));
+-    *(raft_appendentries_req_t*)&data.front() = *msg;
+-    for (long i = 0; i < msg->n_entries; i++) {
+-        auto *p = (raft_entry_req_t *)((char *)&data.front() + sizeof(*msg) + (sizeof(raft_entry_req_t) + DATA_LEN) * i);
+-        *p = *(msg->entries[i]);
++string set_text(const set<int> &ids) {
++    string out = "{";
++    bool first = true;
++    for (int id : ids) {
++        if (!first)
++            out += ",";
++        first = false;
++        out += node_name(id);
+     }
+-    return data;
++    out += "}";
++    return out;
+ }
+ 
+-static raft_appendentries_req_t* deserialization_ae(string &data) {
+-    auto* msg = static_cast<raft_appendentries_req_t *>(raft_calloc(1, sizeof(raft_appendentries_req_t)));
+-    *msg = *(raft_appendentries_req_t*)&data.front();
+-    // should be freed after use!
+-    msg->entries = static_cast<raft_entry_req_t **>(raft_calloc(msg->n_entries, sizeof(raft_entry_req_t*)));
+-    for (long i = 0; i < msg->n_entries; i++) {
+-        // should be freed by raft_entry_release()!
+-        msg->entries[i] = raft_entry_new(DATA_LEN);
+-        auto *p = (raft_entry_req_t *)((char *)&data.front() + sizeof(*msg) + (sizeof(raft_entry_req_t) + DATA_LEN) * i);
+-        *(msg->entries[i]) = *p;
++raft_node_t *node_by_id(int id) {
++    return raft_get_node(me_of(), id);
++}
++
++void bind_nodes() {
++    for (auto &item : config.get_all_nodes()) {
++        Node &n = const_cast<Node &>(item);
++        n.set_data(raft_get_node(me_of(), n.getid()));
+     }
+-    return msg;
+ }
+ 
+-static void free_deserialization_ae(raft_appendentries_req_t* msg) {
+-    raft_entry_release_list(msg->entries, msg->n_entries);
+-    raft_free(msg);
+-}
+-
+-static int raft_send_appendentries (
+-        raft_server_t* raft,
+-        void *user_data,
+-        raft_node_t* node,
+-        raft_appendentries_req_t* msg
+-)
+-{
+-    string data = pack_msg(serialization_ae(msg), MSG_AE);
+-    return net->send_to(raft_node_get_id(node), data) == (ssize_t)data.size() ? 0 : -1;
+-}
+-
+-static int raft_send_snapshot (
+-        raft_server_t* raft,
+-        void *user_data,
+-        raft_node_t* node,
+-        raft_snapshot_req_t* msg
+-)
+-{
+-    assert(false);
++int write_disk() {
++    raft_server_t *me = me_of();
++    if (!me)
++        return -1;
++    string path = persist_path();
++    string tmp = path + ".tmp";
++    FILE *fp = fopen(tmp.c_str(), "w");
++    if (!fp)
++        return -1;
++    fprintf(fp, "term %ld\n", disk_term);
++    fprintf(fp, "vote %ld\n", disk_vote);
++    raft_log_t *log = static_cast<raft_log_t *>(raft_get_log(me));
++    long base = raft_log_get_base(log);
++    fprintf(fp, "logOffset %ld\n", base);
++    fprintf(fp, "snapshotLastIdx %ld\n", (long)me->snapshot_last_idx);
++    fprintf(fp, "snapshotLastTerm %ld\n", (long)me->snapshot_last_term);
++    fprintf(fp, "cluster %s\n", ids_text(cluster_ids).c_str());
++    long count = raft_log_count(log);
++    fprintf(fp, "count %ld\n", count);
++    for (long k = 1; k <= count; k++) {
++        raft_entry_t *ety = raft_log_get_at_idx(log, base + k);
++        if (!ety)
++            continue;
++        fprintf(fp, "entry %ld %d %ld %u\n", (long)ety->term, ety->type,
++                (long)ety->id, ety->data_len);
++        if (ety->data_len)
++            fwrite(ety->data, 1, ety->data_len, fp);
++        fputc('\n', fp);
++    }
++    fflush(fp);
++    fsync(fileno(fp));
++    fclose(fp);
++    if (rename(tmp.c_str(), path.c_str()) != 0)
++        return -1;
+     return 0;
+ }
+ 
+-static int raft_send_timeoutnow (
+-        raft_server_t* raft,
+-        void *user_data,
+-        raft_node_t* node
+-)
+-{
+-    assert(false);
+-    return 0;
++int persist_metadata(raft_server_t *, void *, raft_term_t term, raft_node_id_t vote) {
++    if (replaying)
++        return 0;
++    disk_term = term;
++    disk_vote = vote;
++    return write_disk();
+ }
+ 
+-static int raft_load_snapshot
+-(
+-        raft_server_t* raft,
+-        void *user_data,
+-        raft_term_t snapshot_term,
+-        raft_index_t snapshot_index
+-)
+-{
+-    assert(false);
+-    return 0;
++void note_commit() {
++    raft_server_t *me = me_of();
++    if (!me)
++        return;
++    string dir = shared_dir();
++    mkdir(dir.c_str(), 0755);
++    string path = dir + "/commit-" + self_name();
++    FILE *fp = fopen(path.c_str(), "w");
++    if (!fp)
++        return;
++    fprintf(fp, "%ld\n", (long)me->commit_idx);
++    fclose(fp);
+ }
+ 
+-static int raft_get_snapshot_chunk
+-(
+-        raft_server_t* raft,
+-        void *user_data,
+-        raft_node_t* node,
+-        raft_size_t offset,
+-        raft_snapshot_chunk_t* chunk
+-)
+-{
+-    assert(false);
+-    return 0;
++struct Monitors {
++    int stale = 0;
++    int noop = 0;
++};
++
++Monitors read_monitors() {
++    Monitors m;
++    string path = shared_dir() + "/monitors";
++    FILE *fp = fopen(path.c_str(), "r");
++    if (!fp)
++        return m;
++    fscanf(fp, "%d %d", &m.stale, &m.noop);
++    fclose(fp);
++    return m;
++}
++
++void write_monitors(const Monitors &m) {
++    string dir = shared_dir();
++    mkdir(dir.c_str(), 0755);
++    string path = dir + "/monitors";
++    int fd = open(path.c_str(), O_RDWR | O_CREAT, 0644);
++    if (fd < 0)
++        return;
++    flock(fd, LOCK_EX);
++    ftruncate(fd, 0);
++    string body = to_string(m.stale) + " " + to_string(m.noop) + "\n";
++    if (write(fd, body.data(), body.size()) < 0) {
++        // The monitor file is the shared latch. A failed write leaves the old latch.
++    }
++    flock(fd, LOCK_UN);
++    close(fd);
++}
++
++bool has_current_term_committed() {
++    raft_server_t *me = me_of();
++    raft_log_t *log = static_cast<raft_log_t *>(raft_get_log(me));
++    long base = raft_log_get_base(log);
++    long count = raft_log_count(log);
++    long limit = me->commit_idx - base;
++    if (limit > count)
++        limit = count;
++    if (limit < 0)
++        limit = 0;
++    for (long k = 1; k <= limit; k++) {
++        raft_entry_t *ety = raft_log_get_at_idx(log, base + k);
++        if (ety && ety->term == me->current_term)
++            return true;
++    }
++    return false;
+ }
+ 
+-//    /** Callback to retrieve monotonic timestamp in microseconds */
+-//    raft_timestamp_f timestamp;
++void refresh_cluster() {
++    raft_server_t *me = me_of();
++    raft_log_t *log = static_cast<raft_log_t *>(raft_get_log(me));
++    long base = raft_log_get_base(log);
++    long count = raft_log_count(log);
++    bool found = false;
++    string last;
++    for (long k = 1; k <= count; k++) {
++        long idx = base + k;
++        if (idx > me->commit_idx)
++            break;
++        raft_entry_t *ety = raft_log_get_at_idx(log, idx);
++        if (!ety)
++            continue;
++        if (ety->type == RAFT_LOGTYPE_ADD_NODE || ety->type == RAFT_LOGTYPE_REMOVE_NODE) {
++            last.assign(ety->data, ety->data_len);
++            found = true;
++        }
++    }
++    if (found)
++        cluster_ids = parse_ids(last);
++}
+ 
+-static int raft_store_snapshot_chunk
+-(
+-        raft_server_t* raft,
+-        void *user_data,
+-        raft_index_t snapshot_index,
+-        raft_size_t offset,
+-        raft_snapshot_chunk_t* chunk
+-)
+-{
+-    assert(false);
+-    return 0;
++void apply_cluster_voting() {
++    raft_server_t *me = me_of();
++    for (int i = 0; i < me->num_nodes; i++) {
++        raft_node_t *node = me->nodes[i];
++        int id = raft_node_get_id(node);
++        int in = cluster_ids.count(id) ? 1 : 0;
++        raft_node_set_voting(node, in);
++        raft_node_set_active(node, 1);
++    }
+ }
+ 
+-static int raft_clear_snapshot
+-(
+-        raft_server_t* raft,
+-        void *user_data
+-)
+-{
+-    assert(false);
+-    return 0;
++int send_requestvote(raft_server_t *, void *, raft_node_t *node, raft_requestvote_req_t *msg) {
++    string data(sizeof(*msg), '\0');
++    memcpy(&data[0], msg, sizeof(*msg));
++    return emit(raft_node_get_id(node), data, MSG_RV);
+ }
+ 
+-static int raft_applylog
+-(
+-        raft_server_t* raft,
+-        void *user_data,
+-        raft_entry_t *entry,
+-        raft_index_t entry_idx
+-)
+-{
+-    state_machine += string(" ") + entry->data;
+-    return 0;
++string pack_entry(raft_entry_t *ety) {
++    string data;
++    int32_t data_len = ety->data_len;
++    int32_t type = ety->type;
++    raft_term_t term = ety->term;
++    raft_entry_id_t id = ety->id;
++    data.append((char *)&data_len, sizeof(data_len));
++    data.append((char *)&term, sizeof(term));
++    data.append((char *)&id, sizeof(id));
++    data.append((char *)&type, sizeof(type));
++    if (data_len)
++        data.append(ety->data, data_len);
++    return data;
++}
++
++raft_entry_t *unpack_entry(const char *&cursor, const char *end) {
++    int32_t data_len = 0, type = 0;
++    raft_term_t term = 0;
++    raft_entry_id_t id = 0;
++    auto take = [&](void *dst, size_t n) {
++        if (cursor + n > end)
++            return false;
++        memcpy(dst, cursor, n);
++        cursor += n;
++        return true;
++    };
++    if (!take(&data_len, sizeof(data_len)) || !take(&term, sizeof(term)) ||
++        !take(&id, sizeof(id)) || !take(&type, sizeof(type)))
++        return nullptr;
++    if (data_len < 0 || cursor + data_len > end)
++        return nullptr;
++    raft_entry_t *ety = raft_entry_new(data_len);
++    ety->term = term;
++    ety->id = id;
++    ety->type = type;
++    if (data_len)
++        memcpy(ety->data, cursor, data_len);
++    cursor += data_len;
++    return ety;
++}
++
++string pack_ae(raft_appendentries_req_t *msg) {
++    string data(sizeof(*msg), '\0');
++    memcpy(&data[0], msg, sizeof(*msg));
++    for (long i = 0; i < msg->n_entries; i++)
++        data += pack_entry(msg->entries[i]);
++    return data;
++}
++
++raft_appendentries_req_t *unpack_ae(const string &payload) {
++    if (payload.size() < sizeof(raft_appendentries_req_t))
++        return nullptr;
++    auto *msg = static_cast<raft_appendentries_req_t *>(raft_calloc(1, sizeof(raft_appendentries_req_t)));
++    memcpy(msg, payload.data(), sizeof(*msg));
++    msg->entries = static_cast<raft_entry_t **>(raft_calloc(msg->n_entries ? msg->n_entries : 1, sizeof(raft_entry_t *)));
++    const char *cursor = payload.data() + sizeof(*msg);
++    const char *end = payload.data() + payload.size();
++    for (long i = 0; i < msg->n_entries; i++) {
++        msg->entries[i] = unpack_entry(cursor, end);
++        if (!msg->entries[i]) {
++            raft_entry_release_list(msg->entries, i);
++            raft_free(msg);
++            return nullptr;
++        }
++    }
++    return msg;
++}
++
++int send_appendentries(raft_server_t *, void *, raft_node_t *node, raft_appendentries_req_t *msg) {
++    return emit(raft_node_get_id(node), pack_ae(msg), MSG_AE);
++}
++
++int send_requestvote_resp(int dest, const raft_requestvote_resp_t &msg) {
++    string data(sizeof(msg), '\0');
++    memcpy(&data[0], &msg, sizeof(msg));
++    return emit(dest, data, MSG_RVR);
+ }
+ 
+-static int raft_persist_metadata
+-(
+-        raft_server_t *raft,
+-        void *user_data,
+-        raft_term_t term,
+-        raft_node_id_t vote
+-)
+-{
+-    // not implemented
++int send_appendentries_resp(int dest, const raft_appendentries_resp_t &msg) {
++    string data(sizeof(msg), '\0');
++    memcpy(&data[0], &msg, sizeof(msg));
++    return emit(dest, data, MSG_AER);
++}
++
++struct SnapWire {
++    raft_term_t term;
++    raft_index_t snap_idx;
++    raft_term_t snap_term;
++    int n;
++    int ids[3];
++};
++
++int get_snapshot_chunk(raft_server_t *, void *, raft_node_t *, raft_size_t, raft_snapshot_chunk_t *chunk) {
++    static char byte = 0;
++    chunk->data = &byte;
++    chunk->len = 1;
++    chunk->last_chunk = 1;
+     return 0;
+ }
+ 
+-static raft_node_id_t raft_get_node_id (
+-        raft_server_t* raft,
+-        void *user_data,
+-        raft_entry_t *entry,
+-        raft_index_t entry_idx
+-)
+-{
+-    assert(false);
+-    return -1;
+-}
+-
+-static int raft_node_has_sufficient_logs (
+-        raft_server_t* raft,
+-        void *user_data,
+-        raft_node_t* node
+-)
+-{
+-    assert(false);
++int send_snapshot(raft_server_t *, void *, raft_node_t *node, raft_snapshot_req_t *msg) {
++    SnapWire wire{};
++    wire.term = msg->term;
++    wire.snap_idx = msg->snapshot_index;
++    wire.snap_term = msg->snapshot_term;
++    int n = 0;
++    for (int id : cluster_ids) {
++        if (n < 3)
++            wire.ids[n++] = id;
++    }
++    wire.n = n;
++    string data(sizeof(wire), '\0');
++    memcpy(&data[0], &wire, sizeof(wire));
++    return emit(raft_node_get_id(node), data, MSG_SNAP);
++}
++
++int send_timeoutnow(raft_server_t *, void *, raft_node_t *) { return 0; }
++int load_snapshot_cb(raft_server_t *, void *, raft_term_t, raft_index_t) { return 0; }
++int store_snapshot_chunk(raft_server_t *, void *, raft_index_t, raft_size_t, raft_snapshot_chunk_t *) { return 0; }
++int clear_snapshot(raft_server_t *, void *) { return 0; }
++
++int applylog(raft_server_t *, void *, raft_entry_t *entry, raft_index_t) {
++    if (entry && entry->data_len)
++        state_machine += string(" ") + string(entry->data, entry->data_len);
+     return 0;
+ }
+ 
+-static raft_time_t raft_timestamp (
+-        raft_server_t *raft,
+-        void *user_data
+-)
+-{
+-    struct timeval curr;
+-    if (gettimeofday(&curr, NULL) == -1)
+-        throw_syserror("gettimeofday");
+-    return curr.tv_sec * 1000000 + curr.tv_usec;
+-}
+-
+-static void print_raft_log(
+-        raft_server_t* raft,
+-        void *user_data,
+-        const char *buf
+-)
+-{
++raft_node_id_t get_node_id(raft_server_t *, void *, raft_entry_t *entry, raft_index_t) {
++    return entry ? entry->id : RAFT_NODE_ID_NONE;
++}
++
++int node_has_sufficient_logs(raft_server_t *, void *, raft_node_t *) { return 0; }
++
++void print_log(raft_server_t *, void *, const char *buf) {
+     cerr_detail << buf << endl;
+ }
+ 
+-raft_cbs_t raft_cbs = {
+-        .send_requestvote = raft_send_requestvote,
+-        .send_appendentries = raft_send_appendentries,
+-        .send_snapshot = raft_send_snapshot,
+-        .send_timeoutnow = raft_send_timeoutnow,
+-        .load_snapshot = raft_load_snapshot,
+-        .get_snapshot_chunk = raft_get_snapshot_chunk,
+-        .store_snapshot_chunk = raft_store_snapshot_chunk,
+-        .clear_snapshot = raft_clear_snapshot,
+-        .applylog = raft_applylog,
+-        .persist_metadata = raft_persist_metadata,
+-        .get_node_id = raft_get_node_id,
+-        .node_has_sufficient_logs = raft_node_has_sufficient_logs,
+-        .timestamp = raft_timestamp,
+-        // optional
+-        .notify_membership_event = nullptr,
+-        .notify_state_event = nullptr,
+-        .notify_transfer_event = nullptr,
+-        .log = print_raft_log,
+-        .backpressure = nullptr,
+-        .get_entries_to_send = nullptr
++raft_cbs_t callbacks = {
++    .send_requestvote = send_requestvote,
++    .send_appendentries = send_appendentries,
++    .send_snapshot = send_snapshot,
++    .send_timeoutnow = send_timeoutnow,
++    .load_snapshot = load_snapshot_cb,
++    .get_snapshot_chunk = get_snapshot_chunk,
++    .store_snapshot_chunk = store_snapshot_chunk,
++    .clear_snapshot = clear_snapshot,
++    .applylog = applylog,
++    .persist_metadata = persist_metadata,
++    .get_node_id = get_node_id,
++    .node_has_sufficient_logs = node_has_sufficient_logs,
++    .timestamp = nullptr,
++    .notify_membership_event = nullptr,
++    .notify_state_event = nullptr,
++    .notify_transfer_event = nullptr,
++    .log = print_log,
++    .backpressure = nullptr,
++    .get_entries_to_send = nullptr
+ };
+ 
+-bool RaftInit() {
++bool attach_new() {
++    specula_step = 1;
+     raft_server_t *me = raft_new();
+     if (!me)
+         return false;
+     if (FLAGS_detail)
+         raft_config(me, 1, RAFT_CONFIG_LOG_ENABLED, 1);
+-    cerr_verbose << "Raft init, self id: " << config.get_self_node().getid() << endl;
+-    raft_set_callbacks(me, &raft_cbs, nullptr);
+-    cerr_verbose << "Raft set callbacks" << endl;
+-    for (auto &i: config.get_all_nodes()) {
+-        Node &n = const_cast<Node&>(i);  // set data is not const, but will not affect sorting order
+-        cerr << "Raft add node, id: " << n.getid() << endl;
+-        n.set_data(raft_add_node(me, nullptr, n.getid(),  n.getid() == config.get_self_node().getid()));
++    raft_set_callbacks(me, &callbacks, nullptr);
++    for (auto &item : config.get_all_nodes()) {
++        Node &n = const_cast<Node &>(item);
++        n.set_data(raft_add_node(me, nullptr, n.getid(), n.getid() == config.get_self_node().getid()));
+     }
+     config.set_raft_server(me);
++    return me_of() != nullptr;
++}
++
++bool restore_from_file() {
++    FILE *fp = fopen(persist_path().c_str(), "r");
++    if (!fp)
++        return false;
++    char cluster_buf[256] = {0};
++    long log_offset = 0, snap_idx = 0, snap_term = 0, count = 0;
++    if (fscanf(fp, "term %ld\n", &disk_term) != 1 ||
++        fscanf(fp, "vote %ld\n", &disk_vote) != 1 ||
++        fscanf(fp, "logOffset %ld\n", &log_offset) != 1 ||
++        fscanf(fp, "snapshotLastIdx %ld\n", &snap_idx) != 1 ||
++        fscanf(fp, "snapshotLastTerm %ld\n", &snap_term) != 1 ||
++        fscanf(fp, "cluster %255s\n", cluster_buf) != 1 ||
++        fscanf(fp, "count %ld\n", &count) != 1) {
++        fclose(fp);
++        return false;
++    }
++    cluster_ids = parse_ids(cluster_buf);
++    replaying = true;
++    if (!attach_new()) {
++        replaying = false;
++        fclose(fp);
++        return false;
++    }
++    raft_server_t *me = me_of();
++    raft_restore_metadata(me, disk_term, (raft_node_id_t)disk_vote);
++    me->snapshot_last_idx = snap_idx;
++    me->snapshot_last_term = snap_term;
++    me->last_applied_idx = log_offset;
++    me->last_applied_term = log_offset == snap_idx ? snap_term : 0;
++    if (log_offset > 0)
++        me->log_impl->reset(me->log, log_offset + 1, snap_term);
++    bool any_cfg = false;
++    for (long i = 0; i < count; i++) {
++        long term = 0, id = 0;
++        int type = 0;
++        unsigned data_len = 0;
++        if (fscanf(fp, "entry %ld %d %ld %u\n", &term, &type, &id, &data_len) != 4) {
++            replaying = false;
++            fclose(fp);
++            return false;
++        }
++        raft_entry_t *ety = raft_entry_new(data_len);
++        ety->term = term;
++        ety->type = type;
++        ety->id = (raft_entry_id_t)id;
++        if (data_len && fread(ety->data, 1, data_len, fp) != data_len) {
++            raft_entry_release(ety);
++            replaying = false;
++            fclose(fp);
++            return false;
++        }
++        fgetc(fp);
++        if (type == RAFT_LOGTYPE_ADD_NODE || type == RAFT_LOGTYPE_REMOVE_NODE)
++            any_cfg = true;
++        int rc = raft_append_entry(me, ety);
++        raft_entry_release(ety);
++        if (rc != 0) {
++            replaying = false;
++            fclose(fp);
++            return false;
++        }
++    }
++    fclose(fp);
++    me->voting_cfg_change_log_idx = -1;
++    me->commit_idx = 0;
++    raft_set_state(me, RAFT_STATE_FOLLOWER);
++    for (int i = 0; i < me->num_nodes; i++) {
++        raft_node_set_next_idx(me->nodes[i], 1);
++        raft_node_set_match_idx(me->nodes[i], 0);
++        raft_node_set_voted_for_me(me->nodes[i], 0);
++    }
++    if (!any_cfg)
++        apply_cluster_voting();
++    loading_snapshot = false;
++    pending_idx = 0;
++    pending_term = 0;
++    replaying = false;
++    return write_disk() == 0;
++}
++
++bool RaftInit() {
++    specula_step = 1;
++    unlink(persist_path().c_str());
++    cluster_ids.clear();
++    for (auto &item : config.get_all_nodes())
++        cluster_ids.insert(const_cast<Node &>(item).getid());
++    disk_term = 0;
++    disk_vote = -1;
++    loading_snapshot = false;
++    pending_idx = 0;
++    pending_term = 0;
++    if (!attach_new())
++        return false;
++    mkdir(shared_dir().c_str(), 0755);
++    write_monitors(Monitors{});
++    return write_disk() == 0;
++}
++
++bool RaftTimeout() {
++    capture_sends = true;
++    int rc = raft_election_start(me_of(), 1);
++    capture_sends = false;
++    if (rc != 0)
++        cerr_warning << "election_start " << rc << endl;
++    raft_server_t *me = me_of();
++    if (me->voted_for == raft_get_nodeid(me) && me->node)
++        raft_node_set_voted_for_me(me->node, 1);
+     return true;
+ }
+ 
+-static int raft_send_appendentries_resp(const Node &node, const raft_appendentries_resp_t &msg) {
+-    string data;
+-    data.resize(sizeof(msg));
+-    *(raft_appendentries_resp_t*)&data.front() = msg;
+-    data = pack_msg(data, MSG_AER);
+-    return net->send_to(node, data) == (ssize_t)data.size() ? 0 : -1;
++bool RaftBecomeLeader() {
++    capture_sends = false;
++    int rc = raft_become_leader(me_of());
++    if (rc != 0)
++        cerr_warning << "become_leader " << rc << endl;
++    return true;
+ }
+ 
+-static int raft_send_requestvote_resp(const Node &node, const raft_requestvote_resp_t &msg) {
+-    string data;
+-    data.resize(sizeof(msg));
+-    *(raft_requestvote_resp_t*)&data.front() = msg;
+-    data = pack_msg(data, MSG_RVR);
+-    return net->send_to(node, data) == (ssize_t)data.size() ? 0 : -1;
++bool RaftClient(int type, int target, const set<int> &cfg) {
++    capture_sends = false;
++    string body = ids_text(cfg);
++    raft_entry_t *ety = raft_entry_new(body.size());
++    ety->type = type;
++    ety->id = target;
++    if (!body.empty())
++        memcpy(ety->data, body.data(), body.size());
++    raft_entry_resp_t resp{};
++    int rc = raft_recv_entry(me_of(), ety, &resp);
++    raft_entry_release(ety);
++    if (rc != 0)
++        cerr_warning << "recv_entry " << rc << endl;
++    return true;
+ }
+ 
+-bool RaftRecvMsg(Node node) {
+-    if (!config.get_node(node)) {
+-        cerr_warning << "RaftRecvMsg cannot find node" << endl;
++set<int> voting_ids() {
++    set<int> ids;
++    raft_server_t *me = me_of();
++    for (int i = 0; i < me->num_nodes; i++) {
++        if (raft_node_is_voting(me->nodes[i]))
++            ids.insert(raft_node_get_id(me->nodes[i]));
++    }
++    return ids;
++}
++
++bool RaftRecv(const string &from) {
++    Node node(from);
++    if (!config.get_node(node))
+         return false;
+-    }
+     string data;
+     if (net->recv_from(node, data) < 0)
+         return false;
+-    int type;
++    int type = 0;
+     string msg = unpack_msg(data, type);
+-    auto *me = static_cast<raft_server_t *>(config.get_raft_server());
++    raft_server_t *me = me_of();
+     auto *raft_node = static_cast<raft_node_t *>(node.get_data());
+-    switch (type) {
+-        case MSG_AE: {
+-            cerr_verbose << "RaftRecvMsg MSG_AE" << endl;
+-            raft_appendentries_req_t *req = deserialization_ae(msg);
+-            raft_appendentries_resp_t resp{};
+-            raft_recv_appendentries(me, raft_node, req, &resp);
+-            free_deserialization_ae(req);
+-            raft_send_appendentries_resp(node, resp);
+-            break;
+-        }
+-        case MSG_AER: {
+-            cerr_verbose << "RaftRecvMsg MSG_AER" << endl;
+-            raft_recv_appendentries_response(me, raft_node, reinterpret_cast<raft_appendentries_resp_t *>(&msg.front()));
+-            break;
+-        }
+-        case MSG_RV: {
+-            cerr_verbose << "RaftRecvMsg MSG_RV" << endl;
+-            auto *req = reinterpret_cast<raft_requestvote_req_t *>(&msg.front());
+-            raft_requestvote_resp_t resp{};
+-            raft_recv_requestvote(me, raft_node, req, &resp);
+-            raft_send_requestvote_resp(node, resp);
+-            break;
+-        }
+-        case MSG_RVR: {
+-            cerr_verbose << "RaftRecvMsg MSG_RVR" << endl;
+-            raft_recv_requestvote_response(me, raft_node, reinterpret_cast<raft_requestvote_resp_t *>(&msg.front()));
+-            break;
+-        }
+-        default:
+-            assert(false);
++    if (!raft_node)
++        raft_node = raft_get_node(me, node.getid());
++    capture_sends = false;
++    if (type == MSG_AE) {
++        raft_appendentries_req_t *req = unpack_ae(msg);
++        if (!req)
++            return false;
++        raft_appendentries_resp_t resp{};
++        raft_recv_appendentries(me, raft_node, req, &resp);
++        raft_entry_release_list(req->entries, req->n_entries);
++        raft_free(req);
++        refresh_cluster();
++        capture_sends = true;
++        send_appendentries_resp(node.getid(), resp);
++        capture_sends = false;
++    } else if (type == MSG_AER) {
++        if (msg.size() < sizeof(raft_appendentries_resp_t))
++            return false;
++        raft_appendentries_resp_t resp{};
++        memcpy(&resp, msg.data(), sizeof(resp));
++        raft_recv_appendentries_response(me, raft_node, &resp);
++    } else if (type == MSG_RV) {
++        if (msg.size() < sizeof(raft_requestvote_req_t))
++            return false;
++        raft_requestvote_req_t req{};
++        memcpy(&req, msg.data(), sizeof(req));
++        raft_requestvote_resp_t resp{};
++        raft_recv_requestvote(me, raft_node, &req, &resp);
++        capture_sends = true;
++        send_requestvote_resp(node.getid(), resp);
++        capture_sends = false;
++    } else if (type == MSG_RVR) {
++        if (msg.size() < sizeof(raft_requestvote_resp_t))
++            return false;
++        raft_requestvote_resp_t resp{};
++        memcpy(&resp, msg.data(), sizeof(resp));
++        raft_recv_requestvote_response(me, raft_node, &resp);
++    } else if (type == MSG_SNAP) {
++        if (msg.size() < sizeof(SnapWire))
++            return false;
++        SnapWire wire{};
++        memcpy(&wire, msg.data(), sizeof(wire));
++        if (wire.term > me->current_term)
++            raft_set_current_term(me, wire.term);
++        raft_become_follower(me);
++        int rc = raft_begin_load_snapshot(me, wire.snap_term, wire.snap_idx);
++        if (rc != 0)
++            cerr_warning << "begin_load_snapshot " << rc << endl;
++        cluster_ids.clear();
++        for (int i = 0; i < wire.n && i < 3; i++)
++            cluster_ids.insert(wire.ids[i]);
++        apply_cluster_voting();
++        loading_snapshot = true;
++        pending_idx = wire.snap_idx;
++        pending_term = wire.snap_term;
++    } else {
++        return false;
+     }
+     return true;
+ }
+ 
+-bool RaftPeriodic(raft_time_t msec = -1) {
+-    if (msec > 0) {
+-        return raft_periodic_internal((raft_server_t*)config.get_raft_server(), msec) == 0;
+-    } else {
+-        return raft_periodic((raft_server_t *) config.get_raft_server()) == 0;
+-    }
++bool RaftSend(const string &peer) {
++    Node node(peer);
++    raft_node_t *raft_node = node_by_id(node.getid());
++    if (!raft_node)
++        return false;
++    capture_sends = true;
++    int rc = raft_send_appendentries(me_of(), raft_node);
++    capture_sends = false;
++    if (rc != 0)
++        cerr_warning << "send_appendentries " << rc << endl;
++    return true;
++}
++
++bool RaftSnapSend(const string &peer) {
++    Node node(peer);
++    raft_node_t *raft_node = node_by_id(node.getid());
++    if (!raft_node)
++        return false;
++    capture_sends = true;
++    int rc = raft_send_snapshot(me_of(), raft_node);
++    capture_sends = false;
++    if (rc != 0)
++        cerr_warning << "send_snapshot " << rc << endl;
++    return true;
+ }
+ 
+-bool RaftClientOperation(string data) {
+-    auto *me = static_cast<raft_server_t *>(config.get_raft_server());
+-    raft_entry_resp_t resp;
+-    raft_entry_t  *ety = raft_entry_new(DATA_LEN);
+-    if (data.size() > DATA_LEN - 1)
+-        data.resize(DATA_LEN - 1);
+-    mempcpy(ety->data, data.c_str(), data.size());
+-    if (raft_recv_entry(me, ety, &resp) == 0) {
+-        cerr_verbose << "RaftClientOperation success, idx: " << resp.idx << " term: " << resp.term << endl;
++bool RaftSnapshot() {
++    capture_sends = false;
++    int rc = raft_begin_snapshot(me_of());
++    if (rc != 0) {
++        cerr_warning << "begin_snapshot " << rc << endl;
+         return true;
+-    } else {
+-        cerr_warning << "RaftClientOperation failed" << endl;
++    }
++    rc = raft_end_snapshot(me_of());
++    if (rc != 0)
++        cerr_warning << "end_snapshot " << rc << endl;
++    return true;
++}
++
++bool RaftEndLoad() {
++    int rc = raft_end_load_snapshot(me_of());
++    if (rc != 0)
++        cerr_warning << "end_load_snapshot " << rc << endl;
++    loading_snapshot = false;
++    return true;
++}
++
++bool RaftAdvance() {
++    raft_specula_advance_commit(me_of());
++    raft_apply_all(me_of());
++    refresh_cluster();
++    return true;
++}
++
++bool RaftRead() {
++    string dir = shared_dir();
++    long mine = me_of()->commit_idx;
++    bool stale = false;
++    for (auto &item : config.get_all_nodes()) {
++        const Node &n = item;
++        if (n.name == self_name())
++            continue;
++        FILE *fp = fopen((dir + "/commit-" + n.name).c_str(), "r");
++        long other = 0;
++        if (fp) {
++            fscanf(fp, "%ld", &other);
++            fclose(fp);
++        }
++        if (other > mine)
++            stale = true;
++    }
++    string path = dir + "/monitors";
++    int fd = open(path.c_str(), O_RDWR | O_CREAT, 0644);
++    if (fd < 0)
++        return false;
++    flock(fd, LOCK_EX);
++    Monitors m;
++    FILE *fp = fdopen(dup(fd), "r");
++    if (fp) {
++        fscanf(fp, "%d %d", &m.stale, &m.noop);
++        fclose(fp);
++    }
++    if (stale)
++        m.stale = 1;
++    if (!has_current_term_committed())
++        m.noop = 1;
++    ftruncate(fd, 0);
++    lseek(fd, 0, SEEK_SET);
++    string body = to_string(m.stale) + " " + to_string(m.noop) + "\n";
++    if (write(fd, body.data(), body.size()) < 0) {
++        flock(fd, LOCK_UN);
++        close(fd);
+         return false;
+     }
++    flock(fd, LOCK_UN);
++    close(fd);
++    return true;
+ }
+ 
++bool RaftCrash() {
++    if (write_disk() != 0)
++        return false;
++    raft_destroy(me_of());
++    config.set_raft_server(nullptr);
++    return restore_from_file();
++}
++
++string entry_text(raft_entry_t *ety) {
++    string kind = "Other";
++    string cfg = "{}";
++    if (ety->type == RAFT_LOGTYPE_NO_OP)
++        kind = "Noop";
++    else if (ety->type == RAFT_LOGTYPE_NORMAL)
++        kind = "Value";
++    else if (ety->type == RAFT_LOGTYPE_ADD_NODE || ety->type == RAFT_LOGTYPE_REMOVE_NODE) {
++        kind = "Config";
++        cfg = set_text(parse_ids(string(ety->data, ety->data_len)));
++    }
++    return "(" + to_string(ety->term) + ", " + kind + ", " + cfg + ")";
++}
++
++string index_map(bool next_idx) {
++    vector<string> parts;
++    raft_server_t *me = me_of();
++    for (int i = 0; i < me->num_nodes; i++) {
++        raft_node_t *node = me->nodes[i];
++        string one = "'" + node_name(raft_node_get_id(node)) + "': ";
++        one += to_string(next_idx ? raft_node_get_next_idx(node) : raft_node_get_match_idx(node));
++        parts.push_back(one);
++    }
++    sort(parts.begin(), parts.end());
++    string out = "{";
++    for (size_t i = 0; i < parts.size(); i++) {
++        if (i)
++            out += ", ";
++        out += parts[i];
++    }
++    out += "}";
++    return out;
++}
++
++}  // namespace
++
+ bool RaftRepl(const string &cmd) {
+     auto tokens = tokenize(cmd);
+-    if (tokens.empty()) {
++    if (tokens.empty() || (!me_of() && tokens[0] != "init"))
+         return false;
+-    }
+-    if (tokens[0] == "init") {
+-        return RaftInit();
+-    } else if (tokens[0] == "recvfrom") {
+-        return RaftRecvMsg(tokens[1]);
+-    } else if (tokens[0] == "periodic") {
+-        if (tokens.size() > 1) {
+-            return RaftPeriodic(std::stoi(tokens[1]));
+-        } else {
+-            return RaftPeriodic();
+-        }
+-    } else if (tokens[0] == "cli") {
+-        if (tokens.size() <= 1)
+-            return false;
+-        return RaftClientOperation(tokens[1]);
+-    } else if (tokens[0] == "statemachine" ) {
++    bool ok = false;
++    if (tokens[0] == "init")
++        ok = RaftInit();
++    else if (tokens[0] == "timeout")
++        ok = RaftTimeout();
++    else if (tokens[0] == "become-leader")
++        ok = RaftBecomeLeader();
++    else if (tokens[0] == "recvfrom" && tokens.size() > 1)
++        ok = RaftRecv(tokens[1]);
++    else if (tokens[0] == "cli")
++        ok = RaftClient(RAFT_LOGTYPE_NORMAL, 0, {});
++    else if (tokens[0] == "add" && tokens.size() > 1) {
++        Node target(tokens[1]);
++        set<int> cfg = voting_ids();
++        cfg.insert(target.getid());
++        ok = RaftClient(RAFT_LOGTYPE_ADD_NODE, target.getid(), cfg);
++    } else if (tokens[0] == "remove" && tokens.size() > 1) {
++        Node target(tokens[1]);
++        set<int> cfg = voting_ids();
++        cfg.erase(target.getid());
++        ok = RaftClient(RAFT_LOGTYPE_REMOVE_NODE, target.getid(), cfg);
++    } else if (tokens[0] == "send" && tokens.size() > 1)
++        ok = RaftSend(tokens[1]);
++    else if (tokens[0] == "snap-send" && tokens.size() > 1)
++        ok = RaftSnapSend(tokens[1]);
++    else if (tokens[0] == "snapshot")
++        ok = RaftSnapshot();
++    else if (tokens[0] == "end-load")
++        ok = RaftEndLoad();
++    else if (tokens[0] == "advance-commit")
++        ok = RaftAdvance();
++    else if (tokens[0] == "read")
++        ok = RaftRead();
++    else if (tokens[0] == "crash")
++        ok = RaftCrash();
++    else if (tokens[0] == "statemachine") {
+         cerr << state_machine << endl;
+-        return true;
++        ok = true;
+     }
+-    else {
+-        return false;
++    if (ok && tokens[0] != "statemachine") {
++        if (me_of() && write_disk() != 0)
++            return false;
++        note_commit();
+     }
+-    return false;
++    return ok;
+ }
+ 
+ string RaftGet(const string &variable) {
+-    auto *me = static_cast<raft_server_t *>(config.get_raft_server());
+-    if (variable == "commit_idx") {
++    raft_server_t *me = me_of();
++    if (!me)
++        return "";
++    if (variable == "commitIndex")
+         return to_string(me->commit_idx);
+-    } else if (variable == "current_term") {
++    if (variable == "currentTerm")
+         return to_string(me->current_term);
+-    } else if (variable == "log") {
+-        // [(2, 'Nil'), (2, 'v1')]
+-        auto *log = static_cast<raft_log_t *>(me->log);
++    if (variable == "logOffset")
++        return to_string(raft_log_get_base(static_cast<raft_log_t *>(raft_get_log(me))));
++    if (variable == "state")
++        return to_string(me->state);
++    if (variable == "votedFor")
++        return me->voted_for == RAFT_NODE_ID_NONE ? "Nil" : node_name(me->voted_for);
++    if (variable == "snapshotLastIdx")
++        return to_string(me->snapshot_last_idx);
++    if (variable == "snapshotLastTerm")
++        return to_string(me->snapshot_last_term);
++    if (variable == "loadingSnapshot")
++        return loading_snapshot ? "TRUE" : "FALSE";
++    if (variable == "pendingSnapshotIdx")
++        return to_string(pending_idx);
++    if (variable == "pendingSnapshotTerm")
++        return to_string(pending_term);
++    if (variable == "votingCfgChangeIdx")
++        return me->voting_cfg_change_log_idx < 0 ? "0" : to_string(me->voting_cfg_change_log_idx);
++    if (variable == "clusterConfig")
++        return set_text(cluster_ids);
++    if (variable == "staleReadDetected" || variable == "noopReadDetected") {
++        Monitors m = read_monitors();
++        int bit = variable == "staleReadDetected" ? m.stale : m.noop;
++        return bit ? "TRUE" : "FALSE";
++    }
++    if (variable == "log") {
++        raft_log_t *log = static_cast<raft_log_t *>(raft_get_log(me));
++        long base = raft_log_get_base(log);
++        long count = raft_log_count(log);
+         string res = "[";
+-        raft_index_t base = raft_log_get_base(log);
+-//        cerr << "RAFT LOG COUNT: " << raft_log_count(log) << endl;
+-        for (int i = 1; i <= raft_log_count(log); i++) {  // starts from 1!
+-            raft_entry_t *ety = raft_log_get_at_idx(log, i + base);
+-            if (ety) {
+-                if (i != 1)
+-                    res += ", ";
+-                res += "(" + to_string(ety->term) + ", ";
+-                if (ety->type == RAFT_LOGTYPE_NO_OP)
+-                    res += "'Nil')";
+-                else if (ety->type == RAFT_LOGTYPE_NORMAL)
+-                    res += "'" + string(ety->data) + "')";
+-                else
+-                    res += "'?UNKNOWN?')";
+-            }
++        for (long k = 1; k <= count; k++) {
++            raft_entry_t *ety = raft_log_get_at_idx(log, base + k);
++            if (!ety)
++                continue;
++            if (k != 1)
++                res += ", ";
++            res += entry_text(ety);
+         }
+         res += "]";
+         return res;
+-    } else if (variable == "state") {
+-        return to_string(me->state);
+-    } else if (variable == "next_idx" || variable == "match_idx") {
+-        // {'n2': 2, 'n3': 2}
+-        vector<string> tokens;
+-        bool is_next_idx = variable == "next_idx";
++    }
++    if (variable == "votesGranted") {
++        set<int> ids;
+         for (int i = 0; i < me->num_nodes; i++) {
+-            raft_node_t *n = me->nodes[i];
+-            if (raft_node_get_id(n) == raft_node_get_id(me->node))
+-                continue;
+-            Node node(raft_node_get_id(n));
+-            if (!config.get_node(node)) {
+-                cerr_warning << "RaftGet cannot find node: " << node.to_string() << endl;
+-                return "";
+-            }
+-            string token = "'" + node.name + "': ";
+-            if (is_next_idx) {
+-                token += to_string(raft_node_get_next_idx(n));
+-            } else {
+-                token += to_string(raft_node_get_match_idx(n));
+-            }
+-            tokens.push_back(std::move(token));
++            if (raft_node_has_vote_for_me(me->nodes[i]))
++                ids.insert(raft_node_get_id(me->nodes[i]));
+         }
+-        std::sort(tokens.begin(), tokens.end());
+-        return "{" + stringify(tokens, 0, ", ") + "}";
++        return set_text(ids);
+     }
++    if (variable == "nextIndex")
++        return index_map(true);
++    if (variable == "matchIndex")
++        return index_map(false);
+     return "";
+ }
+-
+-// not implemented!
+-//void RaftAutoRun() {
+-//    if (!RaftInit()) {
+-//        cerr_warning << "cannot init" << endl;
+-//        abort();
+-//    }
+-//
+-//}
+\ No newline at end of file
+--- /dev/null
++++ b/systems/WRaft-series/RedisRaft/scripts/env.sh
+@@ -0,0 +1,7 @@
++source $(dirname "$(realpath "$0")")/../../../../scripts/env.sh && export CUR_SCRIPT_DIR=$(eval $(get_dir_cmd)) && export_more
++# The controller and interceptor stay the already-built SandTable binaries.
++# This round only rebuilds the driver in the copied tree.
++if [ -x /root/sandtable/cmake-build-debug/controller/controller ]; then
++    export CONTROLLER=/root/sandtable/cmake-build-debug/controller/controller
++    export INTERCEPTOR_SH=/root/sandtable/cmake-build-debug/interceptor/run.sh
++fi
+--- /dev/null
++++ b/systems/WRaft-series/RedisRaft/scripts/start_docker.sh
+@@ -0,0 +1,18 @@
++#!/bin/bash
++
++source $(dirname "$(realpath "$0")")/env.sh
++source $START_DOCKER_COMMON_SH "$@"
++
++CLIENT=/root/sandtable/specula-redisraft/sandtable/systems/WRaft-series/driver/build/RedisRaftDriver
++
++HOST_CMD="$CONTROLLER -detail -config $CONFIG_FILE -tmpdir $TMPDIR; exit"
++
++cat <<EOF | "$SPSSH_SH" -H -S -q -t -e -s -r "$HOST_CMD" -w "$TMPDIR" root@n{1,2,3}
++cd $TESTCASE_DIR
++export PROGRAM_PATH=$CLIENT
++export GCOV_PREFIX=/tmp/gcov-n\${SSH_NO}
++export GCOV_PREFIX_STRIP=0
++$INTERCEPTOR_SH -config $CONFIG_FILE $CLIENT -config $CONFIG_FILE -detail -name "n\${SSH_NO}" >/tmp/rr-n\${SSH_NO}.out 2>/tmp/rr-n\${SSH_NO}.err; exit
++EOF
++
++source $WAIT_TMUX_COMMON_SH
+--- /dev/null
++++ b/systems/WRaft-series/RedisRaft/scripts/run_one_testcase.sh
+@@ -0,0 +1,4 @@
++#!/bin/bash
++
++source $(dirname "$(realpath "$0")")/env.sh
++source ${RUN_ONE_TESTCASE_COMMON_SH} "$@"
+--- /dev/null
++++ b/systems/WRaft-series/RedisRaft/scripts/system_config.sh
+@@ -0,0 +1,9 @@
++#!/bin/bash
++
++source $(dirname "$(realpath "$0")")/env.sh
++source $SYSTEM_CONFIG_COMMON_SH "$@"
++
++cat <<EOF >> "$GEN_FILE"
++option partition_keep_msgs
++option allow_msg_unordered
++EOF
+\ No newline at end of file
+--- /dev/null
++++ b/systems/WRaft-series/RedisRaft/scripts/testcase_generator.py
+@@ -0,0 +1,248 @@
++import os
++import sys
++import argparse
++
++NODES = {"s1": "n1", "s2": "n2", "s3": "n3"}
++ORDER = ["s1", "s2", "s3"]
++STATE = {"Follower": "1", "Candidate": "3", "Leader": "4"}
++TYPES = {"ValueEntry": "Value", "ConfigEntry": "Config", "NoopEntry": "Noop"}
++PER_NODE = (
++    "currentTerm", "votedFor", "log", "logOffset", "state", "commitIndex",
++    "nextIndex", "matchIndex", "votesGranted", "snapshotLastIdx", "snapshotLastTerm",
++    "loadingSnapshot", "pendingSnapshotIdx", "pendingSnapshotTerm",
++    "clusterConfig", "votingCfgChangeIdx",
++)
++
++
++def set_path():
++    script_dir = os.path.dirname(os.path.realpath(__file__))
++    deps = script_dir
++    for _ in range(4):
++        deps = os.path.dirname(deps)
++    sys.path.append(os.path.join(deps, "scripts"))
++
++
++set_path()
++from trace_reader import TraceReader
++
++
++def parse_args():
++    parser = argparse.ArgumentParser(description="redisraft controlled-execution generator")
++    parser.add_argument("trace_file")
++    parser.add_argument("-c", dest="config", required=True)
++    parser.add_argument("-o", dest="output", default="traces.txt")
++    parser.add_argument("-f", dest="conn_fd", default="126")
++    parser.add_argument("-n", dest="node_port", default="9000")
++    parser.add_argument("-d", dest="debug", action="store_true")
++    parser.add_argument("-i", dest="in_place", action="store_true")
++    parser.add_argument("-I", dest="in_dir", default="")
++    args = parser.parse_args()
++    if not args.in_place:
++        args.trace_file = os.path.realpath(args.trace_file)
++        args.config = os.path.realpath(args.config)
++        directory = os.path.dirname(args.trace_file)
++        if args.in_dir:
++            directory = os.path.join(directory, args.in_dir)
++            os.makedirs(directory, mode=0o755, exist_ok=True)
++        os.chdir(directory)
++        case_dir = os.path.basename(args.trace_file) + ".dir"
++        os.makedirs(case_dir, mode=0o755, exist_ok=True)
++        os.chdir(case_dir)
++    return args
++
++
++def node(name):
++    if name not in NODES:
++        raise SystemExit("unknown server %s" % name)
++    return NODES[name]
++
++
++def text_of(value):
++    if isinstance(value, (list, tuple, set, frozenset)):
++        return ",".join(text_of(item) for item in value)
++    return str(value)
++
++
++def fmt_config(cfg):
++    if not cfg:
++        return "{}"
++    names = sorted(node(item) for item in cfg)
++    return "{" + ",".join(names) + "}"
++
++
++def fmt_log(entries):
++    parts = []
++    for entry in entries:
++        parts.append("(%s, %s, %s)" % (entry["term"], TYPES[entry["type"]], fmt_config(entry["config"])))
++    return "[" + ", ".join(parts) + "]"
++
++
++def fmt_votes(names):
++    return "{" + ",".join(node(name) for name in sorted(names)) + "}"
++
++
++def fmt_index(values):
++    parts = ["'%s': %s" % (node(name), values[name]) for name in sorted(values)]
++    return "{" + ", ".join(parts) + "}"
++
++
++def model_value(name, value):
++    if name == "log":
++        return fmt_log(value)
++    if name == "state":
++        return STATE[value]
++    if name == "votedFor":
++        return "Nil" if value == "Nil" else node(value)
++    if name in ("votesGranted", "clusterConfig"):
++        return fmt_votes(value)
++    if name in ("nextIndex", "matchIndex"):
++        return fmt_index(value)
++    if isinstance(value, bool):
++        return "TRUE" if value else "FALSE"
++    return str(value)
++
++
++def net_len(messages):
++    if isinstance(messages, dict):
++        return sum(messages.values())
++    return len(messages)
++
++
++def compare_all(state):
++    for server in ORDER:
++        impl = node(server)
++        for name in PER_NODE:
++            yield ["execute", impl, "get " + name]
++            yield ["#", "variable", name, server, model_value(name, state[name][server])]
++            yield ["compare", "variable"]
++    for name in ("staleReadDetected", "noopReadDetected"):
++        yield ["execute", "n1", "get " + name]
++        yield ["#", "variable", name, "s1", model_value(name, state[name])]
++        yield ["compare", "variable"]
++    yield ["#", "net-len", str(net_len(state["messages"]))]
++    yield ["compare", "net-len"]
++    yield ["status"]
++
++
++class SeqMap:
++    def __init__(self):
++        self.offset = 0
++        self.slots = {}
++
++    def note_sends(self, before, after):
++        for seq in range(before + 1, after + 1):
++            self.slots[seq] = [seq + self.offset]
++
++    def take(self, seq):
++        slots = self.slots.get(int(seq)) or []
++        if not slots:
++            raise SystemExit("seq %s has no copy left" % (seq,))
++        return slots.pop(0)
++
++    def on_lose(self, seq):
++        slots = self.slots.get(int(seq)) or []
++        if not slots:
++            raise SystemExit("seq %s has no copy left" % (seq,))
++        return slots.pop()
++
++
++def deliver(src, dst, seq):
++    yield ["deliver-unordered", node(src), node(dst), str(seq)]
++    yield ["loop", "intercept", node(dst), "check_has_recv_queue", node(src)]
++    yield ["execute", node(dst), "raft recvfrom " + node(src)]
++
++
++def commands(pc, seqmap):
++    kind = pc[0]
++    if kind == "Init":
++        yield ["init", "3"]
++        for impl in ("n1", "n2", "n3"):
++            yield ["execute", impl, "net connectall"]
++            yield ["execute", impl, "raft init"]
++        yield ["wait-init", "3"]
++        for impl in ("n1", "n2", "n3"):
++            yield ["loop", "execute", impl, "net isallconnected"]
++        return
++    if kind == "Timeout":
++        yield ["intercept", node(pc[1]), "inc_time_ms", "2000"]
++        yield ["execute", node(pc[1]), "raft timeout"]
++        return
++    if kind in ("HandleRequestVoteRequest", "HandleRequestVoteResponse",
++                "HandleAppendEntriesRequest", "HandleAppendEntriesResponse",
++                "HandleInstallSnapshotRequest"):
++        yield from deliver(pc[2], pc[1], seqmap.take(pc[3]))
++        return
++    if kind in ("LoseMessage", "DropStaleMessage"):
++        yield ["drop-unordered", node(pc[1]), node(pc[2]), str(seqmap.on_lose(pc[3]))]
++        return
++    if kind == "ClientRequest":
++        yield ["execute", node(pc[1]), "raft cli"]
++        return
++    if kind == "AppendEntries":
++        yield ["execute", node(pc[1]), "raft send " + node(pc[2])]
++        return
++    if kind == "SendInstallSnapshot":
++        yield ["execute", node(pc[1]), "raft snap-send " + node(pc[2])]
++        return
++    if kind == "TakeSnapshot":
++        yield ["execute", node(pc[1]), "raft snapshot"]
++        return
++    if kind == "EndLoadSnapshot":
++        yield ["execute", node(pc[1]), "raft end-load"]
++        return
++    if kind == "BecomeLeader":
++        yield ["execute", node(pc[1]), "raft become-leader"]
++        return
++    if kind == "AdvanceCommitIndex":
++        yield ["execute", node(pc[1]), "raft advance-commit"]
++        return
++    if kind == "ClientNonQuorumRead":
++        yield ["execute", node(pc[1]), "raft read"]
++        return
++    if kind == "ProposeAddServer":
++        yield ["execute", node(pc[1]), "raft add " + node(pc[2])]
++        return
++    if kind == "ProposeRemoveServer":
++        yield ["execute", node(pc[1]), "raft remove " + node(pc[2])]
++        return
++    if kind == "Crash":
++        yield ["execute", node(pc[1]), "raft crash"]
++        return
++    raise SystemExit("unknown pc %s" % (pc,))
++
++
++def yield_trace(states):
++    if not states or "scr" not in states[0]:
++        raise SystemExit("trace has no scr")
++    seqmap = SeqMap()
++    previous = 0
++    for index, state in enumerate(states, start=1):
++        pc = state["scr"]["pc"]
++        n_sent = state["scr"]["nSent"]
++        seqmap.note_sends(previous, n_sent)
++        yield ["#", "[%d]" % index] + [text_of(item) for item in pc]
++        yield from commands(pc, seqmap)
++        yield from compare_all(state)
++        previous = n_sent
++    for impl in ("n1", "n2", "n3"):
++        yield ["execute", impl, "raft statemachine"]
++
++
++def main():
++    args = parse_args()
++    try:
++        os.symlink(args.config, "config.txt")
++    except FileExistsError:
++        pass
++    try:
++        os.symlink(args.trace_file, "tlc_trace.txt")
++    except FileExistsError:
++        pass
++    states = list(TraceReader(True).trace_reader(args.trace_file))
++    lines = [" ".join(str(item) for item in command) for command in yield_trace(states)]
++    with open(args.output, "w") as handle:
++        handle.write("\n".join(lines) + "\n")
++
++
++if __name__ == "__main__":
++    main()
+--- /dev/null
++++ b/scripts/collect_gcov.sh
+@@ -0,0 +1,25 @@
++#!/bin/bash
++# Merge the three nodes' gcda inside the controller and emit gcov for the library.
++set -euo pipefail
++BASE=/root/sandtable/specula-redisraft/sandtable/systems/WRaft-series/driver/build/CMakeFiles/RedisRaftDriver.dir
++SRC=root/sandtable/specula-redisraft/system/src
++OUT=/root/sandtable/specula-redisraft/gcov-out
++rm -rf /tmp/rr-gcov-a /tmp/rr-gcov "$OUT"
++mkdir -p "$OUT"
++gcov-tool merge -o /tmp/rr-gcov-a /tmp/gcov-n1 /tmp/gcov-n2
++gcov-tool merge -o /tmp/rr-gcov /tmp/rr-gcov-a /tmp/gcov-n3
++cd "$OUT"
++shopt -s nullglob
++found=0
++for g in "$BASE/$SRC"/*.gcno; do
++    name=$(basename "$g" .gcno)
++    cp "/tmp/rr-gcov/$BASE/$SRC/$name.gcda" .
++    cp "$g" .
++    found=1
++done
++if [[ "$found" -ne 1 ]]; then
++    echo "no library gcno under $BASE/$SRC" >&2
++    find "$BASE" -name '*.gcno' | head
++    exit 1
++fi
++gcov -b ./*.gcno > "$OUT/summary.txt"
+--- /dev/null
++++ b/scripts/run_round.py
+@@ -0,0 +1,564 @@
++#!/usr/bin/env python3
++"""Sample and replay the redis-raft controlled-execution round.
++
++Records stay in the round directory. The mount is only the working copy.
++"""
++
++import argparse
++import ast
++import json
++import os
++import re
++import shutil
++import subprocess
++import time
++from concurrent.futures import ThreadPoolExecutor, as_completed
++from pathlib import Path
++
++CE = Path("/users/bingzhuo/Specula/case-studies/systems/redisraft/modules/core/runs/case-studies-redisraft/controlled-execution-runs/controlled-execution-1103-5")
++RUN = CE.parent.parent
++MOUNT = Path("/users/bingzhuo/sandtable/build/mount/specula-redisraft")
++CONTAINER = "/root/sandtable/specula-redisraft"
++JAR = Path("/users/bingzhuo/sandtable/scripts/tla2tools.jar")
++SPEC = CE / "spec"
++SOURCE_FILES = (
++    "raft_log.c", "raft_server.c", "raft_node.c", "raft_server_properties.c",
++)
++CONFIGS = [
++    ("standard", "MC_for_sandtable.cfg", "MC_for_sandtable"),
++    ("crashrecovery", "MC_for_sandtable_crashrecovery.cfg", "MC_for_sandtable"),
++    ("membership", "MC_for_sandtable_membership.cfg", "MC_for_sandtable"),
++    ("snapshot", "MC_for_sandtable_snapshot.cfg", "MC_for_sandtable"),
++    ("staleread", "MC_for_sandtable_staleread.cfg", "MC_for_sandtable"),
++]
++BUGS = RUN / "potential-bugs" / "nextindex-self"
++
++
++def trace_name(seed):
++    return "t%04d" % seed
++
++
++def trace_dir(config, seed):
++    return CE / config / "traces" / trace_name(seed)
++
++
++def run(cmd, timeout=None, cwd=None):
++    return subprocess.run(
++        cmd, cwd=cwd, timeout=timeout, text=True,
++        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
++    )
++
++
++def sync_working_copy():
++    MOUNT.mkdir(parents=True, exist_ok=True)
++    subprocess.run(
++        ["rsync", "-a", "--delete", str(CE / "system") + "/", str(MOUNT / "system") + "/"],
++        check=True,
++    )
++    subprocess.run(
++        ["rsync", "-a", "--delete", "--exclude", "driver/build", "--exclude", "__pycache__",
++         str(CE / "sandtable") + "/", str(MOUNT / "sandtable") + "/"],
++        check=True,
++    )
++    for script in (MOUNT / "sandtable").rglob("*.sh"):
++        script.chmod(0o755)
++
++
++def tlc_one(config, cfg, module, seed):
++    dest = trace_dir(config, seed)
++    dest.mkdir(parents=True, exist_ok=True)
++    out = dest / "MC.out"
++    if out.is_file() and "pc |->" in out.read_text(errors="replace"):
++        return config, seed, "cached"
++    meta = Path("/tmp") / ("tlc-rr-%s-%d" % (config, seed))
++    if meta.exists():
++        shutil.rmtree(meta, ignore_errors=True)
++    cmd = [
++        "java", "-Xmx2g", "-jar", str(JAR), "-tool", "-workers", "1", "-simulate",
++        "-depth", "50", "-seed", str(seed), "-metadir", str(meta),
++        "-config", cfg, module,
++    ]
++    try:
++        result = subprocess.run(
++            cmd, cwd=SPEC, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=180,
++        )
++    except subprocess.TimeoutExpired as exc:
++        out.write_text((exc.stdout or "") + "\n" + (exc.stderr or "") + "\nTIMEOUT\n")
++        (dest / "tlc.err").write_text(exc.stderr or "")
++        (dest / "tlc.status").write_text("124")
++        shutil.rmtree(meta, ignore_errors=True)
++        return config, seed, "timeout"
++    text = result.stdout if "@!" in result.stdout else result.stdout + "\n" + result.stderr
++    out.write_text(text)
++    (dest / "tlc.err").write_text(result.stderr)
++    (dest / "tlc.status").write_text(str(result.returncode))
++    shutil.rmtree(meta, ignore_errors=True)
++    if "pc |->" not in text:
++        return config, seed, "no-pc"
++    if "Invariant DepthBound is violated" in text:
++        return config, seed, "depth"
++    if "is violated" in text:
++        return config, seed, "safety"
++    return config, seed, "short"
++
++
++def sample(names, seeds, jobs):
++    tasks = []
++    for name, cfg, module in CONFIGS:
++        if name not in names:
++            continue
++        for seed in seeds:
++            tasks.append((name, cfg, module, seed))
++    print("sampling %d" % len(tasks), flush=True)
++    done = 0
++    bad = []
++    with ThreadPoolExecutor(max_workers=jobs) as pool:
++        futures = [pool.submit(tlc_one, *task) for task in tasks]
++        for fut in as_completed(futures):
++            config, seed, kind = fut.result()
++            done += 1
++            if kind not in ("cached", "depth", "safety"):
++                bad.append((config, seed, kind))
++                print("tlc %d/%d %s %s %s" % (done, len(tasks), config, trace_name(seed), kind), flush=True)
++            elif done == len(tasks) or done % 25 == 0:
++                print("tlc %d/%d %s %s %s" % (done, len(tasks), config, trace_name(seed), kind), flush=True)
++    return bad
++
++
++def clear_gcda():
++    for node in ("n1", "n2", "n3"):
++        run(["sudo", "docker", "exec", node, "bash", "-lc",
++             "rm -rf /tmp/gcov-%s /tmp/rr-persist-%s" % (node, node)])
++    run(["sudo", "docker", "exec", "controller", "bash", "-lc",
++         "find /root/sandtable/specula-redisraft/sandtable/systems/WRaft-series/driver/build -name '*.gcda' -delete"])
++
++
++def release_ports():
++    """Drop this round's leftover controller. Leave other sandtable runs alone."""
++    run(["sudo", "docker", "exec", "controller", "bash", "-lc",
++         "pkill -f specula-redisraft || true; sleep 0.2"])
++    for node in ("n1", "n2", "n3"):
++        run(["sudo", "docker", "exec", node, "bash", "-lc",
++             "pkill -f specula-redisraft || true"])
++    for _ in range(90):
++        other = run(["sudo", "docker", "exec", "controller", "bash", "-lc",
++                     "ps -eo args | grep -E '[r]un_one_testcase' || true"])
++        if "run_one_testcase.sh" not in (other.stdout or ""):
++            return
++        time.sleep(2)
++
++
++def replay_one(config, seed):
++    release_ports()
++    src = trace_dir(config, seed) / "MC.out"
++    host_work = MOUNT / "work" / config / trace_name(seed)
++    run(["sudo", "rm", "-rf", str(host_work)])
++    host_work.mkdir(parents=True)
++    shutil.copy(src, host_work / "MC.out")
++    container_mc = "%s/work/%s/%s/MC.out" % (CONTAINER, config, trace_name(seed))
++    script = CONTAINER + "/sandtable/systems/WRaft-series/RedisRaft/scripts/run_one_testcase.sh"
++    started = time.monotonic()
++    try:
++        result = run(["sudo", "docker", "exec", "controller", "bash", script, container_mc, "3"], timeout=180)
++        elapsed = time.monotonic() - started
++        code = result.returncode
++        extra = (result.stdout or "")[-2000:] + "\n" + (result.stderr or "")[-2000:]
++    except subprocess.TimeoutExpired as exc:
++        elapsed = time.monotonic() - started
++        code = 124
++        extra = "timeout\n" + str(exc)[-1000:]
++    log_host = next(host_work.rglob("log.host"), None)
++    traces = next(host_work.rglob("traces.txt"), None)
++    dest = trace_dir(config, seed)
++    if traces:
++        shutil.copy(traces, dest / "traces.txt")
++    if log_host:
++        shutil.copy(log_host, dest / "log.host")
++    (dest / "replay.status").write_text("exit %s\n%s\n" % (code, extra))
++    run(["sudo", "rm", "-rf", str(host_work)])
++    return elapsed, code
++
++
++def judge(config, seed, exit_code):
++    path = trace_dir(config, seed) / "log.host"
++    text = path.read_text(errors="replace") if path.is_file() else ""
++    variable = re.search(r'Variable "([^"]+)" compare failed', text)
++    logout = "logout" in text
++    sanitizer = "Sanitizer" in text or "stack smashing" in text
++    library_assert = "Assertion" in text and "compare failed" not in text[max(0, text.find("Assertion") - 400):text.find("Assertion") + 80]
++    # The controller asserts after a variable mismatch. That assert is not a library crash.
++    if variable and "Command::run_read_cmd" in text:
++        library_assert = False
++    died = "Segmentation fault" in text or "core dumped" in text or "Aborted" in text
++    if variable and "Command::run_read_cmd" in text:
++        died = False
++    traces = trace_dir(config, seed) / "traces.txt"
++    comments = []
++    if traces.is_file():
++        comments = [line for line in traces.read_text(errors="replace").splitlines() if line.startswith("# [")]
++    finished = bool(comments) and comments[-1] in text
++    code_value = model_value = pc = ""
++    if variable:
++        window = text[variable.start():variable.start() + 1200]
++        code_m = re.search(r"- Code \([^)]+\): (.*)", window)
++        model_m = re.search(r"- Model\([^)]+\): (.*)", window)
++        code_value = code_m.group(1).strip() if code_m else ""
++        model_value = model_m.group(1).strip() if model_m else ""
++        prior = list(re.finditer(r"# \[\d+\][^\n]*", text[:variable.start()]))
++        if prior:
++            pc = prior[-1].group(0).strip()
++    if not path.is_file():
++        kind, ok, detail = "crash", False, "no log.host"
++    elif "Address already in use" in text:
++        kind, ok, detail = "environment", False, "bind"
++    elif variable:
++        kind, ok, detail = "variable", False, variable.group(0)
++    elif sanitizer or library_assert or died or exit_code not in (0, None) or not logout or not finished:
++        kind, ok = "crash", False
++        if sanitizer:
++            detail = "sanitizer"
++        elif library_assert or died:
++            detail = "assert" if library_assert else "segfault"
++        elif not finished:
++            detail = "incomplete"
++        else:
++            detail = "exit %s" % exit_code
++    else:
++        kind, ok = "pass", True
++        detail = "net-len" if "Net mgs length compare failed" in text else ""
++    return {
++        "ok": ok, "logout": logout, "kind": kind, "variable": variable.group(1) if variable else "",
++        "code_value": code_value, "model_value": model_value, "detail": detail,
++        "netlen_warn": "Net mgs length compare failed" in text, "pc": pc,
++    }
++
++
++def collect_coverage(config, seed, elapsed, ok):
++    host_nodes = Path("/tmp/rr-gcov-nodes")
++    run(["sudo", "rm", "-rf", str(host_nodes)])
++    host_nodes.mkdir(parents=True)
++    for node in ("n1", "n2", "n3"):
++        run(["sudo", "docker", "cp", "%s:/tmp/gcov-%s" % (node, node), str(host_nodes / node)])
++        run(["sudo", "docker", "exec", "controller", "rm", "-rf", "/tmp/gcov-%s" % node])
++        run(["sudo", "docker", "cp", str(host_nodes / node), "controller:/tmp/gcov-%s" % node])
++    script = CONTAINER + "/sandtable/scripts/collect_gcov.sh"
++    result = run(["sudo", "docker", "exec", "controller", "bash", script], timeout=90)
++    out_dir = CE / config / "gcov"
++    if out_dir.exists():
++        run(["sudo", "rm", "-rf", str(out_dir)])
++    out_dir.mkdir(parents=True)
++    copied = run(["sudo", "docker", "cp", "controller:%s/gcov-out/." % CONTAINER, str(out_dir)])
++    run(["sudo", "chown", "-R", "%d:%d" % (os.getuid(), os.getgid()), str(out_dir)])
++    summary = (out_dir / "summary.txt").read_text(errors="replace") if (out_dir / "summary.txt").is_file() else ""
++    if result.returncode != 0 or copied.returncode != 0 or "Lines executed" not in summary:
++        raise SystemExit("gcov failed\n" + result.stdout + result.stderr + summary[-800:])
++    files = {}
++    current = None
++    for line in summary.splitlines():
++        named = re.match(r"File '(.+)'", line)
++        if named:
++            current = Path(named.group(1)).name
++            files[current] = {}
++            continue
++        match = re.search(r"([\d.]+)% of (\d+)", line)
++        if not current or not match:
++            continue
++        pct, total = float(match.group(1)), int(match.group(2))
++        if line.startswith("Lines executed:"):
++            files[current]["line_pct"] = pct
++            files[current]["lines"] = total
++        elif line.startswith("Taken at least once:"):
++            files[current]["branch_taken_pct"] = pct
++            files[current]["branches"] = total
++        elif line.startswith("Branches executed:"):
++            files[current]["branch_exec_pct"] = pct
++    library = [item for name, item in files.items() if name in SOURCE_FILES and "lines" in item]
++    line_total = sum(item["lines"] for item in library)
++    line_hit = sum(item["line_pct"] / 100.0 * item["lines"] for item in library)
++    branch_total = sum(item.get("branches", 0) for item in library)
++    branch_hit = sum(item.get("branch_taken_pct", 0) / 100.0 * item.get("branches", 0) for item in library)
++    entry = {
++        "trace": trace_name(seed),
++        "replay_s": round(elapsed, 3),
++        "ok": ok,
++        "line_pct": round(100.0 * line_hit / line_total, 2) if line_total else 0,
++        "branch_taken_pct": round(100.0 * branch_hit / branch_total, 2) if branch_total else 0,
++        "files": {name: files[name] for name in SOURCE_FILES if name in files},
++    }
++    path = CE / config / "coverage.json"
++    rows = json.loads(path.read_text()) if path.is_file() else []
++    rows = [row for row in rows if row["trace"] != entry["trace"]]
++    rows.append(entry)
++    rows.sort(key=lambda row: row["trace"])
++    path.write_text(json.dumps(rows, indent=2) + "\n")
++    run(["sudo", "rm", "-rf", str(host_nodes)])
++    return entry
++
++
++def failing_window(text):
++    marks = list(re.finditer(r"# \[\d+\]", text))
++    return text[marks[-1].start():] if marks else text
++
++
++def self_nextindex_only(verdict):
++    if verdict["variable"] != "nextIndex" or "BecomeLeader" not in verdict["pc"]:
++        return False
++    who = re.search(r"BecomeLeader (s\d)", verdict["pc"])
++    if not who:
++        return False
++    self_key = "n" + who.group(1)[1:]
++    try:
++        code = ast.literal_eval(verdict["code_value"])
++        model = ast.literal_eval(verdict["model_value"])
++    except (SyntaxError, ValueError):
++        return False
++    if not isinstance(code, dict) or not isinstance(model, dict):
++        return False
++    if set(code) != set(model):
++        return False
++    diffs = [key for key in code if code[key] != model[key]]
++    return diffs == [self_key] and code[self_key] == 1 and model[self_key] != 1
++
++
++def vote_response_higher_term(config, seed, verdict):
++    """Follower ignored a higher-term vote response in the formula, the library adopted it."""
++    if verdict["variable"] != "currentTerm":
++        return False
++    found = re.search(r"# \[(\d+)\] HandleRequestVoteResponse (s\d) (s\d) (\d+)", verdict["pc"])
++    if not found:
++        return False
++    step, receiver, source, seq = int(found.group(1)), found.group(2), found.group(3), int(found.group(4))
++    try:
++        code = int(verdict["code_value"])
++        model = int(verdict["model_value"])
++    except ValueError:
++        return False
++    if code <= model:
++        return False
++    text = (trace_dir(config, seed) / "MC.out").read_text(errors="replace")
++    blocks = re.split(r"(?m)^(\d+): <", text)
++    pre = None
++    for index in range(1, len(blocks) - 1, 2):
++        if int(blocks[index]) == step - 1:
++            pre = blocks[index + 1]
++            break
++    if pre is None:
++        return False
++    term_line = re.search(r"currentTerm = \(([^)]*)\)", pre)
++    state_line = re.search(r"state = \(([^)]*)\)", pre)
++    if not term_line or not state_line:
++        return False
++    terms = dict(re.findall(r"(s\d) :> (\d+)", term_line.group(1)))
++    states = dict(re.findall(r"(s\d) :> (\w+)", state_line.group(1)))
++    if terms.get(receiver) != str(model) or states.get(receiver) in ("", "Candidate"):
++        return False
++    for msg in re.finditer(r"\[([^\]]*)\]", pre):
++        body = msg.group(1)
++        if "RequestVoteResponse" not in body or not re.search(r"seq \|-> %d\b" % seq, body):
++            continue
++        term = re.search(r"mterm \|-> (\d+)", body)
++        src = re.search(r"msource \|-> (s\d)", body)
++        dst = re.search(r"mdest \|-> (s\d)", body)
++        if term and src and dst and int(term.group(1)) == code and src.group(1) == source and dst.group(1) == receiver:
++            return True
++    return False
++
++
++def label_failure(config, seed, verdict, text):
++    if verdict["detail"] == "bind" or "Address already in use" in text:
++        return "environment"
++    if verdict["kind"] == "variable":
++        window = failing_window(text)
++        broken = re.search(
++            r"deliver-unordered failed|was dropped|cannot find channel|Loop more than 40|"
++            r"out of boundary",
++            window,
++        )
++        if broken:
++            return "adapter"
++        if self_nextindex_only(verdict):
++            return "spec"
++        if vote_response_higher_term(config, seed, verdict):
++            return "spec"
++        return "unknown"
++    if verdict["detail"] in ("no log.host",) and "docker" in text.lower():
++        return "environment"
++    return "crash"
++
++
++def clear_failure(config, seed):
++    path = CE / "failures.tsv"
++    if not path.is_file():
++        return
++    row_key = "%s\t%s\t" % (config, trace_name(seed))
++    lines = [line for line in path.read_text().splitlines() if not line.startswith(row_key)]
++    path.write_text("\n".join(lines) + "\n")
++
++
++def record_failure(config, seed, exit_code, verdict, label):
++    path = CE / "failures.tsv"
++    if not path.is_file():
++        path.write_text("配置\t轨迹\t种子\t归类\t退出码\tlogout\t变量\t代码值\t模型值\tpc\t记录目录\n")
++    row_key = "%s\t%s\t" % (config, trace_name(seed))
++    kept = [line for line in path.read_text().splitlines() if not line.startswith(row_key)]
++    record = ""
++    if label in ("bug", "spec", "crash", "unknown"):
++        record = "potential-bugs/%s/%s-%s" % (bug_dir(config, seed, verdict, label), config, trace_name(seed))
++    kept.append("\t".join([
++        config, trace_name(seed), str(seed), label, str(exit_code),
++        "yes" if verdict["logout"] else "no", verdict["variable"], verdict["code_value"],
++        verdict["model_value"], verdict["pc"], record,
++    ]))
++    path.write_text("\n".join(kept) + "\n")
++    if label in ("bug", "spec", "crash", "unknown"):
++        copy_record(config, seed, verdict, label)
++
++
++def bug_dir(config, seed, verdict, label):
++    if label == "spec" and self_nextindex_only(verdict):
++        return "nextindex-self"
++    if label == "spec" and vote_response_higher_term(config, seed, verdict):
++        return "vote-response-term"
++    kind = "crash"
++    if verdict["pc"]:
++        parts = verdict["pc"].split()
++        kind = parts[2] if len(parts) > 2 else "step"
++    variable = verdict["variable"] or verdict["detail"] or "crash"
++    return re.sub(r"[^A-Za-z0-9_.-]+", "-", "%s-%s" % (variable, kind))[:80]
++
++
++def copy_record(config, seed, verdict, label):
++    src = trace_dir(config, seed)
++    name = bug_dir(config, seed, verdict, label)
++    dest = RUN / "potential-bugs" / name / ("%s-%s" % (config, trace_name(seed)))
++    dest.mkdir(parents=True, exist_ok=True)
++    for item in ("MC.out", "traces.txt", "log.host", "replay.status", "tlc.err", "tlc.status"):
++        if (src / item).is_file():
++            shutil.copy(src / item, dest / item)
++    if label == "spec" and name in ("nextindex-self", "vote-response-term"):
++        table = RUN / "potential-bugs" / name / "traces.tsv"
++        if not table.is_file():
++            table.write_text("配置\t轨迹\t种子\tpc\t代码值\t模型值\n")
++        row = "%s\t%s\t%s\t%s\t%s\t%s\n" % (
++            config, trace_name(seed), seed, verdict["pc"], verdict["code_value"], verdict["model_value"],
++        )
++        lines = table.read_text().splitlines()
++        key = "%s\t%s\t" % (config, trace_name(seed))
++        kept = [line for line in lines if not line.startswith(key)]
++        kept.append(row.rstrip("\n"))
++        table.write_text("\n".join(kept) + "\n")
++        return
++    note = dest.parent / "README.md"
++    if not note.is_file():
++        note.write_text("# %s\n\n归类 %s。细节见 failures.tsv 和这条轨迹的 log.host。\n" % (dest.parent.name, label))
++
++
++def fresh_config(name):
++    root = CE / name
++    if (root / "coverage.json").is_file():
++        (root / "coverage.json").unlink()
++    if (root / "gcov").is_dir():
++        shutil.rmtree(root / "gcov")
++    traces = root / "traces"
++    if traces.is_dir():
++        for path in traces.glob("t*/*"):
++            if path.name in ("log.host", "traces.txt", "replay.status"):
++                path.unlink()
++
++
++def already_done(config, seed):
++    dest = trace_dir(config, seed)
++    if not ((dest / "log.host").is_file() and (dest / "replay.status").is_file()):
++        return False
++    coverage = CE / config / "coverage.json"
++    if not coverage.is_file():
++        return False
++    rows = json.loads(coverage.read_text())
++    return any(row["trace"] == trace_name(seed) for row in rows)
++
++
++def main():
++    parser = argparse.ArgumentParser()
++    parser.add_argument("--phase", default="replay", choices=["sample", "replay", "all"])
++    parser.add_argument("--configs", default="all")
++    parser.add_argument("--seeds", default="1-100")
++    parser.add_argument("--jobs", type=int, default=8)
++    parser.add_argument("--fresh", action="store_true")
++    args = parser.parse_args()
++    names = [item for item in args.configs.split(",") if item]
++    if names == ["all"]:
++        names = [item[0] for item in CONFIGS]
++    if "-" in args.seeds:
++        start, end = args.seeds.split("-")
++        seeds = list(range(int(start), int(end) + 1))
++    else:
++        seeds = [int(item) for item in args.seeds.split(",") if item]
++    if args.fresh:
++        failures = CE / "failures.tsv"
++        if failures.is_file():
++            failures.unlink()
++        for name in names:
++            fresh_config(name)
++    binary = MOUNT / "sandtable/systems/WRaft-series/driver/build/RedisRaftDriver"
++    if not binary.is_file():
++        raise SystemExit("RedisRaftDriver missing")
++    sync_working_copy()
++    print("binary kept", flush=True)
++    if args.phase in ("sample", "replay", "all"):
++        bad = sample(names, seeds, args.jobs)
++        if bad:
++            print("STOP sample %s" % bad[:8], flush=True)
++            return
++    if args.phase == "sample":
++        return
++    for name in names:
++        if not (CE / name / "coverage.json").is_file():
++            clear_gcda()
++        for seed in seeds:
++            if already_done(name, seed):
++                print("skip %s %s" % (name, trace_name(seed)), flush=True)
++                continue
++            if "pc |->" not in (trace_dir(name, seed) / "MC.out").read_text(errors="replace"):
++                print("STOP no-pc %s %s" % (name, trace_name(seed)), flush=True)
++                return
++            elapsed, code = replay_one(name, seed)
++            for _ in range(4):
++                host_log = trace_dir(name, seed) / "log.host"
++                if not (host_log.is_file() and "Address already in use" in host_log.read_text(errors="replace")):
++                    break
++                print("retry bind %s %s" % (name, trace_name(seed)), flush=True)
++                time.sleep(3)
++                elapsed, code = replay_one(name, seed)
++            verdict = judge(name, seed, code)
++            try:
++                entry = collect_coverage(name, seed, elapsed, verdict["ok"])
++                covered = "line %.2f" % entry["line_pct"]
++            except SystemExit as exc:
++                covered = "gcov-failed"
++                if not verdict["ok"]:
++                    text = (trace_dir(name, seed) / "log.host").read_text(errors="replace") if (trace_dir(name, seed) / "log.host").is_file() else ""
++                    label = label_failure(name, seed, verdict, text)
++                    record_failure(name, seed, code, verdict, label)
++                    print("FAIL %s %s %s %s %s gcov-failed" % (
++                        label, name, trace_name(seed), verdict["variable"] or verdict["detail"], verdict["pc"],
++                    ), flush=True)
++                print("STOP gcov %s %s %s" % (name, trace_name(seed), exc), flush=True)
++                return
++            if verdict["ok"]:
++                clear_failure(name, seed)
++                print("replay %s %s %.1fs pass %s" % (name, trace_name(seed), elapsed, covered), flush=True)
++                continue
++            text = (trace_dir(name, seed) / "log.host").read_text(errors="replace") if (trace_dir(name, seed) / "log.host").is_file() else ""
++            label = label_failure(name, seed, verdict, text)
++            record_failure(name, seed, code, verdict, label)
++            print("FAIL %s %s %s %s %s %s" % (
++                label, name, trace_name(seed), verdict["variable"] or verdict["detail"], verdict["pc"], covered,
++            ), flush=True)
++            if label in ("adapter", "spec", "crash", "unknown", "environment"):
++                print("STOP %s %s %s" % (label, name, trace_name(seed)), flush=True)
++                return
++    print("ROUND_DONE", flush=True)
++
++
++if __name__ == "__main__":
++    main()

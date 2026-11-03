@@ -1,0 +1,40 @@
+--- a/include/raft.h
++++ b/include/raft.h
+@@ -1537,6 +1537,10 @@
+  */
+ int raft_flush(raft_server_t* me, raft_index_t sync_index);
+ 
++/** Advance commit index from match indexes. Used when specula_step splits
++ *  this out of raft_flush. */
++void raft_specula_advance_commit(raft_server_t *me);
++
+ /** Returns the latest entry index that needs to be written to the disk.
+  *
+  * This function is only useful when auto flush is disabled. Same index will be
+--- a/src/raft_server.c
++++ b/src/raft_server.c
+@@ -2251,6 +2251,11 @@
+     }
+ }
+ 
++void raft_specula_advance_commit(raft_server_t *me)
++{
++    raft_update_commit_idx(me);
++}
++
+ raft_index_t raft_get_index_to_sync(raft_server_t *me)
+ {
+     raft_index_t idx = raft_get_current_idx(me);
+@@ -2273,6 +2278,12 @@
+         raft_node_set_match_idx(me->node, sync_index);
+     }
+ 
++    /* ClientRequest updates this node's match index and stops.
++     * Commit advancement and AppendEntries are separate spec actions. */
++    if (specula_step) {
++        return raft_exec_operations(me);
++    }
++
+     raft_update_commit_idx(me);
+ 
+     raft_msg_id_t last = me->read_queue_tail ? me->read_queue_tail->msg_id : 0;

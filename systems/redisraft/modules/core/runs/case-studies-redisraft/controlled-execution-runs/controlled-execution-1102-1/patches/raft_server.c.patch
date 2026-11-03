@@ -1,0 +1,27 @@
+--- /users/bingzhuo/Specula/case-studies/systems/redisraft/modules/core/runs/case-studies-redisraft/artifact/redisraft/src/raft_server.c	2026-11-02 15:18:35.030614561 +0000
++++ /users/bingzhuo/Specula/case-studies/systems/redisraft/modules/core/runs/case-studies-redisraft/controlled-execution-runs/controlled-execution-1102-1/system/src/raft_server.c	2026-11-03 03:52:37.140852053 +0000
+@@ -2251,6 +2251,11 @@
+     }
+ }
+ 
++void raft_specula_advance_commit(raft_server_t *me)
++{
++    raft_update_commit_idx(me);
++}
++
+ raft_index_t raft_get_index_to_sync(raft_server_t *me)
+ {
+     raft_index_t idx = raft_get_current_idx(me);
+@@ -2273,6 +2278,12 @@
+         raft_node_set_match_idx(me->node, sync_index);
+     }
+ 
++    /* ClientRequest updates this node's match index and stops.
++     * Commit advancement and AppendEntries are separate spec actions. */
++    if (specula_step) {
++        return raft_exec_operations(me);
++    }
++
+     raft_update_commit_idx(me);
+ 
+     raft_msg_id_t last = me->read_queue_tail ? me->read_queue_tail->msg_id : 0;
