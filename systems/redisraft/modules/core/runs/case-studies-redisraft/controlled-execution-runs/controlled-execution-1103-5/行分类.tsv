@@ -1,0 +1,784 @@
+文件	行号	集合	依据	下一步
+raft_log.c	44	B	环形缓冲下标回绕，不改写规格变量	交给 TLC。期望下标越过容量。本轮封顶后仍未走到
+raft_log.c	55	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_log.c	56	B	日志环形缓冲扩容。守卫是条目数达到容量，不改写规格变量	交给 TLC。期望这行被执行。初始容量 10，本轮封顶后仍未扩容
+raft_log.c	57	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_log.c	60	B	日志环形缓冲扩容。守卫是条目数达到容量，不改写规格变量	交给 TLC。期望这行被执行。初始容量 10，本轮封顶后仍未扩容
+raft_log.c	61	B	日志环形缓冲扩容。守卫是条目数达到容量，不改写规格变量	交给 TLC。期望这行被执行。初始容量 10，本轮封顶后仍未扩容
+raft_log.c	62	B	日志环形缓冲扩容。守卫是条目数达到容量，不改写规格变量	交给 TLC。期望这行被执行。初始容量 10，本轮封顶后仍未扩容
+raft_log.c	64	B	日志环形缓冲扩容。守卫是条目数达到容量，不改写规格变量	交给 TLC。期望这行被执行。初始容量 10，本轮封顶后仍未扩容
+raft_log.c	68	B	日志环形缓冲扩容。守卫是条目数达到容量，不改写规格变量	交给 TLC。期望这行被执行。初始容量 10，本轮封顶后仍未扩容
+raft_log.c	70	B	日志环形缓冲扩容。守卫是条目数达到容量，不改写规格变量	交给 TLC。期望这行被执行。初始容量 10，本轮封顶后仍未扩容
+raft_log.c	71	B	日志环形缓冲扩容。守卫是条目数达到容量，不改写规格变量	交给 TLC。期望这行被执行。初始容量 10，本轮封顶后仍未扩容
+raft_log.c	72	B	日志环形缓冲扩容。守卫是条目数达到容量，不改写规格变量	交给 TLC。期望这行被执行。初始容量 10，本轮封顶后仍未扩容
+raft_log.c	73	B	日志环形缓冲扩容。守卫是条目数达到容量，不改写规格变量	交给 TLC。期望这行被执行。初始容量 10，本轮封顶后仍未扩容
+raft_log.c	75	B	日志环形缓冲扩容。守卫是条目数达到容量，不改写规格变量	交给 TLC。期望这行被执行。初始容量 10，本轮封顶后仍未扩容
+raft_log.c	78	A	改 logOffset 和日志前缀。现有 EndLoadSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_log.c	84	A	改 logOffset 和日志前缀。现有 EndLoadSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_log.c	85	A	改 logOffset 和日志前缀。现有 EndLoadSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_log.c	86	A	改 logOffset 和日志前缀。现有 EndLoadSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_log.c	88	A	改 logOffset 和日志前缀。现有 EndLoadSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_log.c	95	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_log.c	103	E	raft_log_alloc 未归入规格变量的赋值	已经放进 scenarios.md
+raft_log.c	104	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_log.c	115	D	raft_log_set_callbacks 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_log.c	117	D	raft_log_set_callbacks 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_log.c	118	D	raft_log_set_callbacks 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_log.c	119	D	raft_log_set_callbacks 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_log.c	135	E	raft_log_clear_entries 未归入规格变量的赋值	已经放进 scenarios.md
+raft_log.c	136	E	raft_log_clear_entries 未归入规格变量的赋值	已经放进 scenarios.md
+raft_log.c	137	E	raft_log_clear_entries 未归入规格变量的赋值	已经放进 scenarios.md
+raft_log.c	148	C	错误返回。写不出协议谓词	白名单，不采样
+raft_log.c	154	E	raft_log_append_entry 未归入规格变量的赋值	已经放进 scenarios.md
+raft_log.c	156	E	raft_log_append_entry 未归入规格变量的赋值	已经放进 scenarios.md
+raft_log.c	157	E	raft_log_append_entry 未归入规格变量的赋值	已经放进 scenarios.md
+raft_log.c	158	C	错误返回。写不出协议谓词	白名单，不采样
+raft_log.c	178	E	raft_log_get_from_idx 未归入规格变量的赋值	已经放进 scenarios.md
+raft_log.c	179	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_log.c	220	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_log.c	224	A	从某个下标删日志。现有 HandleAppendEntriesRequest 的冲突截断对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_log.c	232	A	从某个下标删日志。现有 HandleAppendEntriesRequest 的冲突截断对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_log.c	233	A	从某个下标删日志。现有 HandleAppendEntriesRequest 的冲突截断对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_log.c	234	A	从某个下标删日志。现有 HandleAppendEntriesRequest 的冲突截断对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_log.c	235	A	从某个下标删日志。现有 HandleAppendEntriesRequest 的冲突截断对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_log.c	248	A	从某个下标删日志。现有 HandleAppendEntriesRequest 的冲突截断对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_log.c	250	A	从某个下标删日志。现有 HandleAppendEntriesRequest 的冲突截断对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_log.c	258	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_log.c	264	A	压掉已提交前缀，改 logOffset。现有 TakeSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_log.c	265	A	压掉已提交前缀，改 logOffset。现有 TakeSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_log.c	266	A	压掉已提交前缀，改 logOffset。现有 TakeSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_log.c	267	A	压掉已提交前缀，改 logOffset。现有 TakeSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_log.c	283	D	raft_log_peektail 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_log.c	285	D	raft_log_peektail 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_log.c	286	D	raft_log_peektail 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_log.c	289	D	raft_log_peektail 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_log.c	291	D	raft_log_peektail 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_log.c	294	D	raft_log_empty 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_log.c	296	D	raft_log_empty 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_log.c	297	D	raft_log_empty 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_log.c	298	D	raft_log_empty 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_log.c	299	D	raft_log_empty 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_log.c	333	D	log_init 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_log.c	350	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_log.c	379	E	log_get_batch 未归入规格变量的赋值	已经放进 scenarios.md
+raft_log.c	383	E	log_get_batch 未归入规格变量的赋值	已经放进 scenarios.md
+raft_log.c	405	A	压掉已提交前缀的错误返回或回调。现有 TakeSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	43	D	raft_set_heap_functions 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	48	D	raft_set_heap_functions 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	49	D	raft_set_heap_functions 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	50	D	raft_set_heap_functions 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	51	D	raft_set_heap_functions 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	52	D	raft_set_heap_functions 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	67	D	raft_log 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	95	E	raft_clear_incoming_snapshot 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	107	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	125	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	126	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	165	D	raft_clear 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	167	D	raft_clear 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	168	D	raft_clear 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	169	D	raft_clear 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	170	D	raft_clear 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	171	D	raft_clear 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	172	D	raft_clear 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	173	D	raft_clear 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	174	D	raft_clear 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	175	D	raft_clear 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	176	D	raft_clear 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	177	D	raft_clear 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	178	D	raft_clear 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	179	D	raft_clear 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	180	D	raft_clear 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	185	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	199	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	204	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	208	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	209	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	218	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	230	E	读写的是 msg_id、非投票成员或读队列，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	232	E	raft_add_non_voting_node 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	235	A	删成员，改集群。现有 ProposeRemoveServer 以及应用配置对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	237	A	删成员，改集群。现有 ProposeRemoveServer 以及应用配置对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	238	A	删成员，改集群。现有 ProposeRemoveServer 以及应用配置对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	242	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	244	A	删成员，改集群。现有 ProposeRemoveServer 以及应用配置对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	245	A	删成员，改集群。现有 ProposeRemoveServer 以及应用配置对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	247	A	删成员，改集群。现有 ProposeRemoveServer 以及应用配置对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	249	A	删成员，改集群。现有 ProposeRemoveServer 以及应用配置对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	250	A	删成员，改集群。现有 ProposeRemoveServer 以及应用配置对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	254	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	257	A	删成员，改集群。现有 ProposeRemoveServer 以及应用配置对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	258	A	删成员，改集群。现有 ProposeRemoveServer 以及应用配置对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	260	A	删成员，改集群。现有 ProposeRemoveServer 以及应用配置对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	261	A	删成员，改集群。现有 ProposeRemoveServer 以及应用配置对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	264	A	删成员，改集群。现有 ProposeRemoveServer 以及应用配置对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	265	A	删成员，改集群。现有 ProposeRemoveServer 以及应用配置对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	270	A	追加配置时改投票成员。现有 ProposeAddServer 对得上	现有动作对得上。本轮曲线封顶后仍未进入这条分支
+raft_server.c	273	A	追加配置时改投票成员。现有 ProposeAddServer 对得上	现有动作对得上。本轮曲线封顶后仍未进入这条分支
+raft_server.c	289	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	290	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	293	E	读写的是 msg_id、非投票成员或读队列，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	294	A	追加配置时改投票成员。现有 ProposeAddServer 对得上	现有动作对得上。本轮曲线封顶后仍未进入这条分支
+raft_server.c	296	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	297	A	追加配置时改投票成员。现有 ProposeAddServer 对得上	现有动作对得上。本轮曲线封顶后仍未进入这条分支
+raft_server.c	299	A	追加配置时改投票成员。现有 ProposeAddServer 对得上	现有动作对得上。本轮曲线封顶后仍未进入这条分支
+raft_server.c	301	A	追加配置时改投票成员。现有 ProposeAddServer 对得上	现有动作对得上。本轮曲线封顶后仍未进入这条分支
+raft_server.c	303	A	追加配置时改投票成员。现有 ProposeAddServer 对得上	现有动作对得上。本轮曲线封顶后仍未进入这条分支
+raft_server.c	304	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	305	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	308	A	追加配置时改投票成员。现有 ProposeAddServer 对得上	现有动作对得上。本轮曲线封顶后仍未进入这条分支
+raft_server.c	320	A	追加配置时改投票成员。现有 ProposeAddServer 对得上	现有动作对得上。本轮曲线封顶后仍未进入这条分支
+raft_server.c	321	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	331	A	截断时撤回配置。现有 HandleAppendEntriesRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	338	A	截断时撤回配置。现有 HandleAppendEntriesRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	339	A	截断时撤回配置。现有 HandleAppendEntriesRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	340	A	截断时撤回配置。现有 HandleAppendEntriesRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	342	A	截断时撤回配置。现有 HandleAppendEntriesRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	343	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	344	A	截断时撤回配置。现有 HandleAppendEntriesRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	345	A	截断时撤回配置。现有 HandleAppendEntriesRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	356	A	截断时撤回配置。现有 HandleAppendEntriesRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	357	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	365	A	应用配置条目，改 clusterConfig。现有 AdvanceCommitIndex 的应用对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	368	A	应用配置条目，改 clusterConfig。现有 AdvanceCommitIndex 的应用对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	374	A	应用配置条目，改 clusterConfig。现有 AdvanceCommitIndex 的应用对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	375	A	应用配置条目，改 clusterConfig。现有 AdvanceCommitIndex 的应用对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	376	A	应用配置条目，改 clusterConfig。现有 AdvanceCommitIndex 的应用对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	377	A	应用配置条目，改 clusterConfig。现有 AdvanceCommitIndex 的应用对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	378	A	应用配置条目，改 clusterConfig。现有 AdvanceCommitIndex 的应用对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	379	A	应用配置条目，改 clusterConfig。现有 AdvanceCommitIndex 的应用对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	380	A	应用配置条目，改 clusterConfig。现有 AdvanceCommitIndex 的应用对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	381	A	应用配置条目，改 clusterConfig。现有 AdvanceCommitIndex 的应用对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	387	A	应用配置条目，改 clusterConfig。现有 AdvanceCommitIndex 的应用对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	390	A	应用配置条目，改 clusterConfig。现有 AdvanceCommitIndex 的应用对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	391	A	应用配置条目，改 clusterConfig。现有 AdvanceCommitIndex 的应用对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	397	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	400	A	删冲突后缀，改日志。现有 HandleAppendEntriesRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	407	A	删冲突后缀，改日志。现有 HandleAppendEntriesRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	416	A	删冲突后缀，改日志。现有 HandleAppendEntriesRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	417	A	删冲突后缀，改日志。现有 HandleAppendEntriesRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	418	A	删冲突后缀，改日志。现有 HandleAppendEntriesRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	444	A	prevote 参数为 0 时进入预候选人。规格的 Timeout 传入的是直接竞选	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	472	C	错误返回。写不出协议谓词	白名单，不采样
+raft_server.c	477	C	错误返回。写不出协议谓词	白名单，不采样
+raft_server.c	488	D	specula_step 为 1 时不在 BecomeLeader 里提交。这是未拆开的原路径	低优先级，不采样
+raft_server.c	509	D	specula_step 为 1 时 BecomeLeader 不发送。这是未拆开的原路径	低优先级，不采样
+raft_server.c	514	D	可选的状态回调。驱动不安装	低优先级，不采样
+raft_server.c	522	A	把 state 写成预候选人。规格没有 PreVote 动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	524	A	把 state 写成预候选人。规格没有 PreVote 动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	525	A	把 state 写成预候选人。规格没有 PreVote 动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	528	A	把 state 写成预候选人。规格没有 PreVote 动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	530	A	把 state 写成预候选人。规格没有 PreVote 动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	531	A	把 state 写成预候选人。规格没有 PreVote 动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	533	A	把 state 写成预候选人。规格没有 PreVote 动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	534	A	把 state 写成预候选人。规格没有 PreVote 动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	538	A	把 state 写成预候选人。规格没有 PreVote 动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	539	A	把 state 写成预候选人。规格没有 PreVote 动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	542	A	把 state 写成预候选人。规格没有 PreVote 动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	544	A	把 state 写成预候选人。规格没有 PreVote 动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	551	C	错误返回。写不出协议谓词	白名单，不采样
+raft_server.c	561	C	错误返回。写不出协议谓词	白名单，不采样
+raft_server.c	577	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	594	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	600	E	读写的是 msg_id、非投票成员或读队列，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	602	E	读写的是 msg_id、非投票成员或读队列，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	603	E	读写的是 msg_id、非投票成员或读队列，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	605	E	msgid_cmp 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	608	E	读写的是 msg_id、非投票成员或读队列，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	609	E	quorum_msg_id 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	610	E	读写的是 msg_id、非投票成员或读队列，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	611	E	quorum_msg_id 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	613	E	quorum_msg_id 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	614	E	quorum_msg_id 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	616	E	quorum_msg_id 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	617	E	quorum_msg_id 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	619	E	quorum_msg_id 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	620	E	读写的是 msg_id、非投票成员或读队列，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	622	E	读写的是 msg_id、非投票成员或读队列，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	626	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	633	E	读写的是 msg_id、非投票成员或读队列，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	635	E	读写的是 msg_id、非投票成员或读队列，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	643	A	周期检查会改任期和角色。规格的 Timeout 直接 election_start，不走 raft_periodic	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	645	A	周期检查会改任期和角色。规格的 Timeout 直接 election_start，不走 raft_periodic	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	648	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	651	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	652	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	653	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	657	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	658	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	660	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	663	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	666	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	669	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	671	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	672	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	673	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	676	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	677	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	678	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	683	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	684	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	685	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	686	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	690	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	692	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	694	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	695	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	696	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	699	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	700	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	714	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	716	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	718	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	719	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	722	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	725	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	727	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	728	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	729	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	732	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	733	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	736	A	周期检查会改任期、角色和单节点当选。规格没有这个动作	已经放进 scenarios.md。现有动作对不上这条赋值
+raft_server.c	758	C	错误返回。写不出协议谓词	白名单，不采样
+raft_server.c	769	A	失败响应把 nextIndex 往回退。现有 HandleAppendEntriesResponse 对得上	现有动作对得上。本轮曲线封顶后仍未进入这条分支
+raft_server.c	770	A	失败响应把 nextIndex 往回退。现有 HandleAppendEntriesResponse 对得上	现有动作对得上。本轮曲线封顶后仍未进入这条分支
+raft_server.c	771	A	失败响应把 nextIndex 往回退。现有 HandleAppendEntriesResponse 对得上	现有动作对得上。本轮曲线封顶后仍未进入这条分支
+raft_server.c	772	A	失败响应把 nextIndex 往回退。现有 HandleAppendEntriesResponse 对得上	现有动作对得上。本轮曲线封顶后仍未进入这条分支
+raft_server.c	773	A	失败响应把 nextIndex 往回退。现有 HandleAppendEntriesResponse 对得上	现有动作对得上。本轮曲线封顶后仍未进入这条分支
+raft_server.c	775	A	失败响应把 nextIndex 往回退。现有 HandleAppendEntriesResponse 对得上	现有动作对得上。本轮曲线封顶后仍未进入这条分支
+raft_server.c	776	A	失败响应把 nextIndex 往回退。现有 HandleAppendEntriesResponse 对得上	现有动作对得上。本轮曲线封顶后仍未进入这条分支
+raft_server.c	778	A	失败响应把 nextIndex 往回退。现有 HandleAppendEntriesResponse 对得上	现有动作对得上。本轮曲线封顶后仍未进入这条分支
+raft_server.c	779	A	失败响应把 nextIndex 往回退。现有 HandleAppendEntriesResponse 对得上	现有动作对得上。本轮曲线封顶后仍未进入这条分支
+raft_server.c	799	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	804	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	805	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	808	E	读写的是 msg_id、非投票成员或读队列，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	809	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	810	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	815	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	816	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	817	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	818	C	错误返回。写不出协议谓词	白名单，不采样
+raft_server.c	821	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	822	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	825	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	827	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	828	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	831	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	832	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	833	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	835	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	838	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	839	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	842	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	843	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	844	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	846	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	847	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	849	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	853	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	854	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	855	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	856	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	857	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	858	E	读写的是 msg_id、非投票成员或读队列，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	860	E	读写的是 msg_id、非投票成员或读队列，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	861	E	读写的是 msg_id、非投票成员或读队列，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	862	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	863	E	读写的是 msg_id、非投票成员或读队列，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	868	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	869	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	870	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	872	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	874	E	读写的是 msg_id、非投票成员或读队列，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	875	E	读写的是 msg_id、非投票成员或读队列，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	876	E	读写的是 msg_id、非投票成员或读队列，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	878	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	880	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	881	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	884	E	specula_step 下响应走 specula_recv。这条是原函数里 msg_id、转移领导和自动 flush，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	913	C	错误返回。写不出协议谓词	白名单，不采样
+raft_server.c	923	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	926	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	927	C	错误返回。写不出协议谓词	白名单，不采样
+raft_server.c	939	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	942	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	944	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	947	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	948	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	949	C	错误返回。写不出协议谓词	白名单，不采样
+raft_server.c	953	A	prev 任期冲突时删后缀。现有 HandleAppendEntriesRequest 对得上	现有动作对得上。本轮曲线封顶后仍未进入这条分支
+raft_server.c	954	A	prev 任期冲突时删后缀。现有 HandleAppendEntriesRequest 对得上	现有动作对得上。本轮曲线封顶后仍未进入这条分支
+raft_server.c	955	A	prev 任期冲突时删后缀。现有 HandleAppendEntriesRequest 对得上	现有动作对得上。本轮曲线封顶后仍未进入这条分支
+raft_server.c	992	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	994	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	995	C	错误返回。写不出协议谓词	白名单，不采样
+raft_server.c	1000	C	错误返回。写不出协议谓词	白名单，不采样
+raft_server.c	1011	C	错误返回。写不出协议谓词	白名单，不采样
+raft_server.c	1019	C	错误返回。写不出协议谓词	白名单，不采样
+raft_server.c	1026	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	1080	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	1116	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	1124	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	1138	E	raft_votes_is_majority 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1155	C	错误返回。写不出协议谓词	白名单，不采样
+raft_server.c	1164	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	1165	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	1166	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	1188	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	1189	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	1190	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	1191	C	错误返回。写不出协议谓词	白名单，不采样
+raft_server.c	1206	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	1212	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	1217	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	1221	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	1228	C	错误返回。写不出协议谓词	白名单，不采样
+raft_server.c	1244	C	错误返回。写不出协议谓词	白名单，不采样
+raft_server.c	1249	E	raft_recv_entry 未归入规格变量的赋值	已经放进 scenarios.md
+raft_server.c	1261	E	raft_send_requestvote 未归入规格变量的赋值	已经放进 scenarios.md
+raft_server.c	1262	E	raft_send_requestvote 未归入规格变量的赋值	已经放进 scenarios.md
+raft_server.c	1294	C	错误返回。写不出协议谓词	白名单，不采样
+raft_server.c	1309	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	1313	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	1319	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	1329	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	1330	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	1361	E	raft_get_entries 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1363	E	raft_get_entries 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1364	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	1367	E	raft_get_entries 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1368	E	raft_get_entries 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1369	E	raft_get_entries 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1372	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	1374	E	raft_get_entries 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1375	E	raft_get_entries 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1376	E	raft_get_entries 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1379	E	raft_get_entries 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1380	E	raft_get_entries 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1398	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	1408	A	发送快照。现有 SendInstallSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1411	A	发送快照。现有 SendInstallSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1427	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	1442	A	发送快照。现有 SendInstallSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1443	A	发送快照。现有 SendInstallSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1445	A	发送快照。现有 SendInstallSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1446	A	发送快照。现有 SendInstallSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1448	A	发送快照。现有 SendInstallSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1451	A	发送快照。现有 SendInstallSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1455	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1460	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1462	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1469	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1470	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1471	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1472	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1474	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1475	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1477	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1480	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1481	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1482	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1483	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1487	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1492	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1495	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1496	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1501	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1502	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1503	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1504	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1509	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1510	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1511	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1514	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1516	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1517	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1520	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1522	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1523	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1525	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1526	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1530	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1531	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1532	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1533	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1534	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1537	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1538	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1539	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1542	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1546	A	接收快照字节，改快照状态。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1549	A	处理快照响应。现有快照发送动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1553	A	处理快照响应。现有快照发送动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1558	A	处理快照响应。现有快照发送动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1559	A	处理快照响应。现有快照发送动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1562	A	处理快照响应。现有快照发送动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1563	A	处理快照响应。现有快照发送动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1564	A	处理快照响应。现有快照发送动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1567	A	处理快照响应。现有快照发送动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1568	A	处理快照响应。现有快照发送动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1569	A	处理快照响应。现有快照发送动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1570	A	处理快照响应。现有快照发送动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1573	A	处理快照响应。现有快照发送动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1574	A	处理快照响应。现有快照发送动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1577	A	处理快照响应。现有快照发送动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1579	A	处理快照响应。现有快照发送动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1580	A	处理快照响应。现有快照发送动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1583	A	处理快照响应。现有快照发送动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1584	A	处理快照响应。现有快照发送动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1585	A	处理快照响应。现有快照发送动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1589	A	处理快照响应。现有快照发送动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1590	A	处理快照响应。现有快照发送动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1593	A	处理快照响应。现有快照发送动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1619	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	1623	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	1627	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	1632	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	1659	D	specula_step 为 1 时发送不推进 nextIndex。这是未拆开的原路径	低优先级，不采样
+raft_server.c	1668	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	1669	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	1672	D	specula_step 为 1 时一批就停。连续发送是未拆开的原路径	低优先级，不采样
+raft_server.c	1674	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	1677	E	raft_send_appendentries_all 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1680	E	raft_send_appendentries_all 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1682	E	raft_send_appendentries_all 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1684	E	raft_send_appendentries_all 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1685	E	raft_send_appendentries_all 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1687	E	raft_send_appendentries_all 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1688	E	raft_send_appendentries_all 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1689	E	raft_send_appendentries_all 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1692	E	raft_send_appendentries_all 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1727	E	raft_vote_for_nodeid 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1736	E	raft_msg_entry_response_committed 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1739	E	raft_msg_entry_response_committed 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1740	E	raft_msg_entry_response_committed 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1741	E	raft_msg_entry_response_committed 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1742	E	raft_msg_entry_response_committed 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1743	E	raft_msg_entry_response_committed 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1746	E	raft_msg_entry_response_committed 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1747	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	1748	E	raft_msg_entry_response_committed 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	1754	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	1759	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	1760	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server.c	1765	C	错误返回。写不出协议谓词	白名单，不采样
+raft_server.c	1786	D	raft_get_first_entry_idx 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	1788	D	raft_get_first_entry_idx 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	1790	D	raft_get_first_entry_idx 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	1800	A	把快照装回日志。现有 EndLoadSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1804	A	把快照装回日志。现有 EndLoadSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1805	A	把快照装回日志。现有 EndLoadSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1806	A	把快照装回日志。现有 EndLoadSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1807	A	把快照装回日志。现有 EndLoadSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1808	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	1811	A	把快照装回日志。现有 EndLoadSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1812	A	把快照装回日志。现有 EndLoadSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1813	A	把快照装回日志。现有 EndLoadSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1814	A	把快照装回日志。现有 EndLoadSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1815	A	把快照装回日志。现有 EndLoadSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1816	A	把快照装回日志。现有 EndLoadSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1819	A	把快照装回日志。现有 EndLoadSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1820	A	把快照装回日志。现有 EndLoadSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1822	A	把快照装回日志。现有 EndLoadSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1823	A	把快照装回日志。现有 EndLoadSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1824	A	把快照装回日志。现有 EndLoadSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1827	A	把快照装回日志。现有 EndLoadSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1830	A	把快照装回日志。现有 EndLoadSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1838	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	1844	A	开始本地快照。现有 TakeSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1847	A	开始本地快照。现有 TakeSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1859	A	取消进行中的快照。现有快照动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1861	A	取消进行中的快照。现有快照动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1862	A	取消进行中的快照。现有快照动作对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1868	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	1876	A	结束本地快照并压缩日志。现有 TakeSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1880	A	结束本地快照并压缩日志。现有 TakeSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1889	A	结束本地快照并压缩日志。现有 TakeSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1892	A	结束本地快照并压缩日志。现有 TakeSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1894	A	结束本地快照并压缩日志。现有 TakeSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1896	A	结束本地快照并压缩日志。现有 TakeSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1897	A	结束本地快照并压缩日志。现有 TakeSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1899	A	结束本地快照并压缩日志。现有 TakeSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1900	A	结束本地快照并压缩日志。现有 TakeSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1903	A	结束本地快照并压缩日志。现有 TakeSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1905	A	结束本地快照并压缩日志。现有 TakeSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1909	A	结束本地快照并压缩日志。现有 TakeSnapshot 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1917	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	1922	A	开始装入快照，改 loadingSnapshot。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1923	A	开始装入快照，改 loadingSnapshot。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1924	A	开始装入快照，改 loadingSnapshot。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1925	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	1929	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	1933	A	开始装入快照，改 loadingSnapshot。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1934	A	开始装入快照，改 loadingSnapshot。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1935	A	开始装入快照，改 loadingSnapshot。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1953	A	开始装入快照，改 loadingSnapshot。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1954	A	开始装入快照，改 loadingSnapshot。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1955	A	开始装入快照，改 loadingSnapshot。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1958	A	开始装入快照，改 loadingSnapshot。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1961	A	开始装入快照，改 loadingSnapshot。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1963	A	开始装入快照，改 loadingSnapshot。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1964	A	开始装入快照，改 loadingSnapshot。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	1965	A	开始装入快照，改 loadingSnapshot。现有 HandleInstallSnapshotRequest 对得上	现有动作对得上。本轮该配置曲线封顶后仍未进入，要加长或放宽常量，不在同一批随机种子上继续
+raft_server.c	2021	D	raft_entry_release 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2041	E	raft_recv_read_request 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2043	E	raft_recv_read_request 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2044	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	2047	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	2049	E	raft_recv_read_request 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2050	E	读写的是 msg_id、非投票成员或读队列，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	2051	E	raft_recv_read_request 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2052	E	raft_recv_read_request 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2053	E	raft_recv_read_request 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2055	E	raft_recv_read_request 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2056	E	raft_recv_read_request 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2057	E	raft_recv_read_request 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2058	E	raft_recv_read_request 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2059	E	raft_recv_read_request 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2061	E	raft_recv_read_request 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2062	E	raft_recv_read_request 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2064	E	raft_recv_read_request 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2067	E	pop_read_queue 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2069	E	pop_read_queue 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2071	E	pop_read_queue 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2074	E	pop_read_queue 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2075	E	pop_read_queue 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2076	E	pop_read_queue 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2077	E	pop_read_queue 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2079	E	pop_read_queue 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2080	E	pop_read_queue 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2083	E	pop_read_queue 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2084	E	pop_read_queue 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2093	E	raft_process_read_queue 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2094	E	raft_process_read_queue 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2095	E	raft_process_read_queue 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2097	E	raft_process_read_queue 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2105	E	raft_process_read_queue 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2106	E	raft_process_read_queue 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2109	E	读写的是 msg_id、非投票成员或读队列，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	2111	E	raft_process_read_queue 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2112	E	读写的是 msg_id、非投票成员或读队列，规格没有这些字段	已经放进 scenarios.md
+raft_server.c	2113	E	raft_process_read_queue 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2115	E	raft_process_read_queue 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2116	E	raft_process_read_queue 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2117	E	raft_process_read_queue 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2120	E	raft_process_read_queue 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2124	E	raft_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2126	E	raft_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2127	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	2130	E	raft_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2131	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	2134	E	raft_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2136	E	raft_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2137	E	raft_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2141	E	raft_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2143	E	raft_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2144	E	raft_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2145	E	raft_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2147	E	raft_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2148	E	raft_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2149	E	raft_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2154	E	raft_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2155	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	2158	E	raft_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2159	E	raft_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2160	E	raft_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2162	E	raft_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2166	E	raft_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2167	E	raft_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2169	E	raft_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2174	E	raft_timeout_now 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2176	E	raft_timeout_now 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2177	E	raft_timeout_now 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2188	E	raft_timeout_now 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2203	E	raft_reset_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2204	E	raft_reset_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2206	E	raft_reset_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2207	E	raft_reset_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2211	E	raft_reset_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2212	E	raft_reset_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2215	E	raft_reset_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2216	E	raft_reset_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2217	E	raft_reset_transfer_leader 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2259	D	raft_get_index_to_sync 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2261	D	raft_get_index_to_sync 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2263	D	raft_get_index_to_sync 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2264	D	raft_get_index_to_sync 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2267	D	raft_get_index_to_sync 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2268	D	raft_get_index_to_sync 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2274	C	错误返回。写不出协议谓词	白名单，不采样
+raft_server.c	2287	D	受控执行把 specula_step 置 1，这条属于未拆开的原路径	低优先级，不采样
+raft_server.c	2289	D	受控执行把 specula_step 置 1，这条属于未拆开的原路径	低优先级，不采样
+raft_server.c	2291	D	受控执行把 specula_step 置 1，这条属于未拆开的原路径	低优先级，不采样
+raft_server.c	2293	D	受控执行把 specula_step 置 1，这条属于未拆开的原路径	低优先级，不采样
+raft_server.c	2294	D	受控执行把 specula_step 置 1，这条属于未拆开的原路径	低优先级，不采样
+raft_server.c	2296	D	受控执行把 specula_step 置 1，这条属于未拆开的原路径	低优先级，不采样
+raft_server.c	2297	D	受控执行把 specula_step 置 1，这条属于未拆开的原路径	低优先级，不采样
+raft_server.c	2298	D	受控执行把 specula_step 置 1，这条属于未拆开的原路径	低优先级，不采样
+raft_server.c	2300	D	受控执行把 specula_step 置 1，这条属于未拆开的原路径	低优先级，不采样
+raft_server.c	2303	D	受控执行把 specula_step 置 1，这条属于未拆开的原路径	低优先级，不采样
+raft_server.c	2304	D	受控执行把 specula_step 置 1，这条属于未拆开的原路径	低优先级，不采样
+raft_server.c	2315	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2316	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2317	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2318	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2319	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2321	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2323	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2324	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2325	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2326	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2328	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2330	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2331	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2332	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2333	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2335	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2337	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2342	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2345	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2346	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2347	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2349	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2351	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2352	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2353	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2354	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2356	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2358	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2359	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2360	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2361	D	raft_config 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2368	D	raft_pending_operations 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2370	D	raft_pending_operations 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server.c	2383	E	raft_exec_operations 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_server.c	2396	A	从快照后的日志重放配置下标。现有 Crash 只清易失状态，不走这个函数	已经放进 scenarios.md。现有 Crash 对不上这个重放
+raft_server.c	2398	A	从快照后的日志重放配置下标。现有 Crash 只清易失状态，不走这个函数	已经放进 scenarios.md。现有 Crash 对不上这个重放
+raft_server.c	2399	C	分配失败、断言失败或库错误码。写不出协议谓词	白名单，不采样
+raft_server.c	2402	A	从快照后的日志重放配置下标。现有 Crash 只清易失状态，不走这个函数	已经放进 scenarios.md。现有 Crash 对不上这个重放
+raft_server.c	2404	A	从快照后的日志重放配置下标。现有 Crash 只清易失状态，不走这个函数	已经放进 scenarios.md。现有 Crash 对不上这个重放
+raft_server.c	2405	A	从快照后的日志重放配置下标。现有 Crash 只清易失状态，不走这个函数	已经放进 scenarios.md。现有 Crash 对不上这个重放
+raft_server.c	2406	A	从快照后的日志重放配置下标。现有 Crash 只清易失状态，不走这个函数	已经放进 scenarios.md。现有 Crash 对不上这个重放
+raft_server.c	2407	A	从快照后的日志重放配置下标。现有 Crash 只清易失状态，不走这个函数	已经放进 scenarios.md。现有 Crash 对不上这个重放
+raft_server.c	2410	A	从快照后的日志重放配置下标。现有 Crash 只清易失状态，不走这个函数	已经放进 scenarios.md。现有 Crash 对不上这个重放
+raft_server.c	2411	A	从快照后的日志重放配置下标。现有 Crash 只清易失状态，不走这个函数	已经放进 scenarios.md。现有 Crash 对不上这个重放
+raft_server.c	2414	A	从快照后的日志重放配置下标。现有 Crash 只清易失状态，不走这个函数	已经放进 scenarios.md。现有 Crash 对不上这个重放
+raft_server.c	2415	A	从快照后的日志重放配置下标。现有 Crash 只清易失状态，不走这个函数	已经放进 scenarios.md。现有 Crash 对不上这个重放
+raft_server.c	2418	A	从快照后的日志重放配置下标。现有 Crash 只清易失状态，不走这个函数	已经放进 scenarios.md。现有 Crash 对不上这个重放
+raft_server.c	2419	A	从快照后的日志重放配置下标。现有 Crash 只清易失状态，不走这个函数	已经放进 scenarios.md。现有 Crash 对不上这个重放
+raft_node.c	46	D	raft_node_new 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	58	D	raft_node_free 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	60	D	raft_node_free 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	61	D	raft_node_free 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	84	D	raft_node_set_match_msgid 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	86	D	raft_node_set_match_msgid 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	87	D	raft_node_set_match_msgid 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	89	D	raft_node_get_match_msgid 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	91	D	raft_node_get_match_msgid 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	99	D	raft_node_get_next_msgid 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	101	D	raft_node_get_next_msgid 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	111	D	raft_node_get_max_seen_msg_id 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	113	D	raft_node_get_max_seen_msg_id 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	116	D	raft_node_get_udata 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	118	D	raft_node_get_udata 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	121	D	raft_node_set_udata 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	123	D	raft_node_set_udata 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	124	D	raft_node_set_udata 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	126	D	raft_node_clear_flags 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	128	D	raft_node_clear_flags 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	129	D	raft_node_clear_flags 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	160	D	raft_node_has_sufficient_logs 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	162	D	raft_node_has_sufficient_logs 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	170	E	raft_node_set_has_sufficient_logs 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_node.c	193	E	raft_node_set_voting_committed 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_node.c	197	D	raft_node_is_voting_committed 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	199	D	raft_node_is_voting_committed 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	212	E	raft_node_set_addition_committed 读写的状态不在规格变量里	已经放进 scenarios.md
+raft_node.c	216	D	raft_node_is_addition_committed 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_node.c	218	D	raft_node_is_addition_committed 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	21	D	raft_get_num_nodes 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	23	D	raft_get_num_nodes 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	39	D	raft_get_timeout_elapsed 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	41	D	raft_get_timeout_elapsed 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	49	D	raft_get_voted_for 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	51	D	raft_get_voted_for 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	57	C	本函数已执行，未覆盖的是错误返回或断言。写不出协议谓词	白名单，不采样
+raft_server_properties.c	63	C	错误返回。写不出协议谓词	白名单，不采样
+raft_server_properties.c	73	D	raft_get_current_term 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	75	D	raft_get_current_term 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	90	D	raft_set_last_applied_idx 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	92	D	raft_set_last_applied_idx 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	93	D	raft_set_last_applied_idx 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	95	D	raft_get_last_applied_idx 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	97	D	raft_get_last_applied_idx 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	100	D	raft_get_last_applied_term 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	102	D	raft_get_last_applied_term 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	105	D	raft_get_commit_idx 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	107	D	raft_get_commit_idx 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	118	D	raft_get_state 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	120	D	raft_get_state 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	123	D	raft_get_state_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	125	D	raft_get_state_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	126	D	raft_get_state_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	127	D	raft_get_state_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	128	D	raft_get_state_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	129	D	raft_get_state_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	130	D	raft_get_state_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	131	D	raft_get_state_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	132	D	raft_get_state_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	133	D	raft_get_state_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	134	D	raft_get_state_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	135	D	raft_get_state_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	139	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	141	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	142	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	143	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	144	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	145	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	146	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	147	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	148	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	149	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	150	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	151	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	152	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	153	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	154	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	155	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	156	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	157	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	158	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	159	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	160	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	161	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	162	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	163	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	164	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	165	D	raft_get_error_str 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	180	D	raft_get_my_node 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	182	D	raft_get_my_node 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	185	D	raft_get_node_from_idx 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	187	D	raft_get_node_from_idx 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	190	D	raft_get_leader_id 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	192	D	raft_get_leader_id 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	195	D	raft_get_leader_node 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	197	D	raft_get_leader_node 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	200	D	raft_get_udata 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	202	D	raft_get_udata 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	234	E	raft_get_last_log_term 未归入规格变量的赋值	已经放进 scenarios.md
+raft_server_properties.c	244	E	raft_get_last_log_term 未归入规格变量的赋值	已经放进 scenarios.md
+raft_server_properties.c	247	D	raft_snapshot_is_in_progress 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	249	D	raft_snapshot_is_in_progress 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	258	D	raft_get_last_applied_entry 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	260	D	raft_get_last_applied_entry 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	261	D	raft_get_last_applied_entry 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	263	D	raft_get_last_applied_entry 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	266	D	raft_get_snapshot_last_idx 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	268	D	raft_get_snapshot_last_idx 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	271	D	raft_get_snapshot_last_term 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	273	D	raft_get_snapshot_last_term 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	276	D	raft_is_single_node_voting_cluster 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	278	D	raft_is_single_node_voting_cluster 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	281	D	raft_get_msg_id 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样
+raft_server_properties.c	283	D	raft_get_msg_id 是初始化、销毁、配置或驱动不调用的 getter/setter	低优先级，不采样

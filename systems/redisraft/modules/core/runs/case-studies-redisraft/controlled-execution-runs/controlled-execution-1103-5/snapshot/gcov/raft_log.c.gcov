@@ -1,0 +1,603 @@
+        -:    0:Source:/root/sandtable/specula-redisraft/system/src/raft_log.c
+        -:    1:/**
+        -:    2: * Copyright (c) 2013, Willem-Hendrik Thiart
+        -:    3: * Use of this source code is governed by a BSD-style license that can be
+        -:    4: * found in the LICENSE file.
+        -:    5: *
+        -:    6: * @file
+        -:    7: * @brief ADT for managing Raft log entries (aka entries)
+        -:    8: * @author Willem Thiart himself@willemthiart.com
+        -:    9: */
+        -:   10:
+        -:   11:#include <string.h>
+        -:   12:#include <assert.h>
+        -:   13:
+        -:   14:#include "raft.h"
+        -:   15:#include "raft_private.h"
+        -:   16:#include "raft_log.h"
+        -:   17:
+        -:   18:#define INITIAL_CAPACITY 10
+        -:   19:
+        -:   20:struct raft_log {
+        -:   21:    /* size of array */
+        -:   22:    raft_index_t size;
+        -:   23:
+        -:   24:    /* the amount of elements in the array */
+        -:   25:    raft_index_t count;
+        -:   26:
+        -:   27:    /* position of the queue */
+        -:   28:    raft_index_t front, back;
+        -:   29:
+        -:   30:    /* we compact the log, and thus need to increment the Base Log Index */
+        -:   31:    raft_index_t base;
+        -:   32:
+        -:   33:    raft_entry_t **entries;
+        -:   34:
+        -:   35:    /* callbacks */
+        -:   36:    raft_log_cbs_t cb;
+        -:   37:
+        -:   38:    void *raft;
+        -:   39:};
+        -:   40:
+function mod called 10 returned 100% blocks executed 80%
+       10:   41:static raft_index_t mod(raft_index_t a, raft_index_t b)
+        -:   42:{
+       10:   43:    raft_index_t r = a % b;
+      10*:   44:    return r < 0 ? r + b : r;
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+        -:   45:}
+        -:   46:
+function ensure_capacity called 667 returned 100% blocks executed 23%
+      667:   47:static int ensure_capacity(raft_log_t *me)
+        -:   48:{
+        -:   49:    raft_entry_t **temp;
+        -:   50:
+      667:   51:    if (me->count < me->size) {
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+      667:   52:        return 0;
+        -:   53:    }
+        -:   54:
+    #####:   55:    temp = raft_calloc(1, sizeof(*temp) * me->size * 2);
+call    0 never executed
+    #####:   56:    if (!temp) {
+branch  0 never executed
+branch  1 never executed
+    #####:   57:        return RAFT_ERR_NOMEM;
+        -:   58:    }
+        -:   59:
+    #####:   60:    for (raft_index_t i = 0, j = me->front; i < me->count; i++, j++) {
+branch  0 never executed
+branch  1 never executed
+    #####:   61:        if (j == me->size) {
+branch  0 never executed
+branch  1 never executed
+    #####:   62:            j = 0;
+        -:   63:        }
+    #####:   64:        temp[i] = me->entries[j];
+        -:   65:    }
+        -:   66:
+        -:   67:    /* clean up old entries */
+    #####:   68:    raft_free(me->entries);
+call    0 never executed
+        -:   69:
+    #####:   70:    me->size *= 2;
+    #####:   71:    me->entries = temp;
+    #####:   72:    me->front = 0;
+    #####:   73:    me->back = me->count;
+        -:   74:
+    #####:   75:    return 0;
+        -:   76:}
+        -:   77:
+function raft_log_load_from_snapshot called 0 returned 0% blocks executed 0%
+    #####:   78:int raft_log_load_from_snapshot(raft_log_t *me,
+        -:   79:                                raft_index_t idx,
+        -:   80:                                raft_term_t term)
+        -:   81:{
+        -:   82:    (void) term;
+        -:   83:
+    #####:   84:    raft_log_clear_entries(me);
+call    0 never executed
+    #####:   85:    raft_log_clear(me);
+call    0 never executed
+    #####:   86:    me->base = idx;
+        -:   87:
+    #####:   88:    return 0;
+        -:   89:}
+        -:   90:
+function raft_log_alloc called 500 returned 100% blocks executed 70%
+      500:   91:raft_log_t *raft_log_alloc(raft_index_t initial_size)
+        -:   92:{
+      500:   93:    raft_log_t *me = raft_calloc(1, sizeof(*me));
+call    0 returned 100%
+      500:   94:    if (!me) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   95:        return NULL;
+        -:   96:    }
+        -:   97:
+      500:   98:    me->size = initial_size;
+      500:   99:    raft_log_clear(me);
+call    0 returned 100%
+        -:  100:
+      500:  101:    me->entries = raft_calloc(1, sizeof(*me->entries) * me->size);
+call    0 returned 100%
+      500:  102:    if (!me->entries) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  103:        raft_free(me);
+call    0 never executed
+    #####:  104:        return NULL;
+        -:  105:    }
+        -:  106:
+      500:  107:    return me;
+        -:  108:}
+        -:  109:
+function raft_log_new called 500 returned 100% blocks executed 100%
+      500:  110:raft_log_t *raft_log_new(void)
+        -:  111:{
+      500:  112:    return raft_log_alloc(INITIAL_CAPACITY);
+call    0 returned 100%
+        -:  113:}
+        -:  114:
+function raft_log_set_callbacks called 0 returned 0% blocks executed 0%
+    #####:  115:void raft_log_set_callbacks(raft_log_t *me, raft_log_cbs_t *funcs, void *raft)
+        -:  116:{
+    #####:  117:    me->raft = raft;
+    #####:  118:    me->cb = *funcs;
+    #####:  119:}
+        -:  120:
+function raft_log_clear called 509 returned 100% blocks executed 100%
+      509:  121:void raft_log_clear(raft_log_t *me)
+        -:  122:{
+      509:  123:    me->count = 0;
+      509:  124:    me->back = 0;
+      509:  125:    me->front = 0;
+      509:  126:    me->base = 0;
+      509:  127:}
+        -:  128:
+function raft_log_clear_entries called 9 returned 100% blocks executed 44%
+        9:  129:void raft_log_clear_entries(raft_log_t *me)
+        -:  130:{
+        9:  131:    if (!me->count || !me->cb.log_clear) {
+branch  0 taken 44% (fallthrough)
+branch  1 taken 56%
+branch  2 taken 100% (fallthrough)
+branch  3 taken 0%
+        9:  132:        return;
+        -:  133:    }
+        -:  134:
+    #####:  135:    for (raft_index_t i = me->base; i <= me->base + me->count; i++) {
+branch  0 never executed
+branch  1 never executed
+    #####:  136:        me->cb.log_clear(me->raft, raft_get_udata(me->raft),
+call    0 never executed
+    #####:  137:                         me->entries[(me->front + i - me->base) % me->size], i);
+call    0 never executed
+        -:  138:    }
+        -:  139:}
+        -:  140:
+function raft_log_append_entry called 667 returned 100% blocks executed 50%
+      667:  141:int raft_log_append_entry(raft_log_t *me, raft_entry_t *ety)
+        -:  142:{
+        -:  143:    int e;
+      667:  144:    raft_index_t idx = me->base + me->count + 1;
+        -:  145:
+      667:  146:    e = ensure_capacity(me);
+call    0 returned 100%
+      667:  147:    if (e != 0) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  148:        return e;
+        -:  149:    }
+        -:  150:
+      667:  151:    me->entries[me->back] = ety;
+        -:  152:
+      667:  153:    if (me->cb.log_offer) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  154:        void *udata = raft_get_udata(me->raft);
+call    0 never executed
+        -:  155:
+    #####:  156:        e = me->cb.log_offer(me->raft, udata, me->entries[me->back], idx);
+call    0 never executed
+    #####:  157:        if (e != 0) {
+branch  0 never executed
+branch  1 never executed
+    #####:  158:            return e;
+        -:  159:        }
+        -:  160:    }
+        -:  161:
+      667:  162:    me->count++;
+      667:  163:    me->back++;
+      667:  164:    me->back = me->back % me->size;
+        -:  165:
+      667:  166:    return 0;
+        -:  167:}
+        -:  168:
+function raft_log_get_from_idx called 514 returned 100% blocks executed 70%
+      514:  169:raft_entry_t **raft_log_get_from_idx(raft_log_t *me,
+        -:  170:                                     raft_index_t idx,
+        -:  171:                                     raft_index_t *n_etys)
+        -:  172:{
+        -:  173:    raft_index_t i;
+        -:  174:
+     514*:  175:    assert(0 <= idx - 1);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+        -:  176:
+      514:  177:    if (me->base + me->count < idx || idx <= me->base) {
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+branch  2 taken 0% (fallthrough)
+branch  3 taken 100%
+    #####:  178:        *n_etys = 0;
+    #####:  179:        return NULL;
+        -:  180:    }
+        -:  181:
+        -:  182:    /* idx starts at 1 */
+      514:  183:    idx -= 1;
+        -:  184:
+      514:  185:    i = (me->front + idx - me->base) % me->size;
+        -:  186:
+        -:  187:    /* log entries until the end of the log */
+     514*:  188:    *n_etys = (i < me->back) ? (me->back - i) : (me->size - i);
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        -:  189:
+      514:  190:    return &me->entries[i];
+        -:  191:}
+        -:  192:
+function raft_log_get_at_idx called 11443 returned 100% blocks executed 100%
+    11443:  193:raft_entry_t *raft_log_get_at_idx(raft_log_t *me, raft_index_t idx)
+        -:  194:{
+        -:  195:    raft_index_t i;
+        -:  196:
+    11443:  197:    if (idx == 0) {
+branch  0 taken 4% (fallthrough)
+branch  1 taken 96%
+      452:  198:        return NULL;
+        -:  199:    }
+        -:  200:
+    10991:  201:    if (me->base + me->count < idx || idx <= me->base) {
+branch  0 taken 98% (fallthrough)
+branch  1 taken 2%
+branch  2 taken 1% (fallthrough)
+branch  3 taken 100%
+      229:  202:        return NULL;
+        -:  203:    }
+        -:  204:
+        -:  205:    /* idx starts at 1 */
+    10762:  206:    idx -= 1;
+        -:  207:
+    10762:  208:    i = (me->front + idx - me->base) % me->size;
+    10762:  209:    return me->entries[i];
+        -:  210:}
+        -:  211:
+function raft_log_count called 18394 returned 100% blocks executed 100%
+    18394:  212:raft_index_t raft_log_count(raft_log_t *me)
+        -:  213:{
+    18394:  214:    return me->count;
+        -:  215:}
+        -:  216:
+function log_delete called 10 returned 100% blocks executed 65%
+       10:  217:static int log_delete(raft_log_t *me, raft_index_t idx)
+        -:  218:{
+       10:  219:    if (idx == 0) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  220:        return -1;
+        -:  221:    }
+        -:  222:
+       10:  223:    if (idx < me->base) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  224:        idx = me->base;
+        -:  225:    }
+        -:  226:
+       20:  227:    for (; idx <= me->base + me->count && me->count;) {
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+branch  2 taken 100%
+branch  3 taken 0% (fallthrough)
+       10:  228:        raft_index_t idx_tmp = me->base + me->count;
+       10:  229:        raft_index_t back = mod(me->back - 1, me->size);
+call    0 returned 100%
+        -:  230:
+       10:  231:        if (me->cb.log_pop) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  232:            int e = me->cb.log_pop(me->raft, raft_get_udata(me->raft),
+call    0 never executed
+    #####:  233:                                   me->entries[back], idx_tmp);
+call    0 never executed
+    #####:  234:            if (e != 0) {
+branch  0 never executed
+branch  1 never executed
+    #####:  235:                return e;
+        -:  236:            }
+        -:  237:        }
+        -:  238:
+       10:  239:        raft_entry_release(me->entries[back]);
+call    0 returned 100%
+        -:  240:
+       10:  241:        me->back = back;
+       10:  242:        me->count--;
+        -:  243:    }
+        -:  244:
+       10:  245:    return 0;
+        -:  246:}
+        -:  247:
+function raft_log_delete called 0 returned 0% blocks executed 0%
+    #####:  248:int raft_log_delete(raft_log_t *me, raft_index_t idx)
+        -:  249:{
+    #####:  250:    return log_delete(me, idx);
+call    0 never executed
+        -:  251:}
+        -:  252:
+function raft_log_poll called 113 returned 100% blocks executed 50%
+      113:  253:int raft_log_poll(raft_log_t *me, raft_entry_t **etyp)
+        -:  254:{
+      113:  255:    raft_index_t idx = me->base + 1;
+        -:  256:
+      113:  257:    if (me->count == 0) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  258:        return -1;
+        -:  259:    }
+        -:  260:
+      113:  261:    raft_entry_t *elem = me->entries[me->front];
+        -:  262:
+      113:  263:    if (me->cb.log_poll) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  264:        int e = me->cb.log_poll(me->raft, raft_get_udata(me->raft),
+call    0 never executed
+    #####:  265:                                me->entries[me->front], idx);
+call    0 never executed
+    #####:  266:        if (e != 0) {
+branch  0 never executed
+branch  1 never executed
+    #####:  267:            return e;
+        -:  268:        }
+        -:  269:    }
+        -:  270:
+      113:  271:    raft_entry_release(me->entries[me->front]);
+call    0 returned 100%
+        -:  272:
+      113:  273:    me->front++;
+      113:  274:    me->front = me->front % me->size;
+      113:  275:    me->count--;
+      113:  276:    me->base++;
+        -:  277:
+      113:  278:    *etyp = elem;
+        -:  279:
+      113:  280:    return 0;
+        -:  281:}
+        -:  282:
+function raft_log_peektail called 0 returned 0% blocks executed 0%
+    #####:  283:raft_entry_t *raft_log_peektail(raft_log_t *me)
+        -:  284:{
+    #####:  285:    if (me->count == 0) {
+branch  0 never executed
+branch  1 never executed
+    #####:  286:        return NULL;
+        -:  287:    }
+        -:  288:
+    #####:  289:    raft_index_t tail = (me->back == 0) ? (me->size - 1) : (me->back - 1);
+branch  0 never executed
+branch  1 never executed
+        -:  290:
+    #####:  291:    return me->entries[tail];
+        -:  292:}
+        -:  293:
+function raft_log_empty called 0 returned 0% blocks executed 0%
+    #####:  294:void raft_log_empty(raft_log_t *me)
+        -:  295:{
+    #####:  296:    me->front = 0;
+    #####:  297:    me->back = 0;
+    #####:  298:    me->count = 0;
+    #####:  299:}
+        -:  300:
+function raft_log_free called 200 returned 100% blocks executed 100%
+      200:  301:void raft_log_free(raft_log_t *me)
+        -:  302:{
+      200:  303:    raft_free(me->entries);
+call    0 returned 100%
+      200:  304:    raft_free(me);
+call    0 returned 100%
+      200:  305:}
+        -:  306:
+function raft_log_get_current_idx called 3779 returned 100% blocks executed 100%
+     3779:  307:raft_index_t raft_log_get_current_idx(raft_log_t *me)
+        -:  308:{
+     3779:  309:    return raft_log_count(me) + me->base;
+call    0 returned 100%
+        -:  310:}
+        -:  311:
+function raft_log_get_base called 24144 returned 100% blocks executed 100%
+    24144:  312:raft_index_t raft_log_get_base(raft_log_t *me)
+        -:  313:{
+    24144:  314:    return me->base;
+        -:  315:}
+        -:  316:
+        -:  317:/**
+        -:  318: * The following functions wrap raft_log.c implementation to make it compatible
+        -:  319: * with raft_log_impl_t binding.
+        -:  320: *
+        -:  321: * The rationale for doing this and not modifying raft_log.c directly is to
+        -:  322: * leave test_log.c intact.
+        -:  323: *
+        -:  324: * @todo Ideally test_log.c should be implemented (and extended) to use
+        -:  325: *      raft_log_impl_t, so it can become a test harness for testing arbitrary
+        -:  326: *      log implementations.
+        -:  327: */
+        -:  328:
+function log_init called 500 returned 100% blocks executed 80%
+      500:  329:static void *log_init(void *raft, void *arg)
+        -:  330:{
+      500:  331:    raft_log_t *log = raft_log_new();
+call    0 returned 100%
+      500:  332:    if (arg) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  333:        raft_log_set_callbacks(log, arg, raft);
+call    0 never executed
+        -:  334:    }
+      500:  335:    return log;
+        -:  336:}
+        -:  337:
+function log_free called 200 returned 100% blocks executed 100%
+      200:  338:static void log_free(void *log)
+        -:  339:{
+      200:  340:    raft_log_free(log);
+call    0 returned 100%
+      200:  341:}
+        -:  342:
+function log_reset called 9 returned 100% blocks executed 80%
+        9:  343:static void log_reset(void *log, raft_index_t first_idx, raft_term_t term)
+        -:  344:{
+        -:  345:    (void) term;
+        -:  346:
+        9:  347:    raft_log_clear_entries(log);
+call    0 returned 100%
+        9:  348:    raft_log_clear(log);
+call    0 returned 100%
+        -:  349:
+       9*:  350:    assert(first_idx >= 1);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+        9:  351:    ((raft_log_t *) log)->base = first_idx - 1;
+        9:  352:}
+        -:  353:
+function log_append called 667 returned 100% blocks executed 100%
+      667:  354:static int log_append(void *log, raft_entry_t *entry)
+        -:  355:{
+      667:  356:    raft_entry_hold(entry);
+call    0 returned 100%
+      667:  357:    return raft_log_append_entry(log, entry);
+call    0 returned 100%
+        -:  358:}
+        -:  359:
+function log_get called 1220 returned 100% blocks executed 100%
+     1220:  360:static raft_entry_t *log_get(void *log, raft_index_t idx)
+        -:  361:{
+     1220:  362:    raft_entry_t *e = raft_log_get_at_idx(log, idx);
+call    0 returned 100%
+     1220:  363:    if (e != NULL) {
+branch  0 taken 44% (fallthrough)
+branch  1 taken 56%
+      539:  364:        raft_entry_hold(e);
+call    0 returned 100%
+        -:  365:    }
+        -:  366:
+     1220:  367:    return e;
+        -:  368:}
+        -:  369:
+function log_get_batch called 514 returned 100% blocks executed 85%
+      514:  370:static raft_index_t log_get_batch(void *log,
+        -:  371:                                  raft_index_t idx,
+        -:  372:                                  raft_index_t entries_n,
+        -:  373:                                  raft_entry_t **entries)
+        -:  374:{
+        -:  375:    raft_index_t n;
+      514:  376:    raft_entry_t **r = raft_log_get_from_idx(log, idx, &n);
+call    0 returned 100%
+        -:  377:
+      514:  378:    if (!r || n < 1) {
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+branch  2 taken 0% (fallthrough)
+branch  3 taken 100%
+    #####:  379:        return 0;
+        -:  380:    }
+        -:  381:
+      514:  382:    if (n > entries_n) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  383:        n = entries_n;
+        -:  384:    }
+        -:  385:
+     1654:  386:    for (raft_index_t i = 0; i < n; i++) {
+branch  0 taken 69%
+branch  1 taken 31% (fallthrough)
+     1140:  387:        entries[i] = r[i];
+     1140:  388:        raft_entry_hold(entries[i]);
+call    0 returned 100%
+        -:  389:    }
+        -:  390:
+      514:  391:    return n;
+        -:  392:}
+        -:  393:
+function log_pop called 10 returned 100% blocks executed 100%
+       10:  394:static int log_pop(void *log, raft_index_t from_idx)
+        -:  395:{
+       10:  396:    return log_delete(log, from_idx);
+call    0 returned 100%
+        -:  397:}
+        -:  398:
+function log_poll called 61 returned 100% blocks executed 89%
+       61:  399:static int log_poll(void *log, raft_index_t first_idx)
+        -:  400:{
+      174:  401:    while (raft_log_get_base(log) + 1 < first_idx) {
+call    0 returned 100%
+branch  1 taken 65%
+branch  2 taken 35% (fallthrough)
+        -:  402:        raft_entry_t *ety;
+      113:  403:        int e = raft_log_poll(log, &ety);
+call    0 returned 100%
+      113:  404:        if (e < 0) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  405:            return e;
+        -:  406:        }
+        -:  407:    }
+        -:  408:
+       61:  409:    return 0;
+        -:  410:}
+        -:  411:
+function log_first_idx called 121 returned 100% blocks executed 100%
+      121:  412:static raft_index_t log_first_idx(void *log)
+        -:  413:{
+      121:  414:    return raft_log_get_base(log) + 1;
+call    0 returned 100%
+        -:  415:}
+        -:  416:
+function log_current_idx called 3779 returned 100% blocks executed 100%
+     3779:  417:static raft_index_t log_current_idx(void *log)
+        -:  418:{
+     3779:  419:    return raft_log_get_current_idx(log);
+call    0 returned 100%
+        -:  420:}
+        -:  421:
+function log_count called 66 returned 100% blocks executed 100%
+       66:  422:static raft_index_t log_count(void *log)
+        -:  423:{
+       66:  424:    return raft_log_count(log);
+call    0 returned 100%
+        -:  425:}
+        -:  426:
+function log_sync called 623 returned 100% blocks executed 100%
+      623:  427:static int log_sync(void *log)
+        -:  428:{
+        -:  429:    (void) log;
+      623:  430:    return 0;
+        -:  431:}
+        -:  432:
+        -:  433:const raft_log_impl_t raft_log_internal_impl = {
+        -:  434:    .init = log_init,
+        -:  435:    .free = log_free,
+        -:  436:    .reset = log_reset,
+        -:  437:    .append = log_append,
+        -:  438:    .poll = log_poll,
+        -:  439:    .pop = log_pop,
+        -:  440:    .get = log_get,
+        -:  441:    .get_batch = log_get_batch,
+        -:  442:    .first_idx = log_first_idx,
+        -:  443:    .current_idx = log_current_idx,
+        -:  444:    .count = log_count,
+        -:  445:    .sync = log_sync
+        -:  446:};
