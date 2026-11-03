@@ -1,0 +1,32 @@
+# 投票应答把当前任期拉低
+
+9 条，都在 `f2a`。比较通过：代码和模型的 `currentTerm` 一起变小，`persistedTerm` 停在原来的值。归类：`bug`。
+
+协议：服务器不接受比自己更小的任期。一张旧选举的 RequestVote 应答不能把节点拽回那个任期。
+
+`onVoteReply`（`controlled.go` 36–38 行）在 `reply.Term > savedCurrentTerm` 时调用 `becomeFollower(reply.Term)`。`savedCurrentTerm` 是这条 RequestVote 发出时的任期，不是节点现在的任期。应答任期落在两者中间时，`becomeFollower`（`raft.go` 533–537 行）把 `currentTerm` 写成应答任期，并把 `votedFor` 清成 -1。这条路径不调用 `persistToStorage`，所以持久化任期留在 3，当前任期变成 2。
+
+建议修改：用 `currentTerm` 判断这张应答，应答任期不大于当前任期就忽略。模型写下的任期 2 不是修补目标。协议要求该节点留在更高的任期。
+
+`KNOWN`。同一处比较在 [issue #25](https://github.com/eliben/raft/issues/25)。[PR #27](https://github.com/eliben/raft/pull/27) 改成和 `cm.currentTerm` 比较，2026-03-30 合并。被测代码早于这个 PR。
+
+| 轨迹 | 步 | 代码和模型 |
+|---|---|---|
+| f2a-t0003 | `# [16] HandleRequestVoteResponse s3 s2 14` | n3 持久任期 3，当前任期 2 |
+| f2a-t0012 | `# [14] HandleRequestVoteResponse s1 s2 15` | n1 持久任期 3，当前任期 2 |
+| f2a-t0026 | `# [14] HandleRequestVoteResponse s3 s1 15` | n3 持久任期 3，当前任期 2 |
+| f2a-t0044 | `# [16] HandleRequestVoteResponse s1 s3 15` | n1 持久任期 3，当前任期 2 |
+| f2a-t0056 | `# [17] HandleRequestVoteResponse s3 s1 16` | n3 持久任期 3，当前任期 2 |
+| f2a-t0060 | `# [11] HandleRequestVoteResponse s3 s1 13` | n3 持久任期 3，当前任期 2 |
+| f2a-t0062 | `# [13] HandleRequestVoteResponse s3 s1 14` | n3 持久任期 3，当前任期 2 |
+| f2a-t0081 | `# [27] HandleRequestVoteResponse s1 s2 24` | n1 持久任期 3，当前任期 2 |
+| f2a-t0086 | `# [13] HandleRequestVoteResponse s1 s2 14` | n1 持久任期 3，当前任期 2 |
+
+## 复现
+
+节点数 3。先把该目录的 `MC.out` 拷到挂载盘。期望在表里的那一步之后，该节点的 `currentTerm` 小于 `persistedTerm`。协议要求当前任期不回退。
+
+```text
+sudo cp <本目录>/<轨迹>/MC.out /users/bingzhuo/sandtable/build/mount/specula-eliben/work/repro/MC.out
+sudo docker exec controller bash /root/sandtable/specula-eliben/sandtable/systems/ElibenRaft/scripts/run_one_testcase.sh /root/sandtable/specula-eliben/work/repro/MC.out 3
+```

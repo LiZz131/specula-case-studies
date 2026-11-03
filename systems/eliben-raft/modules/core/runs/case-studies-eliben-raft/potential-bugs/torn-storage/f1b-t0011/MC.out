@@ -1,0 +1,2703 @@
+@!@!@STARTMSG 2262:0 @!@!@
+TLC2 Version 2.18 of Day Month 20?? (rev: 9e38f31)
+@!@!@ENDMSG 2262 @!@!@
+@!@!@STARTMSG 2401:3 @!@!@
+Please run the Java VM, which executes TLC with a throughput optimized garbage collector, by passing the "-XX:+UseParallelGC" property.
+@!@!@ENDMSG 2401 @!@!@
+@!@!@STARTMSG 2188:0 @!@!@
+Running Random Simulation with seed 11 with 1 worker on 32 cores with 512MB heap and 64MB offheap memory [pid: 789831] (Linux 5.15.0-198-generic amd64, Ubuntu 21.0.12.1 x86_64).
+@!@!@ENDMSG 2188 @!@!@
+@!@!@STARTMSG 2220:0 @!@!@
+Starting SANY...
+@!@!@ENDMSG 2220 @!@!@
+Parsing file /mydata/bingzhuo/src/Specula/case-studies/systems/eliben-raft/modules/core/runs/case-studies-eliben-raft/controlled-execution-runs/controlled-execution-1102-1/spec/MC_for_sandtable.tla
+Parsing file /mydata/bingzhuo/src/Specula/case-studies/systems/eliben-raft/modules/core/runs/case-studies-eliben-raft/controlled-execution-runs/controlled-execution-1102-1/spec/base_for_sandtable.tla
+Parsing file /tmp/tlc-16213359472554568309/Naturals.tla (jar:file:/mydata/bingzhuo/src/SandTable/scripts/tla2tools.jar!/tla2sany/StandardModules/Naturals.tla)
+Parsing file /tmp/tlc-16213359472554568309/FiniteSets.tla (jar:file:/mydata/bingzhuo/src/SandTable/scripts/tla2tools.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file /tmp/tlc-16213359472554568309/Sequences.tla (jar:file:/mydata/bingzhuo/src/SandTable/scripts/tla2tools.jar!/tla2sany/StandardModules/Sequences.tla)
+Parsing file /tmp/tlc-16213359472554568309/Bags.tla (jar:file:/mydata/bingzhuo/src/SandTable/scripts/tla2tools.jar!/tla2sany/StandardModules/Bags.tla)
+Parsing file /tmp/tlc-16213359472554568309/TLC.tla (jar:file:/mydata/bingzhuo/src/SandTable/scripts/tla2tools.jar!/tla2sany/StandardModules/TLC.tla)
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module Bags
+Semantic processing of module base_for_sandtable
+Semantic processing of module MC_for_sandtable
+@!@!@STARTMSG 2219:0 @!@!@
+SANY finished.
+@!@!@ENDMSG 2219 @!@!@
+@!@!@STARTMSG 2185:0 @!@!@
+Starting... (2026-11-03 04:19:32)
+@!@!@ENDMSG 2185 @!@!@
+@!@!@STARTMSG 2269:0 @!@!@
+Computed 1 initial states...
+@!@!@ENDMSG 2269 @!@!@
+@!@!@STARTMSG 2110:1 @!@!@
+Invariant DepthBound is violated.
+@!@!@ENDMSG 2110 @!@!@
+@!@!@STARTMSG 2121:1 @!@!@
+The behavior up to this point is:
+@!@!@ENDMSG 2121 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+1: <MCInit line 76, col 5 to line 78, col 44 of module MC_for_sandtable>
+/\ messages = << >>
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Follower @@ s3 :> Follower)
+/\ persistedTerm = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ counters = [timeout |-> 0, request |-> 0, crash |-> 0, lose |-> 0, append |-> 0]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {} @@ s3 :> {})
+/\ scr = [pc |-> <<"Init">>, nSent |-> 0]
+/\ votedFor = (s1 :> Nil @@ s2 :> Nil @@ s3 :> Nil)
+/\ persistedVotedFor = (s1 :> Nil @@ s2 :> Nil @@ s3 :> Nil)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+2: <MCTimeout line 15, col 5 to line 18, col 54 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 1 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 2 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Candidate @@ s2 :> Follower @@ s3 :> Follower)
+/\ persistedTerm = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ counters = [timeout |-> 1, request |-> 0, crash |-> 0, lose |-> 0, append |-> 0]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 1 @@ s2 :> 0 @@ s3 :> 0)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {s1} @@ s2 :> {} @@ s3 :> {})
+/\ scr = [pc |-> <<"Timeout", s1>>, nSent |-> 2]
+/\ votedFor = (s1 :> s1 @@ s2 :> Nil @@ s3 :> Nil)
+/\ persistedVotedFor = (s1 :> Nil @@ s2 :> Nil @@ s3 :> Nil)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+3: <MCTimeout line 15, col 5 to line 18, col 54 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 1 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 2 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 4 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Candidate @@ s2 :> Candidate @@ s3 :> Follower)
+/\ persistedTerm = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ counters = [timeout |-> 2, request |-> 0, crash |-> 0, lose |-> 0, append |-> 0]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 1 @@ s2 :> 1 @@ s3 :> 0)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {s1} @@ s2 :> {s2} @@ s3 :> {})
+/\ scr = [pc |-> <<"Timeout", s2>>, nSent |-> 4]
+/\ votedFor = (s1 :> s1 @@ s2 :> s2 @@ s3 :> Nil)
+/\ persistedVotedFor = (s1 :> Nil @@ s2 :> Nil @@ s3 :> Nil)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+4: <MCTimeout line 15, col 5 to line 18, col 54 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 1 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 2 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 4 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 5 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Candidate @@ s2 :> Candidate @@ s3 :> Follower)
+/\ persistedTerm = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ counters = [timeout |-> 3, request |-> 0, crash |-> 0, lose |-> 0, append |-> 0]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 1 @@ s3 :> 0)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {s1} @@ s2 :> {s2} @@ s3 :> {})
+/\ scr = [pc |-> <<"Timeout", s1>>, nSent |-> 6]
+/\ votedFor = (s1 :> s1 @@ s2 :> s2 @@ s3 :> Nil)
+/\ persistedVotedFor = (s1 :> Nil @@ s2 :> Nil @@ s3 :> Nil)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+5: <MCTimeout line 15, col 5 to line 18, col 54 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 1 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 2 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 4 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 5 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 7 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 8 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Candidate @@ s2 :> Candidate @@ s3 :> Follower)
+/\ persistedTerm = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ counters = [timeout |-> 4, request |-> 0, crash |-> 0, lose |-> 0, append |-> 0]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 0)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {s1} @@ s2 :> {s2} @@ s3 :> {})
+/\ scr = [pc |-> <<"Timeout", s2>>, nSent |-> 8]
+/\ votedFor = (s1 :> s1 @@ s2 :> s2 @@ s3 :> Nil)
+/\ persistedVotedFor = (s1 :> Nil @@ s2 :> Nil @@ s3 :> Nil)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+6: <MCTimeout line 15, col 5 to line 18, col 54 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 7 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 9 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 1 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 5 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 10 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 2 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 4 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 8 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Candidate @@ s2 :> Candidate @@ s3 :> Candidate)
+/\ persistedTerm = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 0, lose |-> 0, append |-> 0]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {s1} @@ s2 :> {s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"Timeout", s3>>, nSent |-> 10]
+/\ votedFor = (s1 :> s1 @@ s2 :> s2 @@ s3 :> s3)
+/\ persistedVotedFor = (s1 :> Nil @@ s2 :> Nil @@ s3 :> Nil)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+7: <MCNext line 89, col 8 to line 95, col 27 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 7 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 9 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 1 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 5 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 10 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 4 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 8 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 11 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Candidate @@ s2 :> Candidate @@ s3 :> Candidate)
+/\ persistedTerm = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 1)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 0, lose |-> 0, append |-> 0]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {s1} @@ s2 :> {s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"HandleRequestVoteRequest", s3, s1, 2>>, nSent |-> 11]
+/\ votedFor = (s1 :> s1 @@ s2 :> s2 @@ s3 :> s3)
+/\ persistedVotedFor = (s1 :> Nil @@ s2 :> Nil @@ s3 :> s3)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+8: <MCPartialPersist line 32, col 5 to line 45, col 52 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 7 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 9 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 1 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 5 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 10 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 4 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 8 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 11 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Candidate @@ s3 :> Candidate)
+/\ persistedTerm = (s1 :> 2 @@ s2 :> 0 @@ s3 :> 1)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 1, lose |-> 0, append |-> 0]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"PartialPersist", s1>>, nSent |-> 11]
+/\ votedFor = (s1 :> Nil @@ s2 :> s2 @@ s3 :> s3)
+/\ persistedVotedFor = (s1 :> Nil @@ s2 :> Nil @@ s3 :> s3)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+9: <MCCrash line 26, col 5 to line 28, col 52 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 7 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 9 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 1 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 5 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 10 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 4 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 8 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 11 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Candidate @@ s3 :> Candidate)
+/\ persistedTerm = (s1 :> 2 @@ s2 :> 0 @@ s3 :> 1)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 2, lose |-> 0, append |-> 0]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"Crash", s1>>, nSent |-> 11]
+/\ votedFor = (s1 :> Nil @@ s2 :> s2 @@ s3 :> s3)
+/\ persistedVotedFor = (s1 :> Nil @@ s2 :> Nil @@ s3 :> s3)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+10: <MCNext line 89, col 8 to line 95, col 27 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 7 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 9 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 1 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 5 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 10 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 8 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 11 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 12 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Candidate @@ s3 :> Candidate)
+/\ persistedTerm = (s1 :> 2 @@ s2 :> 0 @@ s3 :> 1)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 2, lose |-> 0, append |-> 0]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"HandleRequestVoteRequest", s3, s2, 4>>, nSent |-> 12]
+/\ votedFor = (s1 :> Nil @@ s2 :> s2 @@ s3 :> s3)
+/\ persistedVotedFor = (s1 :> Nil @@ s2 :> Nil @@ s3 :> s3)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+11: <MCCrash line 26, col 5 to line 28, col 52 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 7 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 9 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 1 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 5 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 10 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 8 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 11 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 12 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Candidate @@ s3 :> Candidate)
+/\ persistedTerm = (s1 :> 2 @@ s2 :> 0 @@ s3 :> 1)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 3, lose |-> 0, append |-> 0]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"Crash", s1>>, nSent |-> 12]
+/\ votedFor = (s1 :> Nil @@ s2 :> s2 @@ s3 :> s3)
+/\ persistedVotedFor = (s1 :> Nil @@ s2 :> Nil @@ s3 :> s3)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+12: <MCNext line 89, col 8 to line 95, col 27 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 7 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 9 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 1 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 5 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 10 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 11 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 12 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Candidate @@ s3 :> Candidate)
+/\ persistedTerm = (s1 :> 2 @@ s2 :> 0 @@ s3 :> 1)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 3, lose |-> 1, append |-> 0]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"LoseMessage", s2, s3, 8>>, nSent |-> 12]
+/\ votedFor = (s1 :> Nil @@ s2 :> s2 @@ s3 :> s3)
+/\ persistedVotedFor = (s1 :> Nil @@ s2 :> Nil @@ s3 :> s3)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+13: <MCNext line 89, col 8 to line 95, col 27 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 9 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 1 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 5 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 10 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 11 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> TRUE,
+    msavedTerm |-> 2,
+    seq |-> 13 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 12 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Candidate @@ s3 :> Candidate)
+/\ persistedTerm = (s1 :> 2 @@ s2 :> 0 @@ s3 :> 1)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 3, lose |-> 1, append |-> 0]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"HandleRequestVoteRequest", s1, s2, 7>>, nSent |-> 13]
+/\ votedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> s3)
+/\ persistedVotedFor = (s1 :> s2 @@ s2 :> Nil @@ s3 :> s3)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+14: <MCNext line 89, col 8 to line 95, col 27 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 9 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 5 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 10 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 11 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> TRUE,
+    msavedTerm |-> 2,
+    seq |-> 13 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 12 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Candidate @@ s3 :> Candidate)
+/\ persistedTerm = (s1 :> 2 @@ s2 :> 0 @@ s3 :> 1)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 3, lose |-> 2, append |-> 0]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"LoseMessage", s1, s2, 1>>, nSent |-> 13]
+/\ votedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> s3)
+/\ persistedVotedFor = (s1 :> s2 @@ s2 :> Nil @@ s3 :> s3)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+15: <MCNext line 89, col 8 to line 95, col 27 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 9 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 5 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 10 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 11 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 12 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Candidate @@ s3 :> Candidate)
+/\ persistedTerm = (s1 :> 2 @@ s2 :> 0 @@ s3 :> 1)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 3, lose |-> 2, append |-> 0]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {s1, s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"HandleRequestVoteResponse", s2, s1, 13>>, nSent |-> 13]
+/\ votedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> s3)
+/\ persistedVotedFor = (s1 :> s2 @@ s2 :> Nil @@ s3 :> s3)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+16: <MCBecomeLeader line 58, col 5 to line 58, col 48 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 9 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 5 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 10 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 11 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 12 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Leader @@ s3 :> Candidate)
+/\ persistedTerm = (s1 :> 2 @@ s2 :> 0 @@ s3 :> 1)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 3, lose |-> 2, append |-> 0]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {s1, s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"BecomeLeader", s2>>, nSent |-> 13]
+/\ votedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> s3)
+/\ persistedVotedFor = (s1 :> s2 @@ s2 :> Nil @@ s3 :> s3)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+17: <MCNext line 89, col 8 to line 95, col 27 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 9 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 10 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 11 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 12 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 2,
+    seq |-> 14 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Leader @@ s3 :> Candidate)
+/\ persistedTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 3, lose |-> 2, append |-> 0]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {s1, s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"HandleRequestVoteRequest", s2, s1, 5>>, nSent |-> 14]
+/\ votedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> s3)
+/\ persistedVotedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> s3)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+18: <MCAppendEntries line 53, col 5 to line 55, col 53 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 9 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 10 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 2,
+    seq |-> 14 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 11 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 12 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 15 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Leader @@ s3 :> Candidate)
+/\ persistedTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 3, lose |-> 2, append |-> 1]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {s1, s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"AppendEntries", s2, s1>>, nSent |-> 15]
+/\ votedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> s3)
+/\ persistedVotedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> s3)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+19: <MCNext line 89, col 8 to line 95, col 27 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 9 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 2,
+    seq |-> 14 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 11 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 12 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 15 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Leader @@ s3 :> Candidate)
+/\ persistedTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 3, lose |-> 2, append |-> 1]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {s1, s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"DropStaleMessage", s3, s2, 10>>, nSent |-> 15]
+/\ votedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> s3)
+/\ persistedVotedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> s3)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+20: <MCAppendEntries line 53, col 5 to line 55, col 53 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 9 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 2,
+    seq |-> 14 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 11 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 12 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 15 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 16 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Leader @@ s3 :> Candidate)
+/\ persistedTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 3, lose |-> 2, append |-> 2]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {s1, s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"AppendEntries", s2, s1>>, nSent |-> 16]
+/\ votedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> s3)
+/\ persistedVotedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> s3)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+21: <MCAppendEntries line 53, col 5 to line 55, col 53 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 9 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 2,
+    seq |-> 14 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 11 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 12 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 15 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 16 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 17 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Leader @@ s3 :> Candidate)
+/\ persistedTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 3, lose |-> 2, append |-> 3]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {s1, s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"AppendEntries", s2, s3>>, nSent |-> 17]
+/\ votedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> s3)
+/\ persistedVotedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> s3)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+22: <MCNext line 89, col 8 to line 95, col 27 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 2,
+    seq |-> 14 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 11 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 12 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 15 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 16 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 17 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 18 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Leader @@ s3 :> Candidate)
+/\ persistedTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 3, lose |-> 2, append |-> 3]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {s1, s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"HandleRequestVoteRequest", s1, s3, 9>>, nSent |-> 18]
+/\ votedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> s3)
+/\ persistedVotedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> s3)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+23: <MCAppendEntries line 53, col 5 to line 55, col 53 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 2,
+    seq |-> 14 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 11 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 12 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 18 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 15 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 16 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 17 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 19 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Leader @@ s3 :> Candidate)
+/\ persistedTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 3, lose |-> 2, append |-> 4]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 1)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {s1, s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"AppendEntries", s2, s3>>, nSent |-> 19]
+/\ votedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> s3)
+/\ persistedVotedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> s3)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+24: <MCNext line 89, col 8 to line 95, col 27 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 2,
+    seq |-> 14 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 11 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 12 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 18 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> AppendEntriesResponse,
+    mterm |-> 2,
+    msavedTerm |-> 2,
+    msuccess |-> TRUE,
+    mmatchIndex |-> 0,
+    seq |-> 20 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 15 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 16 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 17 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Leader @@ s3 :> Follower)
+/\ persistedTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 2)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 3, lose |-> 2, append |-> 4]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 2)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {s1, s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"HandleAppendEntriesRequest", s3, s2, 19>>, nSent |-> 20]
+/\ votedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> Nil)
+/\ persistedVotedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> Nil)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+25: <MCNext line 89, col 8 to line 95, col 27 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 2,
+    seq |-> 14 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 11 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 12 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 18 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> AppendEntriesResponse,
+    mterm |-> 2,
+    msavedTerm |-> 2,
+    msuccess |-> TRUE,
+    mmatchIndex |-> 0,
+    seq |-> 21 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> AppendEntriesResponse,
+    mterm |-> 2,
+    msavedTerm |-> 2,
+    msuccess |-> TRUE,
+    mmatchIndex |-> 0,
+    seq |-> 20 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 15 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 17 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Leader @@ s3 :> Follower)
+/\ persistedTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 2)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 3, lose |-> 2, append |-> 4]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 2)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {s1, s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"HandleAppendEntriesRequest", s1, s2, 16>>, nSent |-> 21]
+/\ votedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> Nil)
+/\ persistedVotedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> Nil)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+26: <MCNext line 89, col 8 to line 95, col 27 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 2,
+    seq |-> 14 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 11 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 18 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> AppendEntriesResponse,
+    mterm |-> 2,
+    msavedTerm |-> 2,
+    msuccess |-> TRUE,
+    mmatchIndex |-> 0,
+    seq |-> 21 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> AppendEntriesResponse,
+    mterm |-> 2,
+    msavedTerm |-> 2,
+    msuccess |-> TRUE,
+    mmatchIndex |-> 0,
+    seq |-> 20 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 15 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 17 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Leader @@ s3 :> Follower)
+/\ persistedTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 2)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 3, lose |-> 2, append |-> 4]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 2)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {s1, s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"DropStaleMessage", s3, s2, 12>>, nSent |-> 21]
+/\ votedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> Nil)
+/\ persistedVotedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> Nil)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+27: <MCNext line 89, col 8 to line 95, col 27 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 2,
+    seq |-> 14 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 11 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 18 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> AppendEntriesResponse,
+    mterm |-> 2,
+    msavedTerm |-> 2,
+    msuccess |-> TRUE,
+    mmatchIndex |-> 0,
+    seq |-> 21 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 15 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 17 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Leader @@ s3 :> Follower)
+/\ persistedTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 2)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 3, lose |-> 2, append |-> 4]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 2)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {s1, s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"HandleAppendEntriesResponse", s2, s3, 20>>, nSent |-> 21]
+/\ votedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> Nil)
+/\ persistedVotedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> Nil)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+28: <MCNext line 89, col 8 to line 95, col 27 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 2,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 6 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 2,
+    seq |-> 14 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 11 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 18 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> AppendEntriesResponse,
+    mterm |-> 2,
+    msavedTerm |-> 2,
+    msuccess |-> TRUE,
+    mmatchIndex |-> 0,
+    seq |-> 21 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> AppendEntriesResponse,
+    mterm |-> 2,
+    msavedTerm |-> 2,
+    msuccess |-> TRUE,
+    mmatchIndex |-> 0,
+    seq |-> 22 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 15 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Leader @@ s3 :> Follower)
+/\ persistedTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 2)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 3, lose |-> 2, append |-> 4]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 2)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {s1, s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"HandleAppendEntriesRequest", s3, s2, 17>>, nSent |-> 22]
+/\ votedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> Nil)
+/\ persistedVotedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> Nil)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+29: <MCNext line 89, col 8 to line 95, col 27 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 2,
+    seq |-> 14 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 1,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 11 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> TRUE,
+    msavedTerm |-> 2,
+    seq |-> 23 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 18 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> AppendEntriesResponse,
+    mterm |-> 2,
+    msavedTerm |-> 2,
+    msuccess |-> TRUE,
+    mmatchIndex |-> 0,
+    seq |-> 21 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> AppendEntriesResponse,
+    mterm |-> 2,
+    msavedTerm |-> 2,
+    msuccess |-> TRUE,
+    mmatchIndex |-> 0,
+    seq |-> 22 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 15 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Leader @@ s3 :> Follower)
+/\ persistedTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 2)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 3, lose |-> 2, append |-> 4]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 2)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {s1, s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"HandleRequestVoteRequest", s3, s1, 6>>, nSent |-> 23]
+/\ votedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> s1)
+/\ persistedVotedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> s1)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+30: <MCNext line 89, col 8 to line 95, col 27 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteRequest,
+    mterm |-> 1,
+    mlastLogTerm |-> 0,
+    mlastLogIndex |-> 0,
+    seq |-> 3 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 2,
+    seq |-> 14 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> TRUE,
+    msavedTerm |-> 2,
+    seq |-> 23 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 18 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> AppendEntriesResponse,
+    mterm |-> 2,
+    msavedTerm |-> 2,
+    msuccess |-> TRUE,
+    mmatchIndex |-> 0,
+    seq |-> 21 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> AppendEntriesResponse,
+    mterm |-> 2,
+    msavedTerm |-> 2,
+    msuccess |-> TRUE,
+    mmatchIndex |-> 0,
+    seq |-> 22 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 15 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Leader @@ s3 :> Follower)
+/\ persistedTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 2)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 3, lose |-> 2, append |-> 4]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 2)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {s1, s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"DropStaleMessage", s3, s1, 11>>, nSent |-> 23]
+/\ votedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> s1)
+/\ persistedVotedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> s1)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+31: <MCNext line 89, col 8 to line 95, col 27 of module MC_for_sandtable>
+/\ messages = ( [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 2,
+    seq |-> 14 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s3,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> TRUE,
+    msavedTerm |-> 2,
+    seq |-> 23 ] :>
+      1 @@
+  [ mdest |-> s3,
+    msource |-> s1,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 18 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> AppendEntriesResponse,
+    mterm |-> 2,
+    msavedTerm |-> 2,
+    msuccess |-> TRUE,
+    mmatchIndex |-> 0,
+    seq |-> 21 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s3,
+    mtype |-> AppendEntriesResponse,
+    mterm |-> 2,
+    msavedTerm |-> 2,
+    msuccess |-> TRUE,
+    mmatchIndex |-> 0,
+    seq |-> 22 ] :>
+      1 @@
+  [ mdest |-> s1,
+    msource |-> s2,
+    mtype |-> AppendEntriesRequest,
+    mterm |-> 2,
+    mprevLogIndex |-> 0,
+    mprevLogTerm |-> 0,
+    mentries |-> <<>>,
+    mleaderCommit |-> 0,
+    seq |-> 15 ] :>
+      1 @@
+  [ mdest |-> s2,
+    msource |-> s1,
+    mtype |-> RequestVoteResponse,
+    mterm |-> 2,
+    mvoteGranted |-> FALSE,
+    msavedTerm |-> 1,
+    seq |-> 24 ] :>
+      1 )
+/\ matchIndex = ( s1 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s2 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) @@
+  s3 :> (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0) )
+/\ log = (s1 :> <<>> @@ s2 :> <<>> @@ s3 :> <<>>)
+/\ state = (s1 :> Follower @@ s2 :> Leader @@ s3 :> Follower)
+/\ persistedTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 2)
+/\ counters = [timeout |-> 5, request |-> 0, crash |-> 3, lose |-> 2, append |-> 4]
+/\ commitIndex = (s1 :> 0 @@ s2 :> 0 @@ s3 :> 0)
+/\ currentTerm = (s1 :> 2 @@ s2 :> 2 @@ s3 :> 2)
+/\ nextIndex = ( s1 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s2 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) @@
+  s3 :> (s1 :> 1 @@ s2 :> 1 @@ s3 :> 1) )
+/\ votesGranted = (s1 :> {} @@ s2 :> {s1, s2} @@ s3 :> {s3})
+/\ scr = [pc |-> <<"HandleRequestVoteRequest", s1, s2, 3>>, nSent |-> 24]
+/\ votedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> s1)
+/\ persistedVotedFor = (s1 :> s2 @@ s2 :> s2 @@ s3 :> s1)
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2209:0 @!@!@
+Progress(2) at 2026-11-03 04:19:32: 371 states generated, -1 distinct states found, -1 states left on queue.
+@!@!@ENDMSG 2209 @!@!@
+@!@!@STARTMSG 2210:0 @!@!@
+The number of states generated: 372
+Simulation using seed 11 and aril 0
+@!@!@ENDMSG 2210 @!@!@
+@!@!@STARTMSG 2209:0 @!@!@
+Progress(2) at 2026-11-03 04:19:32: 384 states generated, -1 distinct states found, -1 states left on queue.
+@!@!@ENDMSG 2209 @!@!@
+@!@!@STARTMSG 2186:0 @!@!@
+Finished in 661ms at (2026-11-03 04:19:32)
+@!@!@ENDMSG 2186 @!@!@
