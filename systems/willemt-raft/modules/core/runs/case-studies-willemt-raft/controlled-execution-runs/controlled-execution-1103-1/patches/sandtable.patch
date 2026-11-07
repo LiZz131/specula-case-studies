@@ -1,0 +1,563 @@
+--- a/scripts/common/start_docker_common.sh
++++ b/scripts/common/start_docker_common.sh
+@@ -1,6 +1,6 @@
+ #!/bin/bash
+ 
+-TIMEOUT=60
++TIMEOUT=180
+ 
+ function usage() {
+     echo "Usage: start.sh trace_xxx.dir"
+--- a/systems/WRaft-series/SpeculaWRaft/scripts/testcase_generator.py
++++ b/systems/WRaft-series/SpeculaWRaft/scripts/testcase_generator.py
+@@ -32,8 +32,13 @@
+ from trace_reader import TraceReader  # noqa: E402
+ 
+ STATE_CODE = {"Follower": "1", "Candidate": "2", "Leader": "3"}
+-REQUEST_TIMEOUT_MS = 200
+-ELECTION_TIMEOUT_MS = 2000
++# request_timeout is 200. election_timeout is 1000 and the library draws
++# election_timeout_rand in [1000, 2000), so 2000 is enough to fire one election
++# and is not the request-timeout event.
++REQUEST_DIAL_MS = 200
++ELECTION_DIAL_MS = 2000
++REQUEST_TIMEOUT_MS = REQUEST_DIAL_MS
++ELECTION_TIMEOUT_MS = ELECTION_DIAL_MS
+ 
+ 
+ class NotControllable(Exception):
+@@ -271,27 +276,25 @@
+         for peer in self.peers(leader):
+             self.capture(leader, peer, self.send_kind(state, leader, peer), accounted)
+ 
++    def compare_one(self, name, variable, value):
++        self.emit("execute", name, "get " + variable)
++        self.comment("variable %s %s %s" % (variable, name, value))
++        self.emit("compare", "variable")
++
+     def compare_node(self, state, server):
+         name = node_name(server)
+-        self.emit("execute", name, "get commitIdx")
+-        self.comment("variable commitIdx %s %s" % (name, state["commitIndex"][server]))
+-        self.emit("compare", "variable")
+-        self.emit("execute", name, "get currentTerm")
+-        self.comment("variable currentTerm %s %s" % (name, state["currentTerm"][server]))
+-        self.emit("compare", "variable")
+-        self.emit("execute", name, "get log")
+-        self.comment("variable log %s %s" % (name, fmt_log(state["log"][server])))
+-        self.emit("compare", "variable")
+-        self.emit("execute", name, "get state")
+-        self.comment("variable state %s %s" % (name, STATE_CODE[state["state"][server]]))
+-        self.emit("compare", "variable")
+-        if state["state"][server] == "Leader":
+-            self.emit("execute", name, "get nextIdx")
+-            self.comment("variable nextIdx %s %s" % (name, fmt_index_map(state["nextIndex"][server], name)))
+-            self.emit("compare", "variable")
+-            self.emit("execute", name, "get matchIdx")
+-            self.comment("variable matchIdx %s %s" % (name, fmt_index_map(state["matchIndex"][server], name)))
+-            self.emit("compare", "variable")
++        vote = state["votedFor"][server]
++        vote_text = "Nil" if vote in ("Nil", None) else node_name(vote)
++        self.compare_one(name, "commitIdx", state["commitIndex"][server])
++        self.compare_one(name, "currentTerm", state["currentTerm"][server])
++        self.compare_one(name, "votedFor", vote_text)
++        self.compare_one(name, "log", fmt_log(state["log"][server]))
++        self.compare_one(name, "state", STATE_CODE[state["state"][server]])
++        self.compare_one(name, "lastApplied", state["lastApplied"][server])
++        self.compare_one(name, "snapshotLastIdx", state["snapshotLastIdx"][server])
++        self.compare_one(name, "snapshotLastTerm", state["snapshotLastTerm"][server])
++        self.compare_one(name, "nextIdx", fmt_index_map(state["nextIndex"][server], name))
++        self.compare_one(name, "matchIdx", fmt_index_map(state["matchIndex"][server], name))
+ 
+     def compare_all(self, state):
+         for server in self.servers:
+@@ -493,11 +496,19 @@
+ 
+ 
+ def build_from_pc(reader, states):
+-    """SandTable-style replay: scr.pc names the syscall, scr seq is the capture index."""
++    """scr.pc names the action. Unknown names fail instead of being guessed."""
+     b = Builder(reader, states)
+     b.actions = []
++
++    def deliver(src, dest, seq):
++        b.emit("deliver-unordered", node_name(src), node_name(dest), seq)
++        b.emit("loop", "intercept", node_name(dest), "check_has_recv_queue", node_name(src))
++        b.emit("execute", node_name(dest), "raft recvfrom " + node_name(src))
++
+     for index, state in enumerate(states):
+         pc = state["scr"]["pc"]
++        if isinstance(pc, tuple):
++            pc = list(pc)
+         if not isinstance(pc, list) or not pc:
+             raise NotControllable("state %d has no scr.pc" % index)
+         cmd = pc[0]
+@@ -513,31 +524,38 @@
+                 b.emit("wait-init", len(b.servers))
+                 for server in b.servers:
+                     b.emit("loop", "execute", node_name(server), "net isallconnected")
+-                for server in b.servers:
+-                    b.emit("execute", node_name(server), "raft periodic")
+             elif cmd == "Timeout":
+                 name = node_name(pc[1])
+-                b.emit("intercept", name, "inc_time_ms", str(ELECTION_TIMEOUT_MS))
+-                b.emit("execute", name, "raft periodic %d" % ELECTION_TIMEOUT_MS)
++                b.emit("intercept", name, "inc_time_ms", str(ELECTION_DIAL_MS))
++                b.emit("execute", name, "raft periodic %d" % ELECTION_DIAL_MS)
+             elif cmd == "ClientRequest":
+                 b.emit("execute", node_name(pc[1]), "raft cli %s" % pc[2])
+-            elif cmd == "AppendEntriesAll":
+-                b.emit("execute", node_name(pc[1]), "raft periodic %d" % REQUEST_TIMEOUT_MS)
++            elif cmd == "BroadcastAppendEntries":
++                b.emit("intercept", node_name(pc[1]), "inc_time_ms", str(REQUEST_DIAL_MS))
++                b.emit("execute", node_name(pc[1]), "raft periodic %d" % REQUEST_DIAL_MS)
++            elif cmd in ("SendAppendEntries", "SendInstallSnapshot"):
++                b.emit("execute", node_name(pc[1]), "raft sendto " + node_name(pc[2]))
+             elif cmd == "TakeSnapshot":
+                 b.emit("execute", node_name(pc[1]), "raft snapshot")
++            elif cmd == "Crash":
++                b.emit("execute", node_name(pc[1]), "raft crash")
++            elif cmd == "Recover":
++                b.emit("execute", node_name(pc[1]), "raft recover")
+             elif cmd == "LoseMessage":
+-                b.emit("clear", node_name(pc[1]), node_name(pc[2]))
++                b.emit("drop-unordered", node_name(pc[1]), node_name(pc[2]), pc[3])
++            elif cmd == "DuplicateMessage":
++                b.emit("duplicate-unordered", node_name(pc[1]), node_name(pc[2]), pc[3])
+             elif cmd.startswith("Handle"):
+-                dest, src, seq = pc[1], pc[2], pc[3]
+-                b.emit("deliver-unordered", node_name(src), node_name(dest), seq)
+-                b.emit("loop", "intercept", node_name(dest), "check_has_recv_queue", node_name(src))
+-                b.emit("execute", node_name(dest), "raft recvfrom " + node_name(src))
++                if len(pc) != 4:
++                    raise NotControllable("handle pc %s" % (pc,))
++                deliver(pc[2], pc[1], pc[3])
+             else:
+-                raise NotControllable("no stock command for pc %s" % pc)
++                raise NotControllable("no command for pc %s" % (pc,))
+         except NotControllable:
+             raise
+         except Exception as exc:
+             raise NotControllable("step %d pc %s: %s" % (index, pc, exc)) from exc
++        b.comment("nsent %s" % state["scr"]["nSent"])
+         b.compare_all(state)
+     for server in b.servers:
+         b.emit("execute", node_name(server), "raft statemachine")
+--- a/systems/WRaft-series/driver/CMakeLists.txt
++++ b/systems/WRaft-series/driver/CMakeLists.txt
+@@ -23,6 +23,23 @@
+     target_link_libraries(${name}Driver ${name} readline gflags tlpi)
+ endmacro()
+ 
+-define_driver(WRaft)
++# WRaft is built from this round's system sources so coverage counts those files.
++set(WRAFT_SYSTEM_DIR "" CACHE PATH "willemt/raft sources for this round")
++if(WRAFT_SYSTEM_DIR)
++    set(WRAFT_SYSTEM_SOURCES
++            ${WRAFT_SYSTEM_DIR}/src/raft_log.c
++            ${WRAFT_SYSTEM_DIR}/src/raft_server.c
++            ${WRAFT_SYSTEM_DIR}/src/raft_node.c
++            ${WRAFT_SYSTEM_DIR}/src/raft_server_properties.c)
++    add_executable(WRaftDriver deps/WRaft.cpp ${DRIVER_SOURCES} ${WRAFT_SYSTEM_SOURCES})
++    target_include_directories(WRaftDriver BEFORE PRIVATE ${WRAFT_SYSTEM_DIR}/include)
++    target_compile_definitions(WRaftDriver PRIVATE WRAFT_COVERAGE)
++    target_compile_options(WRaftDriver PRIVATE --coverage)
++    set_source_files_properties(${WRAFT_SYSTEM_SOURCES} PROPERTIES COMPILE_FLAGS "--coverage -g -Wall -Wextra -Wno-error")
++    target_link_options(WRaftDriver PRIVATE --coverage -Wl,--export-dynamic)
++    target_link_libraries(WRaftDriver readline gflags tlpi gcov)
++else()
++    define_driver(WRaft)
++endif()
+ define_driver(RedisRaft)
+ define_driver(DaosRaft)
+--- a/systems/WRaft-series/driver/deps/WRaft.cpp
++++ b/systems/WRaft-series/driver/deps/WRaft.cpp
+@@ -5,14 +5,17 @@
+ // WARN: we do not consider 32-bit or 64-bit memory.
+ 
+ #include <cassert>
++#include <fstream>
++#include <vector>
+ #include <sys/time.h>
+ #include "Raft.h"
+ #include "Network.h"
++#include "Config.h"
+ 
+ extern "C" {
+-#include "deps/WRaft/include/raft.h"
+-#include "deps/WRaft/include/raft_log.h"
+-#include "deps/WRaft/include/raft_private.h"
++#include "raft.h"
++#include "raft_log.h"
++#include "raft_private.h"
+ }
+ 
+ // snapshot message
+@@ -38,6 +41,74 @@
+ 
+ string state_machine = "init";
+ 
++struct PersistEntry {
++    raft_term_t term = 0;
++    string value;
++};
++
++struct PersistImage {
++    raft_term_t term = 0;
++    long vote = -1;
++    raft_index_t snap_idx = 0;
++    raft_term_t snap_term = 0;
++    vector<PersistEntry> entries;
++};
++
++static PersistImage disk_image;
++static bool node_down = false;
++static string frozen_commit, frozen_term, frozen_vote, frozen_log, frozen_state;
++static string frozen_applied, frozen_snap_idx, frozen_snap_term, frozen_next, frozen_match;
++
++static string persist_path() {
++    Node self;
++    if (!config.get_self_node(self))
++        return "/tmp/wraft-persist-unknown";
++    return string("/tmp/wraft-persist-") + self.name;
++}
++
++static void flush_disk() {
++    ofstream out(persist_path(), ios::trunc);
++    out << "term " << disk_image.term << "\n";
++    out << "vote " << disk_image.vote << "\n";
++    out << "snap_idx " << disk_image.snap_idx << "\n";
++    out << "snap_term " << disk_image.snap_term << "\n";
++    for (const auto &entry : disk_image.entries)
++        out << "entry " << entry.term << " " << entry.value << "\n";
++}
++
++static bool load_disk(PersistImage &image) {
++    ifstream in(persist_path());
++    if (!in)
++        return false;
++    image = PersistImage();
++    string kind;
++    while (in >> kind) {
++        if (kind == "term") in >> image.term;
++        else if (kind == "vote") in >> image.vote;
++        else if (kind == "snap_idx") in >> image.snap_idx;
++        else if (kind == "snap_term") in >> image.snap_term;
++        else if (kind == "entry") {
++            PersistEntry entry;
++            in >> entry.term;
++            in >> ws;
++            getline(in, entry.value);
++            image.entries.push_back(entry);
++        }
++    }
++    return true;
++}
++
++static string entry_text(const raft_entry_t *ety) {
++    char buf[sizeof(void *)] = {};
++    memcpy(buf, &(ety->data.buf), sizeof(void *) - 1);
++    return string(buf);
++}
++
++#ifdef WRAFT_COVERAGE
++extern "C" void __gcov_dump(void);
++extern "C" void wraft_gcov_dump(void) { __gcov_dump(); }
++#endif
++
+ enum {
+     MSG_AE,
+     MSG_AER,
+@@ -204,7 +275,9 @@
+                 raft_node_id_t vote
+         )
+ {
+-    // not implemented
++    disk_image.term = term;
++    disk_image.vote = vote;
++    flush_disk();
+     return 0;
+ }
+ 
+@@ -243,6 +316,8 @@
+         raft_node_id_t vote
+ )
+ {
++    disk_image.vote = vote;
++    flush_disk();
+     return 0;
+ }
+ 
+@@ -253,6 +328,9 @@
+         raft_node_id_t vote
+ )
+ {
++    disk_image.term = term;
++    disk_image.vote = vote;
++    flush_disk();
+     return 0;
+ }
+ 
+@@ -262,6 +340,9 @@
+         raft_entry_t *ety,
+         raft_index_t ety_idx)
+ {
++    (void)ety_idx;
++    disk_image.entries.push_back(PersistEntry{ety->term, entry_text(ety)});
++    flush_disk();
+     return 0;
+ }
+ 
+@@ -271,6 +352,11 @@
+         raft_entry_t *ety,
+         raft_index_t ety_idx)
+ {
++    (void)ety;
++    (void)ety_idx;
++    if (!disk_image.entries.empty())
++        disk_image.entries.erase(disk_image.entries.begin());
++    flush_disk();
+     return 0;
+ }
+ 
+@@ -280,6 +366,11 @@
+         raft_entry_t *ety,
+         raft_index_t ety_idx)
+ {
++    (void)ety;
++    (void)ety_idx;
++    if (!disk_image.entries.empty())
++        disk_image.entries.pop_back();
++    flush_disk();
+     return 0;
+ }
+ 
+@@ -287,10 +378,13 @@
+         raft_server_t* raft,
+         void *user_data,
+         raft_entry_t *entries,
+-        raft_index_t entry_idx,
+-        int *n_entries
++        raft_index_t entry_idx
+ )
+ {
++    (void)entries;
++    (void)entry_idx;
++    disk_image.entries.clear();
++    flush_disk();
+     return 0;
+ }
+ 
+@@ -362,7 +456,7 @@
+         .log_offer = raft_log_offer,
+         .log_poll = raft_log_poll,
+         .log_pop = raft_log_pop,
+-        .log_clear = nullptr,
++        .log_clear = raft_log_clear,
+         .log_get_node_id = raft_log_get_node_id,
+         .node_has_sufficient_logs = raft_node_has_sufficient_logs,
+         .notify_membership_event = raft_notify_membership_event,
+@@ -388,9 +482,9 @@
+         n.set_data(node);
+     }
+     config.set_raft_server(me);
+-//    for (unsigned x = 0; x < config.get_all_nodes().size(); x++) {
+-//        cerr << "node " << x + 1 << ", id: " << raft_node_get_id(raft_get_node(me, (int)x + 1)) << endl;
+-//    }
++    disk_image = PersistImage();
++    node_down = false;
++    flush_disk();
+     return true;
+ }
+ 
+@@ -439,13 +533,6 @@
+         }
+         case MSG_RV: {
+             cerr_verbose << "RaftRecvMsg MSG_RV" << endl;
+-            // raft servers only vote for candidate after election timeout,
+-            // however TLA does not model it and servers are always votable.
+-            // advance timeout_elapsed to make the server votable.
+-            if (((raft_server_private_t*)me)->state != RAFT_STATE_LEADER
+-                && raft_get_timeout_elapsed(me) < raft_get_election_timeout(me)) {
+-                raft_periodic(me, raft_get_election_timeout(me));
+-            }
+             auto *req = reinterpret_cast<raft_requestvote_req_t *>(&msg.front());
+             raft_requestvote_resp_t resp{};
+             raft_recv_requestvote(me, raft_node, req, &resp);
+@@ -461,7 +548,6 @@
+             cerr_verbose << "RaftRecvMsg MSG_SNAP" << endl;
+             msg_appendentries_response_t resp{};
+             raft_recv_installsnapshot(me, raft_node, reinterpret_cast<msg_snapshot_t *>(&msg.front()), &resp);
+-            raft_send_appendentries_resp(node, resp);
+             break;
+         }
+         default:
+@@ -502,9 +588,110 @@
+ 
+ // server exec snapshot
+ bool RaftExecSnapshot() {
+-    bool ok = raft_begin_snapshot(static_cast<raft_server_t *>(config.get_raft_server()), 0) != RAFT_ERR_SHUTDOWN;
+-    ok = raft_end_snapshot(static_cast<raft_server_t *>(config.get_raft_server())) != RAFT_ERR_SHUTDOWN && ok;
+-    return ok;
++    auto *me = static_cast<raft_server_t *>(config.get_raft_server());
++    if (raft_begin_snapshot(me, 0) != 0)
++        return false;
++    if (raft_end_snapshot(me) != 0)
++        return false;
++    disk_image.snap_idx = raft_get_snapshot_last_idx(me);
++    disk_image.snap_term = raft_get_snapshot_last_term(me);
++    flush_disk();
++    return true;
++}
++
++static bool add_cluster(raft_server_t *me) {
++    for (auto &i: config.get_all_nodes()) {
++        Node &n = const_cast<Node&>(i);
++        auto node = raft_add_node(me, nullptr, n.getid(), n.getid() == config.get_self_node().getid());
++        if (!node)
++            return false;
++        raft_node_set_voting_committed(node, true);
++        raft_node_set_active(node, true);
++        n.set_data(node);
++    }
++    return true;
++}
++
++static bool append_saved(raft_server_t *me, const PersistEntry &entry) {
++    auto *ety = static_cast<raft_entry_t *>(calloc(1, sizeof(raft_entry_t)));
++    if (!ety)
++        return false;
++    ety->term = entry.term;
++    ety->type = RAFT_LOGTYPE_NORMAL;
++    string data = entry.value;
++    if (data.size() >= sizeof(void *))
++        data.resize(sizeof(void *) - 1);
++    memcpy(&(ety->data.buf), data.c_str(), data.size());
++    int rc = raft_append_entry(me, ety);
++    free(ety);
++    return rc == 0;
++}
++
++bool RaftSendTo(const string &peer) {
++    if (node_down || !config.get_raft_server())
++        return false;
++    Node node(peer);
++    if (!config.get_node(node) || !node.get_data())
++        return false;
++    auto *me = static_cast<raft_server_t *>(config.get_raft_server());
++    int rc = raft_send_appendentries(me, static_cast<raft_node_t *>(node.get_data()));
++    return rc == 0 || rc == RAFT_ERR_NEEDS_SNAPSHOT;
++}
++
++bool RaftCrash() {
++    if (node_down || !config.get_raft_server())
++        return false;
++    frozen_commit = RaftGet("commitIdx");
++    frozen_term = RaftGet("currentTerm");
++    frozen_vote = RaftGet("votedFor");
++    frozen_log = RaftGet("log");
++    frozen_state = RaftGet("state");
++    frozen_applied = RaftGet("lastApplied");
++    frozen_snap_idx = RaftGet("snapshotLastIdx");
++    frozen_snap_term = RaftGet("snapshotLastTerm");
++    frozen_next = RaftGet("nextIdx");
++    frozen_match = RaftGet("matchIdx");
++    auto *me = static_cast<raft_server_t *>(config.get_raft_server());
++    raft_free(me);
++    config.set_raft_server(nullptr);
++    node_down = true;
++    return true;
++}
++
++bool RaftRecover() {
++    PersistImage saved;
++    if (!load_disk(saved))
++        return false;
++    if (config.get_raft_server()) {
++        raft_free(static_cast<raft_server_t *>(config.get_raft_server()));
++        config.set_raft_server(nullptr);
++    }
++    raft_server_t *me = raft_new();
++    if (!me)
++        return false;
++    raft_set_callbacks(me, &raft_cbs, nullptr);
++    if (!add_cluster(me))
++        return false;
++    disk_image = PersistImage();
++    disk_image.snap_idx = saved.snap_idx;
++    disk_image.snap_term = saved.snap_term;
++    if (saved.snap_idx > 0) {
++        auto *priv = reinterpret_cast<raft_server_private_t *>(me);
++        if (log_load_from_snapshot(static_cast<log_t *>(priv->log), saved.snap_idx, saved.snap_term) != 0)
++            return false;
++        raft_set_snapshot_metadata(me, saved.snap_term, saved.snap_idx);
++    }
++    for (const auto &entry : saved.entries) {
++        if (!append_saved(me, entry))
++            return false;
++    }
++    if (saved.term > 0 && raft_set_current_term(me, saved.term) != 0)
++        return false;
++    if (raft_vote_for_nodeid(me, static_cast<raft_node_id_t>(saved.vote)) != 0)
++        return false;
++    config.set_raft_server(me);
++    node_down = false;
++    return true;
+ }
+ 
+ bool RaftRepl(const string &cmd) {
+@@ -531,6 +718,14 @@
+         return true;
+     } else if (tokens[0] == "snapshot") {
+         return RaftExecSnapshot();
++    } else if (tokens[0] == "sendto") {
++        if (tokens.size() <= 1)
++            return false;
++        return RaftSendTo(tokens[1]);
++    } else if (tokens[0] == "crash") {
++        return RaftCrash();
++    } else if (tokens[0] == "recover") {
++        return RaftRecover();
+     }
+     else {
+         return false;
+@@ -539,7 +734,22 @@
+ }
+ 
+ string RaftGet(const string &variable) {
++    if (node_down) {
++        if (variable == "commitIdx") return frozen_commit;
++        if (variable == "currentTerm") return frozen_term;
++        if (variable == "votedFor") return frozen_vote;
++        if (variable == "log") return frozen_log;
++        if (variable == "state") return frozen_state;
++        if (variable == "lastApplied") return frozen_applied;
++        if (variable == "snapshotLastIdx") return frozen_snap_idx;
++        if (variable == "snapshotLastTerm") return frozen_snap_term;
++        if (variable == "nextIdx") return frozen_next;
++        if (variable == "matchIdx") return frozen_match;
++        return "";
++    }
+     auto *me = static_cast<raft_server_private_t *>(config.get_raft_server());
++    if (!me)
++        return "";
+     if (variable == "commitIdx") {
+         return to_string(me->commit_idx);
+     } else if (variable == "currentTerm") {
+@@ -574,6 +784,16 @@
+ //                state = 3;  // candidate
+ //        }
+         return to_string(state);
++    } else if (variable == "votedFor") {
++        if (me->voted_for < 0)
++            return "Nil";
++        return "n" + to_string(me->voted_for);
++    } else if (variable == "lastApplied") {
++        return to_string(me->last_applied_idx);
++    } else if (variable == "snapshotLastIdx") {
++        return to_string(me->snapshot_last_idx);
++    } else if (variable == "snapshotLastTerm") {
++        return to_string(me->snapshot_last_term);
+     } else if (variable == "nextIdx" || variable == "matchIdx") {
+         // {'n2': 2, 'n3': 2}
+         vector<string> tokens;
