@@ -1,0 +1,513 @@
+--- spec/base.tla	2026-11-02 20:26:10.610784111 +0000
++++ controlled-execution-runs/controlled-execution-1103-10/spec/base.tla	2026-11-03 20:55:44.933884850 +0000
+@@ -16,6 +16,7 @@
+ \* Constants
+ \***********************************************************************
+ CONSTANTS
++    s1, s2, s3,     \* Node-add order. Server must be exactly these three.
+     Server,         \* Set of server IDs
+     Value,          \* Set of client request values
+     Nil,            \* Nil value (no vote, no leader)
+@@ -84,7 +85,10 @@
+ \***********************************************************************
+ \* Variable groups for UNCHANGED
+ \***********************************************************************
+-serverVars    == <<currentTerm, votedFor, state>>
++VARIABLES
++    currentLeader   \* [Server -> Server ∪ {Nil}] raft_server_private_t.current_leader
++
++serverVars    == <<currentTerm, votedFor, state, currentLeader>>
+ logVars       == <<log, commitIndex, lastApplied>>
+ leaderVars    == <<nextIndex, matchIndex>>
+ candidateVars == <<votesGranted>>
+@@ -104,6 +108,17 @@
+ \* raft_get_current_idx (raft_server_properties.c:108-112) = log_count + base
+ LastLogIndex(i) == snapshotLastIdx[i] + Len(log[i])
+ 
++\* raft_periodic applies every committed entry that is still in the log
++\* (raft_server.c:253-259, raft_apply_all, raft_apply_entry).
++AppliedIdx(i) ==
++    IF lastApplied[i] >= commitIndex[i]
++    THEN lastApplied[i]
++    ELSE LET ok == {k \in lastApplied[i]..commitIndex[i] :
++                      \A j \in (lastApplied[i] + 1)..k :
++                        /\ j > snapshotLastIdx[i]
++                        /\ j <= LastLogIndex(i)}
++         IN CHOOSE n \in ok : \A m \in ok : n >= m
++
+ \* Term of entry at index idx, accounting for snapshot
+ \* raft_get_last_log_term (raft_server_properties.c:216-226) returns 0 after compaction!
+ \* BUG (Family 4, PR #118 Bug 9): returns 0 when log empty AND no snapshot term fallback
+@@ -137,9 +152,10 @@
+     ELSE [term |-> 0, value |-> Nil]
+ 
+ \* Sub-log from physical position
++\* log_get_from_idx returns nothing when the index is at or below the
++\* snapshot base (raft_log.c:177-180).
+ SubLog(i, fromIdx) ==
+-    IF fromIdx > LastLogIndex(i) THEN <<>>
+-    ELSE IF fromIdx <= snapshotLastIdx[i] THEN log[i]
++    IF fromIdx > LastLogIndex(i) \/ fromIdx <= snapshotLastIdx[i] THEN <<>>
+     ELSE SubSeq(log[i], fromIdx - snapshotLastIdx[i], Len(log[i]))
+ 
+ \***********************************************************************
+@@ -161,6 +177,17 @@
+     /\ snapshotLastIdx[leader] > 0
+     /\ nextIndex[leader][peer] < snapshotLastIdx[leader]
+ 
++RECURSIVE FilterSeq(_, _, _)
++FilterSeq(seq, S, k) ==
++    IF k > Len(seq) THEN <<>>
++    ELSE IF seq[k] \in S THEN <<seq[k]>> \o FilterSeq(seq, S, k + 1)
++    ELSE FilterSeq(seq, S, k + 1)
++
++\* raft_add_node walks nodes in name order: s1, s2, s3.
++ServerSeq == <<s1, s2, s3>>
++PeerSeq(i) == FilterSeq(ServerSeq, Server \ {i}, 1)
++ASSUME Server = {s1, s2, s3}
++
+ \***********************************************************************
+ \* Initial state
+ \* raft_new (raft_server.c:69-94)
+@@ -170,6 +197,7 @@
+     /\ votedFor     = [s \in Server |-> Nil]          \* raft_server.c:76 (-1)
+     /\ log          = [s \in Server |-> <<>>]
+     /\ state        = [s \in Server |-> Follower]     \* raft_server.c:87
++    /\ currentLeader = [s \in Server |-> Nil]       \* raft_new zeroes current_leader
+     /\ commitIndex  = [s \in Server |-> 0]
+     /\ lastApplied  = [s \in Server |-> 0]
+     /\ nextIndex    = [s \in Server |-> [j \in Server |-> 1]]
+@@ -197,6 +225,7 @@
+     \* 3. Clear vote tracking, set state (lines 189-193)
+     /\ votesGranted' = [votesGranted EXCEPT ![i] = {i}]
+     /\ state' = [state EXCEPT ![i] = Candidate]
++    /\ currentLeader' = [currentLeader EXCEPT ![i] = Nil] \* raft_become_candidate line 192
+     \* 4. Send RequestVote to all voting nodes (lines 198-208)
+     /\ messages' = messages (+) SetToBag(
+          {[mtype        |-> RequestVoteRequest,
+@@ -205,7 +234,8 @@
+            mlastLogTerm |-> LastLogTerm(i),
+            msource      |-> i,
+            mdest        |-> j] : j \in Server \ {i}})
+-    /\ UNCHANGED <<logVars, leaderVars, snapshotVars, crashVars>>
++    /\ lastApplied' = [lastApplied EXCEPT ![i] = AppliedIdx(i)]
++    /\ UNCHANGED <<log, commitIndex, leaderVars, snapshotVars, crashVars>>
+ 
+ \***********************************************************************
+ \* ACTION: HandleRequestVoteRequest
+@@ -216,12 +246,11 @@
+     /\ m.mtype = RequestVoteRequest
+     /\ m.mdest = i
+     /\ m.msource = j
+-    /\ \/ \* Leader lease reject (raft_server.c:608-613)
+-          \* When server has a recent leader contact (current_leader != NULL),
+-          \* reject without term update. current_leader is not modeled; this is
+-          \* a non-deterministic overapproximation. Candidates clear current_leader
+-          \* (line 201), so only followers/leaders can hit this path.
+-          /\ state[i] \in {Follower, Leader}
++    /\ \/ \* Leader lease reject (raft_server.c:587-591).
++          \* Reject, without updating the term, when current_leader is some
++          \* other node. timeout_elapsed is still below election_timeout here:
++          \* the only clock steps reset it before they return.
++          /\ currentLeader[i] \notin {Nil, j}
+           /\ Reply([mtype        |-> RequestVoteResponse,
+                     mterm        |-> currentTerm[i],
+                     mvoteGranted |-> FALSE,
+@@ -229,50 +258,47 @@
+                     mdest        |-> j], m)
+           /\ UNCHANGED <<serverVars, logVars, leaderVars, candidateVars,
+                          snapshotVars, crashVars>>
+-       \/ \* Normal processing
+-          LET myLastLogIdx  == LastLogIndex(i)
+-              myLastLogTerm == LastLogTerm(i)
+-              \* __should_grant_vote (raft_server.c:535-573)
+-              logUpToDate ==
+-                \/ m.mlastLogTerm > myLastLogTerm                        \* line 566
+-                \/ (m.mlastLogTerm = myLastLogTerm                       \* line 569
+-                    /\ m.mlastLogIdx >= myLastLogIdx)                    \* line 569
+-              \* BUG (Family 3): line 543-545: denies re-vote to same candidate
+-              \* TODO comment in code acknowledges deviation from Raft paper §5.2
+-              shouldGrant ==
+-                /\ m.mterm >= currentTerm[i]                             \* line 540
+-                /\ votedFor[i] = Nil                                     \* line 544
+-                /\ logUpToDate
+-          IN
+-          \* Term update: if vr.term > currentTerm (lines 593-602)
+-          /\ IF m.mterm > currentTerm[i]
+-             THEN \* raft_set_current_term (raft_server_properties.c:85-101)
+-                  \* Persists term + clears vote atomically (voted_for = -1)
+-                  \* THEN __should_grant_vote is called with NEW state (voted_for=Nil)
+-                  \* So grant decision = logUpToDate (since voted_for is now Nil)
+-                  /\ currentTerm' = [currentTerm EXCEPT ![i] = m.mterm]
+-                  /\ votedFor' = [votedFor EXCEPT ![i] =
+-                       IF logUpToDate THEN j ELSE Nil]
+-                  /\ state' = [state EXCEPT ![i] = Follower]            \* line 600
+-             ELSE IF shouldGrant
+-                  THEN \* Grant vote (lines 605-619)
+-                       /\ currentTerm' = currentTerm
+-                       /\ votedFor' = [votedFor EXCEPT ![i] = j]
+-                       /\ state' = state
+-                  ELSE \* Deny vote
+-                       /\ UNCHANGED <<currentTerm, votedFor, state>>
+-          \* Build response
+-          /\ LET grant == IF m.mterm > currentTerm[i]
+-                           THEN logUpToDate  \* after term update, voted_for is Nil
+-                           ELSE shouldGrant
+-             IN Reply([mtype        |-> RequestVoteResponse,
+-                       mterm        |-> IF m.mterm > currentTerm[i]
+-                                        THEN m.mterm
+-                                        ELSE currentTerm[i],
+-                       mvoteGranted |-> grant,
+-                       msource      |-> i,
+-                       mdest        |-> j], m)
+-          /\ UNCHANGED <<logVars, leaderVars, candidateVars, snapshotVars, crashVars>>
++       \/ \* No current leader, or the requester is that leader (raft_server.c:587).
++          /\ currentLeader[i] \in {Nil, j}
++          /\ LET myLastLogIdx  == LastLogIndex(i)
++                 myLastLogTerm == LastLogTerm(i)
++                 \* __should_grant_vote (raft_server.c:535-573)
++                 logUpToDate ==
++                   \/ m.mlastLogTerm > myLastLogTerm
++                   \/ (m.mlastLogTerm = myLastLogTerm /\ m.mlastLogIdx >= myLastLogIdx)
++                 \* BUG (Family 3): lines 543-545 deny a re-vote to the same candidate
++                 shouldGrant ==
++                   /\ m.mterm >= currentTerm[i]
++                   /\ votedFor[i] = Nil
++                   /\ logUpToDate
++             IN
++             \* Term update: if vr.term > currentTerm (lines 593-602)
++             /\ IF m.mterm > currentTerm[i]
++                THEN \* raft_set_current_term (raft_server_properties.c:85-101)
++                     \* Persists term and clears the vote, then the grant uses the new vote.
++                     /\ currentTerm' = [currentTerm EXCEPT ![i] = m.mterm]
++                     /\ votedFor' = [votedFor EXCEPT ![i] =
++                          IF logUpToDate THEN j ELSE Nil]
++                     /\ state' = [state EXCEPT ![i] = Follower]
++                ELSE IF shouldGrant
++                     THEN \* Grant vote (lines 605-619). Line 617 clears current_leader.
++                          /\ currentTerm' = currentTerm
++                          /\ votedFor' = [votedFor EXCEPT ![i] = j]
++                          /\ state' = state
++                     ELSE \* Deny vote
++                          /\ UNCHANGED <<currentTerm, votedFor, state>>
++             /\ currentLeader' = [currentLeader EXCEPT ![i] =
++                  IF m.mterm > currentTerm[i] \/ shouldGrant
++                  THEN Nil ELSE currentLeader[i]]
++             /\ LET grant == IF m.mterm > currentTerm[i] THEN logUpToDate ELSE shouldGrant
++                IN Reply([mtype        |-> RequestVoteResponse,
++                          mterm        |-> IF m.mterm > currentTerm[i]
++                                           THEN m.mterm
++                                           ELSE currentTerm[i],
++                          mvoteGranted |-> grant,
++                          msource      |-> i,
++                          mdest        |-> j], m)
++             /\ UNCHANGED <<logVars, leaderVars, candidateVars, snapshotVars, crashVars>>
+ 
+ \***********************************************************************
+ \* ACTION: HandleRequestVoteResponse
+@@ -290,6 +316,7 @@
+           /\ currentTerm' = [currentTerm EXCEPT ![i] = m.mterm]
+           /\ votedFor' = [votedFor EXCEPT ![i] = Nil]
+           /\ state' = [state EXCEPT ![i] = Follower]
++          /\ currentLeader' = [currentLeader EXCEPT ![i] = Nil] \* line 675
+           /\ UNCHANGED <<votesGranted, leaderVars>>
+        \/ \* Same term, vote granted (lines 692-700)
+           /\ m.mterm = currentTerm[i]
+@@ -305,15 +332,43 @@
+                        [k \in Server |-> LastLogIndex(i) + 1]]
+                   /\ matchIndex' = [matchIndex EXCEPT ![i] =
+                        [k \in Server |-> 0]]
++                  /\ currentLeader' = [currentLeader EXCEPT ![i] = i] \* raft_set_state leader
+                   \* NOTE: BUG (Family 1, Issue #120): no no-op entry appended!
+                   \* raft_become_leader does NOT call raft_append_entry
+-             ELSE UNCHANGED <<state, leaderVars>>
++             ELSE /\ UNCHANGED <<state, leaderVars>>
++                  /\ UNCHANGED currentLeader
+           /\ UNCHANGED <<currentTerm, votedFor>>
+        \/ \* Same term, vote denied or stale term (lines 678-683, 702-703)
+           /\ \/ (~m.mvoteGranted /\ m.mterm = currentTerm[i])
+              \/ m.mterm < currentTerm[i]
+           /\ UNCHANGED <<serverVars, candidateVars, leaderVars>>
+-    /\ Discard(m)
++    \* raft_become_leader (raft_server.c:166-176) sends AppendEntries to every
++    \* other node before this call returns. next_idx is already current_idx + 1,
++    \* so the message is empty and is never a snapshot.
++    /\ LET became ==
++             /\ m.mterm = currentTerm[i]
++             /\ m.mvoteGranted
++             /\ IsMajority(Cardinality(votesGranted[i] \cup {j}), Cardinality(Server))
++           nxt == LastLogIndex(i) + 1
++           prevIdx == IF nxt > 1
++                      THEN IF nxt - 1 > snapshotLastIdx[i] THEN nxt - 1
++                           ELSE snapshotLastIdx[i]
++                      ELSE 0
++           prevTerm == IF prevIdx = 0 THEN 0
++                       ELSE IF prevIdx = snapshotLastIdx[i] THEN snapshotLastTerm[i]
++                       ELSE LogTermAt(i, prevIdx)
++           heartbeats ==
++             { [mtype         |-> AppendEntriesRequest,
++                mterm         |-> currentTerm[i],
++                mprevLogIdx   |-> prevIdx,
++                mprevLogTerm  |-> prevTerm,
++                mleaderCommit |-> commitIndex[i],
++                mentries      |-> <<>>,
++                msource       |-> i,
++                mdest         |-> p] : p \in Server \ {i} }
++       IN IF became
++          THEN messages' = (messages (-) SetToBag({m})) (+) SetToBag(heartbeats)
++          ELSE Discard(m)
+     /\ UNCHANGED <<logVars, snapshotVars, crashVars>>
+ 
+ \***********************************************************************
+@@ -325,15 +380,35 @@
+     /\ state[i] = Leader                                              \* line 737
+     /\ Len(log[i]) + snapshotLastIdx[i] < MaxLogLength  \* bound
+     /\ LET entry == Entry(currentTerm[i], v)                          \* line 743
++           \* After the append, current_idx is the new last index.
++           \* raft_recv_entry sends only to peers already at that index (lines 759-764).
++           nxt == LastLogIndex(i) + 1
++           prevIdx == IF nxt > 1
++                      THEN IF nxt - 1 > snapshotLastIdx[i] THEN nxt - 1
++                           ELSE snapshotLastIdx[i]
++                      ELSE 0
++           prevTerm == IF prevIdx = 0 THEN 0
++                       ELSE IF prevIdx = snapshotLastIdx[i] THEN snapshotLastTerm[i]
++                       ELSE LogTermAt(i, prevIdx)
++           caught == {q \in Server \ {i} : nextIndex[i][q] = nxt}
++           sent ==
++             { [mtype         |-> AppendEntriesRequest,
++                mterm         |-> currentTerm[i],
++                mprevLogIdx   |-> prevIdx,
++                mprevLogTerm  |-> prevTerm,
++                mleaderCommit |-> commitIndex[i],
++                mentries      |-> <<entry>>,
++                msource       |-> i,
++                mdest         |-> p] : p \in caught }
+        IN
+-       \* Append entry (line 744)
+        /\ log' = [log EXCEPT ![i] = Append(@, entry)]
+-       \* Single-node cluster: commit immediately (lines 767-768)
++       \* Single-node commit happens after the sends (lines 767-768).
+        /\ IF Cardinality(Server) = 1
+-          THEN commitIndex' = [commitIndex EXCEPT ![i] = LastLogIndex(i) + 1]
++          THEN commitIndex' = [commitIndex EXCEPT ![i] = nxt]
+           ELSE UNCHANGED commitIndex
++       /\ messages' = messages (+) SetToBag(sent)
+     /\ UNCHANGED <<serverVars, lastApplied, leaderVars, candidateVars,
+-                   messages, snapshotVars, crashVars>>
++                   snapshotVars, crashVars>>
+ 
+ \***********************************************************************
+ \* ACTION: SendAppendEntries — leader sends AE to a single peer
+@@ -382,34 +457,47 @@
+ BroadcastAppendEntries(i) ==
+     /\ ~crashed[i]
+     /\ state[i] = Leader
+-    \* Model the early-abort: only send to peers before the first
+-    \* needs-snapshot peer (iteration order matters in impl)
+-    \* For TLA+, we non-deterministically choose whether abort occurs
+-    /\ \E peers \in SUBSET (Server \ {i}) :
+-         /\ peers # {}
+-         \* All chosen peers must NOT need snapshot
+-         /\ \A p \in peers : ~NeedsSnapshot(i, p)
+-         /\ messages' = messages (+) SetToBag(
+-              {LET nxt      == nextIndex[i][p]
+-                   entries  == SubLog(i, nxt)
+-                   prevIdx  == IF nxt > 1
+-                               THEN IF nxt - 1 > snapshotLastIdx[i]
+-                                    THEN nxt - 1
+-                                    ELSE snapshotLastIdx[i]
+-                               ELSE 0
+-                   prevTerm == IF prevIdx = 0 THEN 0
+-                               ELSE IF prevIdx = snapshotLastIdx[i]
+-                                    THEN snapshotLastTerm[i]
+-                                    ELSE LogTermAt(i, prevIdx)
+-               IN [mtype          |-> AppendEntriesRequest,
+-                   mterm          |-> currentTerm[i],
+-                   mprevLogIdx    |-> prevIdx,
+-                   mprevLogTerm   |-> prevTerm,
+-                   mleaderCommit  |-> commitIndex[i],
+-                   mentries       |-> entries,
+-                   msource        |-> i,
+-                   mdest          |-> p] : p \in peers})
+-    /\ UNCHANGED <<serverVars, logVars, leaderVars, candidateVars,
++    \* raft_send_appendentries_all walks nodes in add order and returns
++    \* on the first error (raft_server.c:946-953). The only such error
++    \* here is RAFT_ERR_NEEDS_SNAPSHOT, after the snapshot has been sent.
++    /\ LET ordered == PeerSeq(i)
++           cut == CHOOSE k \in 1..(Len(ordered) + 1) :
++                    /\ \A j \in 1..(k - 1) : ~NeedsSnapshot(i, ordered[j])
++                    /\ IF k <= Len(ordered)
++                       THEN NeedsSnapshot(i, ordered[k])
++                       ELSE TRUE
++           Ae(k) ==
++             LET p == ordered[k]
++                 nxt == nextIndex[i][p]
++                 entries == SubLog(i, nxt)
++                 prevIdx == IF nxt > 1
++                            THEN IF nxt - 1 > snapshotLastIdx[i]
++                                 THEN nxt - 1
++                                 ELSE snapshotLastIdx[i]
++                            ELSE 0
++                 prevTerm == IF prevIdx = 0 THEN 0
++                             ELSE IF prevIdx = snapshotLastIdx[i]
++                                  THEN snapshotLastTerm[i]
++                                  ELSE LogTermAt(i, prevIdx)
++             IN [mtype          |-> AppendEntriesRequest,
++                 mterm          |-> currentTerm[i],
++                 mprevLogIdx    |-> prevIdx,
++                 mprevLogTerm   |-> prevTerm,
++                 mleaderCommit  |-> commitIndex[i],
++                 mentries       |-> entries,
++                 msource        |-> i,
++                 mdest          |-> p]
++           sent == {Ae(k) : k \in 1..(cut - 1)} \cup
++                   IF cut > Len(ordered) THEN {}
++                   ELSE {[mtype             |-> InstallSnapshotRequest,
++                          mterm             |-> currentTerm[i],
++                          msnapshotLastIdx  |-> snapshotLastIdx[i],
++                          msnapshotLastTerm |-> snapshotLastTerm[i],
++                          msource           |-> i,
++                          mdest             |-> ordered[cut]]}
++       IN messages' = messages (+) SetToBag(sent)
++    /\ lastApplied' = [lastApplied EXCEPT ![i] = AppliedIdx(i)]
++    /\ UNCHANGED <<serverVars, log, commitIndex, leaderVars, candidateVars,
+                    snapshotVars, crashVars>>
+ 
+ \***********************************************************************
+@@ -509,6 +597,8 @@
+        /\ votedFor' = [votedFor EXCEPT ![i] =
+             IF m.mterm > currentTerm[i] THEN Nil            \* raft_set_current_term clears vote
+             ELSE votedFor[i]]
++       /\ currentLeader' = [currentLeader EXCEPT ![i] =
++            IF reject THEN currentLeader[i] ELSE j]         \* line 427, skipped on the reject goto
+        /\ log' = [log EXCEPT ![i] = newLog]
+        /\ commitIndex' = [commitIndex EXCEPT ![i] = newCommitIndex]
+        /\ Reply([mtype       |-> AppendEntriesResponse,
+@@ -537,6 +627,7 @@
+           /\ currentTerm' = [currentTerm EXCEPT ![i] = m.mterm]
+           /\ votedFor' = [votedFor EXCEPT ![i] = Nil]
+           /\ state' = [state EXCEPT ![i] = Follower]
++          /\ currentLeader' = [currentLeader EXCEPT ![i] = Nil] \* line 302
+           /\ UNCHANGED <<logVars, leaderVars>>
+        \/ \* Stale term: ignore (lines 305-306)
+           /\ m.mterm < currentTerm[i]
+@@ -588,7 +679,62 @@
+                            THEN commitIndex' = [commitIndex EXCEPT ![i] = point]  \* line 372
+                            ELSE UNCHANGED commitIndex
+                      /\ UNCHANGED <<serverVars, log, lastApplied>>
+-    /\ Discard(m)
++    \* Failure retries immediately (line 326). Success sends again when the
++    \* new next index still names a log entry (lines 377-379).
++    /\ LET retry ==
++             /\ m.mterm = currentTerm[i]
++             /\ state[i] = Leader
++             /\ \/ /\ ~m.msuccess
++                   /\ ~(m.mcurrentIdx < matchIndex[i][j])
++                \/ /\ m.msuccess
++                   /\ ~(m.mcurrentIdx <= matchIndex[i][j])
++                   /\ m.mcurrentIdx + 1 > snapshotLastIdx[i]
++                   /\ m.mcurrentIdx + 1 <= LastLogIndex(i)
++           nxt ==
++             IF ~m.msuccess
++             THEN IF m.mcurrentIdx < nextIndex[i][j] - 1
++                  THEN IF m.mcurrentIdx + 1 < LastLogIndex(i)
++                       THEN m.mcurrentIdx + 1
++                       ELSE LastLogIndex(i)
++                  ELSE nextIndex[i][j] - 1
++             ELSE m.mcurrentIdx + 1
++           prevIdx == IF nxt > 1
++                      THEN IF nxt - 1 > snapshotLastIdx[i] THEN nxt - 1
++                           ELSE snapshotLastIdx[i]
++                      ELSE 0
++           prevTerm == IF prevIdx = 0 THEN 0
++                       ELSE IF prevIdx = snapshotLastIdx[i] THEN snapshotLastTerm[i]
++                       ELSE LogTermAt(i, prevIdx)
++           \* Commit is updated before the success resend (lines 352-379).
++           point == m.mcurrentIdx
++           advanced ==
++             /\ m.msuccess
++             /\ ~(m.mcurrentIdx <= matchIndex[i][j])
++             /\ commitIndex[i] < point
++             /\ LogEntry(i, point).term = currentTerm[i]
++             /\ LET votes == 1 + Cardinality(
++                      {k \in Server \ {i} :
++                         point <= IF k = j THEN m.mcurrentIdx ELSE matchIndex[i][k]})
++                IN IsMajority(votes, Cardinality(Server))
++           sentCommit == IF advanced THEN point ELSE commitIndex[i]
++           msg == IF snapshotLastIdx[i] > 0 /\ nxt < snapshotLastIdx[i]
++                  THEN [mtype             |-> InstallSnapshotRequest,
++                        mterm             |-> currentTerm[i],
++                        msnapshotLastIdx  |-> snapshotLastIdx[i],
++                        msnapshotLastTerm |-> snapshotLastTerm[i],
++                        msource           |-> i,
++                        mdest             |-> j]
++                  ELSE [mtype          |-> AppendEntriesRequest,
++                        mterm          |-> currentTerm[i],
++                        mprevLogIdx    |-> prevIdx,
++                        mprevLogTerm   |-> prevTerm,
++                        mleaderCommit  |-> sentCommit,
++                        mentries       |-> SubLog(i, nxt),
++                        msource        |-> i,
++                        mdest          |-> j]
++       IN IF retry
++          THEN messages' = (messages (-) SetToBag({m})) (+) SetToBag({msg})
++          ELSE Discard(m)
+     /\ UNCHANGED <<candidateVars, snapshotVars, crashVars>>
+ 
+ \***********************************************************************
+@@ -615,6 +761,19 @@
+            snapTerm == LogTermAt(i, snapIdx)
+            \* Number of entries to compact: commit_idx - log_base (line 1255)
+            numCompact == snapIdx - snapshotLastIdx[i]
++           \* A leader sends one snapshot per lagging peer before returning
++           \* (raft_server.c:1337-1354). Comparison uses the new snapshot index.
++           laggards == IF state[i] = Leader
++                       THEN {p \in Server \ {i} : nextIndex[i][p] < snapIdx}
++                       ELSE {}
++           dests == FilterSeq(PeerSeq(i), laggards, 1)
++           snaps == [k \in 1..Len(dests) |->
++                       [mtype             |-> InstallSnapshotRequest,
++                        mterm             |-> currentTerm[i],
++                        msnapshotLastIdx  |-> snapIdx,
++                        msnapshotLastTerm |-> snapTerm,
++                        msource           |-> i,
++                        mdest             |-> dests[k]]]
+        IN
+        /\ snapTerm > 0
+        /\ numCompact > 0
+@@ -623,8 +782,9 @@
+        /\ log' = [log EXCEPT ![i] = SubSeq(@, numCompact + 1, Len(@))]
+        /\ snapshotLastIdx'  = [snapshotLastIdx  EXCEPT ![i] = snapIdx]
+        /\ snapshotLastTerm' = [snapshotLastTerm EXCEPT ![i] = snapTerm]
++       /\ messages' = messages (+) SetToBag({snaps[k] : k \in 1..Len(snaps)})
+     /\ UNCHANGED <<serverVars, commitIndex, lastApplied, leaderVars,
+-                   candidateVars, messages, crashVars>>
++                   candidateVars, crashVars>>
+ 
+ \***********************************************************************
+ \* ACTION: SendInstallSnapshot — leader sends snapshot to lagging peer
+@@ -670,6 +830,7 @@
+     /\ votedFor' = [votedFor EXCEPT ![i] = Nil]
+     \* Become follower (line 1385)
+     /\ state' = [state EXCEPT ![i] = Follower]
++    /\ currentLeader' = [currentLeader EXCEPT ![i] = Nil] \* line 1386
+     \* Clear log, set base (line 1388)
+     /\ log' = [log EXCEPT ![i] = <<>>]
+     \* Update commit index (lines 1390-1391)
+@@ -708,6 +869,7 @@
+     /\ crashed' = [crashed EXCEPT ![i] = FALSE]
+     \* Volatile state resets
+     /\ state' = [state EXCEPT ![i] = Follower]
++    /\ currentLeader' = [currentLeader EXCEPT ![i] = Nil]
+     /\ commitIndex' = [commitIndex EXCEPT ![i] = 0]
+     /\ lastApplied' = [lastApplied EXCEPT ![i] = 0]
+     \* Persistent state preserved: currentTerm, votedFor, log, snapshot metadata
+@@ -834,6 +996,7 @@
+     /\ currentTerm \in [Server -> Nat]
+     /\ votedFor \in [Server -> Server \cup {Nil}]
+     /\ state \in [Server -> {Follower, Candidate, Leader}]
++    /\ currentLeader \in [Server -> Server \cup {Nil}]
+     /\ commitIndex \in [Server -> Nat]
+     /\ lastApplied \in [Server -> Nat]
+     /\ snapshotLastIdx \in [Server -> Nat]

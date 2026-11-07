@@ -1,0 +1,395 @@
+文件	行号	集合	依据	下一步
+raft_log.c	43	E	环形下标取模。模型的日志是序列，没有 front/back。	写入 scenarios.md，交给 spec_generation。
+raft_log.c	45	E	环形下标取模。模型的日志是序列，没有 front/back。	写入 scenarios.md，交给 spec_generation。
+raft_log.c	46	C	负余数修正。不是规格谓词。	白名单，不采样。
+raft_log.c	57	B	日志条数等于环形容量时分配两倍空间。	加长 DepthBound，让日志写满环形缓冲。期望这行执行。
+raft_log.c	58	C	分配失败返回 RAFT_ERR_NOMEM。	白名单，不采样。
+raft_log.c	59	C	分配失败返回 RAFT_ERR_NOMEM。	白名单，不采样。
+raft_log.c	61	B	环形缓冲扩容：拷贝、绕回、容量翻倍。不改写规格里的日志内容。	加长 DepthBound，随容量不足一起执行。
+raft_log.c	63	B	环形缓冲扩容：拷贝、绕回、容量翻倍。不改写规格里的日志内容。	加长 DepthBound，随容量不足一起执行。
+raft_log.c	64	B	环形缓冲扩容：拷贝、绕回、容量翻倍。不改写规格里的日志内容。	加长 DepthBound，随容量不足一起执行。
+raft_log.c	65	B	环形缓冲扩容：拷贝、绕回、容量翻倍。不改写规格里的日志内容。	加长 DepthBound，随容量不足一起执行。
+raft_log.c	69	B	环形缓冲扩容：拷贝、绕回、容量翻倍。不改写规格里的日志内容。	加长 DepthBound，随容量不足一起执行。
+raft_log.c	71	B	环形缓冲扩容：拷贝、绕回、容量翻倍。不改写规格里的日志内容。	加长 DepthBound，随容量不足一起执行。
+raft_log.c	72	B	环形缓冲扩容：拷贝、绕回、容量翻倍。不改写规格里的日志内容。	加长 DepthBound，随容量不足一起执行。
+raft_log.c	73	B	环形缓冲扩容：拷贝、绕回、容量翻倍。不改写规格里的日志内容。	加长 DepthBound，随容量不足一起执行。
+raft_log.c	74	B	环形缓冲扩容：拷贝、绕回、容量翻倍。不改写规格里的日志内容。	加长 DepthBound，随容量不足一起执行。
+raft_log.c	75	B	环形缓冲扩容：拷贝、绕回、容量翻倍。不改写规格里的日志内容。	加长 DepthBound，随容量不足一起执行。
+raft_log.c	93	D	log_alloc 分配失败。只在创建时运行。	不采样。
+raft_log.c	98	D	log_alloc 分配失败。只在创建时运行。	不采样。
+raft_log.c	99	D	log_alloc 分配失败。只在创建时运行。	不采样。
+raft_log.c	132	D	log_clear_entries 在没有条目或没有回调时返回。清空路径。	不采样。
+raft_log.c	150	C	扩容失败时把错误交回。	白名单，不采样。
+raft_log.c	159	C	log_offer 回调失败。	白名单，不采样。
+raft_log.c	193	B	读取时下标越过 back，用 size 减下标。守卫是环形下标绕回。	加长 DepthBound，在扩容绕回之后再读日志。期望这行执行。
+raft_log.c	205	B	下标为 0 时返回 NULL。守卫 idx = 0。	加长 DepthBound。期望错误返回。
+raft_log.c	222	A	log_delete 入口，随后弹出日志。改写 log。	HandleAppendEntriesRequest 已有后缀截断。加长 DepthBound，让 prev 任期冲突且冲突点在提交点之后。
+raft_log.c	224	A	log_delete 入口，随后弹出日志。改写 log。	HandleAppendEntriesRequest 已有后缀截断。加长 DepthBound，让 prev 任期冲突且冲突点在提交点之后。
+raft_log.c	226	B	idx 为 0 时返回 -1。	加长 DepthBound。期望错误返回。
+raft_log.c	227	B	idx 为 0 时返回 -1。	加长 DepthBound。期望错误返回。
+raft_log.c	229	B	截断下标不大于快照基址时抬到基址。守卫 idx <= snapshotLastIdx。这一行只改局部下标。	加长 DepthBound。期望执行。
+raft_log.c	230	B	截断下标不大于快照基址时抬到基址。守卫 idx <= snapshotLastIdx。这一行只改局部下标。	加长 DepthBound。期望执行。
+raft_log.c	232	A	从日志末尾逐条弹出。改写 log。	与 HandleAppendEntriesRequest 的后缀截断同一赋值。加长 DepthBound。
+raft_log.c	234	A	从日志末尾逐条弹出。改写 log。	与 HandleAppendEntriesRequest 的后缀截断同一赋值。加长 DepthBound。
+raft_log.c	235	A	从日志末尾逐条弹出。改写 log。	与 HandleAppendEntriesRequest 的后缀截断同一赋值。加长 DepthBound。
+raft_log.c	237	E	log_pop 回调不在模型里。	写入 scenarios.md。
+raft_log.c	239	E	log_pop 回调不在模型里。	写入 scenarios.md。
+raft_log.c	240	E	log_pop 回调不在模型里。	写入 scenarios.md。
+raft_log.c	241	C	log_pop 回调返回错误。	白名单，不采样。
+raft_log.c	242	C	log_pop 回调返回错误。	白名单，不采样。
+raft_log.c	244	A	弹出条目并减少 count。改写 log。	与 HandleAppendEntriesRequest 的后缀截断同一赋值。加长 DepthBound。
+raft_log.c	245	A	弹出条目并减少 count。改写 log。	与 HandleAppendEntriesRequest 的后缀截断同一赋值。加长 DepthBound。
+raft_log.c	246	A	弹出条目并减少 count。改写 log。	与 HandleAppendEntriesRequest 的后缀截断同一赋值。加长 DepthBound。
+raft_log.c	248	A	弹出条目并减少 count。改写 log。	与 HandleAppendEntriesRequest 的后缀截断同一赋值。加长 DepthBound。
+raft_log.c	257	B	空日志上 poll 返回 -1。守卫是日志为空。	加长 DepthBound。期望错误返回。
+raft_log.c	265	C	log_poll 回调失败。	白名单，不采样。
+raft_log.c	276	D	log_peektail 驱动不调用。	不采样。
+raft_log.c	278	D	log_peektail 驱动不调用。	不采样。
+raft_log.c	280	D	log_peektail 驱动不调用。	不采样。
+raft_log.c	281	D	log_peektail 驱动不调用。	不采样。
+raft_log.c	283	D	log_peektail 驱动不调用。	不采样。
+raft_log.c	284	D	log_peektail 驱动不调用。	不采样。
+raft_log.c	286	D	log_peektail 驱动不调用。	不采样。
+raft_log.c	289	D	log_empty 清空环形计数。	不采样。不另造清空动作。
+raft_log.c	291	D	log_empty 清空环形计数。	不采样。不另造清空动作。
+raft_log.c	293	D	log_empty 清空环形计数。	不采样。不另造清空动作。
+raft_log.c	294	D	log_empty 清空环形计数。	不采样。不另造清空动作。
+raft_log.c	295	D	log_empty 清空环形计数。	不采样。不另造清空动作。
+raft_log.c	296	D	log_empty 清空环形计数。	不采样。不另造清空动作。
+raft_node.c	44	D	raft_node_new 分配失败。只在创建时运行。	不采样。
+raft_node.c	53	D	raft_node_free。销毁路径。	不采样。有移除节点的动作时再看泄漏。
+raft_node.c	55	D	raft_node_free。销毁路径。	不采样。有移除节点的动作时再看泄漏。
+raft_node.c	56	D	raft_node_free。销毁路径。	不采样。有移除节点的动作时再看泄漏。
+raft_node.c	85	D	udata 的 getter 和 setter。构造时直接写入，驱动不调用。	不采样。
+raft_node.c	87	D	udata 的 getter 和 setter。构造时直接写入，驱动不调用。	不采样。
+raft_node.c	88	D	udata 的 getter 和 setter。构造时直接写入，驱动不调用。	不采样。
+raft_node.c	91	D	udata 的 getter 和 setter。构造时直接写入，驱动不调用。	不采样。
+raft_node.c	93	D	udata 的 getter 和 setter。构造时直接写入，驱动不调用。	不采样。
+raft_node.c	94	D	udata 的 getter 和 setter。构造时直接写入，驱动不调用。	不采样。
+raft_node.c	95	D	udata 的 getter 和 setter。构造时直接写入，驱动不调用。	不采样。
+raft_node.c	112	E	设置或清除投票资格。模型没有投票资格字段。	写入 scenarios.md。
+raft_node.c	114	E	设置或清除投票资格。模型没有投票资格字段。	写入 scenarios.md。
+raft_node.c	115	E	设置或清除投票资格。模型没有投票资格字段。	写入 scenarios.md。
+raft_node.c	117	C	置投票资格时断言原先未投票。	白名单，不采样。
+raft_node.c	118	E	设置或清除投票资格。模型没有投票资格字段。	写入 scenarios.md。
+raft_node.c	122	C	取消投票资格时断言原先在投票。	白名单，不采样。
+raft_node.c	123	E	设置或清除投票资格。模型没有投票资格字段。	写入 scenarios.md。
+raft_node.c	125	E	设置或清除投票资格。模型没有投票资格字段。	写入 scenarios.md。
+raft_node.c	133	E	读取 HAS_SUFFICIENT_LOG。成员变更标志。	写入 scenarios.md。
+raft_node.c	135	E	读取 HAS_SUFFICIENT_LOG。成员变更标志。	写入 scenarios.md。
+raft_node.c	136	E	读取 HAS_SUFFICIENT_LOG。成员变更标志。	写入 scenarios.md。
+raft_node.c	166	E	清除 VOTING_COMMITTED。	写入 scenarios.md。
+raft_node.c	169	E	读取 VOTING_COMMITTED。	写入 scenarios.md。
+raft_node.c	171	E	读取 VOTING_COMMITTED。	写入 scenarios.md。
+raft_node.c	172	E	读取 VOTING_COMMITTED。	写入 scenarios.md。
+raft_node.c	187	E	清除 ADDITION_COMMITTED。	写入 scenarios.md。
+raft_node.c	190	E	读取 ADDITION_COMMITTED。	写入 scenarios.md。
+raft_node.c	192	E	读取 ADDITION_COMMITTED。	写入 scenarios.md。
+raft_node.c	193	E	读取 ADDITION_COMMITTED。	写入 scenarios.md。
+raft_server.c	36	D	raft_set_heap_functions。配置堆分配器，驱动不调用。	不采样。
+raft_server.c	41	D	raft_set_heap_functions。配置堆分配器，驱动不调用。	不采样。
+raft_server.c	42	D	raft_set_heap_functions。配置堆分配器，驱动不调用。	不采样。
+raft_server.c	43	D	raft_set_heap_functions。配置堆分配器，驱动不调用。	不采样。
+raft_server.c	44	D	raft_set_heap_functions。配置堆分配器，驱动不调用。	不采样。
+raft_server.c	45	D	raft_set_heap_functions。配置堆分配器，驱动不调用。	不采样。
+raft_server.c	74	D	raft_new 分配失败。只在创建时运行。	不采样。
+raft_server.c	83	D	raft_new 分配失败。只在创建时运行。	不采样。
+raft_server.c	84	D	raft_new 分配失败。只在创建时运行。	不采样。
+raft_server.c	115	D	raft_clear 把任期、投票、提交点、角色和日志清零。	不采样。不另造公式里没有的清空。
+raft_server.c	117	D	raft_clear 把任期、投票、提交点、角色和日志清零。	不采样。不另造公式里没有的清空。
+raft_server.c	119	D	raft_clear 把任期、投票、提交点、角色和日志清零。	不采样。不另造公式里没有的清空。
+raft_server.c	120	D	raft_clear 把任期、投票、提交点、角色和日志清零。	不采样。不另造公式里没有的清空。
+raft_server.c	121	D	raft_clear 把任期、投票、提交点、角色和日志清零。	不采样。不另造公式里没有的清空。
+raft_server.c	122	D	raft_clear 把任期、投票、提交点、角色和日志清零。	不采样。不另造公式里没有的清空。
+raft_server.c	123	D	raft_clear 把任期、投票、提交点、角色和日志清零。	不采样。不另造公式里没有的清空。
+raft_server.c	124	D	raft_clear 把任期、投票、提交点、角色和日志清零。	不采样。不另造公式里没有的清空。
+raft_server.c	125	D	raft_clear 把任期、投票、提交点、角色和日志清零。	不采样。不另造公式里没有的清空。
+raft_server.c	126	D	raft_clear 把任期、投票、提交点、角色和日志清零。	不采样。不另造公式里没有的清空。
+raft_server.c	127	D	raft_clear 把任期、投票、提交点、角色和日志清零。	不采样。不另造公式里没有的清空。
+raft_server.c	128	D	raft_clear 把任期、投票、提交点、角色和日志清零。	不采样。不另造公式里没有的清空。
+raft_server.c	129	D	raft_clear 把任期、投票、提交点、角色和日志清零。	不采样。不另造公式里没有的清空。
+raft_server.c	130	D	raft_clear 把任期、投票、提交点、角色和日志清零。	不采样。不另造公式里没有的清空。
+raft_server.c	131	D	raft_clear 把任期、投票、提交点、角色和日志清零。	不采样。不另造公式里没有的清空。
+raft_server.c	132	D	raft_clear 把任期、投票、提交点、角色和日志清零。	不采样。不另造公式里没有的清空。
+raft_server.c	134	A	raft_delete_entry_from_idx 入口。随后删除日志。	HandleAppendEntriesRequest 已有后缀截断。加长 DepthBound。
+raft_server.c	136	A	raft_delete_entry_from_idx 入口。随后删除日志。	HandleAppendEntriesRequest 已有后缀截断。加长 DepthBound。
+raft_server.c	138	B	断言被删下标大于提交点。守卫 idx <= commitIndex。	加长 DepthBound。期望断言。若因此死掉，按 replay 记 crash，不改集合。
+raft_server.c	140	E	截断扫到配置变更下标时清掉 voting_cfg_change_log_idx。	写入 scenarios.md。
+raft_server.c	141	E	截断扫到配置变更下标时清掉 voting_cfg_change_log_idx。	写入 scenarios.md。
+raft_server.c	143	A	调用 log_delete，改写 log。	HandleAppendEntriesRequest 已有后缀截断。加长 DepthBound。
+raft_server.c	188	C	become_candidate 里持久化任期失败。	白名单，不采样。
+raft_server.c	230	A	投票节点数为 1 且自己不是领导者时成为领导者。改写 state。	Timeout 已有成为领导者。当前 Server 有 3 个元素，守卫为假。另开只有一个服务器的配置，不在本配置加 trace。
+raft_server.c	231	A	投票节点数为 1 且自己不是领导者时成为领导者。改写 state。	Timeout 已有成为领导者。当前 Server 有 3 个元素，守卫为假。另开只有一个服务器的配置，不在本配置加 trace。
+raft_server.c	232	A	投票节点数为 1 且自己不是领导者时成为领导者。改写 state。	Timeout 已有成为领导者。当前 Server 有 3 个元素，守卫为假。另开只有一个服务器的配置，不在本配置加 trace。
+raft_server.c	249	C	election_start 返回错误。	白名单，不采样。
+raft_server.c	270	E	读取 voting_cfg_change_log_idx。成员变更字段。	写入 scenarios.md。
+raft_server.c	272	E	读取 voting_cfg_change_log_idx。成员变更字段。	写入 scenarios.md。
+raft_server.c	289	C	响应处理时 node 为空，返回 -1。	白名单，不采样。
+raft_server.c	297	C	升高任期时持久化失败。	白名单，不采样。
+raft_server.c	307	B	领导者收到更低任期的响应时返回 0。守卫 m.mterm < currentTerm。	HandleAppendEntriesResponse 已有。加长 DepthBound。期望执行。
+raft_server.c	315	B	失败重试前读 nextIndex，并断言它大于 0。	加长 DepthBound。断言臂期望 nextIndex <= 0。
+raft_server.c	316	B	失败重试前读 nextIndex，并断言它大于 0。	加长 DepthBound。断言臂期望 nextIndex <= 0。
+raft_server.c	318	B	过期的失败响应直接返回。守卫 m.mcurrentIdx < matchIndex。	HandleAppendEntriesResponse 已有过期分支。加长 DepthBound。
+raft_server.c	319	B	过期的失败响应直接返回。守卫 m.mcurrentIdx < matchIndex。	HandleAppendEntriesResponse 已有过期分支。加长 DepthBound。
+raft_server.c	320	A	失败响应把 nextIndex 收到 current+1，或减一。改写 nextIndex。	HandleAppendEntriesResponse 的重试已有这对赋值。加长 DepthBound。
+raft_server.c	321	A	失败响应把 nextIndex 收到 current+1，或减一。改写 nextIndex。	HandleAppendEntriesResponse 的重试已有这对赋值。加长 DepthBound。
+raft_server.c	323	A	失败响应把 nextIndex 收到 current+1，或减一。改写 nextIndex。	HandleAppendEntriesResponse 的重试已有这对赋值。加长 DepthBound。
+raft_server.c	326	B	按新 nextIndex 重发。这一行不改写规格变量。	随上面的重试加长 DepthBound。期望执行。
+raft_server.c	327	B	按新 nextIndex 重发。这一行不改写规格变量。	随上面的重试加长 DepthBound。期望执行。
+raft_server.c	332	E	节点日志足够时的成员变更回调和 HAS_SUFFICIENT_LOG。	写入 scenarios.md。
+raft_server.c	333	E	节点日志足够时的成员变更回调和 HAS_SUFFICIENT_LOG。	写入 scenarios.md。
+raft_server.c	334	E	节点日志足够时的成员变更回调和 HAS_SUFFICIENT_LOG。	写入 scenarios.md。
+raft_server.c	335	E	节点日志足够时的成员变更回调和 HAS_SUFFICIENT_LOG。	写入 scenarios.md。
+raft_server.c	336	E	节点日志足够时的成员变更回调和 HAS_SUFFICIENT_LOG。	写入 scenarios.md。
+raft_server.c	339	E	节点日志足够时的成员变更回调和 HAS_SUFFICIENT_LOG。	写入 scenarios.md。
+raft_server.c	340	E	节点日志足够时的成员变更回调和 HAS_SUFFICIENT_LOG。	写入 scenarios.md。
+raft_server.c	341	E	节点日志足够时的成员变更回调和 HAS_SUFFICIENT_LOG。	写入 scenarios.md。
+raft_server.c	415	C	AppendEntries 里升高任期失败后退出。	白名单，不采样。
+raft_server.c	443	B	快照上的 prev 任期冲突，返回 RAFT_ERR_SHUTDOWN。守卫是 prev 下标等于 snapshotLastIdx 且任期不同。	加长 DepthBound。期望错误返回。
+raft_server.c	444	B	快照上的 prev 任期冲突，返回 RAFT_ERR_SHUTDOWN。守卫是 prev 下标等于 snapshotLastIdx 且任期不同。	加长 DepthBound。期望错误返回。
+raft_server.c	445	B	快照上的 prev 任期冲突，返回 RAFT_ERR_SHUTDOWN。守卫是 prev 下标等于 snapshotLastIdx 且任期不同。	加长 DepthBound。期望错误返回。
+raft_server.c	452	B	日志里没有 prev，或 prev 任期不一致。守卫是 prev 不在本机日志里，或任期不相等。	HandleAppendEntriesRequest 已有拒绝。加长 DepthBound。期望执行拒绝臂。
+raft_server.c	453	B	日志里没有 prev，或 prev 任期不一致。守卫是 prev 不在本机日志里，或任期不相等。	HandleAppendEntriesRequest 已有拒绝。加长 DepthBound。期望执行拒绝臂。
+raft_server.c	457	B	日志里没有 prev，或 prev 任期不一致。守卫是 prev 不在本机日志里，或任期不相等。	HandleAppendEntriesRequest 已有拒绝。加长 DepthBound。期望执行拒绝臂。
+raft_server.c	460	B	日志里没有 prev，或 prev 任期不一致。守卫是 prev 不在本机日志里，或任期不相等。	HandleAppendEntriesRequest 已有拒绝。加长 DepthBound。期望执行拒绝臂。
+raft_server.c	463	B	冲突下标不超过提交点时返回 RAFT_ERR_SHUTDOWN。守卫 idx <= commitIndex。	加长 DepthBound。期望错误返回。
+raft_server.c	464	B	冲突下标不超过提交点时返回 RAFT_ERR_SHUTDOWN。守卫 idx <= commitIndex。	加长 DepthBound。期望错误返回。
+raft_server.c	465	B	冲突下标不超过提交点时返回 RAFT_ERR_SHUTDOWN。守卫 idx <= commitIndex。	加长 DepthBound。期望错误返回。
+raft_server.c	468	A	prev 任期不一致时删除后缀。改写 log。	HandleAppendEntriesRequest 已有后缀截断。加长 DepthBound。
+raft_server.c	469	A	prev 任期不一致时删除后缀。改写 log。	HandleAppendEntriesRequest 已有后缀截断。加长 DepthBound。
+raft_server.c	487	B	新条目与已提交下标冲突时返回 RAFT_ERR_SHUTDOWN。守卫冲突下标 <= commitIndex。	加长 DepthBound。期望错误返回。
+raft_server.c	490	B	新条目与已提交下标冲突时返回 RAFT_ERR_SHUTDOWN。守卫冲突下标 <= commitIndex。	加长 DepthBound。期望错误返回。
+raft_server.c	493	B	新条目与已提交下标冲突时返回 RAFT_ERR_SHUTDOWN。守卫冲突下标 <= commitIndex。	加长 DepthBound。期望错误返回。
+raft_server.c	494	B	新条目与已提交下标冲突时返回 RAFT_ERR_SHUTDOWN。守卫冲突下标 <= commitIndex。	加长 DepthBound。期望错误返回。
+raft_server.c	496	A	未提交的冲突条目处删除后缀。改写 log。	HandleAppendEntriesRequest 已有后缀截断。加长 DepthBound。
+raft_server.c	497	C	删除返回错误后退出。	白名单，不采样。
+raft_server.c	498	C	删除返回错误后退出。	白名单，不采样。
+raft_server.c	499	A	截断后停止比较后续条目。	与上一行同一截断。加长 DepthBound。
+raft_server.c	511	C	追加条目失败后退出。	白名单，不采样。
+raft_server.c	519	B	推进提交点时用 max(当前下标, 1)。守卫 leaderCommit > commitIndex。这一行是局部变量。	加长 DepthBound。期望执行。
+raft_server.c	539	E	本机不是投票节点时拒绝投票。模型里每个服务器都投票。	写入 scenarios.md。
+raft_server.c	562	B	当前下标落在快照上时用快照任期比较日志新旧。守卫 LastLogIndex = snapshotLastIdx。	HandleRequestVoteRequest 已有日志比较。加长 DepthBound。期望执行。
+raft_server.c	563	B	当前下标落在快照上时用快照任期比较日志新旧。守卫 LastLogIndex = snapshotLastIdx。	HandleRequestVoteRequest 已有日志比较。加长 DepthBound。期望执行。
+raft_server.c	565	B	下标上既没有条目也没有快照时拒绝投票。	加长 DepthBound。期望返回 0。
+raft_server.c	568	B	对方最后任期更高时同意投票。守卫是对方 lastLogTerm 更大。	HandleRequestVoteRequest 已有。加长 DepthBound。期望执行。
+raft_server.c	585	C	RequestVote 的 node 为空时按 id 查找。驱动总是传入节点。	白名单，不采样。
+raft_server.c	598	B	已有领导者且租约未过期则拒绝投票。守卫 currentLeader 不是候选人。	HandleRequestVoteRequest 已有租约。加长 DepthBound。期望执行。
+raft_server.c	599	B	已有领导者且租约未过期则拒绝投票。守卫 currentLeader 不是候选人。	HandleRequestVoteRequest 已有租约。加长 DepthBound。期望执行。
+raft_server.c	615	C	投票持久化失败时把 vote_granted 置 0。	白名单，不采样。
+raft_server.c	631	C	候选人 id 对不上任何节点。	白名单，不采样。
+raft_server.c	632	C	候选人 id 对不上任何节点。	白名单，不采样。
+raft_server.c	651	B	票数大于节点数时返回 0。守卫 nvotes > num_nodes。	用现有常量让 TLC 找这个状态。找不到再标死代码。这次不从分母去掉。
+raft_server.c	668	B	自己不是候选人时忽略投票响应。守卫 state /= Candidate。	HandleRequestVoteResponse 已有。加长 DepthBound。
+raft_server.c	674	C	投票响应里升高任期时持久化失败。	白名单，不采样。
+raft_server.c	706	C	未知节点且正在断开时 SHUTDOWN，或投票结果落在枚举外时 assert。connected 不是规格变量。	白名单，不采样。
+raft_server.c	707	C	未知节点且正在断开时 SHUTDOWN，或投票结果落在枚举外时 assert。connected 不是规格变量。	白名单，不采样。
+raft_server.c	708	C	未知节点且正在断开时 SHUTDOWN，或投票结果落在枚举外时 assert。connected 不是规格变量。	白名单，不采样。
+raft_server.c	709	C	未知节点且正在断开时 SHUTDOWN，或投票结果落在枚举外时 assert。connected 不是规格变量。	白名单，不采样。
+raft_server.c	710	C	未知节点且正在断开时 SHUTDOWN，或投票结果落在枚举外时 assert。connected 不是规格变量。	白名单，不采样。
+raft_server.c	712	C	未知节点且正在断开时 SHUTDOWN，或投票结果落在枚举外时 assert。connected 不是规格变量。	白名单，不采样。
+raft_server.c	713	C	未知节点且正在断开时 SHUTDOWN，或投票结果落在枚举外时 assert。connected 不是规格变量。	白名单，不采样。
+raft_server.c	729	C	配置变更进行中再收一条配置变更，返回错误。该下标不是规格变量。	白名单，不采样。
+raft_server.c	730	C	配置变更进行中再收一条配置变更，返回错误。该下标不是规格变量。	白名单，不采样。
+raft_server.c	734	C	快照进行中拒绝客户端请求。snapshot_in_progress 不是规格变量。	白名单，不采样。
+raft_server.c	735	C	快照进行中拒绝客户端请求。snapshot_in_progress 不是规格变量。	白名单，不采样。
+raft_server.c	739	B	不是领导者时拒绝客户端请求。守卫 state /= Leader。	ClientRequest 已有领导者守卫。加长 DepthBound。期望错误返回。
+raft_server.c	747	C	追加客户端条目失败。	白名单，不采样。
+raft_server.c	769	A	投票节点数为 1 时把提交点设为当前下标。改写 commitIndex。	ClientRequest 已有单节点提交。当前 Server 有 3 个元素，守卫为假。另开只有一个服务器的配置。
+raft_server.c	777	E	记下配置变更的日志下标。	写入 scenarios.md。
+raft_server.c	807	E	追加配置变更条目时记下该下标。	写入 scenarios.md。
+raft_server.c	817	C	快照进行中且不允许并行应用时返回 -1。该标志不是规格变量。	白名单，不采样。
+raft_server.c	821	B	lastApplied 已经等于提交点时返回 -1。守卫 lastApplied = commitIndex。	加长 DepthBound。期望错误返回。
+raft_server.c	837	C	applylog 回调返回 RAFT_ERR_SHUTDOWN。	白名单，不采样。
+raft_server.c	842	E	应用配置变更条目：提交投票资格、添加、降级、移除。	写入 scenarios.md。
+raft_server.c	847	E	应用配置变更条目：提交投票资格、添加、降级、移除。	写入 scenarios.md。
+raft_server.c	848	E	应用配置变更条目：提交投票资格、添加、降级、移除。	写入 scenarios.md。
+raft_server.c	850	E	应用配置变更条目：提交投票资格、添加、降级、移除。	写入 scenarios.md。
+raft_server.c	851	E	应用配置变更条目：提交投票资格、添加、降级、移除。	写入 scenarios.md。
+raft_server.c	852	E	应用配置变更条目：提交投票资格、添加、降级、移除。	写入 scenarios.md。
+raft_server.c	853	E	应用配置变更条目：提交投票资格、添加、降级、移除。	写入 scenarios.md。
+raft_server.c	855	E	应用配置变更条目：提交投票资格、添加、降级、移除。	写入 scenarios.md。
+raft_server.c	856	E	应用配置变更条目：提交投票资格、添加、降级、移除。	写入 scenarios.md。
+raft_server.c	857	E	应用配置变更条目：提交投票资格、添加、降级、移除。	写入 scenarios.md。
+raft_server.c	858	E	应用配置变更条目：提交投票资格、添加、降级、移除。	写入 scenarios.md。
+raft_server.c	859	E	应用配置变更条目：提交投票资格、添加、降级、移除。	写入 scenarios.md。
+raft_server.c	860	E	应用配置变更条目：提交投票资格、添加、降级、移除。	写入 scenarios.md。
+raft_server.c	861	E	应用配置变更条目：提交投票资格、添加、降级、移除。	写入 scenarios.md。
+raft_server.c	862	E	应用配置变更条目：提交投票资格、添加、降级、移除。	写入 scenarios.md。
+raft_server.c	863	E	应用配置变更条目：提交投票资格、添加、降级、移除。	写入 scenarios.md。
+raft_server.c	864	E	应用配置变更条目：提交投票资格、添加、降级、移除。	写入 scenarios.md。
+raft_server.c	865	E	应用配置变更条目：提交投票资格、添加、降级、移除。	写入 scenarios.md。
+raft_server.c	866	E	应用配置变更条目：提交投票资格、添加、降级、移除。	写入 scenarios.md。
+raft_server.c	867	E	应用配置变更条目：提交投票资格、添加、降级、移除。	写入 scenarios.md。
+raft_server.c	868	E	应用配置变更条目：提交投票资格、添加、降级、移除。	写入 scenarios.md。
+raft_server.c	869	E	应用配置变更条目：提交投票资格、添加、降级、移除。	写入 scenarios.md。
+raft_server.c	870	E	应用配置变更条目：提交投票资格、添加、降级、移除。	写入 scenarios.md。
+raft_server.c	871	E	应用配置变更条目：提交投票资格、添加、降级、移除。	写入 scenarios.md。
+raft_server.c	874	E	配置变更应用完后返回。	写入 scenarios.md。
+raft_server.c	891	C	没有 send_appendentries 回调时返回 -1。驱动总是装上回调。	白名单，不采样。
+raft_server.c	953	B	广播中途 send 返回非 0 就停。守卫是某个 nextIndex < snapshotLastIdx。	Broadcast 已有按前缀发送。加长 DepthBound，让落后节点的 next 落在快照之前。期望这行执行。
+raft_server.c	969	E	节点已存在时把它设成投票节点。	写入 scenarios.md。
+raft_server.c	970	E	节点已存在时把它设成投票节点。	写入 scenarios.md。
+raft_server.c	979	C	添加节点时分配失败。	白名单，不采样。
+raft_server.c	982	C	添加节点时分配失败。	白名单，不采样。
+raft_server.c	983	C	添加节点时分配失败。	白名单，不采样。
+raft_server.c	1004	E	添加非投票节点，或从节点数组里移除节点。	写入 scenarios.md。
+raft_server.c	1006	E	添加非投票节点，或从节点数组里移除节点。	写入 scenarios.md。
+raft_server.c	1007	E	添加非投票节点，或从节点数组里移除节点。	写入 scenarios.md。
+raft_server.c	1009	E	添加非投票节点，或从节点数组里移除节点。	写入 scenarios.md。
+raft_server.c	1010	E	添加非投票节点，或从节点数组里移除节点。	写入 scenarios.md。
+raft_server.c	1011	E	添加非投票节点，或从节点数组里移除节点。	写入 scenarios.md。
+raft_server.c	1013	E	添加非投票节点，或从节点数组里移除节点。	写入 scenarios.md。
+raft_server.c	1014	E	添加非投票节点，或从节点数组里移除节点。	写入 scenarios.md。
+raft_server.c	1017	E	添加非投票节点，或从节点数组里移除节点。	写入 scenarios.md。
+raft_server.c	1019	E	添加非投票节点，或从节点数组里移除节点。	写入 scenarios.md。
+raft_server.c	1022	E	添加非投票节点，或从节点数组里移除节点。	写入 scenarios.md。
+raft_server.c	1024	E	添加非投票节点，或从节点数组里移除节点。	写入 scenarios.md。
+raft_server.c	1026	E	添加非投票节点，或从节点数组里移除节点。	写入 scenarios.md。
+raft_server.c	1027	E	添加非投票节点，或从节点数组里移除节点。	写入 scenarios.md。
+raft_server.c	1029	C	移除节点时断言指针非空。	白名单，不采样。
+raft_server.c	1031	E	添加非投票节点，或从节点数组里移除节点。	写入 scenarios.md。
+raft_server.c	1032	E	添加非投票节点，或从节点数组里移除节点。	写入 scenarios.md。
+raft_server.c	1034	E	添加非投票节点，或从节点数组里移除节点。	写入 scenarios.md。
+raft_server.c	1036	E	添加非投票节点，或从节点数组里移除节点。	写入 scenarios.md。
+raft_server.c	1037	E	添加非投票节点，或从节点数组里移除节点。	写入 scenarios.md。
+raft_server.c	1040	C	移除节点时断言找到了该节点。	白名单，不采样。
+raft_server.c	1041	E	添加非投票节点，或从节点数组里移除节点。	写入 scenarios.md。
+raft_server.c	1042	E	添加非投票节点，或从节点数组里移除节点。	写入 scenarios.md。
+raft_server.c	1044	E	添加非投票节点，或从节点数组里移除节点。	写入 scenarios.md。
+raft_server.c	1045	E	添加非投票节点，或从节点数组里移除节点。	写入 scenarios.md。
+raft_server.c	1081	C	persist_vote 回调失败。	白名单，不采样。
+raft_server.c	1092	D	raft_msg_entry_response_committed。驱动不调用。	不采样。
+raft_server.c	1095	D	raft_msg_entry_response_committed。驱动不调用。	不采样。
+raft_server.c	1096	D	raft_msg_entry_response_committed。驱动不调用。	不采样。
+raft_server.c	1097	D	raft_msg_entry_response_committed。驱动不调用。	不采样。
+raft_server.c	1100	D	raft_msg_entry_response_committed。驱动不调用。	不采样。
+raft_server.c	1101	D	raft_msg_entry_response_committed。驱动不调用。	不采样。
+raft_server.c	1102	D	raft_msg_entry_response_committed。驱动不调用。	不采样。
+raft_server.c	1108	C	不允许应用时 raft_apply_all 返回 0。进行中标志不是规格变量。	白名单，不采样。
+raft_server.c	1142	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1143	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1144	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1146	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1148	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1149	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1151	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1153	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1155	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1157	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1158	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1161	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1163	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1164	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1165	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1166	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1167	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1169	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1170	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1171	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1172	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1174	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1175	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1176	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1177	E	offer_log 按配置变更类型改节点。	写入 scenarios.md。
+raft_server.c	1179	C	未知日志类型 assert(0)。	白名单，不采样。
+raft_server.c	1180	C	未知日志类型 assert(0)。	白名单，不采样。
+raft_server.c	1184	E	raft_pop_log 入口。只在撤掉配置变更时继续。	写入 scenarios.md。
+raft_server.c	1186	E	raft_pop_log 入口。只在撤掉配置变更时继续。	写入 scenarios.md。
+raft_server.c	1188	B	普通条目弹出时直接返回。守卫是条目不是配置变更。	随日志截断加长 DepthBound。期望执行。
+raft_server.c	1189	B	普通条目弹出时直接返回。守卫是条目不是配置变更。	随日志截断加长 DepthBound。期望执行。
+raft_server.c	1191	E	撤掉降级、移除、添加节点时的成员变更逆操作。	写入 scenarios.md。
+raft_server.c	1193	E	撤掉降级、移除、添加节点时的成员变更逆操作。	写入 scenarios.md。
+raft_server.c	1195	E	撤掉降级、移除、添加节点时的成员变更逆操作。	写入 scenarios.md。
+raft_server.c	1197	E	撤掉降级、移除、添加节点时的成员变更逆操作。	写入 scenarios.md。
+raft_server.c	1198	E	撤掉降级、移除、添加节点时的成员变更逆操作。	写入 scenarios.md。
+raft_server.c	1200	E	撤掉降级、移除、添加节点时的成员变更逆操作。	写入 scenarios.md。
+raft_server.c	1202	E	撤掉降级、移除、添加节点时的成员变更逆操作。	写入 scenarios.md。
+raft_server.c	1204	E	撤掉降级、移除、添加节点时的成员变更逆操作。	写入 scenarios.md。
+raft_server.c	1205	E	撤掉降级、移除、添加节点时的成员变更逆操作。	写入 scenarios.md。
+raft_server.c	1207	E	撤掉降级、移除、添加节点时的成员变更逆操作。	写入 scenarios.md。
+raft_server.c	1209	E	撤掉降级、移除、添加节点时的成员变更逆操作。	写入 scenarios.md。
+raft_server.c	1211	E	撤掉降级、移除、添加节点时的成员变更逆操作。	写入 scenarios.md。
+raft_server.c	1212	E	撤掉降级、移除、添加节点时的成员变更逆操作。	写入 scenarios.md。
+raft_server.c	1213	E	撤掉降级、移除、添加节点时的成员变更逆操作。	写入 scenarios.md。
+raft_server.c	1214	E	撤掉降级、移除、添加节点时的成员变更逆操作。	写入 scenarios.md。
+raft_server.c	1215	C	撤掉添加时如果是自己则 assert(0)。	白名单，不采样。
+raft_server.c	1217	E	撤掉降级、移除、添加节点时的成员变更逆操作。	写入 scenarios.md。
+raft_server.c	1219	E	撤掉降级、移除、添加节点时的成员变更逆操作。	写入 scenarios.md。
+raft_server.c	1221	E	撤掉降级、移除、添加节点时的成员变更逆操作。	写入 scenarios.md。
+raft_server.c	1222	E	撤掉降级、移除、添加节点时的成员变更逆操作。	写入 scenarios.md。
+raft_server.c	1224	E	撤掉降级、移除、添加节点时的成员变更逆操作。	写入 scenarios.md。
+raft_server.c	1226	C	未知配置类型 assert(0)。	白名单，不采样。
+raft_server.c	1227	C	未知配置类型 assert(0)。	白名单，不采样。
+raft_server.c	1238	C	poll 失败，或断言条目指针非空。	白名单，不采样。
+raft_server.c	1239	C	poll 失败，或断言条目指针非空。	白名单，不采样。
+raft_server.c	1244	D	raft_get_first_entry_idx。驱动不调用。	不采样。
+raft_server.c	1246	D	raft_get_first_entry_idx。驱动不调用。	不采样。
+raft_server.c	1248	D	raft_get_first_entry_idx。驱动不调用。	不采样。
+raft_server.c	1250	D	raft_get_first_entry_idx。驱动不调用。	不采样。
+raft_server.c	1251	D	raft_get_first_entry_idx。驱动不调用。	不采样。
+raft_server.c	1253	D	raft_get_first_entry_idx。驱动不调用。	不采样。
+raft_server.c	1269	B	没有可压缩日志、提交点为 0，或提交点上没有条目时 begin_snapshot 返回 -1。	TakeSnapshot 已有。加长 DepthBound。期望错误返回。
+raft_server.c	1273	B	没有可压缩日志、提交点为 0，或提交点上没有条目时 begin_snapshot 返回 -1。	TakeSnapshot 已有。加长 DepthBound。期望错误返回。
+raft_server.c	1277	B	没有可压缩日志、提交点为 0，或提交点上没有条目时 begin_snapshot 返回 -1。	TakeSnapshot 已有。加长 DepthBound。期望错误返回。
+raft_server.c	1294	C	没有进行中的快照时 cancel 返回 -1。该标志不是规格变量。	白名单，不采样。
+raft_server.c	1296	C	没有进行中的快照时 cancel 返回 -1。该标志不是规格变量。	白名单，不采样。
+raft_server.c	1298	C	没有进行中的快照时 cancel 返回 -1。该标志不是规格变量。	白名单，不采样。
+raft_server.c	1299	C	没有进行中的快照时 cancel 返回 -1。该标志不是规格变量。	白名单，不采样。
+raft_server.c	1301	A	取消快照时把 snapshotLastIdx 和 snapshotLastTerm 恢复成开始前的值。	现有动作没有取消。写入 scenarios.md，交给 spec_generation。
+raft_server.c	1302	A	取消快照时把 snapshotLastIdx 和 snapshotLastTerm 恢复成开始前的值。	现有动作没有取消。写入 scenarios.md，交给 spec_generation。
+raft_server.c	1304	E	清掉 snapshot_in_progress 并返回。模型没有进行中标志。	写入 scenarios.md。
+raft_server.c	1306	E	清掉 snapshot_in_progress 并返回。模型没有进行中标志。	写入 scenarios.md。
+raft_server.c	1314	C	没有进行中的快照时返回 -1，并断言还有可压缩日志、快照下标等于提交点。	白名单，不采样。
+raft_server.c	1316	C	没有进行中的快照时返回 -1，并断言还有可压缩日志、快照下标等于提交点。	白名单，不采样。
+raft_server.c	1317	C	没有进行中的快照时返回 -1，并断言还有可压缩日志、快照下标等于提交点。	白名单，不采样。
+raft_server.c	1326	C	压缩时 poll 失败返回 -1。	白名单，不采样。
+raft_server.c	1368	C	装载快照时下标为 -1 则返回 -1。	白名单，不采样。
+raft_server.c	1371	B	快照任期或下标为 0、下标小于 lastApplied、小于日志末尾，或与本机快照相同。	HandleInstallSnapshot 已有装载。加长 DepthBound。期望错误返回。
+raft_server.c	1375	B	快照任期或下标为 0、下标小于 lastApplied、小于日志末尾，或与本机快照相同。	HandleInstallSnapshot 已有装载。加长 DepthBound。期望错误返回。
+raft_server.c	1379	B	快照任期或下标为 0、下标小于 lastApplied、小于日志末尾，或与本机快照相同。	HandleInstallSnapshot 已有装载。加长 DepthBound。期望错误返回。
+raft_server.c	1381	B	快照任期或下标为 0、下标小于 lastApplied、小于日志末尾，或与本机快照相同。	HandleInstallSnapshot 已有装载。加长 DepthBound。期望错误返回。
+raft_server.c	1382	B	快照任期或下标为 0、下标小于 lastApplied、小于日志末尾，或与本机快照相同。	HandleInstallSnapshot 已有装载。加长 DepthBound。期望错误返回。
+raft_server_properties.c	22	D	选举超时和请求超时的 setter。构造时直接写入，驱动不调用。	不采样。
+raft_server_properties.c	24	D	选举超时和请求超时的 setter。构造时直接写入，驱动不调用。	不采样。
+raft_server_properties.c	25	D	选举超时和请求超时的 setter。构造时直接写入，驱动不调用。	不采样。
+raft_server_properties.c	26	D	选举超时和请求超时的 setter。构造时直接写入，驱动不调用。	不采样。
+raft_server_properties.c	27	D	选举超时和请求超时的 setter。构造时直接写入，驱动不调用。	不采样。
+raft_server_properties.c	29	D	选举超时和请求超时的 setter。构造时直接写入，驱动不调用。	不采样。
+raft_server_properties.c	31	D	选举超时和请求超时的 setter。构造时直接写入，驱动不调用。	不采样。
+raft_server_properties.c	32	D	选举超时和请求超时的 setter。构造时直接写入，驱动不调用。	不采样。
+raft_server_properties.c	33	D	选举超时和请求超时的 setter。构造时直接写入，驱动不调用。	不采样。
+raft_server_properties.c	39	C	还没有本机节点时 get_nodeid 返回 -1。	白名单，不采样。
+raft_server_properties.c	43	D	超时、节点数、已等待时间和 votedFor 的 getter。驱动不调用，库直接读字段。	不采样。
+raft_server_properties.c	45	D	超时、节点数、已等待时间和 votedFor 的 getter。驱动不调用，库直接读字段。	不采样。
+raft_server_properties.c	48	D	超时、节点数、已等待时间和 votedFor 的 getter。驱动不调用，库直接读字段。	不采样。
+raft_server_properties.c	50	D	超时、节点数、已等待时间和 votedFor 的 getter。驱动不调用，库直接读字段。	不采样。
+raft_server_properties.c	53	D	超时、节点数、已等待时间和 votedFor 的 getter。驱动不调用，库直接读字段。	不采样。
+raft_server_properties.c	55	D	超时、节点数、已等待时间和 votedFor 的 getter。驱动不调用，库直接读字段。	不采样。
+raft_server_properties.c	68	D	超时、节点数、已等待时间和 votedFor 的 getter。驱动不调用，库直接读字段。	不采样。
+raft_server_properties.c	70	D	超时、节点数、已等待时间和 votedFor 的 getter。驱动不调用，库直接读字段。	不采样。
+raft_server_properties.c	79	D	超时、节点数、已等待时间和 votedFor 的 getter。驱动不调用，库直接读字段。	不采样。
+raft_server_properties.c	81	D	超时、节点数、已等待时间和 votedFor 的 getter。驱动不调用，库直接读字段。	不采样。
+raft_server_properties.c	82	D	超时、节点数、已等待时间和 votedFor 的 getter。驱动不调用，库直接读字段。	不采样。
+raft_server_properties.c	95	C	set_current_term 里持久化失败。	白名单，不采样。
+raft_server_properties.c	122	D	raft_set_last_applied_idx。应用路径直接写字段，驱动不调用这个 setter。	不采样。
+raft_server_properties.c	124	D	raft_set_last_applied_idx。应用路径直接写字段，驱动不调用这个 setter。	不采样。
+raft_server_properties.c	125	D	raft_set_last_applied_idx。应用路径直接写字段，驱动不调用这个 setter。	不采样。
+raft_server_properties.c	126	D	raft_set_last_applied_idx。应用路径直接写字段，驱动不调用这个 setter。	不采样。
+raft_server_properties.c	173	B	本机 id 不在节点数组里时返回 NULL。	现有模型里本机一定在 Server 中。用现有常量让 TLC 找这个守卫，找不到再标死代码。这次不从分母去掉。
+raft_server_properties.c	176	D	按下标取节点、取领导者节点、判断跟随者。驱动不调用。	不采样。
+raft_server_properties.c	178	D	按下标取节点、取领导者节点、判断跟随者。驱动不调用。	不采样。
+raft_server_properties.c	179	D	按下标取节点、取领导者节点、判断跟随者。驱动不调用。	不采样。
+raft_server_properties.c	190	D	按下标取节点、取领导者节点、判断跟随者。驱动不调用。	不采样。
+raft_server_properties.c	192	D	按下标取节点、取领导者节点、判断跟随者。驱动不调用。	不采样。
+raft_server_properties.c	193	D	按下标取节点、取领导者节点、判断跟随者。驱动不调用。	不采样。
+raft_server_properties.c	201	D	按下标取节点、取领导者节点、判断跟随者。驱动不调用。	不采样。
+raft_server_properties.c	203	D	按下标取节点、取领导者节点、判断跟随者。驱动不调用。	不采样。
+raft_server_properties.c	228	D	raft_is_connected。驱动不调用。	不采样。
+raft_server_properties.c	230	D	raft_is_connected。驱动不调用。	不采样。
+raft_server_properties.c	240	E	快照进行中时还要看 NONBLOCKING_APPLY。模型没有这两个字段。	写入 scenarios.md。
+raft_server_properties.c	241	E	快照进行中时还要看 NONBLOCKING_APPLY。模型没有这两个字段。	写入 scenarios.md。
+raft_server_properties.c	244	D	raft_get_last_applied_entry。驱动不调用。	不采样。
+raft_server_properties.c	246	D	raft_get_last_applied_entry。驱动不调用。	不采样。
+raft_server_properties.c	247	D	raft_get_last_applied_entry。驱动不调用。	不采样。
+raft_server_properties.c	248	D	raft_get_last_applied_entry。驱动不调用。	不采样。
+raft_server_properties.c	249	D	raft_get_last_applied_entry。驱动不调用。	不采样。
